@@ -1,0 +1,10 @@
+<!ELEMENT file (chap*|(text|code|list)*)>
+<!ATTLIST file title CDATA "">
+<!ELEMENT chap (part*|(text|code|list)*)>
+<!ATTLIST chap title CDATA "">
+<!ELEMENT part ((text|code|list)*)>
+<!ATTLIST part title CDATA "">
+<!ELEMENT text (#PCDATA)>
+<!ELEMENT list (elem+)>
+<!ELEMENT elem (#PCDATA)>
+<!ELEMENT code (#PCDATA)>

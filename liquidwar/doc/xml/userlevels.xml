@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE file SYSTEM "file:xml/file.dtd">
+<file title="User levels">
+
+  <chap title="A piece of advice"> 
+    <text>
+      You can use your own levels whith Liquid War 5.
+      The only thing you have to do is to put your own 256-colors vbitmap files
+      in a special directory, and the program will use them.
+      Currently, BMP, LBM, PCX, and TGA files are supported.
+      It is a good thing to use 256 colors bitmaps,
+      for they waste less disk space than truecolor bitmaps,
+      and Liquid War 5 converts all bitmaps to 32 colors bitmaps.
+      Additionnally, truecolor bitmaps might cause the DOS version
+      to crash randomly...
+      2-color bitmaps will also cause the program to crash.
+      I warned you!
+    </text>
+    <text>
+      The best thing you can do to create your user levels
+      is to have a look at the few user files I put in the .zip file
+      and try at first to do something that looks about the same!
+    </text>
+  </chap>
+
+  <chap title="Maps">
+    <text> 
+      Liquid War 5 does many checks on user levels
+      and is much safer than Liquid War 3.
+      Still, try and help the program not to crash, if possible. 
+    </text>
+    <text>
+      Liquid War considers that dark colors are walls
+      and bright colors are associated to the playable area.
+      So you can draw your walls in black, dark blue, etc...
+      And the rest of the map can be of any bright color
+      such as white or yellow.
+    </text>
+    <text>
+      You can draw a small map on a big bitmap,
+      as long as you use a bright background color.
+      Liquid War will autodetect the range of your map
+      and add the border line if necessary.
+    </text>
+    <text>
+      Liquid War re-orders all the maps,
+      so that the smallest ones are on the left
+      and the most complicated ones on the right
+      when you choose them with the slider
+      in the "map" menu.
+      So if you can't find the map you just draw,
+      don't worry, it is probably just mixed with
+      the levels from the .dat file.
+    </text>
+    <text>
+      The default path for maps is "custom\map\" on windows, and
+      "/usr/local/share/games/liquidwar/map" on GNU/Linux.
+    </text>
+  </chap>
+
+  <chap title="Textures">
+    <text> 
+      All you have to do is put a bitmap in the default directory
+      which is "custom\texture\" on windows, and 
+      "/usr/local/share/games/liquidwar/texture" on GNU/Linux.
+    </text>
+  </chap>
+
+  <chap title="Textures">
+    <text>
+      As of Liquid War 5.6.x, it's possible to associate a map with
+      a texture. All you need is to call the maps with the same name
+      (case is important, lowercase recommendend...). Look at the
+      "meditate" custom map which is shipped with Liquid War for
+      instance.
+    </text>
+    <text>
+      This also works with internal builtin maps (those stored in
+      the datafile) so for instance if you name a custom texture
+      "world1.bmp" it will automatically be associated to the builtin
+      map world1 (to figure out internal names you have to unpack
+      the source distribution and look in the ./data directory).
+      This also works the other way, if you name a map "wood2.bmp"
+      it will be automatically associated with the builtin texture
+      wood2.
+    </text>
+    <text>
+      Associating a texture with a map requires more work than
+      designing a simple map, but the results is usually much
+      nicer. See the "Kasper - ..." series of maps for instance.
+    </text>
+  </chap>
+
+  <chap title="Send your levels">
+    <text>
+      Maybe you will find that the original levels are ugly and unplayable.
+      Well, if you have made user levels and think they are great,
+      just send them to the Liquid War user mailing list.
+      Please use only 256 colors bitmap and zip them before sending them,
+      or else they might be blocked by my provider...
+    </text>
+    <text>
+      As of today, dozens of user maps have already been included
+      in Liquid War, this is very nice for it happens that every
+      map designer has his own personnal tastes, so the maps all
+      look different.
+    </text>
+    <text>
+      Still, to be included in Liquid War's mainstream distribution,
+      your maps will need to be placed under the terms of the 
+      GNU General Public License, or at least a compatible license.
+      You should have received a copy of this license with Liquid War
+      anyway. Read it 8-)
+    </text>
+    <text>
+      Of course, you can use *any* map when playing. You can even
+      play with a bitmap you got from a proprietary source - such a
+      proprietary game you bought for instance - but the point
+      is that I can't - and you can't either - distribute such a map
+      along with Liquid War.
+    </text>
+    <text>
+      However, this is enough legal boring stuff! What you should keep
+      in mind is that I'm always happy when I receive maps from
+      players, and it's a pleasure for me to include them in the
+      mainstream distribution.
+    </text>
+  </chap>
+
+</file>

@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE file SYSTEM "file:xml/file.dtd">
+<file title="Core algorithm">
+
+  <chap title="Introduction">
+    <part title="General remarks">
+      <text>
+	If you have played Liquid War, you must have noticed
+	that your army always takes the shortest way to reach
+	the cursor. So the fundamental stuff in Liquid War
+	is path-finding. Once you've done that the game is
+	quite easy to code. Not harder than any other 2D game.
+	Still the path finding algorithm is an interesting one,
+	for it's not a common method that we used.
+      </text>
+      <text>
+	Basically, at each round (by round I mean a game logical
+	update, this occurs 10 or 100 times/sec depending on the
+	level and/or your machine), the distance from all the
+	points of the level to your cursor is calculated.
+	Now the point is to calculate this fast, real fast.
+	In fact, a "gradient" is calculated for all the points
+	of the level, and the value of this gradient is the
+	distance required for a little pixel/fighter to reach
+	your cursor, assuming that he takes the shortest way.
+	Liquid War does this with a 10% error tolerance,
+	and it's enough for keeping the game interesting.
+      </text>
+      <text>
+	Once you have this gradient calculated, it's not hard
+	to move your fighters. Basically, you just have to
+	move them toward the adjacent point that has the
+	lowest gradient value, ie is the closest to your
+	cursor.
+      </text>
+    </part>
+    <part title="History">
+      <text>
+	The Liquid War algorithm has been invented by my friend
+	Thomas Colcombet 
+	In fact the Liquid War algorithm has been invented before
+	the game itself. The game came as a consequence of the
+	algorithm, he just thought
+	"mmm, cool, we could make a game with that!".
+      </text>
+      <text>
+	Later, I enhanced the algorithm, as I coded it.
+	The consequences were a performance increase,
+	especially on simple but big levels.
+	I mean levels with wide areas for teams to move.
+	Still the basis of the algorithm remained the same.
+      </text>
+    </part>
+    <part title="Pros">
+      <text>
+	The Liquid War algorithm for path-finding is very efficient:
+      </text>
+      <list>
+	<elem>
+	  When you have to move lots of different points 
+	  toward one single point. Good thing that's the rule
+	  of Liquid War!
+	</elem>
+	<elem>
+	  When you have no clue about how your map will look like,
+	  ie if the walls are randomly placed. The complexity of the
+	  level doesn't influence much the speed of the algorithm.
+	  The size does, but the complexity, ie the number of walls,
+	  is not so important.
+	</elem>
+      </list>
+    </part>
+    <part title="Cons">
+      <text>
+	The Liquid War algorithm is very poor compared to other algorithms when:
+      </text>
+      <list>
+	<elem>
+	  You have several target
+	  destinations, that's to say Liquid War would be really slow
+	  if there were 100 teams with 10 players only.
+	</elem>
+	<elem>
+	  You want to move one single point only.
+	</elem>
+	<elem>>
+	  You want the exact (100% sure) path.
+	  In fact, this algorithm finds solutions which approach
+	  the best one but you can never figure out if the solution
+	  you found is the best, and the algorithm never ends.
+	  In the long term, the algo will always find the best solution
+	  or something really close but I don't know any easy way
+	  to figure out when you have reached this state.
+	</elem>
+      </list>
+    </part>
+  </chap>
+
+  <chap title="Mesh">
+    <part title="Introduction">
+      <text>
+	The first Liquid War algorithm used to calculate the
+	gradient (the distance from a point to your cursor)
+	for every single point of the map.
+      </text>
+      <text>
+	With Liquid War 5, I used a mesh system.
+	This mesh system is a structure of squares connected
+	together. Squares may be 1,2,4,8 or 16 units large
+	or any nice value like that, and the gradient is
+	only calculated once for each square.
+	Squares have connections between them,
+	and each connection is associated to a direction.
+      </text>
+      <text>
+	There are 12 directions:
+      </text>
+      <list>
+	<elem>
+	  North-North-West (NNW)
+	</elem>
+	<elem>
+	  North-West (NW)
+	</elem>
+	<elem>
+	  West-North-West (WNW)
+	</elem>
+	<elem>
+	  West-South-West (WSW)
+	</elem>
+	<elem>
+	  South-West (SW)
+	</elem>
+	<elem>
+	  South-South-West (SSW)
+	</elem>
+	<elem>
+	  South-South-East (SSE)
+	</elem>
+	<elem>
+	  South-East (SE)
+	</elem>
+	<elem>
+	  East-South-East (ESE)
+	</elem>
+	<elem>
+	  East-North-East (ENE)
+	</elem>
+	<elem>
+	  North-East (NE)
+	</elem>
+	<elem>
+	  North-North-East (NNE)
+	</elem>
+      </list>
+    </part>
+    <part title="Example">
+      <text>
+	Well, let me give you an example,
+	supposing that you level structure is:
+      </text>
+      <code>
+**********
+*        *
+*        *
+*       **
+*        *
+**********
+      </code>
+      <text>
+	The * represent walls, that's to say squares where fighters can not go.
+      </text>
+      <text>
+	Then the mesh structure would be:
+      </text>
+      <code>
+**********
+*11112233*
+*11112233*
+*1111445**
+*i1114467*
+**********
+      </code>
+      <text>
+	In this mesh, there are 7 zones:
+      </text>
+      <list>
+	<elem>
+	  zone 1 has a size of 4. It's linked with zones 2 (ENE) and 4 (ESE).
+	</elem>
+	<elem>
+	  zone 2 has a size of 2. It's linked with zones 3 (ENE,ESE), 5 (SE), 4 (SSE,SSW) and 1 (SW,WSW,WNW).
+	</elem>
+	<elem>
+	  zone 3 has a size of 2. It's linked with zones 5 (SSW), 4 (SW) and 2 (WSW,WNW).
+	</elem>
+	<elem>
+	  zone 4 has a size of 2. It's linked with zones 2 (NNW,NNE), 4 (NE), 5 (ENE), 6 (ESE) and 1 (WSW,WNW,NW).
+	</elem>
+	<elem>
+	  zone 5 has a size of 1. It's linked with zones 3 (NNW,NNE,NE), 7 (SE), 6 (SSE,SSW), 4 (SW,WSW,WNW) and 2 (NW).
+	</elem>
+	<elem>
+	  zone 6 has a size of 1. It's linked with zones 5 (NNW,NNE), 7 (ENE,ESE) and 4 (WSW,WNW,NW).
+	</elem>
+	<elem>
+	  zone 7 has a size of 1. It's linked with zones 5 (NW) and 6 (WSW,WNW).
+	</elem>
+      </list>
+    </part>
+    <part title="Why such a complicated structure?">
+      <text>
+	Because it allows the module which calculates the gradient to work much faster.
+	With this system, the number of zones is reduced a lot, and calculus on the
+	mesh can go very fast. At the same time, this mesh structure is complicated to understand
+	by us humans but it's very easy for the computer. 
+      </text>
+    </part>
+  </chap>
+
+  <chap title="Gradient">
+    <part title="Introduction">
+      <text>
+	For each zone defined in the mesh, LW calculates an estimation
+	of the distance between the cursor and this zone.
+      </text>
+      <text>
+	The algorihm is based on the fact that to cross a zone which size
+	is n, n movements are required. Easy, eh?
+      </text>
+    </part>
+    <part title="Description">
+      <text>
+	Here's the way the algorithm works:
+      </text>
+      <text>
+	for each turn of the game, do:
+      </text>
+      <list>
+	<elem>
+	  pick up a direction between the 12 defined directions.
+	  They have to be chosen is a peculiar order to avoid 
+	  weird behaviors from fighters, but let's suppose we just pick up
+	  the "next" direction, ie if WSW was chosen the last time,
+	  we pick up WNW.
+	</elem>
+      </list>
+      <text>
+	and then for each zone in the mesh, do:
+      </text>
+      <list>
+	<elem>
+	  Compare the potential of the current zone with that of its neighbor zone.
+	  The neighbor zone to be chosen is the one which corresponds to the direction
+	  which has been previously picked up, and by potential I mean "the distance
+	  to the cursor, estimated by the algorithm's last pass".
+	</elem>
+	<elem>
+	  If potential_of_the_neighbor_zone > (potential_of_the_current_zone + size_of_the_current_zone) then potentiel_of_the_neighbor_zone = potential_of_the_current_zone + size_of_the_current_zone 
+	</elem>
+      </list>
+    </part>
+    <part title="How can this work?">
+      <text>
+	Well, just ask my friend thom-Thom, he's the one who had the idea
+	of this algorithm!
+      </text>
+      <text>
+	The basic idea is that by applying this simple rule to all the zones,
+	after a certain amount of time, it's impossible to find any place
+	in the mesh where the rule is not respected. And at this time, one
+	can consider the potiential is right in any point.
+      </text>
+      <text>
+	Of course when the cursor moves the potential has to be recalculated,
+	but you see, cursors move really slowly in Liquid War, so the
+	algorithm has plenty of time to find a new stable solution...
+      </text>
+    </part>
+    <part title="Demo">
+      <text>
+	It's possible to see this algorithm working by typing:
+      </text>
+      <code>
+	ufootgrad[n]
+      </code>
+      <text>
+	while playing, where [n] is the number of the
+	team the gradient of which you want to view.
+	The game is still running but you view a team's gradient
+	being calculated in real time instead of seeing the fighters.
+      </text>
+      <text>
+	If you type ufootgrad0 the display comes back to normal mode.
+      </text>
+    </part>
+  </chap>
+
+  <chap title="Move">
+    <part title="Introduction">
+      <text>
+	Once the gradient is calculated for any zone on the battlefield,
+	it's quite easy to move the fighters, hey?
+      </text>
+      <text>
+	The following method is used to move the players:
+      </text>
+      <list>
+	<elem>
+	  A "main direction" is chosen for the fighter, this direction is chosen using the gradient calculated on the mesh.
+	</elem>
+	<elem>
+	  Knowing which direction is the main one, a "level of interest" is applied to the 12 defined directions.
+	</elem>
+      </list>
+      <text>
+	There are 4 "level of interest" for directions:
+      </text>
+      <list>
+	<elem>
+	  Main directions: the direction calculated.
+	</elem>
+	<elem>
+	  Good directions: these directions should lead the fighter to the cursor.
+	</elem>
+	<elem>
+	  Acceptable directions: ok, one can use this direction, since the fighter shouldn't loose any time using it.
+	</elem>
+	<elem>
+	  Unpossible directions: wether there's a wall or using this direction means the fighter will be farer from his cursor than before, it always means that this direction will not be used, never.
+	</elem>
+      </list>
+    </part>
+    <part title="Rules">
+      <text>
+	The fighters will try to find any matching situation in this list, and chose the first one.
+      </text>
+      <list>
+	<elem>
+	  The main direction is available, no one on it, OK, let's follow it.
+	</elem>
+	<elem>
+	  There's a good direction with no one on it, OK, let's follow it.
+	</elem>
+	<elem>
+	  There's an acceptable direction with no one on it, OK, let's follow it.
+	</elem>
+	<elem>
+	  The main direction is available, but there's an opponent on it, I attack! By attacking, one means that energy is drawned from the attacked fighter and transmitted to the attacker. When the attacked fighter dies, he belongs to the team which killed him.
+	</elem>
+	<elem>
+	  A good direction is available, but there's an opponent on it, I attack!
+	</elem>
+	<elem>
+	  The main direction is available, but there's a mate on it, I cure him. That's to say that energy is given to the mate. This way, when there's a big pool of fighters from the same team, they re-generate each other.
+	</elem>
+	<elem>
+	  None of the previous situations found, do nothing.
+	</elem>
+      </list>
+    </part>
+    <part title="Tips and tricks">
+      <text>
+	The behavior of the armies is quite tricky to set up.
+	I had myself to try many algorithms before I came to something nice.
+	In fact, I had to introduce some "random" behaviors.
+	They are not really random for I wanted the game to behave the
+	same when given the same keyboard input, but for instance,
+	fighters will prefer NNW to NNE sometimes, and NNE to NNW some
+	other times. By the way, I think Liquid War could stand as a nice
+	example of the thoery of chaos.
+      </text>
+    </part>
+  </chap>
+
+</file>
+

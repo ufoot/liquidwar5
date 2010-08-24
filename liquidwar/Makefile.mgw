@@ -1,0 +1,227 @@
+# Liquid War is a multiplayer wargame
+# Copyright (C) 1998-2008 Christian Mauduit
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA #
+# Liquid War homepage : http://www.ufoot.org/liquidwar/v5
+# Contact author      : ufoot@ufoot.org
+
+# This Makefile is used to compile the MS Windows 32-bit executable binary.
+#
+# It requires a working MinGW http://www.mingw.org/ install to work.
+# Previous releases of Liquid War required MSVC (Microsoft Visual C++).
+# It is not the case any more, Liquid War can be built with free tools.
+#
+# To compile Allegro for MinGW, read "./docs/build/mingw32.txt" in the
+# Allegro source distribution. Usually, the following sequence works:
+# > fix mingw
+# > make
+# > make install
+#
+# Then to compile Liquid War:
+# > mingw32-make -f makefile.mgw > make-log.txt 2> make-err.txt
+#
+# Note that the .exe produced won't work as is, you need to put the datafile
+# in the right path, and a few other things, see the "package_win32" target
+# of the main UNIX Makefile in Liquid War source distribution.
+
+C_PATH=./src/
+H_PATH=./src/
+ASM_PATH=./src/
+OBJ_PATH=./src/
+RC_PATH=./src/
+OBJ_EXT=.mgw.o
+
+OBJ_NAMES=\
+about \
+advanced \
+alleg2 \
+area \
+army \
+asm \
+autoplay \
+back \
+basicopt \
+bigdata \
+capture \
+chat \
+checksum \
+code \
+config \
+connect \
+controls \
+cursor \
+decal \
+dialog \
+disk \
+disp \
+distor \
+dnsutil \
+error \
+exec2 \
+exit \
+fighter \
+game \
+httputil \
+gfxmode \
+grad \
+graphics \
+help \
+info \
+init \
+internet \
+joystick \
+keyboard \
+keyexch \
+lang \
+langde \
+langdk \
+langen \
+langfr \
+language \
+level \
+logcli \
+main \
+map \
+maptex \
+menu \
+mesh \
+message \
+mouse \
+move \
+music \
+mutxw32 \
+netconf \
+netkey \
+netgame \
+netmap \
+netmess \
+netplay\
+network \
+options \
+palette \
+parser \
+path \
+ping \
+pion \
+play \
+popupw32 \
+profile \
+protocol \
+random \
+rules \
+score \
+serial \
+sock2cli \
+sockex \
+sockw32 \
+sound \
+speeds \
+startinf \
+startup \
+team \
+texture \
+thrdw32 \
+ticker \
+time \
+viewport \
+volume \
+watchdog \
+wave \
+wwwcli \
+glouglou \
+monster \
+spread \
+lwwin 
+
+OBJ_NAMES_SRV=\
+basicopt \
+chat \
+dnsutil \
+execw32 \
+httputil \
+logsrv \
+netconf \
+netkey \
+netmap \
+netmess \
+parser \
+serial \
+server \
+sock2srv \
+sockex \
+sockw32 \
+srvchan \
+srvcont \
+srvteam \
+srvtime \
+startinf \
+thrdw32 \
+wwwsrv
+
+OBJ_NAMES_MAPGEN=\
+../utils/lwmapgen/big_quad \
+../utils/lwmapgen/boxes \
+../utils/lwmapgen/bubbles \
+../utils/lwmapgen/circles \
+../utils/lwmapgen/circuit \
+../utils/lwmapgen/cut \
+../utils/lwmapgen/func \
+../utils/lwmapgen/hole \
+../utils/lwmapgen/lines \
+../utils/lwmapgen/main \
+../utils/lwmapgen/map \
+../utils/lwmapgen/map_generator \
+../utils/lwmapgen/misc \
+../utils/lwmapgen/rand_box \
+../utils/lwmapgen/rand_func \
+../utils/lwmapgen/rand_poly \
+../utils/lwmapgen/rand_poly_cut \
+../utils/lwmapgen/street \
+../utils/lwmapgen/worms 
+       
+OBJ_FILES=$(addprefix $(OBJ_PATH),$(addsuffix $(OBJ_EXT),$(OBJ_NAMES)))
+
+OBJ_FILES_SRV=$(addprefix $(OBJ_PATH),$(addsuffix $(OBJ_EXT),$(OBJ_NAMES_SRV)))
+
+OBJ_FILES_MAPGEN=$(addprefix $(OBJ_PATH),$(addsuffix $(OBJ_EXT),$(OBJ_NAMES_MAPGEN)))
+
+C_FLAGS=-O2 -fomit-frame-pointer -Wall -I$(H_PATH)
+C_COMPILE=gcc $(C_FLAGS) -o $@ -c $< -DWIN32 -DASM
+ASM_COMPILE=gcc $(C_FLAGS) -o $@ -c $<
+RC_COMPILE=windres -o $@ -i $<
+
+all: lwwin.exe lwwinsrv.exe lwwinmap.exe
+
+$(OBJ_PATH)%$(OBJ_EXT): $(C_PATH)%.c
+	$(C_COMPILE)
+
+$(OBJ_PATH)%$(OBJ_EXT): $(ASM_PATH)%.s
+	$(ASM_COMPILE)
+
+$(OBJ_PATH)%$(OBJ_EXT): $(RC_PATH)%.rc
+	$(RC_COMPILE)
+
+
+lwwin.exe: $(OBJ_FILES)
+	gcc -Wl,--subsystem,windows -o $@ $(OBJ_FILES) -lalleg -lws2_32
+
+lwwinsrv.exe: $(OBJ_FILES_SRV)
+	gcc -Wl,--subsystem,console -o $@ $(OBJ_FILES_SRV) -lws2_32
+
+lwwinmap.exe: $(OBJ_FILES_MAPGEN)
+	gcc -Wl,--subsystem,console -o $@ $(OBJ_FILES_MAPGEN) -lalleg
+
+
+

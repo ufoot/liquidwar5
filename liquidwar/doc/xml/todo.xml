@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE file SYSTEM "file:xml/file.dtd">
+<file title="To do">
+
+  <chap title="Bug-fixing">
+    <text>
+      In its latest releases Liquid War is quite stable IMHO. 
+      However there are still some issues with network under Windows
+      for instance. I'm aware of these bugs and I'm trying to fix them
+      but this does really take time.
+    </text>
+    <text>
+      I always welcome bug-reports and patches, as making Liquid War W 5.x.x as
+      stable and bug-free as possible is really important to me - and
+      most of the time players also appreciate stable programs 8-)
+    </text>
+    <text>
+      The most important bug-fixing area is probably cross-platform
+      support. That is, make sure that the game runs fine on every
+      supported OS. For instance, it's quite common for Mac OS/X and/or
+      FreeBSD users to "crash" the game. This rarely happens on
+      GNU/Linux, just because it has been so much more tested on
+      this platform. This applies to Liquid War itself and also,
+      to some extent, to Allegro.
+    </text>
+  </chap>
+
+  <chap title="New features">
+    <text>
+      Let's be clear: no new features in Liquid War 5.
+      It's bloated, complicated, old, uninteresting to hack.
+      All new features should be found in Liquid War 6.
+    </text>
+  </chap>
+
+  <chap title="Liquid War 6">
+    <text>
+      Since summer 2005, Liquid War 6, a complete rewrite of Liquid War,
+      is on its way. See 
+      "http://www.gnu.org/software/liquidwar6/" or
+      "http://www.ufoot.org/liquidwar/v6"
+      for more informations.
+    </text>
+  </chap>
+
+</file>

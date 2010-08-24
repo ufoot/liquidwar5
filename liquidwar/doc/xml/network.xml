@@ -1,0 +1,715 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE file SYSTEM "file:xml/file.dtd">
+<file title="Network game">
+
+  <chap title="Basics">
+    <text>
+      Since release 5.4.0, Liquid War includes network support, that's
+      to say that people can play over a LAN (Local Area Network).
+      However, due to limitations in Liquid War's legacy code,
+      and also because of the lack of time I have, it might be a little
+      tricky to set up a network game at first. So please read this
+      section carefully.
+    </text>
+    <text>
+      You should keep in mind that:
+    </text>
+    <list>
+      <elem>
+	DOS only releases of Liquid War do not include network support,
+	only Windows and GNU/Linux versions will allow you to set up a
+	network game.
+      </elem>
+      <elem>
+	The game should run fine on any LAN, but there's no garantee the
+	game will be playable on the Internet. Indeed if your "ping delay"
+	is not good enough, the game will be awfully slow. Bandwidth
+	is not an issue, since Liquid War rarely needs more than 2 Kb/sec.
+      </elem>
+      <elem>
+	You'll need to know what an IP address is.
+      </elem>
+      <elem>
+	You don't need to set up a network game to run a multiplayer game.
+	Liquid War was originally a multiplayer game without network support.
+	Network support is here only for people who don't feel comfortable
+	when playing at 6 on the same keyboard 8-)
+      </elem>
+    </list>
+  </chap>
+
+  <chap title="Getting started">
+    <part title="What do you need?">
+      <text>
+	You'll basically need 2 computers connected on the same LAN.
+	We'll call them computer A and B. You might be able to play
+	over the Internet too, but the game can be harder to set up
+	and - which is worse - very slow.
+      </text>
+      <text>
+	You'll also need to know the IP address of computer A.
+	Type "ipconfig" under Windows or "ifconfig" as root under GNU/Linux to
+	get this information if you don't have it.
+      </text>
+    </part>
+    <part title="Starting the server">
+      <text>
+	Liquid War uses a very traditionnal client/server approach.
+	Basically, the server gets informations from all the clients
+	and then dispatches the collected information to everybody.
+      </text>
+      <text>
+	So you'll need to start a server on computer A by running
+	"liquidwar-server" on GNU/Linux or "lwwinsrv.exe" on windows.
+	This is a console application,
+	ie it does not set up any graphic mode.
+      </text>
+      <text>
+        Here's a small example of a server start on GNU/Linux:
+      </text>
+      <code>
+$ liquidwar-server
+How many teams will connect to this server? 
+      </code>
+      <text>
+	At this point you must enter a number between 2 and 6, and then
+	press "ENTER". In this example we will answer 2.
+	The server really needs to know how many teams will be
+	in the game: when enough teams are connected, the game starts.
+	It can also be a good idea to answer 6 systematically and then force game
+	start by clicking the "Start now" button within the client.
+	It's possible to skip this question by typing
+	"liquidwar-server -2" instead of a plain "liquidwar-server".
+      </text>
+      <code>      
+Use "-2" to get rid of this question.
+Register on "www.ufoot.org/metaserver/" (y/n)? 
+      </code>      
+      <text>
+	Now if we answer "y", then the server will automatically contact
+	the "meta-server" and it will be listed on
+	"http://www.ufoot.org/liquidwar/v5/metaserver.php3"
+      </text>
+      <text>
+	This can be convenient for people who want to find other gamers to
+	play with on the Net. For now, let's answer "n", we'll test
+	this meta-server stuff later 8-)
+      </text>
+      <code>      
+Use "-private" to get rid of this question.
+2002-06-03 16:43:00: Listening on port 8035...
+2002-06-03 16:43:00: Waiting for 2 teams...
+      </code>
+      <text>
+	Now the server is ready to accept clients. By default it
+	listens to clients on port 8035. You could change this behavior
+	setting by calling "liquidwar-server -port 8061" for
+	instance, but let's use the default port to make things easier.
+      </text>
+    </part>
+    <part title="Starting the clients">
+      <text>
+	Start the client on computer A normally by typing 
+	"liquidwar" on GNU/Linux or
+	double-click "lwwin.exe" on Windows.
+      </text>
+      <text>
+	Go to the "Teams" menu and select 2 teams, a red human
+	and a blue CPU for instance.
+	If you don't know how to do this, then try and play Liquid War on 
+	a single computer first.
+	It's important to notice that by default the "blue CPU" won't
+	connect on the network game. It's possible to allow bots to
+	connect on network games, but they are disabled by default.
+      </text>
+      <text>
+	Now come back to the main menu,
+	and a "Net Game" button should be available. Click it.
+	Now you should be able to:
+      </text>
+      <list>
+	<elem>
+	  Start the game.
+	</elem>
+	<elem>
+	  Change the IP address of the server.
+	</elem>
+	<elem>
+	  Change the communication port.
+	</elem>
+	<elem>
+	  Set a password.
+	</elem>
+	<elem>
+	  Search for internet games automatically.
+	</elem>
+      </list>
+      <text>
+	Since the server is also running on the same machine (A),
+	you can leave the default IP address as is (127.0.0.1).
+      </text>
+      <text>
+	Now you are ready to start the second client on computer B.
+	Like with computer A, you'll have to:
+      </text>
+      <list>
+	<elem>
+	  Select 2 teams, green an yellow this time.
+	</elem>
+	<elem>
+	  Select "Net Game" in the main menu.
+	</elem>
+      </list>
+      <text>
+	But this time you'll also need to change the server address,
+        since the client is not running on the same computer than the
+	server.
+      </text>
+      <text>
+	Now click on "Start game" on computer A. The server should play
+	a "system beep", which is usefull if you run a server and
+	want to be notified of client connections without watching
+	the console all the time, and it should	display messages like this:
+      </text>
+      <code>
+2002-06-03 16:44:48: Connection from "127.0.0.1:34677"
+2002-06-03 16:44:48: Team "Napoleon" on client "127.0.0.1:34677" accepted
+2002-06-03 16:44:49: Client "127.0.0.1:34677" accepted
+2002-06-03 16:44:49: Waiting for 1 team...
+      </code>
+      <text>
+	And on the client you should see a screen which says
+	"Waiting for 1 team(s)" with the list of connected players
+	below (Napoleon). You do not need to click 
+	on the "Start now" button.
+      </text>
+      <text>
+	Now click on "Start game" on computer B. The server should
+	display messages like this:
+      </text>
+      <code>
+2002-06-03 16:49:14: Connection from "192.168.1.1:1098"
+2002-06-03 16:49:14: Team "Henri IV" on client "192.168.1.1:1098" accepted
+2002-06-03 16:49:15: Client "192.168.1.1:1098" accepted
+2002-06-03 16:49:15: Client "192.168.1.1:1098" ready
+2002-06-03 16:49:15: Client "127.0.0.1:34677" ready
+2002-06-03 16:49:15: Sending info to "127.0.0.1:34677"
+2002-06-03 16:49:15: Sending info to "192.168.1.1:1098"
+2002-06-03 16:49:16: Game start
+      </code>
+      <text>
+	And at that point, the game should start 8-)
+      </text>
+    </part>
+    <part title="Restart a new game">
+      <text>
+        Once the game is over, you can start another network game on
+	the clients without touching the server, because the server 
+	automatically restarts and waits for players to connect.
+      </text>
+      <text>
+        To stop the server - if you want to change its settings for
+	instance - just go to the console where it's running and press
+	CTRL-C.
+      </text>
+    </part>
+  </chap>
+
+  <chap title="Using the meta-server">
+    <part title="Basics">
+      <text>
+	The meta-server is a piece of software which is running
+	on my web site, and allows servers to register themselves
+	so that client can get a list of available servers.
+      </text>
+      <text>
+	It's written in PHP and is _very_ basic but I believe it's
+	enough for what has to be done: maintain a list of running
+	servers.
+      </text>
+      <text>
+	The source code for the meta-server is included in the
+	source package of Liquid War, so you might run such a server
+	yourself if you want to. However, by default, servers will
+	register themselves on my web site, and will be listed on
+	"http://www.ufoot.org/liquidwar/v5/metaserver.php3"
+      </text>
+    </part>
+    <part title="How to register a server">
+      <text>
+	Launch the server, and when you get the question:
+      </text>
+      <code>
+Register on "www.ufoot.org/metaserver/" (y/n)? 
+      </code>
+      <text>
+	answer "y". 
+      </text>
+      <text>
+	Note that if you're behind a proxy or a firewall, the server
+	might be unable to register itself. Clients might also have
+	problems to connect themselves on your server if there's a
+	machine which does NAT (Network Address Translation) between
+	you and the meta-server.
+      </text>
+    </part>
+    <part title="How to find a server">
+      <text>
+	In the main menu, click on "Net Game" and then 
+	"Search for internet games".
+      </text>
+      <text>
+	Now you should see a list of available servers. You can click
+	on the items in the list to get more informations about a
+	given server. Once you have chosen a server, click on
+	"Join now".
+      </text>
+      <text>
+	Now you get on a "Waiting for teams" screen. You might
+	be interested in using the "Start now" button. Indeed, if
+	you are 4 players connected on a server that accepts up to 6 
+	players, maybe you'll want to start the game right away
+	without waiting for 2 more players. In this case, every player
+	must click "Start now". A "*" character will replace the "-"
+	in the players list when a player clicks on "Start now".
+	When all the players are displayed with a "*a, the game starts.
+      </text>
+      <text>
+	You can also chat with other players by entering text in
+	the area above the "Send message" button, and then click on 
+	this button. Keep in mind that this is a very primitive chat
+	and that the best way to chat efficiently is IMHO to play
+	in windowed mode and have an IRC client at hand.
+      </text>
+      <text>
+	Note that you can also get the list of available servers
+	from "http://www.ufoot.org/liquidwar/v5/metaserver.php3"
+	There you'll also find a little chat-box which will allow
+	you to send exchange messages with other players.
+      </text>
+    </part>
+  </chap>
+
+  <chap title="Options">
+    <part title="Server options">
+      <text>
+	You can pass options to the server using the command line.
+	The following parameters are accepted:
+      </text>
+      <list>
+	<elem>
+	  "-n" where "n" is a number between 2 and 6 : with this option
+	  you can tell the server how many teams will connect to the
+	  game. Beware, there can be several teams on the same computer,
+	  so if you want to have a computer with 2 players on it and 2
+	  other computers with a single player, then you need to use the
+	  "-4" option.
+	</elem>
+	<elem>
+	  "-lag n" where "n" is an integer : with this option, you can
+	  control the lag used at startup. Normally, Liquid War handles
+	  this parameter automatically, but you might want to force it
+	  to a given value.
+	</elem>
+	<elem>
+	  "-port n" where "n" is an integer : allows you to change
+	  the IP port used by the server to listen to the clients.
+	  if you omit this parameter, the default port is (8035) is
+	  used.
+	</elem>
+	<elem>
+	  "-log file.log" : dumps all informations in "file.log"
+	  instead of using the standard output.
+	</elem>
+	<elem>
+	  "-public" : skips the "Register on ..." question, and
+	  registers the server automatically on the meta-server,
+	  so that clients can find it easily.
+	</elem>
+	<elem>
+	  "-private" : skips the "Register on ..." question, and
+	  does not register the server at all.
+	</elem>
+	<elem>
+	  "-comment This_is_a_comment" : associates a comment to
+	  the server, which will be displayed by the meta-server.
+	  Note that the character "_" will be replaced by spaces.
+	  This makes command line parsing easier. I'm lazy 8-)
+	</elem>
+	<elem>
+	  "-password xxx" : associates a password to the server.
+	  With this option, clients will need to give the right
+	  password to be able to connect on the server.
+	</elem>
+	<elem>
+	  "-callback cmd" : with this option, the command "cmd" will 
+	  be launched whenever someone connects on an empty server.
+	  For instance, if you want to run a permanent server and want
+	  to know when someone connects but do not wish to permanently
+	  keep an eye on the server's log, you might use this option
+	  and put in "cmd" a command that automatically sends you a 
+	  mail. You might also use a command that fires a popup window.
+	  It's up to you. 2 sample scripts are available in the "misc"
+	  directory of the Liquid War source distribution. One is
+	  "misc/liquidwar_notify.sh" and works on UNIX platforms, and
+	  the other one is "misc/lwpopup.js", which is automatically
+	  used by "misc/lwserver.bat", and works on Windows.
+	</elem>
+      </list>
+    </part>
+    <part title="Common options">
+      <text>
+	These options work on both client and server, even if
+	they are rather "server-oriented".
+      </text>
+      <list>
+	<elem>
+	  "-metaserver url" : redefines the URL of the meta-server.
+	  Usefull if you want to use your own meta-server.
+	</elem>
+        <elem>
+	  "-netlog" : 
+	  if you use this option, the server will dump
+          all the network traffic on the standard output. This is
+	  usefull for debugging.
+        </elem>
+        <elem>
+	  "-nobeep" :
+	  Disables the system beeps that the application might fire.
+	  These beeps are mostly used on the server to notify clients 
+	  connections.
+        </elem>
+      </list>
+    </part>
+  </chap>
+
+  <chap title="About Liquid War's network implementation">
+    <part title="Basics">
+      <text>
+	Liquid War uses TCP sockets, and a single-threaded server.
+	This implies that:
+      </text>
+      <list>
+	<elem>
+	  The game can sometimes get blocked if you play on Internet.
+	</elem>
+	<elem>
+	  The server can't talk simultaneously with several clients.
+	</elem>
+      </list>
+      <text>
+	I needed to use TCP sockets, since LW's algorithm can not cope
+	with any data loss and it's not a reasonnable to try and anticipate
+	what the map would be like if the player did not move etc...
+      </text>
+      <text>
+	I did not implement any complex multithreaded stuff since I'm lazy and
+	however, clients need to have informations about all the other before
+	something can be done. However, implementing a mutltithreaded
+	server could have advantages over the current solution.
+      </text>
+    </part>
+    <part title="What is this lag stuff anyway?">
+      <text>
+	In Liquid War, all the clients send their key presses to the server,
+	and then the server dispatches this information to everyone.
+	This has to be done for every round.
+      </text>
+      <text>
+	You can easily imagine that if a player has a poor connection, with
+	a very long "ping delay", it can take quite a long time to send
+	the information to the server, and then get it back.
+      </text>
+      <text>
+	So what Liquid War does is that at the beginning of the game, the
+	server sends a couple of "blank" key strokes to the clients.
+	This way, clients receive data from the server before thay have
+	sent any. The number of key strokes sent at the beginning of the
+	game is called the "lag".
+      </text>
+      <text>
+	So if it takes 200 msec to send and then receive data from the
+	server (approx the time returned by the "ping" command) then
+	with a lag of 6, you can theorically play at a rate of 
+	(1/0.2)*6=30 rounds/sec.
+      </text>
+      <text>
+	On one hand, setting the lag parameter to a high value will avoid many 
+	network	errors and allow you to play at a very fast pace, but the big
+	drawback is that there will be quite a long time between the instant you
+	send a key stroke to the server and the moment it comes back to you.
+	On the other hand, setting the lag to a low value will limit 
+	drastically he number of rounds per second, but make the game
+	more "responsive".
+      </text>
+      <text>
+	However, since release 5.4.1, the "lag" is modified automatically
+	and should adapt itself to the situation. I've not been able to
+	test it in real conditions yet, but it should work 8-)
+      </text>
+      <text>
+	Still, setting the lag to a sensible default value can save you
+	some trouble. Indeed, by default, Liquid War will choose a value (6),
+	but it can not guess if you are playing on Internet or on a
+	100 Mbit LAN, and it can take quite a long time before Liquid War
+	automatically finds the right value. To know the right value
+	which should be used with the "-lag" option, simply play a few
+	games and watch the average lag (which is displayed on the server
+	console every minute) at the end of the game.
+      </text>
+    </part>
+    <part title="Performance issues">
+      <text>
+	Liquid War uses a "light" server, and one of the 
+	advantages of this solution is that it allows
+	you to run the server on low-end computers. I personnally
+	run a permanent server on a 486 DX2, and it runs like
+	a charm. 
+      </text>
+      <text>
+	The only thing you have to take care of when
+	running a server is bandwidth. Don't worry, you won't
+	need a 10Mbit connection, basically, each clients sends
+	and receives 12 bytes of data at each round. If you
+	add TCP/IP headers and the facts that stuff will probably be
+	bundled in bigger packets, a client must deliver
+	about 15 Kbit/sec (up and down) for a game that 
+	runs at 100 frames/sec. A 56K V90 modem is enough for this.
+      </text>
+      <text>
+	So if you run a server with 2 clients connected, the server
+	will need to deliver 30 Kbit/sec in both ways. A 56K V90
+	modem _can_ do that, but your provider needs to be a good one 8-) 
+      </text>
+      <text>
+	And if you run a server with 6 clients, you simply won't
+	be able to reach the 100 frames/sec with a 56K V90 modem.
+	It will necessarly drop to something less than 30 frames/sec,
+	and is likely to drop to about 15 frames/sec.
+	OK this is not a big deal, since few Internet games run at
+	more than 30 frames/sec, but well, if the server has troubles
+	receiving/sending data, everyone will wait, and the fun will
+	go away.
+      </text>
+      <text>
+	As a conclusion: if you have the choice, choose the friend
+	who has the best bandwidth to run the server, without even
+	considering the power of his computer.
+      </text>
+    </part>
+  </chap>
+
+  <chap title="Troubleshooting">
+    <part title="General information">
+      <text>
+	Network support in 5.4 and 5.5 is still experimental in many ways,
+	so you might get weird behaviors. Basically, if you have a problem,
+	just do the following:
+      </text>
+      <list>
+	<elem>
+	  Stop and restart the server when something goes wrong.
+	  To stop it, use CTRL-C.
+	</elem>
+	<elem>
+	  Check out that you have entered the correct IP addresses.
+	</elem>
+	<elem>
+	  Try and start the client and the server using the "-netlog" option
+	  to have an idea about what's happening.
+	</elem>
+      </list>
+    </part>
+    <part title="Bugs in 5.4.x corrected in 5.4.2">
+      <text>
+	Liquid War 5.4.0 and 5.4.1 were very hard to play over the Internet. 
+	The reason is that the network routines did not do enough error 
+	checking, and therefore there were very often errors when sending 
+	and/or receiving the map to the server. Hopefully, this bug should not
+	appear anymore in 5.4.2 or any other recent release.
+      </text>
+    </part>
+  </chap>
+
+  <chap title="About security">
+    <part title="Network games passwords">
+      <text>
+	As you might have noticed, under the box where you can enter
+	the password, a little notice explains that you must choose
+	a "weak" password. Now you'll tell me -> people keep on explaining me
+	that passwords must be something complex like "aS\r!Y9p" and now
+	I'm told to use "hello", what's up?
+      </text>
+      <text>
+	OK, keep in mind Liquid War is a game. This password stuff is just
+	a way to be able to play with your friends only and keep on using
+	the meta-server's services. Liquid War does not encrypt data and I can
+	see no good reason to do it for, so the password is stored and sent
+	to the server in clear, as plain text.
+      </text>
+      <text>
+	The consequence is that if you use a valuable password - for instance
+	the one you use to log in on your computer - the guy who runs the
+	server will see your password in the log file if he wishes to.
+	Therefore, use something weak, something that if someones finds out
+	what it is, you won't really care. So "hello" is a wise choice.
+      </text>
+    </part>
+    <part title="Is Liquid War likely to have security holes?">
+      <text>
+	Yes.
+      </text>
+      <text>
+	Any program is likely to have security holes, especially when
+	it's networked. However, I have good reasons to think that Liquid War
+	is safe enough for a game. At least I find it safe enough to run
+	a permanent public server on my personnal computer 8-)
+      </text>
+      <text>
+	FYI, here are some things which I think make Liquid War rather safe 
+	to run:
+      </text>
+      <list>
+	<elem>
+	  Liquid War does not store anything on your hard drive that would
+	  have been received from the network. The maps are kept in RAM.
+	  So you won't download any virus playing Liquid War on Internet.
+	</elem>
+	<elem>
+	  Liquid War does not transmit any sort of code on the network.
+	  All the transmitted bytes represent plain data.
+	  So you're not likely to execute any arbitrary code - virus, worm -
+	  when playing on the Net.
+	</elem>
+	<elem>
+	  Liquid War receives network packets in static buffers, and if the
+	  received data is too big, it is truncated. One consequence is that
+	  Liquid War has a bunch of "limits". You can't send hudge maps over
+	  the network, you can't have long nicknames, and so on. But another
+	  consequence is that if you try to send garbage in the buffer, it
+	  will be truncated. Liquid War will protest with a "network error"
+	  message and the connection will be closed, but there will be no 
+	  easy exploit possible here.
+	</elem>
+	<elem>
+	  Liquid War does not use the sprintf, strcpy and strcat functions,
+	  which are known as being rather unsecure since they can lead to
+	  buffer overflows. Instead, it uses the equivalent functions
+	  snprintf, strncpy and strncat. On platforms where these functions
+	  are supported natively, the game will use the default system
+	  functions, otherwise it will use a free implementation by
+	  Mark Martinec. FYI, Windows does not support snprintf-like functions
+	  natively, that is, it's a piece of crap.
+	</elem>
+	<elem>
+	  Liquid War is Free Software, so I'm not likely to have put backdoors
+	  in it myself, since anyone can look at the source code 8-)
+	</elem>
+      </list>
+      <text>
+	However, I have not - and I know nobody who has - audited Liquid War
+	for security holes. So there might be some. Therefore you should 
+	respect a few things while running Liquid War:
+      </text>
+      <list>
+	<elem>
+	  Never run Liquid War as root or administrator. This is obvious but
+	  I still mention it. If you want to run a Liquid War daemon on UNIX,
+	  run it as user "nobody" or something approaching. If "root" or
+	  "administrator" does not make sense on your system (DOS, Win98...)
+	  then I assume you're not _really_ concerned about security anyway 8-P
+	</elem>
+	<elem>
+	  If you run a server 7/7 24/24, use the "-log" option to log everything
+	  in a file. This way you'll keep a trace of network activity,
+	  and if something goes wrong, you might get a chance to see it.
+	</elem>
+	<elem>
+	  If you use passwords in network games, *never* choose a valuable
+	  password. Use something simple like "hello" or "goodbye".
+	</elem>
+	<elem>
+	  Keep in mind that Liquid War is a game, and not a bullet proof 
+	  professionnal server.
+	</elem>
+      </list>
+      <text>
+	Last point: you should be aware that version 5.4.5 of Liquid War
+	has been proved to be vulnerable to a local buffer overflow,
+	and one should run at least 5.5.9 to get rid of this problem.
+	FYI by the time the exploit was found on 5.4.5, 5.5.9 was
+	already out 8-)
+        See "http://www.securityfocus.com/bid/8629"
+        and "http://www.securityfocus.com/bid/9453" for more informations.
+      </text>
+    </part>
+    <part title="Can people cheat when playing on the Net?">
+      <text>
+	No.
+      </text>
+      <text>
+	Or at least, not really. In fact, you can still find the following
+	types of lamers:
+      </text>
+      <list>
+	<elem>
+	  A guy who lets the CPU play at his place. He'll loose anyway because
+	  the CPU is definitely not a great Liquid War Master 8-)
+	</elem>
+	<elem>
+	  A guy who tweaks the game and gets all his bots fight anyone he wishes.
+	  That's mean.
+	</elem>
+	<elem>
+	  A guy who manages to let you have a 500msec lag while he does not have
+	  any lag at all.
+	</elem>
+      </list>
+      <text>
+	Apart from this, I can hardly see any way to cheat. Why? Because the Liquid
+	War server does not store any information about the game. It's not aware
+	of who wins, who looses, it knows nothing. The only thing it does is to
+	transmit key presses between client computers. 
+      </text>
+      <text>
+	This way, if someone plays with a tweaked release of Liquid War, thinking
+	he will fool you, then he will fool you on his computer only... On your
+	computer, everything will be fine. After some time, your screen and his
+	screen will have nothing in common, and both players are likely to think
+	they have won. Except the lamer will stay a lamer.
+      </text>
+      <text>
+	This also explains why it's required to play with the very same versions
+	of the game during network games. If you plug a 5.5.2 with a 5.5.1, after
+	a minute the screens will be completely different on each client, since
+	there are subtle differences between the 5.5.1 and the 5.5.2 engine.
+	However, you shouldn't be able to do this, since a network error will
+	stop you before you can start to play.
+      </text>
+      <text>
+	Additionnally, versions 5.5.5 and higher have a checksum system. Every 100
+	rounds, each client calculates a checksum with its local map, and sends
+	it to the server. If the checksum is incorrect, the server will log
+	a message like:
+      </text>
+      <code>
+Checksum error on client "192.168.1.1:1098"
+      </code>
+      <text>
+	If you see this, then you're in one of the following situations:
+      </text>
+      <list>
+	<elem>
+	  There's a bug in the game
+	</elem>
+	<elem>
+	  A lamer tries to cheat
+	</elem>
+      </list>
+      <text>
+	FYI, all releases from 5.4.0 to 5.5.4 have a bug which causes clients
+	to desynchronize after a while...
+      </text>
+    </part>
+  </chap>
+</file>

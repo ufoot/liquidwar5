@@ -1,0 +1,133 @@
+#! /bin/bash
+
+#############################################################################
+# Liquid War is a multiplayer wargame                                       #
+# Copyright (C) 1998-2008 Christian Mauduit                                 #
+#                                                                           #
+# This program is free software; you can redistribute it and/or modify      #
+# it under the terms of the GNU General Public License as published by      #
+# the Free Software Foundation; either version 2 of the License, or         #
+# (at your option) any later version.                                       #
+#                                                                           #
+# This program is distributed in the hope that it will be useful,           #
+# but WITHOUT ANY WARRANTY; without even the implied warranty of            #
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             #
+# GNU General Public License for more details.                              #
+#                                                                           #
+# You should have received a copy of the GNU General Public License         #
+# along with this program; if not, write to the Free Software               #
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA #
+#                                                                           #
+# Liquid War homepage : http://www.ufoot.org/liquidwar/v5                   #
+# Contact author      : ufoot@ufoot.org                                     #
+#############################################################################
+
+# Script used to start Liquid War servers, and run them as UNIX daemons.
+#
+# Typically, you could place this file in /etc/init.d, so that servers
+# are started automatically when you boot your computer.
+#
+# Keep in mind that Liquid War is a *game* so its code might not be
+# 100% exploit proof, and anyway, since Liquid War comes with 
+# NO WARRANTY at all, you simply run it at your own risks. 
+# This is not to scare you, but rather to insist on the fact that
+# you should never run Liquid War servers as root. Run it under a
+# "basic" user, which has very few rights, since the only rights the 
+# Liquid War daemon needs are:
+# - be able to bind on a socket > 1024
+# - be able to append stuff to a log file
+# - be able to write its pid in a file
+# None of these requires to be logged as root, so don't do it.
+#
+# Also keep in mind that running this script with its default options
+# will make the Liquid War server you run on your computer register
+# itself on the meta-server on www.ufoot.org. So people will be aware
+# that you have a Liquid War server on your machine. While this is good
+# for people who try to automatically find other online fellows, 
+# you might find this behaviour somewhat intrusive. Change the $PRIVACY
+# value if the default behaviour does not match your needs.
+
+# Clear our environment so we don't leak.
+unset `env | sed s/=.*//`
+
+prefix=@prefix@
+
+NAME=liquidward
+PATH=/bin:/usr/bin:/sbin:/usr/sbin
+DAEMON=$prefix/games/liquidwar-server
+PIDFILE=/var/games/liquidwar/$NAME.pid
+LOGFILE=/var/games/liquidwar/$NAME.log
+
+# As start-stop-daemon seems to be a quite Debian-specific utility,
+# this script is in a way designed for Debian. If you want to run it
+# on a box which does not have start-top-daemon, you'll need to
+# edit the $START and $STOP commands to match your system.
+START="start-stop-daemon --start --background --make-pidfile"
+STOP="start-stop-daemon --stop"
+
+# maximum number of players who can connect on this server
+# by default: 6, which is the maximum
+NBPLAYERS=6
+
+# privacy policy:
+# public -> the server is listed on www.ufoot.org
+# private -> the server does not register itself
+# by default, it is public, but you might want to change this
+PRIVACY=public
+
+# the password which client will have to give to be able
+# to connect themselves on this server
+# by default, no password is used
+PASSWORD=
+
+# the comment which will be associated to the server
+# by default, it contains the name of the machine, but you might
+# want to put your e-mail here for instance
+COMMENT="Public_server_running_on_"`hostname` 
+
+# the user which should be used to start the daemon
+# by default, it is set to "nobody:games", this assumes that
+# there's a games group on your machine which has sufficient rights
+# to write the pid and log files. If this is not the case, you'll
+# need to either create a games group (and maybe a nobody user as weel)
+# or change the $USER value, but remember: do *not* set it to root!
+USER=nobody:games
+
+# if you want the server to warn you whenevver someone connects on it,
+# you might set up a callback script by uncommenting the line below.
+# You'll also need to edit and install the liquidwar_notify.sh script 
+# manually
+CALLBACK=$prefix/games/liquidwar_notify.sh
+
+OPTIONS=" -"$NBPLAYERS" -"$PRIVACY" -log "$LOGFILE" -password "$PASSWORD" -comment \""$COMMENT"\" -callback "$CALLBACK
+
+export LANG=C
+export PATH
+
+test -f $DAEMON || exit 0
+
+case "$1" in
+    start)
+	echo "Starting" $NAME
+	$START --pidfile $PIDFILE --chuid $USER --exec $DAEMON -- $OPTIONS
+	;;
+
+    stop)
+	$STOP --pidfile $PIDFILE --chuid $USER
+	rm -f $PIDFILE
+	;;
+
+    restart)
+	$0 stop
+	sleep 1
+	$0 start
+	;;
+
+    *)
+	echo "Usage: $NAME {start|stop|restart}"
+	exit 1
+	;;
+esac
+
+exit 0
+

@@ -1,0 +1,201 @@
+# 
+# To compile Allegro under Windows:
+# > fix msvc
+# then
+# > SET STATICLINK=1
+# > make 
+# or
+# > make STATICLINK=1
+#
+
+C_PATH=./src/
+H_PATH=./src/
+ASM_PATH=./src/
+OBJ_PATH=./src/
+RC_PATH=./src/
+OBJ_EXT=.win.o
+
+OBJ_NAMES=\
+about \
+advanced \
+alleg2 \
+area \
+army \
+asm \
+autoplay \
+back \
+basicopt \
+bigdata \
+capture \
+chat \
+checksum \
+code \
+config \
+connect \
+controls \
+cursor \
+decal \
+dialog \
+disk \
+disp \
+distor \
+dnsutil \
+error \
+exec2 \
+exit \
+fighter \
+game \
+httputil \
+gfxmode \
+grad \
+graphics \
+help \
+info \
+init \
+internet \
+joystick \
+keyboard \
+keyexch \
+lang \
+langde \
+langdk \
+langen \
+langfr \
+language \
+level \
+logcli \
+main \
+map \
+maptex \
+menu \
+mesh \
+message \
+mouse \
+move \
+music \
+mutxw32 \
+netconf \
+netkey \
+netgame \
+netmap \
+netmess \
+netplay\
+network \
+options \
+palette \
+parser \
+path \
+ping \
+pion \
+play \
+popupw32 \
+profile \
+protocol \
+random \
+rules \
+score \
+serial \
+sock2cli \
+sockex \
+sockw32 \
+sound \
+speeds \
+startinf \
+startup \
+team \
+texture \
+thrdw32 \
+ticker \
+time \
+viewport \
+volume \
+watchdog \
+wave \
+wwwcli \
+glouglou \
+monster \
+spread \
+../utils/snprintf/snprintf \
+lwwin 
+
+OBJ_NAMES_SRV=\
+basicopt \
+chat \
+dnsutil \
+execw32 \
+httputil \
+logsrv \
+netconf \
+netkey \
+netmap \
+netmess \
+parser \
+serial \
+server \
+sock2srv \
+sockex \
+sockw32 \
+srvchan \
+srvcont \
+srvteam \
+srvtime \
+startinf \
+thrdw32 \
+wwwsrv \
+../utils/snprintf/snprintf
+
+OBJ_NAMES_MAPGEN=\
+../utils/lwmapgen/big_quad \
+../utils/lwmapgen/boxes \
+../utils/lwmapgen/bubbles \
+../utils/lwmapgen/circles \
+../utils/lwmapgen/circuit \
+../utils/lwmapgen/cut \
+../utils/lwmapgen/func \
+../utils/lwmapgen/hole \
+../utils/lwmapgen/lines \
+../utils/lwmapgen/main \
+../utils/lwmapgen/map \
+../utils/lwmapgen/map_generator \
+../utils/lwmapgen/misc \
+../utils/lwmapgen/rand_box \
+../utils/lwmapgen/rand_func \
+../utils/lwmapgen/rand_poly \
+../utils/lwmapgen/rand_poly_cut \
+../utils/lwmapgen/street \
+../utils/lwmapgen/worms 
+       
+OBJ_FILES=$(addprefix $(OBJ_PATH),$(addsuffix $(OBJ_EXT),$(OBJ_NAMES)))
+
+OBJ_FILES_SRV=$(addprefix $(OBJ_PATH),$(addsuffix $(OBJ_EXT),$(OBJ_NAMES_SRV)))
+
+OBJ_FILES_MAPGEN=$(addprefix $(OBJ_PATH),$(addsuffix $(OBJ_EXT),$(OBJ_NAMES_MAPGEN)))
+
+C_FLAGS=-O3 -fomit-frame-pointer -I$(H_PATH)
+C_COMPILE=runner cl @  -nologo -DALLEGRO_STATICLINK -DWIN32 -DASM -DSNPRINTF -W1 -Gd -Ox -GB -MD -Fo$@ -c $<
+ASM_COMPILE=gcc -D_MSC_VER -D_WIN32 -D_M_IX86 -U__GNUC__ -UDJGPP -Wall -x assembler-with-cpp -o $@ -c $<
+RC_COMPILE=rc -Fo$@ $<
+
+all: lwwin.exe lwwinsrv.exe lwwinmap.exe
+
+$(OBJ_PATH)%$(OBJ_EXT): $(C_PATH)%.c
+	$(C_COMPILE)
+
+$(OBJ_PATH)%$(OBJ_EXT): $(ASM_PATH)%.s
+	$(ASM_COMPILE)
+
+$(OBJ_PATH)%$(OBJ_EXT): $(RC_PATH)%.rc
+	$(RC_COMPILE)
+
+
+lwwin.exe: $(OBJ_FILES)
+	runner link @ -nologo -release -subsystem:windows -out:$@ $(OBJ_FILES) alleg_s.lib kernel32.lib user32.lib gdi32.lib ole32.lib dinput.lib ddraw.lib dxguid.lib winmm.lib dsound.lib wsock32.lib
+
+lwwinsrv.exe: $(OBJ_FILES_SRV)
+	runner link @ -nologo -release -subsystem:console -out:$@ $(OBJ_FILES_SRV) wsock32.lib
+
+lwwinmap.exe: $(OBJ_FILES_MAPGEN)
+	runner link @ -nologo -release -subsystem:console -out:$@ $(OBJ_FILES_MAPGEN) alleg_s.lib kernel32.lib user32.lib gdi32.lib ole32.lib dinput.lib ddraw.lib dxguid.lib winmm.lib dsound.lib 
+
+
+

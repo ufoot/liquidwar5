@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE file SYSTEM "file:xml/file.dtd">
+<file title="Command line parameters">
+  
+  <chap title="Introduction"> 
+    <text>
+      When you launch Liquid War 5, you can use command line options.
+      If you have no problems launching Liquid War,
+      this section should not interest you very much.
+    </text>
+    <text>
+      You can use several options at the same time.
+      The basic syntax for options looks like this:
+    </text>
+    <code>
+      lw -option1 -option2 parameter2 -option3 parameter3 -option4 -option5
+    </code>
+    <text>
+      Note that most of the options are legacy options which where usefull
+      with the initial releases of Liquid War, when you had to run in a
+      Windows DOS box, and when there were still plenty of 486 computers
+      with only 8Mb ram...
+    </text>
+  </chap>
+
+  <chap title="Version checking">
+    <text>
+      These are basic options which can be usefull to figure out
+      which release of Liquid War is installed.
+    </text>
+    <list>
+      <elem>
+	"-v" : returns the version number of the program.
+      </elem>
+      <elem>
+	"-h" : displays a short description and copyright information.
+      </elem>
+    </list>
+  </chap>
+
+  <chap title="Changing default paths">
+    <text>
+      Very usefull options, especially if you can not install Liquid War
+      in default directories or want to put the game in a special place.
+    </text>
+    <list>
+      <elem>
+	"-cfg myconfigfile.cfg" : causes Liquid War to use the specified
+	config file.
+      </elem>
+      <elem>
+	"-dat mydatafilefile.dat" : causes Liquid War to use the specified
+	datafile. This might be a very interesting option if you run
+	Liquid War on a GNU/Linux box where you do not have root access and
+	therefore can not put the datafile in /usr.
+      </elem>
+      <elem>
+	"-map mycustommapdir" : causes Liquid War to use the specified
+	directory as the user map directory. The user map directory
+	is where you can put plain bitmaps to be used as maps.
+      </elem>
+      <elem>
+	"-tex mycustomtexturedir" : causes Liquid War to use the specified
+	directory as the user texture directory. The user texture directory
+	is where you can put plain bitmaps to be used as textures.
+      </elem>
+      <elem>
+	"-mid mycustommusicdir" : causes Liquid War to use the specified
+	directory as the user music directory. Any midi file placed in this
+	directory will be added to the list of available musics.
+      </elem>
+      <elem>
+	"-server myliquidwarserverfile" : causes Liquid War to use the specified
+	file as the server executable. This option has no effect for now since
+	the server is not launched by the client.
+      </elem>
+      <elem>
+	"-mapgen mylwmapgenfile" : causes Liquid War to use the specified
+	file as the "lwmapgen" executable. "lwmapgen" is an utility by David Redick
+	which generates random maps automatically for Liquid War. You might wish
+	to change this option if random map generation does not work for some reason,
+	or if you want to use your own map generator.
+      </elem>
+    </list>
+  </chap>
+
+  <chap title="Troubleshooting switches">
+    <text>
+      These options give you control on how Liquid War treats
+      initialisation errors, how much memory it should reserve,
+      what kind of video mode sit should not choose etc...
+    </text>
+    <list>
+      <elem>
+	"-vga" :
+	This option forces Liquid War to use your video card
+	as if it was only a basic VGA card. 
+	This option is required if you play Liquid War from Windows NT.
+      </elem>
+      <elem>
+	"-no400300" :
+	This option disables the VGA 400x300 video mode.
+	I created this options for I know that some video cards/monitors
+	don't support the 400x300 mode.
+      </elem>
+      <elem>
+	"-silent" :
+	With this option, Liquid War will not play any sound.
+	It will not search for any sound card.
+	This can be interesting if you don't have any sound card
+	or if Liquid War doesn't handle your card correctly.
+      </elem>
+      <elem>
+	"-nowater" :
+	Causes Liquid War not to load any water sound.
+	Use this if Liquid War runs short of memory,
+	and you should gain about 850kb.
+      </elem>
+      <elem>
+	"-nosfx" :
+	Causes Liquid War not to load any sound fx.
+	Use this if Liquid War runs short of memory,
+	and you should gain about 150kb.
+      </elem>
+      <elem>
+	"-nomusic" :
+	Causes Liquid War not to load any midi music.
+      </elem>
+      <elem>
+	"-mem n" :
+	The parameter "n" sets the amount of memory (in Mb)
+	Liquid War will allocate to do all its calculus.
+	If this number is too small, you won't be able to play
+	on all the levels.
+	If it is too high, Liquid War may not start at all
+	or crash while you are playing.
+	The default value is 8.
+	If you play Liquid War from Windows and Liquid War
+	refuses to run because this parameter is too high,
+	then try and give more dpmi memory to Liquid War.
+      </elem>
+      <elem>
+	"-nojoy" :
+	This option disables joystick support.
+      </elem>
+      <elem>
+	"-noback" :
+	Causes Liquid War not to load the background image.
+	Use this if Liquid War runs short of memory,
+	and you should gain about 300kb.
+      </elem>
+      <elem>
+	"-notex" :
+	Causes Liquid War not to load any texture.
+	Use this if Liquid War runs short of memory,
+	and you should gain about 750kb.
+      </elem>
+      <elem>
+	"-auto" :
+	If you set this option, Liquid War won't generate
+	any error while allocating memory or loading data.     
+      </elem>
+      <elem>
+	"-safe" :
+	With this option, you will play with a very reduced
+	version of Liquid War. It looks rather ugly but
+	should work in a DOS box with only 4Mb of DPMI memory.
+	Use this if you experience serious memory or device problems.
+	If Liquid War doesn't start with this option turned on,
+	I really don't think I can do anything for you...
+      </elem>
+      <elem>
+	"-nice" :
+	With this option, Liquid War will use a mode which
+	is between the default mode and the "safe" mode.
+      </elem>
+      <elem>
+	"-check" :
+	With this option, Liquid War will stop as soon as it detects
+	something strange while initializing.
+      </elem>
+      <elem>
+	"-stop" :
+	If you set this option, Liquid War will prompt you for a key
+	when the init process is completed.
+      </elem>
+      <elem>
+	"-c" :
+	This is a weird option, if you turn it on,
+	the game will only use fonctions which are programmed in C langage.
+	The default behaviour is to use some functions I rewrote
+	in assembly langage, so that the game is a little faster.
+      </elem>
+    </list>
+  </chap>
+  
+  <chap title="Debug options">
+    <text>
+      These options are usefull if you want to debug the game and
+      trace what's happening.
+    </text>
+    <list>
+      <elem>
+	"-netlog" :
+	Dumps all the network traffic on the standard output. This
+	can help finding problems when trying to connect to the server
+	in a network game.
+      </elem>
+    </list>
+  </chap>
+  
+  <chap title="Server options">
+    <text>
+      The server command line options are described in the section
+      which deals which network games in general. IMHO you need to
+      understand how network works in LW before trying to tweak
+      the server 8-)
+    </text>
+  </chap>
+
+  <chap title="Other options">
+    <text>
+      Everything else 8-)
+    </text>
+    <list>
+      <elem>
+	"-capture" :
+	Activates the capture mode. In this mode, the game will
+	dump a .bmp file on the disk several times per second, which
+	is usefull if you want to create an mpeg movie of your game
+	session afterwards. You can also activate this mode interactively
+	by pressing F9 within the game.
+      </elem>
+      <elem>
+	"-metaserver url" : redefines the URL of the meta-server.
+	Usefull if you want to use your own meta-server.
+      </elem>
+      <elem>
+	"-nobeep" :
+	Disables the system beeps that the application might fire.
+	These beeps are mostly used on the server to notify clients connections.
+      </elem>
+      <elem>
+	"-tombola" :
+	Activates a special mode where scores are not displayed 
+	normally. Instead, the game displays 3 random numbers between 1 - 500.
+      </elem>
+    </list>
+  </chap>
+  
+  <chap title="lwmapgen options">
+    <text>
+      The external lwmapgen program by David Redick accepts a
+      number of command line options. You can type:
+    </text>
+    <code>
+liquidwar-mapgen --help
+    </code>
+    <text>
+      to get a list of all available options under UNIX. Under Windows
+      the command would be:
+    </text>
+    <code>
+lwwinmap --help
+    </code>
+    <text>
+      Note that lwmapgen is called automatically by Liquid War
+      when you click on the "Random map" button.
+    </text>
+    <text>
+      The idea behind lwmapgen is that you choose a function which
+      sets the type of map generated, and then pass various arguments
+      to this function. If you do not explicitly choose a function, one
+      will be picked up for you randomly, and all other parameters will
+      use default values.
+    </text>
+    <text>
+      The most usefull and common options are:
+    </text>
+    <list>
+      <elem>
+	"--help" :
+	displays help.
+      </elem>
+      <elem>
+	"--out filename" :
+	save bitmap to filename.
+      </elem>
+      <elem>
+	"--size n" :
+	bitmap size (an integer between 0 and 5).
+      </elem>
+      <elem>
+	"--list" :
+	list all available functions.
+      </elem>
+      <elem>
+	"--function function_name" :
+	which function to use.
+      </elem>
+    </list>
+    <text>
+      Here's a typical use of lwmapgen:
+    </text>
+    <code>
+liquidwar-mapgen --size 3 --function hole --out test.bmp
+    </code>
+  </chap>
+
+</file>

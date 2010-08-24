@@ -1,0 +1,10 @@
+/var/games/liquidwar/liquidward.log {
+	daily
+	missingok
+	rotate 31
+	postrotate
+		/etc/init.d/liquidward restart
+	endscript
+	compress
+	notifempty
+}

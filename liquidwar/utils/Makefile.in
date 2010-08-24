@@ -1,0 +1,55 @@
+
+SNPRINTF = 	@SNPRINTF@
+ALCFLAGS =	@ALCFLAGS@
+ALLIBS =	@ALLIBS@
+
+ifeq ($(SNPRINTF),yes)
+	SNPRINTF_FILES =
+	SNPRINTF_OPTIONS =
+else
+	SNPRINTF_FILES = snprintf/snprintf.o
+	SNPRINTF_OPTIONS = -DSNPRINTF
+endif
+
+EXE_FILES = liquidwarcol liquidwarmap liquidwartex
+
+OBJ_NAMES = liquidwarcol liquidwarmap liquidwartex
+OBJ_FILES = $(addsuffix .o, $(OBJ_NAMES))
+
+CMD_CC = $(CC) $(CFLAGS) $(ALCFLAGS) -c -Wall -W $(SNPRINTF_OPTIONS)
+
+all: $(EXE_FILES) $(OBJ_FILES)
+
+install:
+
+config: print_cmd_cc
+
+check:
+
+dep:
+
+clean: 
+	@rm -f *.o
+	@rm -f */*.o
+	@rm -f $(OBJ_FILES)
+	@rm -f $(EXE_FILES)
+
+distclean:
+	@rm -f snprintf/test
+	@rm -f lwmapgen/lwmapgen
+	@rm -f lwmapgen/liquidwar-mapgen
+	@rm -f Makefile
+
+liquidwar%: liquidwar%.o $(SNPRINTF_FILES)
+	@echo "Building $@"
+	@$(CC) $(LDFLAGS) $(LINK_OPTIONS) $(ALLIBS) -o $@ $< $(SNPRINTF_FILES)
+
+%.o: %.c
+	@echo "Compiling" $<
+	@$(CMD_CC) $< -o $@
+
+print_cmd_cc:
+	@echo "The command line to compile .c files in this directory is:"
+	@echo $(CMD_CC)
+
+

@@ -1,0 +1,1487 @@
+
+2009-11-14  Christian Mauduit (ufoot@ufoot.org)
+
+	* Fixed Debian Bug #555468, missing -lm in mapgen Makefile
+
+2009-08-19  Christian Mauduit (ufoot@ufoot.org)
+
+	* Makefile updates for native OS/X support.
+
+2009-07-31  Christian Mauduit (ufoot@ufoot.org)
+
+	* Security patch by Mikhail Yakshin.
+
+2009-04-22  Christian Mauduit (ufoot@ufoot.org)
+
+	* New solsystem map by Rezifull
+
+2008-05-10  Christian Mauduit (ufoot@ufoot.org)
+
+	* .desktop patch by SA Gevatter (FreeDesktop.org compliance)
+
+2008-03-25  Christian Mauduit (ufoot@ufoot.org)
+
+	* Added sample logrotate.d file.
+
+2008-03-24  Christian Mauduit (ufoot@ufoot.org)
+	
+	* Liquid War server no more leaves defunct childs on callback.
+
+	* Copyright 2007 -> 2008.
+
+	* Now somewhat version agnostic, will accept 5.6.3 & more.
+
+2007-11-16  Christian Mauduit (ufoot@ufoot.org)
+
+	* Fixed CPU detection, ASM was compiled on x86_64 but isn't linkable.
+
+2007-10-17  Christian Mauduit (ufoot@ufoot.org)
+
+	* Released 5.6.4.
+
+	* Updated config.guess & config.sub
+
+	* NSIS packaging (windows .exe installer).
+
+
+2007-10-15  Christian Mauduit (ufoot@ufoot.org)
+
+	* MSVC -> MinGW
+
+	* src/base.h now included in source tarball (for MS platforms...)
+
+
+2007-10-06  Christian Mauduit (ufoot@ufoot.org)
+
+	* Minor packaging & doc fixes.
+
+
+2007-09-07  Christian Mauduit (ufoot@ufoot.org)
+
+	* Included the (old) exploit http://www.securityfocus.com/bid/8629/
+
+
+2007-09-06  Christian Mauduit (ufoot@ufoot.org)
+
+	* Copyright 2006 -> 2007
+
+	* Minor Makefile fix
+
+
+2006-10-17  Christian Mauduit (ufoot@ufoot.org)
+
+	* Gcc option -mpcu (deprecated) -> -march.
+
+
+2006-10-16  Christian Mauduit (ufoot@ufoot.org)
+
+	* Makefile patch for BSD by Thomas Klausner.
+
+
+2006-04-04  Christian Mauduit (ufoot@ufoot.org)
+
+	* Fixed atrocious bug in group_mesher. Almost 8 years old.
+
+
+2006-04-02  Christian Mauduit (ufoot@ufoot.org)
+
+	* Deleted lwtabto3.pcx which was a duplicate of lwtab006.pcx
+
+
+2006-04-01  Christian Mauduit (ufoot@ufoot.org)
+
+	* Deleted lwtab007.pcx which was a duplicate of lwtabto4.pcx
+
+
+2006-03-08  Christian Mauduit (ufoot@ufoot.org)
+
+	* Fixed segfault when graphics mode are not available.
+
+
+2006-03-07  Christian Mauduit (ufoot@ufoot.org)
+
+	* Created an NSIS installer script (not working yet).
+
+	* Copyright 2005 -> 2006.
+
+	* Minor patch, removed accent (ascii>127) from doc.
+
+
+2005-12-11  Christian Mauduit (ufoot@ufoot.org)
+
+	* Move Arch depot to Savannah.
+
+
+2005-12-04  Christian Mauduit (ufoot@ufoot.org)
+
+	* Changed ufoot.org/liquidwar to ufoot.org/liquidwar/v5
+
+
+2005-11-27  Christian Mauduit (ufoot@ufoot.org)
+
+	* Released 5.6.3.
+
+	* Added checks to avoid FD_SET with an arg1 of -1.
+
+	* Added checks on socket validity on client network code.
+
+	* Fixed it for good, on UNIX.
+
+	* Fixed network bug which caused connect screen to become irresponsive.
+
+
+2005-11-26  Christian Mauduit (ufoot@ufoot.org)
+
+	* Tried to released 5.6.3, failed because of network bug.
+
+	* Fixes for Allegro 4.2 / GCC 4.
+
+	* Updated docs.
+
+
+2005-11-25  Christian Mauduit (ufoot@ufoot.org)
+
+	* Warnings removed when compiling with gcc 4.0 and Allegro 4.2
+
+
+2005-09-09  Christian Mauduit (ufoot@ufoot.org)
+
+	* Waves deactivated by default on x86_64
+
+	
+2005-09-05  Christian Mauduit (ufoot@ufoot.org)
+
+	* Fixed GUI procs so that 320x240 is correctly displayed.
+	
+	* Minor fix, ptr size is checked, instead of long which is useless.
+
+
+2005-09-04  Christian Mauduit (ufoot@ufoot.org)
+
+	* Fixed my_edit_proc which was wrecked after migration to allegro 4.2
+
+	* Characters >= 128 are now filtered in the GUI.
+	
+
+2005-08-30  Christian Mauduit (ufoot@ufoot.org)
+
+	* Fixes in XML doc files, changed the DTD URL.
+	
+
+2005-08-28  Christian Mauduit (ufoot@ufoot.org)
+
+	* Added Solar System map by 2 of omega.
+	
+
+2005-06-29  Christian Mauduit (ufoot@ufoot.org)
+
+	* Fixed the package generators to avoid arch system dirs
+
+	* Finally updated the makedoc.py script to use sax instead of xmllib
+
+	* Reactivated i386 assembly code for x86_64.
+
+	* Reindented code with indent and splint.
+
+	* Minor change in level menu layout to handle resolution display.
+
+	* Waves are activated by default only if assembly code is available.
+
+	* Added patches by Dave Vasilevsky to support Mac OS X.
+
+	
+2005-06-21  Christian Mauduit (ufoot@ufoot.org)
+
+	* Game now requires Allegro 4.2.0beta3 to compile
+
+	* Removed most compile warnings, due to allegro deprecated functions
+
+	* Fixed alleg2.c to match allegro 4.2 needs.
+
+	
+2005-05-29  Christian Mauduit (ufoot@ufoot.org)
+
+	* Copyright 2004 -> 2005
+
+	* Added infos about GNU Arch depot (wip)
+
+	* Added Fanfic by Gavin
+
+	
+2005-05-07  Christian Mauduit (ufoot@ufoot.org)
+
+	* Added UWiKiCMS doc generation.
+
+	
+2004-08-22  Christian Mauduit (ufoot@ufoot.org)
+
+	* Added more strategy tips suggested by Jan Samohýl.
+
+	
+2004-08-19  Christian Mauduit (ufoot@ufoot.org)
+
+	* Game defaults to windowed mode under UNIX.
+	
+
+2004-07-06  Christian Mauduit (ufoot@ufoot.org)
+
+	* Fixed Joystick support, which was completely broken, works under
+	Linux Now, with my gamepad at least.
+
+
+2004-02-11  Christian Mauduit (ufoot@ufoot.org)
+
+	* Released 5.6.2. 
+
+	* Updated docs (allow net bots)
+
+	* Minor change in lwmapgen call
+
+
+2004-02-10  Christian Mauduit (ufoot@ufoot.org)
+	
+	* Updated lwmapgen to 0.0.1.
+	
+	* Updated credits.
+
+	* Updated translations.
+	
+	* Updated network tutorial.
+
+
+2004-02-04  Christian Mauduit (ufoot@ufoot.org)
+
+	* As suggested by Peter Williams on happypenguin, the default
+	behaviour is now to exclude bots from net games. This behavior is
+	an option turned on by default.
+
+
+2004-02-02  Christian Mauduit (ufoot@ufoot.org)
+
+	* Applied patch from Peter Williams which fixes a "too many opened
+	file handles" bug on the server.
+
+
+2004-01-11  Christian Mauduit (ufoot@ufoot.org)
+
+	* Released 5.6.1.
+
+	* Updated doc so that it includes basic info on lwmapgen's options.
+
+	* Random map generator now integrated under Windows.
+
+
+2004-01-01  Christian Mauduit (ufoot@ufoot.org)
+
+	* Minor Winsock fix, better error checking.
+
+	* Fixed install/buildroot problem.
+
+	* Bug-fix in doc generator.
+
+	* Updated copyright info.
+
+
+2003-12-18  Christian Mauduit (ufoot@ufoot.org)
+
+	* Released 5.6.0.
+
+	* Bug-fixes concerning network under Windows.
+
+
+2003-12-13  Christian Mauduit (ufoot@ufoot.org)
+
+	* Fixed package building, uses /tmp/liquidwar-... as a tmp dir.
+
+
+2003-12-06  Christian Mauduit (ufoot@ufoot.org)
+
+	* Updated the TODO section.
+
+	* Fixes for DOS/Windows.
+
+	* Added Kasper's latest maps.
+
+
+2003-12-03  Christian Mauduit (ufoot@ufoot.org)
+
+	* Some more Danish stuff.
+
+
+2003-12-01  Christian Mauduit (ufoot@ufoot.org)
+
+	* Updated German translation.
+
+
+2003-11-27  Christian Mauduit (ufoot@ufoot.org)
+
+	* The map generator compiles under Windows.
+
+
+2003-11-23  Christian Mauduit (ufoot@ufoot.org)
+
+	* Merged last version of map generator.
+
+
+2003-11-12  Christian Mauduit (ufoot@ufoot.org)
+
+	* Updated Kasper's maps names.
+
+
+2003-11-11  Christian Mauduit (ufoot@ufoot.org)
+	
+	* Added a "floating gnu" custom map, to show how map associations 
+	work.
+
+	* Updated the docs.
+
+	* De-integrated the map generator from inside the game. It's
+	now called as an external program. It works much better, and
+	if it ever crashes, it does not impact the parent process (ie
+	the game).
+	
+	* The random map generator by David Redick finally works. It's
+	still rather segfault prone for now.
+
+	* Added a "random map" button.
+
+
+2003-11-10  Christian Mauduit (ufoot@ufoot.org)
+
+	* Cleaned up the texture loading/creating code so that it's cleaner
+	from an "endianess point of view", ie the encoding is the same on
+	MAC or PC.
+
+
+2003-11-09  Christian Mauduit (ufoot@ufoot.org)
+
+	* Added a mutex lock/unlock on the update_choose_map function 
+	which is suspected to be responsible for crashes under Windows.
+
+
+2003-11-08  Christian Mauduit (ufoot@ufoot.org)
+
+	* Implemented some basic mutex support.
+	
+	* Game should not eat up 100% off CPU time on UNIX platforms
+	anymore.
+	
+	* Prepared stuff to include David Redicks's map generator
+	in Liquid War "natively".
+	
+	* Fixed a bug in system name generation for custom maps/textures.
+	
+	* Changed map names so that they are sorted by author.
+	
+	* Added map generator by David Redick. It's still an external
+	program.
+
+	* Finished implementation of "use default texture" option.
+
+
+2003-11-06  Christian Mauduit (ufoot@ufoot.org)
+
+	* Started to implement some "dialog hiding" for the level menu,
+	to make the "use default texture" option easier to understand.
+
+
+2003-11-05  Christian Mauduit (ufoot@ufoot.org)
+
+	* Bug-fixes for the "use default texture" option.
+
+
+2003-11-04  Christian Mauduit (ufoot@ufoot.org)
+
+	* Reimported old LW3 textures for their corresponding maps.
+
+	* The "use default texture" option works. Needs enhancements
+	but basically works.
+	
+	* Added a "system name" property to textures.
+
+
+2003-11-03  Christian Mauduit (ufoot@ufoot.org)
+
+	* Added a "system name" property to maps.
+
+	* Fixed puckman and rect maps since they were buggy.
+
+	* Map checks are now done on both custom and builtin maps.
+	
+	* Better checks in the liquidwarmap utility to fix issues with
+	Kaspers' maps.
+
+
+2003-11-02  Christian Mauduit (ufoot@ufoot.org)
+
+	* Added 41 maps provided by Kasper Hviid.
+
+	* Preparing support for the "use default texture" option.
+
+
+2003-10-31  Christian Mauduit (ufoot@ufoot.org)
+
+	* Added Danish translation by Kasper Hviid.
+
+
+2003-08-31  Christian Mauduit (ufoot@ufoot.org)
+
+	* Added new map by Jan Gretschuskin.
+
+
+2003-08-15  Christian Mauduit (ufoot@ufoot.org)
+
+	* Updated my snail mail address.
+
+
+2003-07-20  Christian Mauduit (ufoot@ufoot.org)
+
+	* Updated config.guess and config.sub to fix bug 198214 on Debian.
+
+
+2003-07-20  Christian Mauduit (ufoot@ufoot.org)
+
+	* Applied patch by Aurelien FORET (fixes bug compiling with gcc 3)
+
+
+2003-07-20  Christian Mauduit (ufoot@ufoot.org)
+
+	* Applied patch by Aurelien FORET (fixes bug compiling with gcc 3)
+
+
+2003-07-20  Christian Mauduit (ufoot@ufoot.org)
+
+	* Changed refs to openprojects.net to freenode.net
+
+
+2003-04-09  Christian Mauduit (ufoot@ufoot.org)
+
+	* Added liquidwar.desktop file for Gnome/KDE/etc... contributed by
+	Michael Terry.
+
+
+2003-04-04  Christian Mauduit (ufoot@ufoot.org)
+
+	* Added Eduard Bloch in the credits.
+
+
+2003-04-04  Christian Mauduit (ufoot@ufoot.org)
+
+	* Applied German translation patch submitted by Debian maintainer
+	Eduard Bloch.
+
+	* Replaced "\r\n" by "\x0d\x0a" again.
+
+
+2003-03-07  Christian Mauduit (ufoot@ufoot.org)
+
+	* Grammar correction in the docs.
+
+
+2003-03-06  Christian Mauduit (ufoot@ufoot.org)
+
+	* Released 5.5.9.
+
+
+2003-03-05  Christian Mauduit (ufoot@ufoot.org)
+
+	* Pre-alpha script for building Mac OS X tarball.
+
+	* Server handles pings more gracefully while replicating keys.
+
+	* Added Mac OS X rtf readme file by Ryan D. Brown.
+
+	* Added Ryan D. Brown povray source for the globe.png icon.
+
+	* Added a check of sizeof(int/long/short/char) on startup.
+
+	* Client ping detection works, although not perfect yet...
+
+
+2003-03-04  Christian Mauduit (ufoot@ufoot.org)
+
+	* Started to implement a ping calibrator for the client, to spot
+	fast servers from slow ones.
+
+	* Added Ryan D. Brown in the credits.
+
+	* Passed all the C source through GNU indent.
+
+	* More endianess fixes, hopefully network should now work on Mac.
+	
+
+2003-03-03  Christian Mauduit (ufoot@ufoot.org)
+
+	* Some more minor windows fixes.
+
+	* Code used random() now instead of rand() since it's supposed to
+	produce "more random" values.
+
+	* Minor fix in the meta-server, concerning the fact that "empty"
+	server lists where not handled correctly since LW supports 
+	HTTP 1.1.
+
+	* Applied new German translations by Jan Gretschuskin.
+	
+
+2003-03-02  Christian Mauduit (ufoot@ufoot.org)
+
+	* The Windows server is now able to launch a process when someone
+	connects, just like on UNIX.
+
+	* Added a javascript script to popup a window under windows, 
+	using Windows Scripting Host.
+
+	* Added support for popup windows on Win32.
+
+	* Made the game compile under Win32 again 8-)
+
+	
+2003-02-28  Christian Mauduit (ufoot@ufoot.org)
+
+	* Added a sample liquidwar_notify.sh script.
+
+
+2003-02-24  Christian Mauduit (ufoot@ufoot.org)
+
+	* It's now possible to compile binaries with efence, in order to
+	track bugs down.
+
+	* Added icon by "Rib Rdb", who's porting the game to Mac OS X.
+	The icon is in misc/globe.png.
+
+	* Fixed the problem in world1.bmp. There was a "hole" in it. Patch
+	provided by David Redick.
+
+
+2003-02-22  Christian Mauduit (ufoot@ufoot.org)
+
+	* Fixed a bug which caused player names to be blank in score screen.
+
+	* Fixed ugly bug in srvchan.c, which caused network to be completely
+	broken (bug introduced by previous code cleanup).
+
+	* Changed the serialization method for maps, so that the game can be
+	used in a networked environnement even if some machines are big-endian
+	and other ones are little-endian. This is an endianness fix, which 
+	should hopefully make network available on Mac OS X.
+
+	* The source now compiles with "-W" gcc option under Linux.
+
+
+2003-02-21  Christian Mauduit (ufoot@ufoot.org)
+
+	* Added the "callback" option which allows the server to perform
+	arbitrary actions whenever someone connects on it. Implemented on
+	UNIX only for now.
+
+	* Added a "check" target to Makefile, which fires splint and xmllint. 
+
+
+2003-02-11  Christian Mauduit (ufoot@ufoot.org)
+
+	* Applied patch by Roderick Schertler which implements HTTP 1.1
+	support. Previous versions used clumsy (& ugly) old HTTP 0.6 stuff
+	which would not make it through proxies like squid.
+
+
+2003-02-05  Christian Mauduit (ufoot@ufoot.org)
+
+	* Fixed the xml doc source with xmllint.
+
+
+2003-02-01  Christian Mauduit (ufoot@ufoot.org)
+
+	* Removed all direct calls to sprintf, strcat or strcpy.
+
+	* Imported an snprintf implementation, for platforms who don't have
+	native snprintf support. That is -> windows. No wonder they get so 
+	many buffer oveflows and security holes ;-P
+
+	* Added a dtd to the xml documentation. This is cleaner, and Emacs
+	stops complaining about "missing file entity" when I open source
+	files 8-)
+
+	* Added a "CPU vs human" option which allows players to specify
+	wether the CPUs should always attack humans or not.
+
+
+2003-01-02  Christian Mauduit (ufoot@ufoot.org)
+
+	* Added 3 maps contributed by Rene Stach.
+
+
+2003-01-01  Christian Mauduit (ufoot@ufoot.org)
+
+	* Updated copyright notice.
+
+	* Minor fix in the docs concerning the -metaserver option.
+
+
+2002-12-31  Christian Mauduit (ufoot@ufoot.org)
+
+	* Minor fix in the German translation (Oui -> Ja).
+
+
+2002-12-29  Christian Mauduit (ufoot@ufoot.org)
+
+	* Bug-fix concerning the PHP3 metaserver, suggested by Christopher
+	Orr. he had problems registering his servers through a transparent
+	proxy.
+
+
+2002-12-20  Christian Mauduit (ufoot@ufoot.org)
+
+	* Vi temp files now correctly removed by make clean.
+
+	* Fixed ChangeLog dates previously written on heavy drugs.
+
+	* Added a "beep" on the server when someone connects.
+
+	* Added a reference to www.game-factor.de on Jan's credits.
+
+
+2002-12-16  Christian Mauduit (ufoot@ufoot.org)
+
+	* Released 5.5.8.
+
+
+2002-12-13  Christian Mauduit (ufoot@ufoot.org)
+
+	* Added translations of the game description in the RPM spec file.
+
+	* Updated the "short" description of the game.
+
+	* ChangeLog is now included in the Windows & DOS releases.
+
+	* Updated the URL of the German homepage.
+
+	* Minor fix in the French README.
+
+
+2002-12-12  Christian Mauduit (ufoot@ufoot.org)
+
+	* Some FreeBSD make fixes (concerns src tarball generation)
+
+
+2002-11-28  Christian Mauduit (ufoot@ufoot.org)
+
+	* mail.freesoftware.fsf.org -> mail.nongnu.org
+
+	* Finally updated the German README, thanks to Jan 8-)
+
+
+2002-11-27  Christian Mauduit (ufoot@ufoot.org)
+
+	* Replaced too long German text by "Speed".
+
+
+2002-10-26  Christian Mauduit (ufoot@ufoot.org)
+
+	* Updated my GnuPG key info.
+
+
+2002-10-17  Christian Mauduit (ufoot@ufoot.org)
+
+	* Changed the package_source generation again since BSD patches made
+	it buggy under Linux 8-/
+
+
+2002-10-14  Christian Mauduit (ufoot@ufoot.org)
+
+	* One can now force the prefix of the binary package.
+
+	* Fixed the package_source target generation (would fail on FreeBSD).
+
+	* Added -D_THREAD_SAFE to gcc args. Seems to be required by FreeBSD.
+
+
+2002-10-13  Christian Mauduit (ufoot@ufoot.org)
+
+	* Added README.fr and REAMDE.de files.
+
+
+2002-10-12  Christian Mauduit (ufoot@ufoot.org)
+
+	* Replaced "License" by its traductions in French and German in the
+	"about" screen.
+
+	* Fixed an old bug in texture reading and color converting, related
+	to the use of the rand() function. This bug could cause compilation
+	or running the game to block forever.
+
+	* Added automatic detection of pthread_create in libpthread. Used to
+	switch on the -pthread option instead of -lpthread on FreeBSD.
+
+
+2002-10-11  Christian Mauduit (ufoot@ufoot.org)
+	
+	* Added GNU Make automatic detection in configure scripts, for systems
+	that have both make (non-GNU) and gmake (GNU) commands, such as
+	FreeBSD.
+
+	* Replaced "test x == y" by "test x = y" in the configure script,
+	since this should work better with shells like csh (FreeBSD).
+
+
+2002-10-10  Christian Mauduit (ufoot@ufoot.org)
+
+	* Added 5 new maps by Jan Gretschuskin (Quaders and Darkone series).
+
+	* Changed included standard headers to be more FreeBSD friendly.
+
+	* Added the German translation of the GPL
+
+	* Resized some menu items so that german translations can fit in them.
+	
+	* Replaced accents on German characters by their "equivalent" using
+	the plain standard alphabet (ascii<128)
+
+
+2002-10-08  Christian Mauduit (ufoot@ufoot.org)
+
+	* It's now possible to specify which "make" command to use by
+	exporting the environnement var "MAKE" before typing ./configure.
+	Usefull for compiling the game when GNU Make is called gmake for
+	instance (think of FreeBSD...).
+	
+	* Added German language support. Translation by Jan Gretschuskin.
+
+
+2002-09-02  Christian Mauduit (ufoot@ufoot.org)
+
+	* Bug-fix in the global exit function (minor bug in debug-mode, when
+	exiting in "page-flipped" mode).
+
+	* Code cleanup
+
+
+2002-09-01  Christian Mauduit (ufoot@ufoot.org)
+
+	* Released 5.5.7
+
+	* The "big data allocation" is now called to automatically double
+	the amount of reserved memory when one tries to start a new game,
+	and the buffer was to small - this previously resulted in a 
+	pathetic almost useless error message...
+	
+	* Added more settings for the "min map resolution" feature.
+
+	* Applied patch from Eugene St Leger. Now the menu water volume is
+	correctly saved in the config file.
+
+
+2002-08-30  Christian Mauduit (ufoot@ufoot.org)
+	
+	* Added the feature suggested by Thomas Harte, which is to magnify
+	small maps so that they are more interesting to play on fast computer.
+	It's still possible to use the original small versions however.
+
+	* Fixed a minor checksum verification bug
+
+
+2002-08-29  Christian Mauduit (ufoot@ufoot.org)
+
+	* When there's a checksum error, the checksum value is printed on
+	the server log.
+
+	* Changed makefiles output (now displays more info about options)
+
+	* Added the possibility to compile the game in debug mode under
+	UNIX.
+
+	* Moved the "Cursor speed" option back in the "Rules" menu, and
+	added a "Reset rules do default" button - which does not resets
+	all the parameters, such as player names for instance...
+
+
+2002-08-28  Christian Mauduit (ufoot@ufoot.org)
+
+	* Bug-fix in the core algorithm, concerning fighters moving in
+	the south-west direction. This direction was simply not correctly
+	handled 8-(
+
+	* Increased server messages consistency. Code cleanup.
+
+	* Fixed a minor bug in the core algorithm (mesh was not spread
+	correctly in the top-left corner of the map).
+	
+	* Added a function to dump rules config on stdout.
+
+	* Fixed a bug concerning the famous "error processing WHO 0"
+	message. This should - finally - fix the problem of unwanted
+	client disconnections. At least I hope so...
+
+
+2002-08-26  Christian Mauduit (ufoot@ufoot.org)
+
+	* Minor network fixes
+
+	* Updated the mpeg tools.
+
+	* Minor changes in the meta-server.
+
+
+2002-08-08  Christian Mauduit (ufoot@ufoot.org)
+
+	* Changed the French language detection under UNIX
+
+	* Fixed a minor menu issue in the French version (game and menu water
+	labels had been inverted).
+
+	
+2002-07-27  Christian Mauduit (ufoot@ufoot.org)
+
+	* Add 18 and 25 frames/sec display limits, to make more sensible movie
+	captures.
+	
+
+2002-07-18  Christian Mauduit (ufoot@ufoot.org)
+
+	* Released 5.5.6.
+
+
+2002-07-17  Christian Mauduit (ufoot@ufoot.org)
+
+	* Little tweak in the cursor move fonction which makes walls more
+	slippery. Moving cursors should be easier now.
+
+	* Enhanced the "Default" options button, so that settings such as
+	fullscreen mode are immediately applied.
+	
+	* Fixed a bug in datafile maps writing/reading. The "size" field which
+	was believed by network to be the size of maps was the size of the
+	background. In practice, size is always > bg_size but this was weird
+	anyway...
+	
+	* Fixed a bug in the network map exchange (potential buffer overflow
+	to be very precise)
+	
+	* The game now performs a range check on all the config parameters
+	retrieved from the network.
+	
+	* Added 4 "World" maps
+
+	* Fixed a bug which disabled asm assembly by default. Not in 5.5.5.
+
+	* Release 5.5.5.
+
+
+2002-07-16  Christian Mauduit (ufoot@ufoot.org)
+
+	* Pressing <ENTER> in the edit zone in the connection screem
+	causes the message to be sent.
+
+	* The "capture" mode can now be activated from teh command line.
+
+	* Added a "tombola" mode where the score menu displays a random
+	number between 1 - 500 instead of the scores. Rather specific
+	and unusual stuff indeed 8-)
+
+
+2002-07-14  Christian Mauduit (ufoot@ufoot.org)
+
+	* Added a module to capture the video output and dump it on the disk.
+
+	* F10 now exits the game "right away" without prompting for anything.
+
+	* Disabled the possibility to pause the game during a network session.
+
+	* Changed the way lag keys are sent. Should work a little better.
+
+	* Added a "struct alignment" verification code so that if a compiler
+	generates different struct sizes/alignements, then Liquid War detects
+	it and does not use the i386 assembly code...
+
+	* Changed the way network colors are automatically attributed. It's
+	not random anymore, the game tries to pick colors that are as
+	different as possible from already enrolled colors.
+
+
+2002-07-13  Christian Mauduit (ufoot@ufoot.org)
+
+	* Added a "checksum" system to check that the game behaves the same 
+	on every computer in network games. Seems to prove the game is still
+	not bug free 8-( This feature is not in 5.5.4.
+
+	* Added password support. This feature is not in 5.5.4.
+
+	* The game now plays a sound when another player joins a network game.
+	This feature is not in 5.5.4.
+
+	* Moved the "check_loose_team" function from "display" to "logic".
+	This could cause severe inconsistencies in network bugs when there
+	were more than 2 players involved. This bug-fix is not in 5.5.4.
+
+	* Updated the meta-server so that it can handle U61 requests. Not
+	really related to Liquid War anyway 8-)
+
+	* Added the possibility to abort the connection on a server. This 
+	could indeed take a bunch of time since connect is a blocking call
+	which can take up to a minute before failing... Not in 5.5.4 either...
+
+	* Released 5.5.4.
+
+
+2002-07-12  Christian Mauduit (ufoot@ufoot.org)
+
+	* Fixed a bug in the "rules" menu display. Game time was broken.
+
+	* Small network fix on the server.
+
+	* The "Play" button is now disabled in the "Connect" screen once one
+	has pressed "Start now" or "Play". This fixes a rather annoying bug,
+	since when people pressed "Start" twice they would sometime get
+	weird "Network errors", which totally super sucked...
+
+	* Added calls to "yeild_timeslice" to make LW more
+	"multitasking-friendly"
+
+	* Fixed an ugly UNIX X-Windows related bug. When switching between
+	workspaces, edit boxes and in a general manner all buffered input
+	would pathetically fail.
+
+	* Little RPM generation update, to solve a man page compression issue.
+	
+
+2002-07-11  Christian Mauduit (ufoot@ufoot.org)
+
+	* Released 5.5.3.
+
+
+2002-07-10  Christian Mauduit (ufoot@ufoot.org)
+
+	* French support is now auto-detected under Windows too.
+
+	* Added informations about my GnuPG public key.
+	
+
+2002-07-09  Christian Mauduit (ufoot@ufoot.org)
+
+	* Added a new map (contributed by "Mouse")
+
+	* Changed the way liquidwarmap works. Wall color is now given by the
+	top left pixel and is not supposed tobe "index 0" anymore.
+
+	* Added an ugly but usefull hack/script in the misc section, which
+	helps formatting contributed .bmp files so that they are correctly
+	handled by the liquidwarmap utility.
+
+	* lwwin.exe now has a "built-in" icon.
+
+	* renamed copying.txt to license.txt in DOS and Win releases
+
+
+2002-07-08  Christian Mauduit (ufoot@ufoot.org)
+
+	* Fixed a bug on the server -> disconnection of clients while sending
+	game information was not handled correctly.
+
+	* Added a small - yet working - chat system in the connection screen.
+
+	
+2002-07-02  Christian Mauduit (ufoot@ufoot.org)
+
+	* Added 6 maps by Jan Gretschuskin
+
+
+2002-07-01  Christian Mauduit (ufoot@ufoot.org)
+
+	* Fixed a score bug (some teams would be considered as playing while 
+	they were inactive).
+
+
+2002-06-29  Christian Mauduit (ufoot@ufoot.org)
+
+	* Released 5.5.2
+
+
+2002-06-28  Christian Mauduit (ufoot@ufoot.org)
+
+	* Separated run-time (network fetched for instance) config 
+	parameters from the config parameters stored in the config file.
+
+	* Added an "Assembly or standard C" option in the advanced rules
+	menu. This allow players to switch off assembly code if they want
+	to. Mostly for testing though...
+
+	* Changed the resolution of the default map, which was too small
+	IMHO. The old one is still here anyway 8-)
+
+
+2002-06-27  Christian Mauduit (ufoot@ufoot.org)
+
+	* Bug-fix concerning display in page flipping mode
+
+	* Removed a bunch of Windows specific quirks
+
+	* Finally enabled all the assembly code under Windows (BTW, I
+	confirm - once again - that MSVC is a total piece of crap)
+
+	* Rewrote the "set_resolution" function in a cleaner way
+
+	* Separate config and log files for the Windows & DOS binaries
+
+	* Moved the icons to the "misc" directory, and added a 32x32 xpm
+
+
+2002-06-26  Christian Mauduit (ufoot@ufoot.org)
+
+	* Re-enabled the assembly code for the "wave effects"
+
+	* Changed the way the "Viewport" size is calculated.
+	
+
+2002-06-25  Christian Mauduit (ufoot@ufoot.org)
+
+	* Liquid War now handles the "Close" button in windowed context.
+	(MS-Windows and X-Windows).
+	
+
+2002-06-24  Christian Mauduit (ufoot@ufoot.org)
+
+	* The "control_type" parameter is now transmitted on the nwtwork.
+	This enables the client to know if a network team is a bot, and also
+	fixes a network bug (when the "CPU Strength" parameter was changed).
+
+	* Re-enabled some i386 assembly code under Linux
+
+
+2002-06-21  Christian Mauduit (ufoot@ufoot.org)
+
+	* The options are now chosen by the _first_ connected client.
+
+
+2002-06-20  Christian Mauduit (ufoot@ufoot.org)
+
+	* Bug-fix concerning language detection on Linux, submitted by 
+	David Turner (the game would segfault if LANG was undefined)
+	Patch not included in 5.5.1.
+
+	* Minor bug-fix in the metaserver (age was wrong when > 1 day)
+
+	* Released 5.5.1
+
+
+2002-06-19  Christian Mauduit (ufoot@ufoot.org)
+
+	* Minor fixes
+
+	* Replaced truecolor custom/map/pacman.bmp by a 256 colors indexed
+	version (fixes a DOS bug)
+
+	* Added informations about IRC 
+
+
+2002-06-18  Christian Mauduit (ufoot@ufoot.org)
+
+	* Bug-fixes concerning custom levels loading
+
+	* Network bug-fix concerning disconnection at game start
+	
+
+2002-06-10  Christian Mauduit (ufoot@ufoot.org)
+
+	* Better error handling on the server, especially when sending info
+	to clients before a game starts.
+
+	* Fixed the http client parser (would not handle correctly IP adresses
+	which had 15 characters.
+
+	* Bug-fix in the meta-server (chat messages)
+	
+
+2002-06-06  Christian Mauduit (ufoot@ufoot.org)
+
+	* Applied patch sent by Colin Stewart on dnsutil.c (the game would
+	not compile on Debian Potato).
+
+	
+2002-06-04  Christian Mauduit (ufoot@ufoot.org)
+
+	* Fixed some custom ressources stuff. 
+
+	* Released 5.5.0
+	
+	
+2002-06-03  Christian Mauduit (ufoot@ufoot.org)
+
+	* Fixed a "color" bug which occured with 6 teams in a network game. 
+	
+	* Fixed some DOS and Windows bugs
+
+	* Updated the docs.
+
+
+2002-05-31  Christian Mauduit (ufoot@ufoot.org)
+
+	* Changed the way network sockets are closed
+
+	* The server is now able to tell the clients that is is "full"
+	and therefore does not accept any more teams.
+
+	* Added date and time to the server log.
+	
+
+2002-05-30  Christian Mauduit (ufoot@ufoot.org)
+
+	* Added a "chat" functionnality to the meta-server
+	
+	* Finished the French menus
+
+
+2002-05-29  Christian Mauduit (ufoot@ufoot.org)
+
+	* Finally fixed the ugly mouse bug which caused the mouse to leave
+	a "trace" on some screens.
+
+	* In a network game, it's now the first connected players who
+	chooses which level will be played - the choice used to be done
+	by the last connected player.
+	
+
+2002-05-28  Christian Mauduit (ufoot@ufoot.org)
+
+	* Bug-fix in the DNS lookup routine
+
+
+2002-05-27  Christian Mauduit (ufoot@ufoot.org)
+
+	* Implemented a new "Connect" menu which displays who's currently
+	connected on the server.
+
+	* Added the possibility to start a game even not all the players
+	are connected yet.
+
+	* The server is now able to disconnect a player while waiting for
+	others to connect.
+
+
+2002-05-20  Christian Mauduit (ufoot@ufoot.org)
+
+	* Added clarity.mid and return.mid (composed by Tim Chadburn)
+
+
+2002-05-17  Christian Mauduit (ufoot@ufoot.org)
+
+	* Added a "Copying" section to the docs.
+
+
+2002-05-14  Christian Mauduit (ufoot@ufoot.org)
+
+	* All the labels but the log messages are supported in French.
+
+
+2002-05-10  Christian Mauduit (ufoot@ufoot.org)
+
+	* More locale stuff...
+
+
+2002-05-07  Christian Mauduit (ufoot@ufoot.org)
+
+	* Added some new French menu labels.
+
+
+2002-05-06  Christian Mauduit (ufoot@ufoot.org)
+
+	* Added a "memset(d,0,sizeof(d))" call at the beginning of every
+	menu. Should prevent from some random GUI errors.
+
+	* The mouse cursor is now hidden during the game
+	
+	* Added player name support in the "Scores" menu. Works in both
+	network and local modes.
+
+	
+2002-05-04  Christian Mauduit (ufoot@ufoot.org)
+
+	* Updated the "Teams" menu. As suggested by Frode Haugsgjerd, the 
+	"Human/Cpu" choice has been replaced by a "Human/Cpu/Off" choice.
+	A player name has also been added - however it's not used yet.
+	
+	* Removed the "NICKNAME" from network code, which is useless since
+	player names are about to be implemented.
+
+	* Added a "Controls" menu to set up the joystick state and the mouse
+	sensibility. This was previously in the "Teams" menu.
+
+
+2002-04-29  Christian Mauduit (ufoot@ufoot.org)
+
+	* Removed the "in-game" help which was outdated anyway...
+
+
+2002-04-27  Christian Mauduit (ufoot@ufoot.org)
+
+	* Removed the "Help" button and replaced it with a "play" button.
+
+	* Added a "Language" menu.
+
+
+2002-04-23  Christian Mauduit (ufoot@ufoot.org)
+
+	* Updated the "about" menu.
+
+
+2002-04-22  Christian Mauduit (ufoot@ufoot.org)
+
+	* Updated the php3 doc generator.
+
+	* Minor fix in configure.in.
+
+	
+2002-04-02  Christian Mauduit (ufoot@ufoot.org)
+
+	* Added fodder.mid, composed by Tim Chadburn.
+
+	* Added Tim Chadburn's documentation about OSS midi.
+	
+
+2002-03-21  Christian Mauduit (ufoot@ufoot.org)
+
+	* Implemented a meta-server in PHP3, which registers servers.
+	A new menu has been added to the client so that players can
+	automatically pick a server.
+
+
+2002-03-15  Christian Mauduit (ufoot@ufoot.org)
+
+	* Added information about the mailing-list
+
+
+2002-03-14  Christian Mauduit (ufoot@ufoot.org)
+
+	* Quick hack to fix a MIDI initialization problem
+
+
+2002-03-13  Christian Mauduit (ufoot@ufoot.org)
+
+	* Added marauder.mid (by Tim Chadburn) to the musics.
+
+
+2002-03-12  Christian Mauduit (ufoot@ufoot.org)
+
+	* Fixed RPM/install-info related bugs.
+
+
+2002-03-11  Christian Mauduit (ufoot@ufoot.org)
+	
+	* Version 5.4.5 rleased
+
+	* Added midi music support. Midi files contributed by Tim Chadburn.
+
+	* Fixed an install-info related bug in the RPM file
+
+	* The Windows version now outputs stuff to a data/lw.log file
+
+
+2002-02-25  Christian Mauduit (ufoot@ufoot.org)
+
+	* version 5.4.4 released
+
+	* Changed the copyright notice at the beginning of each file so
+	that it's conform to the GPL's suggestions.
+
+	* Added a time limit in the keyboard polling which is used in the
+	"teams" menu. Should prevent the game from freezing.
+
+	* Fixed a serious bug in key choosing in the "teams" menu. This
+	bug had not been reported 8-(
+
+	* Added documentation in "info" format.
+
+	* ./configure now autodetects tools such as PDFLaTeX, and the
+	Makefile won't try to build such doc if it's not available.
+
+	* It's now possible to compile an optimized version of Liquid War
+	(for i686 for instance) using ./configure --target=xxx. 
+
+	* Various bug-fixes and enhancements in the ./configure script
+	and in the makefiles.
+
+
+2002-01-28  Christian Mauduit (ufoot@ufoot.org)
+
+	* version 5.4.3 released
+
+	* Bug-fix in the liquidwarmap utility (some maps could generate
+	protection faults while compiling).
+
+	* Bug-fix in the datafile generation (the background image palette
+	was wrecked with Allegro 4.0).
+
+	* LW is now compliant with the Filesystem Hierarchy Standard, this
+	implies that binaries are in $prefix/games.
+
+	* There's now a window title which says "Liquid War 5.4.3"
+
+	* Added a windowed/fullscreen mode support.
+
+	* Limited the size of "mesh elements" to 8x8 to avoid weird behaviors
+	on very big and empty maps.
+
+	* Added an uninstall target
+
+	* Added some basic scripts to automatically build the various releases
+
+	* Added a liquidwar.spec file so that it's easy to build a rpm
+	
+
+2001-07-23  Christian Mauduit (ufoot@ufoot.org)
+
+	* version 5.4.2 released
+
+	* Bug-fix in the network code.
+
+	* A few more levels.
+
+
+2001-07-18  Christian Mauduit (ufoot@ufoot.org)
+
+	* version 5.4.1 released
+
+	* Fixed many bugs in the network support, and added the "-lag"
+	option to the server. Basically it should be possible to play
+	on Internet now. Also, the client now displays readable error
+	messages when there's a problem joining the server.
+
+	* Added names to maps so that it's easier to choose them,
+	added a "speeds" and changed some other GUI related stuff.
+
+	* The default memory allocated (8192Kb) has also been increased
+	(16384Kb) so that the game can handle big maps. 2 new hudge
+	maps have been added.
+
+
+2001-07-07  Christian Mauduit (ufoot@ufoot.org)
+
+	* version 5.4.0 released
+
+	* The *big* change is that with this release Liquid War includes
+	network support. There are probably some bugs left and some minor
+	features are missing, but basically, one can play on a LAN.
+
+	* The other important point is that the documentation is back -
+	it had been lost when I had changed my web site - and is available
+	in several formats (HTML, plain text, PostScript and PDF).
+
+	* I also separated the Windows and DOS packages since the DOS .exe
+	is quite big and most of the time useless to Windows users since
+	DOS support in recent versions of Windows is getting worse and
+	worse.
+
+
+2001-03-18  Christian Mauduit (ufoot@ufoot.org)
+
+	* version 5.3.3 released
+
+	* Fixed some minor bugs which were revealed when creating the
+	Debian package for Liquid War.
+
+	* I also prepared a statically linked version of the game. This
+	version installs itself in no time on almost any recent GNU/Linux box,
+	so it's an interesting point for GNU/Linux users which do not feel
+	like spending 3 hours compiling the game before being able
+	to try it out.
+
+
+2000-06-19  Christian Mauduit (ufoot@ufoot.org)
+
+	* version 5.3.2 released
+
+	* I changed the textures in the datafile and replaced the existing
+	textures by textures I imported from the Gimp. This is for copyright
+	issues since I can not find the author of the previous textures
+	any more and would normally require his acceptance of my putting
+	his textures in my GPL'ed game. So with Gimp's textures I'm pretty
+	sure that I won't have any copyright problem.
+
+	* I also started to comment the source files.
+
+
+2000-04-09  Christian Mauduit (ufoot@ufoot.org)
+
+	* version 5.3.1 released
+
+	* I changed the GNU/Linux configure script so that it searches for
+	dat (the allegro datafile compiler). The reason is that several
+	players could not install LW because of this (they had downloaded
+	the end-user version of Allegro but the full-version is needed).
+
+	* I updated the GNU/Linux version so that it has all the features of
+	the old dos version (including the "wave effect").
+
+	* A starter kit has been prepared, it a lighter version with a 
+	pred-built light datafile.It makes it easier to download LW
+	quickly and try it out before downloading the full version.
+	This implies that now one can use datafiles with any number
+	of textures and maps.
+
+	* I prepared binary packages for DOS & Windows (the windows version
+	is *still* not very stable).
+
+	* Added a button in the wave menu to toggle the wave effect without
+	pressing F4 during gameplay.
+
+	* Some bug fixing.
+
+
+2000-03-12  Christian Mauduit (ufoot@ufoot.org)
+
+	* version 5.3.0 released
+
+	* All further major developpements of LW will be done from GNU/Linux.
+
+	* I now use a unix style x.x.x numbering system for versions.
+
+	* Liquid War is on sourceforge.net
+
+	* I prepared scripts and changed the directory structure of the
+	project, so that LW can be installed under GNU/Linux with standard
+	commands like './configure;make;make install'
+
+	* Many small bugs have been fixed.
+
+
+1999-09-06  Christian Mauduit (ufoot@ufoot.org)
+
+	* version 5.2 released
+
+	* Liquid War is now released under the GNU General Public Licencse.
+
+	* Some improvements such as a 'frame per second limit' which limits
+	the time taken by display operations so that the game is globally
+	faster.
+
+	* I release the first windows executable of Liquid War, it's not very
+	stable but basically works.
+
+	* Soon after, Peter Wang gives me patches to have LW run under GNU/Linux.
+
+1998-11-21  Christian Mauduit (ufoot@ufoot.org)
+
+	* version 5.1 released
+
+	* Small bug fixes, changed some menus.
+
+
+1998-09-26  Christian Mauduit (ufoot@ufoot.org)
+
+	* version 5.0 released
+
+	* Everything has been rewritten
+	DJGPP used instead of Borland C/C++
+	Allegro is used as a wrapper for ease of developpement and future
+  	portability
+	Optimization of the algorithm
+	Visual enhancements such as the "wave effect"
+	An 'understandable' GUI replaces the old cryptic one.
+
+
+1995-07-01  Christian Mauduit (ufoot@ufoot.org)
+
+	* version 3.0 released
+
+	* built with borlandc++ 3.0, barely usable.
+
+

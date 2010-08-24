@@ -1,0 +1,55 @@
+
+GMAKE = @GMAKE@
+
+ALLEGRO_DAT = dat
+
+MAKE_DIRS = back font map sfx texture maptex water music
+FILES = back/back.dat font/font.dat map/map.dat \
+	sfx/sfx.dat texture/texture.dat maptex/maptex.dat \
+	water/water.dat music/music.dat
+
+all: liquidwar.dat
+
+liquidwar.dat: $(FILES)
+	@rm -f $@
+	@echo Creating $@
+	@$(ALLEGRO_DAT) -a $@ $(FILES) 
+
+clean:
+	@rm -f *.dat
+	@for d in $(MAKE_DIRS); do $(MAKE) -C $$d clean; done
+
+distclean:
+	@rm -f Makefile
+	@for d in $(MAKE_DIRS); do $(MAKE) -C $$d distclean; done
+
+config:
+
+check:
+
+dep:
+
+back/back.dat:
+	@$(MAKE) -C back
+
+font/font.dat:
+	@$(MAKE) -C font 
+
+map/map.dat:
+	@$(MAKE) -C map
+
+sfx/sfx.dat:
+	@$(MAKE) -C sfx
+
+texture/texture.dat:
+	@$(MAKE) -C texture
+
+maptex/maptex.dat:
+	@$(MAKE) -C maptex
+
+water/water.dat:
+	@$(MAKE) -C water
+
+music/music.dat:
+	@$(MAKE) -C music
+

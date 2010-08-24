@@ -1,0 +1,487 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE file SYSTEM "file:xml/file.dtd">
+<file title="Menus and hot keys">
+
+  <chap title="Introduction">
+    <text>
+      This section describes how the GUI works.
+      Since programming advanced GUIs with Allegro is not so easy
+      - standard C programming definitely lacks flexibility -,
+      and also since it's somewhat hard for me to figure out what
+      is user-friendly and what's not, Liquid War's menus are not
+      always self-explanatory. I'll just try and do something
+      better next time! 
+    </text>
+  </chap>
+
+  <chap title="Menus">
+    <part title="Map menu">
+      <text>
+	The map menu allows you to choose the map you are going to play on.
+	A map is defined by 3 things:
+      </text>
+      <list>
+	<elem>
+	  A frame.
+	  The frame can be chosen with the slider which is below the preview.
+	  The frames are automatically sorted by alphabetical order.
+	</elem>
+	<elem>
+	  A texture for walls.
+	</elem>
+	<elem>
+	  A texture for the zone where fighters are allowed to move.
+	</elem>
+      </list>
+      <text>                
+	In the middle of the screen, there is a preview of the level.
+	In this menu, the values of the parameters can be independently changed by:
+      </text>
+      <list> 
+	<elem>
+	  Moving a slider.
+	</elem>
+	<elem>
+	  Clicking on a "+" or a "-" button.
+	</elem>
+	<elem>
+	  Typing a number.
+	</elem>
+      </list>
+      <text>
+	On each side of the preview, sliders allow you to choose the two textures.
+	There is also a preview of each texture.
+	Below this preview there are 128 little buttons which allow you to choose single colored textures.
+      </text>
+      <text>
+	The name of the map and its resolution are displayed in the lower
+	part of the screen.
+      </text>
+      <text>
+	You'll notice that on some maps the texture selection zones simply
+	disappear. This is because these maps are associated with a texture,
+	so choosing a different texture is often not recommended for it
+	won't look as nice as with the right one. If you still want to
+	override this behaviour you can click on the "on/off" button just
+	right to the "Use default texture" label. This is a toggle button
+	which will allow you to use your own textures even on maps that
+	normally come with their own skin.
+      </text>
+      <text>
+	You'll also notice that a "Random map" button is available.
+	This button generates a new random map using an external program,
+	"lwmapgen", developped by David Redick, available on
+	"http://www.cs.clemson.edu/~dredick/lwmapgen/"  	
+      </text>
+      <text>
+	This program supports many command line options, and if you want
+	a very precise control on the generated maps, you'll need to run
+	it separately. Looking at LW's log file you should be able to
+	see the commands LW issues when calling this program, this can
+	give you ideas on how to launch it manually. Alternatively
+	using the "--help" option (for instance "liquidwar-mapgen --help"
+	under UNIX) should describe how to use it.
+      </text>
+    </part>
+
+    <part title="Teams menu">
+      <text>
+	This menu allows you to choose the teams which are going to play.
+	There are 6 square zones in this menu.
+	Each of them is associated to a team.
+      </text>
+      <text>
+	Each team can be either:
+      </text>
+      <list>
+	<elem>
+	  Disabled ("Off")
+	</elem>
+	<elem>
+	  Controlled by a player ("Human")
+	</elem>
+	<elem>
+	  Controlled by the computer ("Cpu")
+	</elem>
+      </list>
+      <text>
+	The computer plays poorly, so remember that Liquid War is basically
+	a multiplayer game, and that the cpu control is dedicated to beginners only. 
+      </text>
+      <text>
+	You can also choose the color associated to each team by clicking on one
+	of the 12 colored buttons.
+      </text>
+      <text>
+	Below the 12 colored buttons, there are four buttons which allow you
+	to choose your keys.
+	Click on one of these buttons and then press the key you want to define.
+	Joystick movements and buttons are considered as keys.
+	You can disable the joystick with the button which is at the bottom left of the menu.
+	Mouse input is also possible, and mouse movements are considered as keys too.
+	To define mouse control, click on the button associated to the direction
+	you want to control, and then move the mouse. 
+	Then the button should display something like "M->".
+	Mouse sensibility can be set with the little slider at the bottom right of the menu.
+      </text>
+    </part>
+
+    <part title="Graphics menu">
+      <text>
+	Here you can choose the graphic options of the game.
+      </text>
+      <text>
+	The "Video mode" button allows you to switch between fullscreen and windowed mode. This button is not available under DOS.
+      </text>
+      <text>
+	The "Brightness" slider allows you to set the brightness of the game.
+      </text>
+      <text>
+	The "Menu res" slider allows you to set the resolution used by the menus.
+	There are currently 5 possible values, which depend on which platform
+	you're running the game on.
+      </text>
+      <text>
+	I personnaly think the menus look best with the 640x480 resolution, 
+	but some may prefer higher resolutions.
+	Lower resolutions should only be used if you have problems using SVGA video modes.
+      </text>
+      <text>
+	The "Game res" slider allows you to set the resolution used during the game.
+	The allowed values are the same than those for the menus.
+	I recommend that you don't use resolution higher than 640x480,
+	unless you have a Pentium VIII running a 10GHz.
+      </text>
+      <text>
+	Page flipping can be toggled.
+	It is up to you to decide wether you keep this option or not.
+	The main disavantage of turning page flipping off is that
+	the info bar and the battlefield can look rahter ugly if they overlap.
+	But if you turn page flipping on you will not easily reach
+	the 166 frames per second I sometimes get on small levels with my K6-225.
+	I personnaly always turn page flipping off.
+      </text>
+      <text>
+	The viewport size defines how much of your screen will be used by the battlefield.
+      </text>
+      <list>
+	<elem>
+	  If you set the slider on its left position, the batllefield will not be stectched at all.
+	  Or if is strechted, it will be by a x2 or a x4 factor.
+	  So this is the mode wich allows the fastest display.
+	</elem>
+	<elem>
+	  If you set the slider ont its right position, the game will run in fullscreen mode.
+	</elem>
+	<elem>
+	  With all the other positions of the slider, the battlefield will keep
+	  its general proportions but it will be stretched.
+	</elem>
+      </list>
+      <text>
+	The "Waves" button allows you to toggle the wave effect. You can also
+	do this while playing, by simply pressing F4.
+      </text>
+    </part>
+    
+    <part title="Sound menu">
+      <text>
+	This section allows you to set the sound volumes. There are 4 sliders, which are:
+      </text>
+      <list> 
+	<elem>
+	  "Sfx": sets the volume of all the sfx sounds,
+	  thats to say'the sounds you hear when the game starts, when you loose etc...
+	</elem>
+	<elem>
+	  "Click": sets the volume of the click, this nasty noise you hear
+	  each time your press on a button.
+	</elem>
+	<elem>
+	  "Game water": sets the volume of the blop blop blop sounds
+	  which are played continuously while you are playing.
+	</elem>
+	<elem>
+	  "Menu water": the same thing than "Game water" except
+	  that it concerns the sounds played while your are choosing options.
+	</elem>
+	<elem>
+	  "Music": general music volume.
+	</elem>
+      </list>
+    </part>
+
+    <part title="Rules menu">
+      <text>
+	This menu is the one where you can change the rules of the game.
+      </text>
+      <text>
+	The "Time" slider controls the time limit.
+	The game will stop after this time is elapsed.
+	You can pause the game by pressing the "F3" key.
+      </text>
+      <text>
+	By the way, an info bar can display the time left while you are playing.
+	This info bar can be toggled during the game by pressing
+	the "F1" key, and you can change its location by pressing the "F2" key.
+	It also displays how many fighters there are in each team.
+      </text>
+      <text>
+	The "Army size" slider controls the amount of fighters there will
+	be on the battlefield. The position of the slider reflects the amount
+	of fighters of all the teams together. If there are 4 teams,
+	then each player will have half as many fighters
+	than if there had only been 2 teams.
+      </text>
+      <text>
+	The "Cursor x" slider controls the speed of your cursor.         
+      </text>
+      <list>
+	<elem>
+	  If it is set on the left, the cursor goes at the same speed than the fighters.
+	</elem>
+	<elem>
+	  If it is centered, the cursor goes twice faster than the fighters.
+	</elem>
+	<elem>If it is set on the right, the speed of the cursor is multiplicated by 3.
+	</elem>
+      </list>
+      <text>
+	Below is a "Min 160x100" box with a slider on its right. This means that
+	maps will automatically be magnified so that they have a size of at least 160x100.
+	Indeed, some of the maps that come with Liquid War were designed in 1995
+	when 486 Intel computers were common. Therefore the maps were smalls.
+	Today, these maps are not really fun to play on fast computers,
+	so Thomas Harte suggested this automatic magnifying feature, and that was
+	IMHO a smart idea. You can move the slider to the right to make maps use
+	a higher resolution - ie magnify them.
+      </text>
+      <text>
+	The "Defaults" button of the "Rules" menu will reset rules to their
+	defaults. This way you can tweak rules and then come back to the
+	default rules whenever you want. Note that there's also a "Defaults"
+	button in the main "Options" menu, but it will reset *all* options,
+	including player names... The advantage of the "Defaults" button
+	in the "Rules" menu is that it will only reset rules parameters,
+	and keep the rest of your configuration options untouched.
+      </text>
+    </part>
+    
+    <part title="Speeds menu">
+      <text>
+	The "frames/s" slider allows you to limit the number of frames per second.
+	If this slider is set on the left, there won't be any limit, so Liquid War
+	will repaint your screen each time the fighters move.
+	But this can be a weird behaviour if your machine is really fast,
+	for no one cares about 100 fps per second, one can not even see them...
+	So this paramters limits the refreshment rate, so that there can be
+	several logical moves of the fichters for only one screen refreshing.
+	If it is set on its right, the display is limite to 10 fps,
+	so you'll have to find your setting. 
+	I personnally set it right in the middle, and get 40 fps.
+	If you press "F5", you'll get the number of frames per second,
+	and if you press "F6", you'll get the number of logical moves per second.
+	You can also press "F7" or "F8",
+	and you will get the percentage of time your computer
+	spends on calculating or displaying the level.
+      </text>
+      <text>
+	The "rounds/s" slider allows you to limit the number of rounds per second.
+	If this slider is set on the left, there won't be any limit, so Liquid War
+	will run as fast as possible.
+	This setting will be of no use if you use Liquid War on a slow
+	computer or if you play with hudge maps, but sometimes, with a high-end
+	Pentium class computer, it's simply impossible to play on small maps
+	because things simply go too fast. So this parameter is here to
+	help you and avoid the "10000 moves per sec" problem.
+      </text>
+    </part>
+
+    <part title="Waves menu">
+      <text>
+	This is where the wave parameters are set.
+	The waves are just a graphic effect, which is not really usefull.
+	I don't often use waves, but I still think they can sometimes look nice.
+	Change these parameters if you really mean to do it,
+	but if you don't understand what they mean, it is really OK...
+      </text>
+      <text>
+	There are 4 different types of waves, each of them being defined by:
+      </text>
+      <list>
+	<elem>
+	  An "Ampli" parameter, to define how big the waves have to be.
+	</elem>
+	<elem>
+	  A "Number" parameter, to define how many waves should be
+	  displayed at the same time.
+	</elem>
+	<elem>
+	  A "Speed" parameter, to define how fast the waves should move.
+	</elem>
+      </list>
+      <text>
+	If you want to undestand what the
+	"WX", "HY", "WY", and "HX"
+	codes mean, try to pay with only one type of wave,
+	the "Ampli" parameter of the 3 other types of wave being set to 0
+	(that is to say the slider is on its left position),
+	and sea how it looks like.
+      </text>
+      <text>
+	The wave effects can be toggled during the game by pressing the "F4" key.
+      </text>
+    </part>
+    
+    <part title="Advanced menu">
+      <text>
+	This menu allows the user to change the behaviour of the fighters.
+      </text>
+      <text>
+	The "Attack" slider sets the agressivity of the fighters.
+	If it is set on the right, fighters eat each other very fast.
+	If it is set on the left, it takes ages to fighters to change teams.
+      </text>
+      <text>
+	The "Defense" slider sets the capacity
+	that the fighters have to regenerate themselves.
+	The more it is on the right, the faster fighters regenerate.
+      </text>
+      <text>
+	The "New health" slider sets the health of the fighters
+	which have just changed teams. The more it is on the left,
+	the weaker these fighters will be.
+      </text>
+      <text>
+	The "Winner help" slider controls a parameter which causes
+	fighters to attack with various strength depending on
+	how many fighters belong to their team.
+	Not very clear... 
+	Let's just say that:
+      </text>
+      <list>
+	<elem>
+	  If this slider is set on the right,
+	  the more fighters you have in your team,
+	  the more aggressive they will become.
+	</elem>
+	<elem>
+	  If it is centered, all the fighters of every team will
+	  always attack with the same strength.   
+	</elem>
+	<elem>
+	  If it is set on the left,
+	  the less fighters you have, the stronger they will be.
+	  In this mode, games usually never end.
+	</elem>
+      </list>
+      <text>
+	The "Cpu strength" parameter never makes the computer
+	more intelligent than a monkey.
+	But if you set it on the right, it advantages the machine
+	outrageously and fighters controlled by the cpu
+	will be really strong. So to get rid of them you'll
+	definitely need to be clever.
+	Again and again, don't forget that Liquid War was conceived
+	as a multiplayer game and that playing against the computer
+	is not really an interesting thing to do.
+      </text>
+      <text>
+	The "CPU vs human" parameter allows you to control how aggressive
+	CPUs are towards humans.
+      </text>
+      <list>
+	<elem>
+	  If set to "Always", CPUs will always attack humans
+	  and will never try to attack another CPU, unless there are
+	  no humans left. This used to be the default behavior in
+	  previous Liquid War versions, but some players remarked that
+	  it was rather unfair, so now this is an option.
+	</elem>
+	<elem>
+	  If set to "Random", CPUs won't care wether their opponents
+	  are CPUs or humans, they'll attack anybody. This is the
+	  default behavior.
+	</elem>
+	<elem>
+	  It set to "Never", CPUs will attack each other before
+	  bothering human players.
+	</elem>
+      </list>
+      <text>
+	The "Allow net bots" button can be used to allow bots to
+	connect on network games. Indeed, bots are by default disabled
+	in network games, since in this case LW assumes that bots are
+	useless (there are already several human players). However,
+	turning this option on will allow you to connect bots within
+	the game. It's important to note that this is a per client
+	option, this means that you can't use it to forbid access to bots
+	to a given network game. This option was simply created to
+	avoid confusion when connecting on network games, while still
+	allowing bots to connects if you really want them to.
+      </text>
+      <text>
+	The "Algorithm" parameter allows you to force the algorithm
+	to standard C mode. There's no real good reason you would like
+	to do this, since the C algorithm is slower than the ASM one.
+	Moreover, the ASM algorithm is automatically disabled if you
+	play against a computer which does not have ASM enabled.
+	Think of this as a testing/debugging option.
+      </text>
+    </part>
+  </chap>
+
+  <chap title="Hot keys">
+    <text>
+      Here's a list of keys you might use while playing:
+    </text>
+    <list>
+      <elem>
+	F1: toggles the "info" zone where the game time and the 
+	state of each team is displayed.
+      </elem>
+      <elem>
+	F2: moves the "info" the zone arround, possible positions
+	being top, right, bottom and left.
+      </elem>
+      <elem>
+	F3: pauses the game. This function is disabled during
+	network games.
+      </elem>
+      <elem>
+	F4: toggles the "wave effect". Without this "wave effect",
+	which is turned on ny default,the game will run faster.
+      </elem>
+      <elem>
+	F5: displays the number of frames per second (*).
+      </elem>
+      <elem>
+	F6: displays the number of rounds per second (*).
+      </elem>
+      <elem>
+	F7: displays the precentage of CPU spent on the game
+	logic, calculating where fighters must go for instance (*).
+      </elem>
+      <elem>
+	F8: displays the precentage of CPU spent on graphics (*).
+      </elem>
+      <elem>
+	F9: turns on/off the "capture" mode. In this mode, screenshots
+	of each frame are taken, and written to the hard drive as
+	bitmaps.
+      </elem>
+      <elem>
+	F10: quits the game right away without any confirmation prompt, 
+	also known as the "my boss is coming here!" function.
+      </elem>
+    </list>
+    <text>
+      (*) all these figures tend to be clearly false as computer go
+      faster and faster. Basically, the time required for "logic" and
+      "display" operations is getting shorter and shorter, and the
+      tools I use to measure it are not precise enough. Therefore I
+      get approximations which might by plainly wrong.
+    </text>
+  </chap>
+</file>
+

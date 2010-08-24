@@ -1,0 +1,306 @@
+
+prefix =          @prefix@
+exec_prefix =     @exec_prefix@
+datadir =         @datadir@
+
+DATADIR =         $(datadir)/games/liquidwar
+GAMEDIR =         $(exec_prefix)/games
+
+TARGET_OPT =      @TARGET_OPT@
+STATIC =          @STATIC@
+SNPRINTF =        @SNPRINTF@
+ALCFLAGS =        @ALCFLAGS@
+ASM =             @ASM@
+DEBUG =           @DEBUG@
+EFENCE =          @EFENCE@
+PTHREAD =         @PTHREAD@
+
+ifeq ($(TARGET_OPT),yes)
+	TARGET =          @target@
+	TARGET_CPU =      @target_cpu@
+	TARGET_CPU_CC =   "-march=@target_cpu@"
+else
+	TARGET =          default
+	TARGET_CPU =      default
+	TARGET_CPU_CC =
+endif
+
+# -mcpu=x86_64 doesn't work, here's a workarround
+ifeq ("@target_cpu@","x86_64")
+	TARGET_CPU_CC =   "-m64"
+endif
+
+
+ifeq ($(DEBUG),yes)
+	DEBUG_FLAGS =   -g3
+	DEBUG_OPTIONS = -DDEBUG
+	ALLEGRO_LIBRARY = debug
+else
+	DEBUG_FLAGS =   -O2 -fomit-frame-pointer
+	DEBUG_OPTIONS =
+	ALLEGRO_LIBRARY = release
+endif
+
+ifeq ($(EFENCE),yes)
+	EFENCE_LIBRARY = -lefence
+else
+	EFENCE_LIBRARY = 
+endif
+
+ifeq ($(SNPRINTF),yes)
+	SNPRINTF_NAMES =
+	SNPRINTF_OPTIONS =
+	SNPRINTF_MODE = "using system library"
+else
+	SNPRINTF_NAMES = ../utils/snprintf/snprintf
+	SNPRINTF_OPTIONS = -DSNPRINTF
+	SNPRINTF_MODE = "using Mark Martinec's implementation" 
+endif
+
+ifeq ($(ASM),yes)
+	ASM_NAMES = glouglou monster spread
+	ASM_OPTIONS = -DASM
+else
+	ASM_NAMES =
+	ASM_OPTIONS =
+endif
+
+OBJ_NAMES = \
+	about \
+	advanced \
+	alleg2 \
+	area \
+	army \
+	asm \
+	autoplay \
+	back \
+	basicopt \
+	bigdata \
+	capture \
+	chat \
+	checksum \
+	code \
+	config \
+	connect \
+	controls \
+	cursor \
+	decal \
+	dialog \
+	disk \
+	disp \
+	distor \
+	dnsutil \
+	error \
+	exec2 \
+	exit \
+	fighter \
+	game \
+	gfxmode \
+	grad \
+	graphics \
+	help \
+	httputil \
+	info \
+	init \
+	internet \
+	joystick \
+	keyboard \
+	keyexch \
+	lang \
+	langde \
+	langdk \
+	langen \
+	langfr \
+	language \
+	level \
+	logcli \
+	main \
+	map \
+	maptex \
+	menu \
+	mesh \
+	message \
+	mouse \
+	move \
+	music \
+	mutxunix \
+	netconf \
+	netgame \
+	netkey \
+	netmap \
+	netmess \
+	netplay \
+	network \
+	options \
+	palette \
+	parser \
+	path \
+	ping \
+	pion \
+	play \
+	profile \
+	protocol \
+	random \
+	rules \
+	score \
+	serial \
+	sock2cli \
+	sockex \
+	sockunix \
+	sound \
+	speeds \
+	startinf \
+	startup \
+	team \
+	texture \
+	thrdunix \
+	ticker \
+	time \
+	viewport \
+	volume \
+	watchdog \
+	wave \
+	wwwcli \
+	$(SNPRINTF_NAMES) \
+	$(ASM_NAMES)
+
+OBJ_NAMES_SRV = \
+	basicopt \
+	chat \
+	dnsutil \
+	execunix \
+	httputil \
+	logsrv \
+	netconf \
+	netkey \
+	netmap \
+	netmess \
+	parser \
+	serial \
+	server \
+	sock2srv \
+	sockex \
+	sockunix \
+	srvchan \
+	srvcont \
+	srvteam \
+	srvtime \
+	startinf \
+	thrdunix \
+	wwwsrv \
+	$(SNPRINTF_NAMES)
+
+OBJ_NAMES_MAPGEN = \
+	../utils/lwmapgen/big_quad \
+	../utils/lwmapgen/boxes \
+	../utils/lwmapgen/bubbles \
+	../utils/lwmapgen/circles \
+	../utils/lwmapgen/circuit \
+	../utils/lwmapgen/cut \
+	../utils/lwmapgen/func \
+	../utils/lwmapgen/hole \
+	../utils/lwmapgen/lines \
+	../utils/lwmapgen/main \
+	../utils/lwmapgen/map \
+	../utils/lwmapgen/map_generator \
+	../utils/lwmapgen/misc \
+	../utils/lwmapgen/rand_box \
+	../utils/lwmapgen/rand_func \
+	../utils/lwmapgen/rand_poly \
+	../utils/lwmapgen/rand_poly_cut \
+	../utils/lwmapgen/street \
+	../utils/lwmapgen/worms 
+
+OBJ_FILES = $(addsuffix .o, $(OBJ_NAMES))
+OBJ_FILES_SRV = $(addsuffix .o, $(OBJ_NAMES_SRV))
+OBJ_FILES_MAPGEN = $(addsuffix .o, $(OBJ_NAMES_MAPGEN))
+
+EXE_FILES = liquidwar liquidwar-server liquidwar-mapgen
+
+ifeq ($(STATIC),yes)
+    LINK_OPTIONS = --static
+    EXTERN_LIBS = `allegro-config --static $(ALLEGRO_LIBRARY)` $(EFENCE_LIBRARY)
+else
+    LINK_OPTIONS = 
+    EXTERN_LIBS = `allegro-config --libs $(ALLEGRO_LIBRARY)` $(EFENCE_LIBRARY)
+endif
+
+CONFIG_OPTIONS = \
+	-DCONFIG_UNIX_CFG=\".liquidwarrc\" \
+	-DCONFIG_UNIX_DAT=\"$(DATADIR)/liquidwar.dat\" \
+	-DCONFIG_UNIX_MAP=\"$(DATADIR)/map/\" \
+	-DCONFIG_UNIX_TEX=\"$(DATADIR)/texture/\" \
+	-DCONFIG_UNIX_MID=\"$(DATADIR)/music/\" \
+	-DCONFIG_UNIX_SRV=\"$(GAMEDIR)/liquidwar-server\" \
+	-DCONFIG_UNIX_GEN=\"$(GAMEDIR)/liquidwar-mapgen\"
+
+CMD_CC = $(CC) $(CFLAGS) $(ALCFLAGS) -c $(DEBUG_FLAGS) -Wall -W $(TARGET_CPU_CC) $(CONFIG_OPTIONS) $(DEBUG_OPTIONS) $(SPRINTF_OPTIONS) $(ASM_OPTIONS) -DUNIX -D_THREAD_SAFE
+CMD_AS = $(AS) $(ASFLAGS) --32
+
+all: $(EXE_FILES)
+
+liquidwar: $(OBJ_FILES)
+	@echo "Linking $@ (target=$(TARGET), debug=$(DEBUG), static=$(STATIC), asm=$(ASM))"
+	@$(CC) $(LDFLAGS) $(LINK_OPTIONS) -o $@ $(OBJ_FILES) $(PTHREAD) $(EXTERN_LIBS) 
+
+liquidwar-server: $(OBJ_FILES_SRV)
+	@echo "Linking $@ (target=$(TARGET), debug=$(DEBUG), static=$(STATIC))"
+	@$(CC) $(LDFLAGS) $(LINK_OPTIONS) -o $@ $(OBJ_FILES_SRV) $(PTHREAD)
+
+liquidwar-mapgen: $(OBJ_FILES_MAPGEN)
+	@echo "Linking $@ (target=$(TARGET), debug=$(DEBUG), static=$(STATIC))"
+	@$(CC) $(LDFLAGS) $(LINK_OPTIONS) -o $@ $(OBJ_FILES_MAPGEN) -lm $(PTHREAD) $(EXTERN_LIBS) 
+
+dep:
+	@find . \
+	-name '*.c' | \
+	grep "\.c" | \
+	sed "s/^.\///;" | \
+	xargs $(CMD_CC) -M | \
+	sed "s/\(.*\.o:\)/\1/g;" > Makefile.dep
+
+clean: 
+	@rm -f *.o *.obj
+	@rm -f $(OBJ_FILES) $(OBJ_FILES_SRV) $(OBJ_FILES_MAPGEN)
+	@rm -f $(EXE_FILES)
+
+distclean:
+	@rm -f Makefile Makefile.dep
+
+%.o: %.c
+	@echo "Compiling $< (cpu=$(TARGET_CPU), debug=$(DEBUG), asm=$(ASM))"
+	@$(CMD_CC) $< -o $@
+
+%.o: %.s
+	@echo "Assembling" $<
+	@$(CMD_AS) $< -o $@
+
+config: print_config print_cmd_cc print_cmd_as print_cmd_ld
+	@true
+
+check:
+	@find . -name "*.[c|h]" -a ! -path "*32*" -exec indent {} \;
+	@find . -name "*.[c|h]" -a ! -path "*32*" -exec splint {} \;
+
+print_config:
+	@echo "The configuration options to generate binaries are:"
+	@echo "Target      :" $(TARGET)
+	@echo "Debug       :" $(DEBUG)
+	@echo "Static link :" $(STATIC)
+	@echo "Assembly    :" $(ASM)
+	@echo "Snprintf    :" $(SNPRINTF_MODE)
+
+print_cmd_cc:
+	@echo "The command line to compile .c files in this directory is:"
+	@echo $(CMD_CC)
+
+print_cmd_as:
+	@echo "The command line to compile .s files in this directory is:"
+	@echo $(CMD_AS)
+
+print_cmd_ld:
+	@echo "The command line to link binaries in this directory is:"
+	@echo $(CC) $(LDFLAGS) $(LINK_OPTIONS) $(PTHREAD) $(EXTERN_LIBS) 
+
+include Makefile.dep
+

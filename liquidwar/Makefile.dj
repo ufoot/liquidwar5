@@ -1,0 +1,200 @@
+# Liquid War is a multiplayer wargame
+# Copyright (C) 1998-2008 Christian Mauduit
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+#
+# Liquid War homepage : http://www.ufoot.org/liquidwar/v5
+# Contact author      : ufoot@ufoot.org
+#
+# This Makefile is used to compile the MS DOS 32-bit executable binary.
+# 
+# It requires a working DJGPP http://www.delorie.com/djgpp/ install to work.
+# 
+# Typical DJGPP requirements are:
+# v2/copying.dj
+# v2/djdev203.zip
+# v2/faq230b.zip
+# v2/readme.1st
+# v2gnu/bnu2161b.zip
+# v2gnu/fil41b.zip
+# v2gnu/gcc401b.zip
+# v2gnu/gdb611b.zip
+# v2gnu/gpp401b.zip
+# v2gnu/mak3791b.zip
+# v2gnu/sed414b.zip
+# v2gnu/txi48b.zip
+# v2gnu/txt20b.zip
+#
+# To compile Allegro for MinGW, read "./docs/build/djgpp.txt" in the
+# Allegro source distribution. Usually, the following sequence works:
+# > fix djgpp
+# > make
+# > make install
+#
+# Then to compile Liquid War:
+# > make -f makefile.dj > make-log.txt 2> make-err.txt
+#
+# Note that the .exe produced won't work as is, you need to put the datafile
+# in the right path, and a few other things, see the "package_dos" target
+# of the main UNIX Makefile in Liquid War source distribution.
+
+C_PATH=./src/
+H_PATH=./src/
+ASM_PATH=./src/
+OBJ_PATH=./src/
+OBJ_EXT=.dj.o
+
+OBJ_NAMES=\
+about \
+advanced \
+alleg2 \
+area \
+army \
+asm \
+autoplay \
+back \
+basicopt \
+bigdata \
+capture \
+chat \
+checksum \
+code \
+config \
+connect \
+controls \
+cursor \
+decal \
+dialog \
+disk \
+disp \
+distor \
+dnsutil \
+error \
+exec2 \
+exit \
+fighter \
+game \
+gfxmode \
+grad \
+graphics \
+help \
+httputil \
+info \
+init \
+internet \
+joystick \
+keyboard \
+keyexch \
+lang \
+langde \
+langdk \
+langen \
+langfr \
+language \
+level \
+logcli \
+main \
+map \
+maptex \
+menu \
+mesh \
+message \
+mouse \
+move \
+music \
+mutxdos \
+netconf \
+netkey \
+netgame \
+netmap \
+netmess \
+netplay \
+network \
+options \
+palette \
+parser \
+path \
+ping \
+pion \
+play \
+profile \
+protocol \
+random \
+rules \
+score \
+serial \
+sock2cli \
+sockdos \
+sound \
+speeds \
+startinf \
+startup \
+team \
+texture \
+thrddos \
+ticker \
+time \
+viewport \
+volume \
+watchdog \
+wave \
+wwwcli \
+glouglou \
+monster \
+spread \
+../utils/snprintf/snprintf
+
+OBJ_NAMES_MAPGEN=\
+../utils/lwmapgen/big_quad \
+../utils/lwmapgen/boxes \
+../utils/lwmapgen/bubbles \
+../utils/lwmapgen/circles \
+../utils/lwmapgen/circuit \
+../utils/lwmapgen/cut \
+../utils/lwmapgen/func \
+../utils/lwmapgen/hole \
+../utils/lwmapgen/lines \
+../utils/lwmapgen/main \
+../utils/lwmapgen/map \
+../utils/lwmapgen/map_generator \
+../utils/lwmapgen/misc \
+../utils/lwmapgen/rand_box \
+../utils/lwmapgen/rand_func \
+../utils/lwmapgen/rand_poly \
+../utils/lwmapgen/rand_poly_cut \
+../utils/lwmapgen/street \
+../utils/lwmapgen/worms
+ 
+OBJ_FILES=$(addprefix $(OBJ_PATH),$(addsuffix $(OBJ_EXT),$(OBJ_NAMES)))
+OBJ_FILES_MAPGEN=$(addprefix $(OBJ_PATH),$(addsuffix $(OBJ_EXT),$(OBJ_NAMES_MAPGEN)))
+
+C_FLAGS=-O2 -fomit-frame-pointer -Wall -I$(H_PATH)
+C_COMPILE=gcc -c $< -o $@ $(C_FLAGS) -DDOS -DASM -DSNPRINTF
+ASM_COMPILE=gcc -c $< -o $@
+
+all: lwdos.exe lwdosmap.exe
+
+$(OBJ_PATH)%$(OBJ_EXT): $(C_PATH)%.c
+	$(C_COMPILE)
+
+$(OBJ_PATH)%$(OBJ_EXT): $(ASM_PATH)%.s
+	$(ASM_COMPILE)
+
+lwdos.exe: $(OBJ_FILES)
+	gcc -o $@ $(OBJ_FILES) -lalleg
+
+lwdosmap.exe: $(OBJ_FILES_MAPGEN)
+	gcc -o $@ $(OBJ_FILES_MAPGEN) -lalleg
+

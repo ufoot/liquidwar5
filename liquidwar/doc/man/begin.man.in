@@ -1,0 +1,34 @@
+.TH "Liquid War" 6 "v@VERSION@"
+.SH NAME
+liquidwar \- a unique multiplayer wargame
+.SH SYNOPSIS
+liquidwar [-vh]
+.SH DESCRIPTION
+Liquid War is a multiplayer wargame. Its rules are
+very simple but yet original.
+.SH OPTIONS
+.TP 3 
+.B \-v
+Displays the version number.
+.TP 3 
+.B \-h
+Displays copyright and various information.
+.TP 3
+.B \.\.\.
+There are many other command lines options,
+which are described further in this document.
+.SH WARNING
+As Liquid War is a cross-platform program (it also runs on DOS and Windows),
+I could reasonably not provide groff UNIX-style documentation to
+Windows user. Therefore, Liquid War's documentation is available in many
+formats, including HTML, PostScript and PDF. 
+.br
+I believe these formats are easier to read than this man page.
+So check out the 
+.B /usr/share/doc/liquidwar 
+or 
+.B /usr/local/share/doc/liquidwar
+directories, for this is
+where HTML and other documentation files should be. Otherwise, if 
+you are a die-hard man page user, you may continue with this document 8-)
+

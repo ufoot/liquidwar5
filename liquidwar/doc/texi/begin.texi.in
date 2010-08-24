@@ -1,0 +1,30 @@
+\input texinfo
+@settitle Liquid War documentation
+
+@ifinfo
+@direntry
+* Liquid War: (liquidwar). A unique multiplayer wargame (Version @VERSION@).
+@end direntry
+@end ifinfo
+
+@node Top, , (dir), (dir)
+
+Liquid War is a multiplayer wargame. Its rules are very simple but yet original.
+
+@menu
+* rules::                   Rules
+* authors::                 Authors
+* mailinglists::            Mailing lists
+* fanfic::                  Fanfic
+* options::                 Menus and hot keys
+* network::                 Network game
+* parameters::              Command line parameters
+* platforms::               Platform specific issues
+* userlevels::              User levels
+* algorithm::               Core algorithm
+* source::                  Source code
+* bugs::                    Bugs
+* todo::                    To do
+* wip::                     Work in progress
+* copying::                 Copying
+@end menu

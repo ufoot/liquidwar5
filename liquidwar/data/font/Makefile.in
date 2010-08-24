@@ -1,0 +1,30 @@
+ALLEGRO_DAT = dat
+
+FONT_SMALL = degrad10.pcx
+FONT_BIG = degrad20.pcx
+MOUSE_SMALL = mouse20.pcx
+MOUSE_BIG = mouse40.pcx
+PALETTE = palette.pcx
+VOID = void1.pcx
+
+all: font.dat
+
+font.dat: $(PALETTE) $(FONT_SMALL) $(FONT_BIG) $(MOUSE_SMALL) $(MOUSE_BIG) $(VOID)
+	@rm -f $@
+	@echo Creating $@
+	@$(ALLEGRO_DAT) -a -t font $@ $(FONT_SMALL)
+	@$(ALLEGRO_DAT) -a -t font $@ $(FONT_BIG)
+	@$(ALLEGRO_DAT) -a -t bmp $@ $(MOUSE_SMALL) 
+	@$(ALLEGRO_DAT) -a -t bmp $@ $(MOUSE_BIG) 
+	@$(ALLEGRO_DAT) -a -t pal $@ $(PALETTE)
+	@$(ALLEGRO_DAT) -a -t bmp $@ $(VOID) 
+
+clean:
+	@rm -f *dat $(PALETTE)
+
+distclean:
+	@rm -f Makefile
+
+$(PALETTE): $(FONT_SMALL)
+	@cp $< $@ 
+

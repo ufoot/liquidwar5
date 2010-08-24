@@ -1,0 +1,47 @@
+ALLEGRO_DAT = dat
+
+DST_EXT = tex
+TMP_EXT = pcx
+SRC_EXT = gimp.pcx
+
+TEXTURES =  amethyst \
+	bricks \
+	crash1 \
+	electricblue \
+	granite2 \
+	greenmess \
+	lumps \
+	marble3 \
+	pebbles \
+	pine \
+	poolbottom \
+	qbert \
+	redcubes \
+	smallsquares \
+	terra \
+	wood2
+
+DST_FILES = $(addsuffix .$(DST_EXT),$(TEXTURES))
+TMP_FILES = $(addsuffix .$(TMP_EXT),$(TEXTURES))
+
+all: texture.dat
+
+texture.dat: $(DST_FILES) $(TMP_FILES)
+	@rm -f $@
+	@echo Creating $@
+	@$(ALLEGRO_DAT) -a $@ $(DST_FILES)
+
+clean:
+	@rm -f $(TMP_FILES) $(DST_FILES) *.dat
+
+distclean:
+	@rm -f Makefile 
+
+%.$(TMP_EXT): %.$(SRC_EXT)
+	@echo Converting $< to $@
+	@cp $< $@
+	@../../utils/liquidwarcol -s 32 32 $@
+
+%.$(DST_EXT): %.$(TMP_EXT)
+	@echo Converting $< to $@
+	@../../utils/liquidwartex -s 32 32 $<

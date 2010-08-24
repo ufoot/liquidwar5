@@ -1,0 +1,38 @@
+Liquid War est un "wargame" multijoueur inédit. Ses règles sont vraiment
+originales et ont été inventées par Thomas Colcombet. L'idée est de 
+contrôler une armée de liquide et d'essayer de "manger" ses adversaires.
+Il est possible de jouer seul, mais le jeux est conçu pour se jouer à 
+plusieurs, un mode réseau étant disponible.
+
+Site web de Liquid War  : http://www.ufoot.org/liquidwar/v5
+Pour contacter l'auteur : ufoot@ufoot.org
+
+Si vous avez des questions ou des remarques à propos de Liquid War,
+vous pouvez obtenir de l'aide et des infos sur la liste de diffusion
+"Liquid War user", mais attention, on y parle anglais :
+
+http://mail.nongnu.org/mailman/listinfo/liquidwar-user
+
+Bonne journée,
+
+U-Foot
+
+
+-------------- I N F O R M A T I O N S     L E G A L E S -------------
+
+Liquid War est un "wargame" multijoueur.
+Copyright (C) 1998-2008 Christian Mauduit (ufoot@ufoot.org)
+
+Ce programme est un logiciel libre ; vous pouvez le redistribuer et/ou le 
+modifier conformément aux dispositions de la Licence Publique Générale GNU, 
+telle que publiée par la Free Software Foundation ; version 2 de la licence, 
+ou encore (à votre choix) toute version ultérieure.
+	          
+Ce programme est distribué dans l'espoir qu'il sera utile, mais SANS AUCUNE 
+GARANTIE ; sans même la garantie implicite de COMMERCIALISATION ou 
+D'ADAPTATION A UN OBJET PARTICULIER. Pour plus de détail, voir la Licence 
+Publique Générale GNU .
+
+Vous devez avoir reçu un exemplaire de la Licence Publique Générale GNU en 
+même temps que ce programme ; si ce n'est pas le cas, écrivez à la Free 
+Software Foundation Inc., 675 Mass Ave, Cambridge, MA 02139, Etats-Unis.

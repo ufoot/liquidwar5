@@ -1,0 +1,77 @@
+This file describes how to install Liquid War on a UNIX-like system.
+
+
+To compile and install Liquid War under GNU/Linux, you need:
+- gcc, make, etc. (*) : http://www.gnu.org/
+- Python   (**)       : http://www.python.org/
+- LaTeX    (optional) : http://www.latex-project.org/
+- dvips    (optional) : http://www.radicaleye.com/dvips.html
+- PDFLaTeX (optional) : http://www.tug.org/applications/pdftex/
+- makeinfo (optional) : http://www.gnu.org/software/texinfo/texinfo.html
+- Allegro  (***)      : http://www.talula.demon.co.uk/allegro/
+
+(*) You need to have GNU Make installed. Others flavors of the make 
+    utility might simply not work at all when compiling LW.
+
+(**) Python is required to build the docs. You can decide not to
+     build the docs so to some extent it's optional. However, if Python
+     is installed, you'll need the "re", "string" and "xmllib" modules.
+     They come with the standard distribution of Python 1.5 and 2.1,
+     so it should not be a big problem.
+    
+(***) You won't be able to build Liquid War if you installed only
+      the end-user version of Allegro. The full Allegro development 
+      package is required, since it includes the datafile compiler "dat".
+      FYI, the complete package weights about 2000Kb whereas the end-user 
+      version - which won't allow you to build LW - is only about 500Kb.
+
+
+Once you have all this installed, type:
+$ autoconf
+$ ./configure
+$ make
+# make install (run as root or any user who can write in /usr/local)
+$ liquidwar
+
+By default:
+/usr/local/bin            contains symbolic links to the binaries
+/usr/local/games          contains the binaries
+/usr/local/share/games    contains the data
+/usr/local/share/doc      contains the documentaion
+/usr/local/share/pixmaps  contains an icon for Gnome/KDE/WMaker/etc...
+/usr/local/share/man/man6 contains the man page
+/usr/local/share/info     contains the info page
+
+The ./configure script accepts options, the most usefull being IMHO:
+--prefix=/my/path    : changes the default install directory
+--disable-doc-xxx    : turns off the generation of doc in format 'xxx'
+--enable-static      : enables static linking
+--disable-target-opt : turns off optimizations such as "-march=i686"
+
+
+Since release 5.3.3, binaries of Liquid War for GNU/Linux are available.
+These binaries are statically linked against Allegro and glibc,
+so they should run on any recent GNU/Linux box that has an X server running.
+So if you spend too much time compiling LW, please consider using
+one of those binaries, since they should work right away.
+They are "slackware-like" packages, to install them, simply type (as root):
+tar xzfP liquidwar-5.x.x.i386-pc-linux-gnu.tgz
+
+Liquid War can theorically be build on any platform supported by Allegro.
+In practice you might still encounter some problems:
+- source code contains a bunch of "#ifdef UNIX" and the likes, which might
+  cause errors on untested platforms.
+- the Makefiles require GNU Make; for instance the standard make command 
+  which comes with FreeBSD won't work, you'll need to install gmake.
+- the code is designed for "little-endian" processors. Therefore you will
+  probably not be able to run it on "big-endian" (MAC, Sparc,...) CPUs.
+Most LW ports - including Linux and FreeBSD - have been done by contributors.
+So if you've successfully - or even if you've tried to - build and run LW
+on a new platform, please contact me, I'm interested 8-)
+
+
+If you have problems compiling, installing or running Liquid War, you can
+get help and informations on the Liquid War user mailing list:
+
+http://mail.nongnu.org/mailman/listinfo/liquidwar-user
+

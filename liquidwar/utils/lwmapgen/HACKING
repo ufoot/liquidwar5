@@ -1,0 +1,65 @@
+Where stuff is.
+---------------
+
+map.h contains a struct for the general map info.
+Size, grid size, file name, generating function to use (how the map is made).
+
+func_list.h is just a list of generating functions availible.
+
+func.h contains a struct for the generating function info.
+Name, description, and function pointer.
+
+Nearly all *.c files are generating functions.
+
+cut.c is a "helper" function to cut random lines out of the map.
+It is used by lines and rand_poly_cut.
+
+misc.c is just useful functions.
+One to create arrays, one to create 2d matrix (grid), and a wrapper for the
+random number generator that creates a number in a given range.
+
+main.c is the shell interface for the liquidwar-mapgen.
+
+
+How it works.
+-------------
+
+Given a filename, map size, grid size, and function.
+
+Main just creates a bitmap, calls the function and then saves the bitmap.
+
+Functions are just a void-void function pointer.
+
+
+Adding a new function.
+----------------------
+
+First take a look at a simple function like big_quad.c
+
+Then just write your foo_func.c.
+
+Add "void foo_func();" in func_list.h  [Please keep in alpha-num order].
+
+Increase MAX_FUNC in func.h.
+
+Add the extra info in func.c.
+
+
+Notes about functions.
+----------------------
+
+*Be careful of magic size numbers.
+Most of the functions base the size of things off of the section size.
+This allows the function to create nice, playable maps on either 128x96 or
+640x480 map sizes.
+
+*Be careful about dividing numbers.
+Since you'll be dealing with ints. The number could be so small it will be
+rounded to 0.
+
+*Use tester.sh to test your function.
+
+*Play test your maps.
+The map may look cool but how well does it play?
+Circuit use be to be a nice small little function but after playing on
+it, I found that it sucked.  I had to add a ton of code to make it play well.

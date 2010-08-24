@@ -1,0 +1,38 @@
+A Random Map Generator for Liquid War.
+Liquid War:    http://www.ufoot.org/liquidwar/v5/
+Generator:     http://xdavidx.sqrville.org/lwmapgen/
+
+Requires Allegro and gcc.
+
+To compile: make
+To Run: ./liquidwar-mapgen [options]
+
+For options: ./liquidwar-mapgen --help
+To list generating functions: ./liquidwar-mapgen --list
+
+For technical info see "HACKING".
+
+
+TODO:
+* strange big_quad shapes with -s 0 -g 1
+
+*On my Gentoo system, I get a segfault in/after save_bitmap with map size
+is 4 or 5.  Both in allegro-4.0.3 and 4.1.11
+
+*If an output filename is around 20 char long, I get a segfault when
+trying to create the bitmap.  It appears to be a bug in allegro-4.0.3.
+It works in allegro-4.1.11.
+
+* Once in a while I segfault in rand_boxes, and any thing that uses rand_poly.
+Whats with this?  It usually happens with 5/6 and 15/16.
+
+* more generating functions...
+esp. ones that create "closed in maps".
+Personally I would like to have a maze-like function and
+one that makes little mushrooms like centipede =].
+
+* tweak rand_poly.c to create better looking maps.
+
+
+--David
+dredick (AT) novagaming.net

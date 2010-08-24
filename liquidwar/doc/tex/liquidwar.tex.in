@@ -1,0 +1,39 @@
+\documentclass[a4paper,10pt]{book}
+
+\title{Liquid War - a unique multiplayer wargame}
+\author{Christian Mauduit}
+\date{v@VERSION@}
+
+\oddsidemargin    0mm
+\evensidemargin   0mm
+\marginparwidth   0mm
+\marginparsep     0mm
+\textwidth      158mm
+
+\parindent        0pt
+\parskip          5pt
+
+\begin{document}
+
+\maketitle
+
+\setcounter{tocdepth}{1}
+\tableofcontents
+
+\input{rules}
+\input{authors}
+\input{mailinglists}
+\input{fanfic}
+\input{options}
+\input{network}
+\input{parameters}
+\input{platforms}
+\input{userlevels}
+\input{algorithm}
+\input{source}
+\input{bugs}
+\input{todo}
+\input{wip}
+\input{copying}
+
+\end{document}

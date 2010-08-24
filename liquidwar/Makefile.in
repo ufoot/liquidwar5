@@ -1,0 +1,473 @@
+
+prefix =          @prefix@
+exec_prefix =     @exec_prefix@
+bindir =          @bindir@
+datadir =         @datadir@
+mandir =          @mandir@
+infodir =         @infodir@
+
+BINDIR =          $(bindir)
+GAMEDIR =         $(exec_prefix)/games
+DATADIR =         $(datadir)/games/liquidwar
+PIXDIR =          $(datadir)/pixmaps
+DOCDIR =          $(datadir)/doc/liquidwar
+DESKTOPDIR =           $(datadir)/applications
+# We don't use the autoconf default mandir=$(prefix)/man man
+# directory since the FHS (File Hierarchy Standard recommends
+# to place man pages in $(datadir)/man (ie /usr/share/man).
+# MANDIR =          $(mandir)/man6
+MANDIR =          $(datadir)/man/man6
+# We don't use the autoconf default infodir=$(prefix)/info info
+# directory since the FHS (File Hierarchy Standard recommends
+# to place info pages in $(datadir)/info (ie /usr/share/info).
+# INFODDIR =        $(infodir)
+INFODIR =         $(datadir)/info
+INFODIRDIR =      $(infodir)
+
+ifeq (@TARGET_OPT@,yes)
+	TARGET =          @target@
+	TARGET_CPU =      @target_cpu@
+else
+	TARGET =          unknown
+	TARGET_CPU =      unknown
+endif
+
+VERSION =         @VERSION@
+VERSION_REL =     @VERSION_REL@
+VERSION_COMPACT = @VERSION_COMPACT@
+
+GMAKE = @GMAKE@
+
+MAKE_BIN_DIR = ./src
+MAKE_DATA_DIR = ./data
+MAKE_UTILS_DIR = ./utils
+MAKE_DOC_DIR = ./doc
+MAKE_DIRS = $(MAKE_BIN_DIR) $(MAKE_UTILS_DIR) $(MAKE_DATA_DIR) $(MAKE_DOC_DIR)
+
+PACKAGE_SOURCE_DIR = liquidwar-$(VERSION)
+PACKAGE_SOURCE_TAR = $(PACKAGE_SOURCE_DIR).tar
+PACKAGE_SOURCE_TARGZ = $(PACKAGE_SOURCE_TAR).gz
+
+PACKAGE_BINARY_TAR = liquidwar-$(VERSION).$(TARGET).tar
+PACKAGE_BINARY_TGZ = liquidwar-$(VERSION).$(TARGET).tgz
+
+PACKAGE_DOS_DIR = LW5
+PACKAGE_DOS_EXE = lwdos.exe lwdosmap.exe
+PACKAGE_DOS_ZIP = lw$(VERSION_COMPACT)d.zip
+# the following line should be edited to match your configuration
+PACKAGE_DOS_CWSDPMI = /storage/download/liquidwar/v5/allegro/cwsdpmi.exe
+
+PACKAGE_WIN32_DIR = LW5
+PACKAGE_WIN32_EXE = lwwin.exe lwwinsrv.exe lwwinmap.exe
+PACKAGE_WIN32_ZIP = lw$(VERSION_COMPACT)w.zip
+# the following line should be edited to match your configuration
+PACKAGE_WIN32_ALLEGDLL = /storage/download/liquidwar/v5/allegro/alleg42.dll
+
+PACKAGE_NSIS_EXE = lw$(VERSION_COMPACT).exe
+
+PACKAGE_SOURCE_RPM_TARGET = /usr/src/rpm/SRPMS
+PACKAGE_SOURCE_RPM = liquidwar-$(VERSION)-$(VERSION_REL).src.rpm
+
+PACKAGE_BINARY_RPM_TARGET = /usr/src/rpm/RPMS/$(TARGET_CPU)
+PACKAGE_BINARY_RPM = liquidwar-$(VERSION)-$(VERSION_REL).$(TARGET_CPU).rpm
+
+PACKAGE_MACOSX_TAR = liquidwar-$(VERSION).macosx.tar
+PACKAGE_MACOSX_TGZ = liquidwar-$(VERSION).macosx.tgz
+PACKAGE_MACOSX_DMG = liquidwar-$(VERSION).dmg
+
+PACKAGE_TMP = /tmp/liquidwar-$(VERSION).tmp
+
+all: build_bin build_data build_doc
+	@echo
+	@echo "Build complete."
+	@echo "Type \"$(GMAKE) install\" to install Liquid War $(VERSION)."
+
+world: clean world_clean all package_source package_win32 package_dos package_binary package_source_rpm package_binary_rpm
+
+build_bin:
+	@$(GMAKE) -C $(MAKE_BIN_DIR)
+
+build_data:
+	@$(GMAKE) -C $(MAKE_UTILS_DIR)
+	@$(GMAKE) -C $(MAKE_DATA_DIR)
+
+build_doc:	
+	@$(GMAKE) -C $(MAKE_DOC_DIR)
+
+install: install_link install_nolink
+
+# the install_nolink is for distribs where $(prefix)/games is in the PATH,
+# for instance Debian, where a link in $(prefix)/bin is pretty much useless
+install_nolink: install_bin install_data install_custom_map install_custom_texture install_custom_music install_icon install_doc install_gpl install_desktop install_readme
+	@echo 
+	@echo "Install of Liquid War $(VERSION) completed, seems that you are ready to play ;)"
+	@echo "Have a good day!"
+	@echo "                            U-Foot (ufoot@ufoot.org)"
+	@echo
+	@echo "Type \"liquidwar\" or \"$(GAMEDIR)/liquidwar\" to play."
+
+install_bin: src/liquidwar src/liquidwar-server src/liquidwar-mapgen
+	@echo "Installing liquidwar binaries in $(GAMEDIR)."
+	@install -d $(DESTDIR)$(GAMEDIR)
+	@install -c -s src/liquidwar $(DESTDIR)$(GAMEDIR)
+	@install -c -s src/liquidwar-server $(DESTDIR)$(GAMEDIR)
+	@install -c -s src/liquidwar-mapgen $(DESTDIR)$(GAMEDIR)
+
+install_link:
+	@echo "Installing link in $(BINDIR)."
+	@install -d $(DESTDIR)$(BINDIR)
+	@rm -rf $(DESTDIR)$(BINDIR)/liquidwar
+	@rm -rf $(DESTDIR)$(BINDIR)/liquidwar-server
+	@rm -rf $(DESTDIR)$(BINDIR)/liquidwar-mapgen
+	@ln -s $(GAMEDIR)/liquidwar $(DESTDIR)$(BINDIR)/liquidwar
+	@ln -s $(GAMEDIR)/liquidwar-server $(DESTDIR)$(BINDIR)/liquidwar-server
+	@ln -s $(GAMEDIR)/liquidwar-mapgen $(DESTDIR)$(BINDIR)/liquidwar-mapgen
+
+install_data: data/liquidwar.dat
+	@echo "Installing liquidwar datafile in $(DATADIR)."
+	@install -d $(DESTDIR)$(DATADIR)
+	@install -c -m 0644 data/liquidwar.dat $(DESTDIR)$(DATADIR)
+
+install_custom_map: 
+	@echo "Installing liquidwar custom maps in $(DATADIR)/map."
+	@install -d $(DESTDIR)$(DATADIR)
+	@install -d $(DESTDIR)$(DATADIR)/map
+	@install -c -m 0644 custom/map/*.* $(DESTDIR)$(DATADIR)/map
+
+install_custom_texture: 
+	@echo "Installing liquidwar custom textures in $(DATADIR)/texture."
+	@install -d $(DESTDIR)$(DATADIR)
+	@install -d $(DESTDIR)$(DATADIR)/texture
+	@install -c -m 0644 custom/texture/*.* $(DESTDIR)$(DATADIR)/texture
+
+install_custom_music: 
+	@echo "Installing liquidwar custom musics in $(DATADIR)/music."
+	@install -d $(DESTDIR)$(DATADIR)
+	@install -d $(DESTDIR)$(DATADIR)/music
+	@install -c -m 0644 custom/music/*.* $(DESTDIR)$(DATADIR)/music
+
+install_doc:
+	@if [ -f $(MAKE_DOC_DIR)/txt/rules.txt ]; then echo "Installing liquidwar plain text doc in $(DOCDIR)/txt."; install -d $(DESTDIR)$(DOCDIR)/txt; install -c -m 0644 $(MAKE_DOC_DIR)/txt/*.txt $(DESTDIR)$(DOCDIR)/txt; fi
+	@if [ -f $(MAKE_DOC_DIR)/html/rules.html ]; then echo "Installing liquidwar HTML doc in $(DOCDIR)/html."; install -d $(DESTDIR)$(DOCDIR)/html; install -c -m 0644 $(MAKE_DOC_DIR)/html/*.html $(DESTDIR)$(DOCDIR)/html; fi
+	@if [ -f $(MAKE_DOC_DIR)/man/liquidwar.6.gz ]; then echo "Installing liquidwar man page in $(MANDIR)."; install -d $(DESTDIR)$(MANDIR); install -c -m 0644 $(MAKE_DOC_DIR)/man/liquidwar.6.gz $(DESTDIR)$(MANDIR); ln -s -f liquidwar.6.gz $(DESTDIR)$(MANDIR)/liquidwar-server.6.gz; ln -s -f liquidwar.6.gz $(DESTDIR)$(MANDIR)/liquidwar-mapgen.6.gz; fi
+	@if [ -f $(MAKE_DOC_DIR)/info/liquidwar.info.gz ]; then echo "Installing info page $(INFODIR)/liquidwar.info.gz."; install -d $(DESTDIR)$(INFODIR); install -c -m 644 $(MAKE_DOC_DIR)/info/liquidwar.info* $(DESTDIR)$(INFODIR); if which install-info; then if test -d $(DESTDIR)$(INFODIRDIR); then if test -f $(DESTDIR)$(INFODIRDIR)/dir; then echo "Installing liquidwar info entry."; install-info --info-dir=$(DESTDIR)$(INFODIRDIR) $(MAKE_DOC_DIR)/info/liquidwar.info.gz; fi; fi; fi; fi
+	@if [ -f $(MAKE_DOC_DIR)/ps/liquidwar.ps ]; then echo "Installing liquidwar PostScript doc in $(DOCDIR)/ps."; install -d $(DESTDIR)$(DOCDIR)/ps; install -c -m 0644 $(MAKE_DOC_DIR)/ps/*.ps $(DESTDIR)$(DOCDIR)/ps; fi
+	@if [ -f $(MAKE_DOC_DIR)/pdf/liquidwar.pdf ]; then echo "Installing liquidwar PDF doc in $(DOCDIR)/pdf."; install -d $(DESTDIR)$(DOCDIR)/pdf; install -c -m 0644 $(MAKE_DOC_DIR)/pdf/*.pdf $(DESTDIR)$(DOCDIR)/pdf; fi
+
+install_icon:
+	@echo "Installing liquidwar icon in $(PIXDIR)."
+	@install -d $(DESTDIR)$(PIXDIR)
+	@install -c -m 0644 misc/liquidwar.xpm $(DESTDIR)$(PIXDIR)
+
+install_desktop:
+	@echo "Installing desktop file in $(DESKTOPDIR)."
+	@install -d $(DESTDIR)$(DESKTOPDIR)
+	@install -c -m 0644 misc/liquidwar.desktop $(DESTDIR)$(DESKTOPDIR)
+
+install_gpl:
+	@echo "Installing GPL in $(DOCDIR)."
+	@install -d $(DESTDIR)$(DOCDIR)
+	@install -c -m 0644 COPYING $(DESTDIR)$(DOCDIR)
+
+install_readme:
+	@echo "Installing README in $(DOCDIR)."
+	@install -d $(DESTDIR)$(DOCDIR)
+	@install -c -m 0644 README $(DESTDIR)$(DOCDIR)
+	@install -c -m 0644 README.fr $(DESTDIR)$(DOCDIR)
+	@install -c -m 0644 README.de $(DESTDIR)$(DOCDIR)
+	@install -c -m 0644 README.dk $(DESTDIR)$(DOCDIR)
+
+uninstall:
+	@echo "Removing binary $(GAMEDIR)/liquidwar."
+	@rm -f $(DESTDIR)$(GAMEDIR)/liquidwar
+	@echo "Removing binary $(GAMEDIR)/liquidwar-server."
+	@rm -f $(DESTDIR)$(GAMEDIR)/liquidwar-server
+	@echo "Removing data directory $(DATADIR)."
+	@rm -rf $(DESTDIR)$(DATADIR)
+	@echo "Removing documentation directory $(DOCDIR)."
+	@rm -rf $(DESTDIR)$(DOCDIR)
+	@echo "Removing man page $(MANDIR)/liquidwar.6.gz."
+	@rm -f $(DESTDIR)$(MANDIR)/liquidwar.6.gz
+	@echo "Removing man page $(MANDIR)/liquidwar-server.6.gz."
+	@rm -f $(DESTDIR)$(MANDIR)/liquidwar-server.6.gz
+	@echo "Removing man page $(MANDIR)/liquidwar-mapgen.6.gz."
+	@rm -f $(DESTDIR)$(MANDIR)/liquidwar-mapgen.6.gz
+	@echo "Removing info page $(INFODIR)/liquidwar.info.gz."
+	@rm -f $(DESTDIR)$(INFODIR)/liquidwar.info*
+	@if which install-info; then if test -d $(DESTDIR)$(INFODIRDIR); then if test -f $(DESTDIR)$(INFODIRDIR)/dir; then echo "Removing info entry."; install-info --info-dir=$(DESTDIR)$(INFODIRDIR) --remove liquidwar; fi; fi; fi
+	@echo "Removing icon $(PIXDIR)/liquidwar.xpm."
+	@rm -f $(DESTDIR)$(PIXDIR)/liquidwar.xpm
+	@echo "Removing desktop file $(DESKTOPDIR)/liquidwar.desktop."
+	@rm -f $(DESTDIR)$(DESKTOPDIR)/liquidwar.desktop
+	@echo "Removing link $(BINDIR)/liquidwar."
+	@rm -f $(DESTDIR)$(BINDIR)/liquidwar
+	@echo "Removing link $(BINDIR)/liquidwar-server."
+	@rm -f $(DESTDIR)$(BINDIR)/liquidwar-server
+
+clean:
+	@for d in $(MAKE_DIRS); do $(GMAKE) -C $$d clean; done
+	@find . -name "*~" -o -name "*#*" -o -name ".*#*" | xargs rm -f 	
+
+world_clean:
+	@rm -f $(PACKAGE_SOURCE_TARGZ)
+	@rm -f $(PACKAGE_BINARY_TGZ)
+	@rm -f $(PACKAGE_SOURCE_RPM)
+	@rm -f $(PACKAGE_BINARY_RPM)
+	@rm -f $(PACKAGE_DOS_ZIP)
+	@rm -f $(PACKAGE_WIN32_ZIP)
+	@rm -f $(PACKAGE_NSIS_EXE)
+
+# target used when preparing packages
+packageclean: clean world_clean
+	@rm -r -f Makefile config.cache config.status config.log autom4te.cache
+	@rm -f misc/liquidward misc/macosx_info.plist misc/liquidwar.nsi
+	@find . -name "*.o" -o -name "*.obj" | xargs rm -f
+	@find . -name "*.tar.gz" -o -name "*.tgz" -o -name "*.zip" -o -name "*.rpm" -o -name "*.deb" -o -name "*.tgz" | xargs rm -f
+	@find . -name ".xvpics" | xargs rm -rf
+	@find . -name "lwmap.bmp" | xargs rm -rf
+	@rm -rf LW5 lwdos*exe lwwin*exe _tmpfile.arg *.log vc60.* *.idb *.pch
+	@rm -rf data/lwwin* data/lwdos*
+	@rm -rf starter
+	@for d in $(MAKE_DIRS); do $(GMAKE) -C $$d distclean; done
+
+distclean: packageclean
+	@rm -rf $(PACKAGE_TMP)
+
+config:
+	@for d in $(MAKE_DIRS); do $(GMAKE) -C $$d config; done
+
+check:
+	@for d in $(MAKE_DIRS); do $(GMAKE) -C $$d check; done
+
+dep:
+	@for d in $(MAKE_DIRS); do $(GMAKE) -C $$d dep; done
+	@echo
+	@echo "Type \"$(GMAKE)\" to build Liquid War $(VERSION)."
+
+# ----------------------------------------------------------------------
+# The following targets are used to produce various packages of LW, ie
+# - a source tarball
+# - a static binary stored in a .tar.gz
+# - a win32 binary
+# - a dos binary
+# - a source rpm
+# - a binary rpm
+#
+# These scripts are far from perfect, but they help me building 
+# the files I upload to my website. Still, you're free to use them
+# yourself 8-)
+# ----------------------------------------------------------------------
+
+dist: package_source
+
+package_source: $(PACKAGE_SOURCE_TARGZ)
+
+$(PACKAGE_SOURCE_TARGZ): 
+	@echo "Creating temporary directory."
+	@rm -rf $(PACKAGE_TMP)
+	@install -d $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)
+	@echo "Copying files."
+	@find . -maxdepth 1 \! -path "*$(PACKAGE_TMP)*" \! -name "." -exec cp -r \{\} $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR) \;
+	@echo "Cleaning up."
+	@$(GMAKE) -C $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR) packageclean
+	@touch $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/.cvsignore
+	@find $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR) -name .cvsignore -o -name CVS -o -name .arch-ids -o -name "{arch}" | xargs rm -rf
+	@cd $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR) && ./fix.sh unix
+	@echo "Creating tarball."
+	@cd $(PACKAGE_TMP) && tar cf $(PACKAGE_SOURCE_TAR) $(PACKAGE_SOURCE_DIR)
+	@echo "Compressing."
+	@gzip -9 $(PACKAGE_TMP)/$(PACKAGE_SOURCE_TAR)
+	@mv $(PACKAGE_TMP)/$(PACKAGE_SOURCE_TARGZ) .
+	@echo "Deleting temporary directory."
+	@rm -rf $(PACKAGE_TMP) 
+
+package_dos: $(PACKAGE_DOS_ZIP)
+
+$(PACKAGE_DOS_ZIP): $(PACKAGE_DOS_EXE) $(PACKAGE_DOS_CWSDPMI)
+	@echo "Building data."
+	@$(GMAKE) -C data
+	@echo "Building doc."
+	@$(GMAKE) -C doc
+	@echo "Creating temporary directory."
+	@rm -rf $(PACKAGE_TMP)
+	@install -d $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR)
+	@echo "Copying files."
+	@cp $(PACKAGE_DOS_EXE) $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR)
+	@cp $(PACKAGE_DOS_CWSDPMI) $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR)
+	@cp README $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR)/readme.txt
+	@cp README.fr $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR)/readmefr.txt
+	@cp README.de $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR)/readmede.txt
+	@cp README.dk $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR)/readmedk.txt
+	@cp COPYING $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR)/license.txt
+	@cp ChangeLog $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR)/changes.txt
+	@cp misc/liquidwar.ico $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR)/lw.ico
+	@install -d $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR)/data
+	@cp data/liquidwar.dat $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR)/data/lw.dat
+	@install -d $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR)/custom
+	@cp -r custom/map $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR)/custom
+	@cp -r custom/texture $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR)/custom
+	@cp -r custom/music $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR)/custom
+	@install -d $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR)/doc
+	@cp -r doc/txt $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR)/doc
+	@echo "Cleaning up."
+	@touch $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR)/.cvsignore
+	@find $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR) -name .cvsignore -o -name CVS -o -name .arch-ids -o -name "{arch}" -o -name DUMMY -o -name "*.inc" -o -name "*.in" | xargs rm -rf
+	@cp fix.sh $(PACKAGE_TMP)
+	@cd $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR) && $(PACKAGE_TMP)/fix.sh dos 
+	@echo "Zipping."
+	@cd $(PACKAGE_TMP) && zip -r -9 $(PACKAGE_DOS_ZIP) $(PACKAGE_DOS_DIR)
+	@mv $(PACKAGE_TMP)/$(PACKAGE_DOS_ZIP) .
+	@echo "Deleting temporary directory."
+	@rm -rf $(PACKAGE_TMP) 
+
+package_win32: $(PACKAGE_WIN32_ZIP)
+
+$(PACKAGE_WIN32_ZIP): $(PACKAGE_WIN32_EXE) $(PACKAGE_WIN32_ALLEGDLL)
+	@echo "Building data."
+	@$(GMAKE) -C data
+	@echo "Building doc."
+	@$(GMAKE) -C doc
+	@echo "Creating temporary directory."
+	@rm -rf $(PACKAGE_TMP)
+	@install -d $(PACKAGE_TMP)/$(PACKAGE_WIN32_DIR)
+	@echo "Copying files."
+	@cp $(PACKAGE_WIN32_EXE) $(PACKAGE_TMP)/$(PACKAGE_WIN32_DIR)
+	@cp $(PACKAGE_WIN32_ALLEGDLL) $(PACKAGE_TMP)/$(PACKAGE_WIN32_DIR)
+	@cp README $(PACKAGE_TMP)/$(PACKAGE_WIN32_DIR)/readme.txt
+	@cp README.fr $(PACKAGE_TMP)/$(PACKAGE_WIN32_DIR)/readmefr.txt
+	@cp README.de $(PACKAGE_TMP)/$(PACKAGE_WIN32_DIR)/readmede.txt
+	@cp README.dk $(PACKAGE_TMP)/$(PACKAGE_WIN32_DIR)/readmedk.txt
+	@cp COPYING $(PACKAGE_TMP)/$(PACKAGE_WIN32_DIR)/license.txt
+	@cp ChangeLog $(PACKAGE_TMP)/$(PACKAGE_WIN32_DIR)/changes.txt
+	@install -d $(PACKAGE_TMP)/$(PACKAGE_WIN32_DIR)/data
+	@cp data/liquidwar.dat $(PACKAGE_TMP)/$(PACKAGE_WIN32_DIR)/data/lw.dat
+	@install -d $(PACKAGE_TMP)/$(PACKAGE_WIN32_DIR)/custom
+	@cp -r custom/map $(PACKAGE_TMP)/$(PACKAGE_WIN32_DIR)/custom
+	@cp -r custom/texture $(PACKAGE_TMP)/$(PACKAGE_WIN32_DIR)/custom
+	@cp -r custom/music $(PACKAGE_TMP)/$(PACKAGE_WIN32_DIR)/custom
+	@install -d $(PACKAGE_TMP)/$(PACKAGE_WIN32_DIR)/doc
+	@cp -r doc/html doc/txt doc/ps doc/pdf $(PACKAGE_TMP)/$(PACKAGE_WIN32_DIR)/doc
+	@install -d $(PACKAGE_TMP)/$(PACKAGE_WIN32_DIR)/misc
+	@cp -r misc/lwserver.bat misc/lwpopup.js $(PACKAGE_TMP)/$(PACKAGE_WIN32_DIR)/misc
+	@echo "Cleaning up."
+	@touch $(PACKAGE_TMP)/$(PACKAGE_WIN32_DIR)/.cvsignore
+	@find $(PACKAGE_TMP)/$(PACKAGE_WIN32_DIR) -name .cvsignore -o -name CVS -o -name .arch-ids -o -name "{arch}" -o -name DUMMY -o -name "*.inc" -o -name "*.in" | xargs rm -rf
+	@cp fix.sh $(PACKAGE_TMP)
+	@cd $(PACKAGE_TMP)/$(PACKAGE_WIN32_DIR) && $(PACKAGE_TMP)/fix.sh dos 
+	@echo "Zipping."
+	@cd $(PACKAGE_TMP) && zip -r -9 $(PACKAGE_WIN32_ZIP) $(PACKAGE_WIN32_DIR)
+	@mv $(PACKAGE_TMP)/$(PACKAGE_WIN32_ZIP) .
+	@echo "Deleting temporary directory."
+	@rm -rf $(PACKAGE_TMP) 
+
+package_nsis: $(PACKAGE_NSIS_EXE)
+
+$(PACKAGE_NSIS_EXE): $(PACKAGE_WIN32_ZIP)
+	@rm -rf $(PACKAGE_TMP)
+	@install -d $(PACKAGE_TMP)
+	@cp $(PACKAGE_WIN32_ZIP) $(PACKAGE_TMP)
+	@cd $(PACKAGE_TMP) && unzip $(PACKAGE_WIN32_ZIP)
+	@cp misc/liquidwar.nsi $(PACKAGE_TMP)/$(PACKAGE_WIN32_DIR)
+	@cd $(PACKAGE_TMP)/$(PACKAGE_WIN32_DIR) && makensis liquidwar.nsi
+	@cp $(PACKAGE_TMP)/$(PACKAGE_WIN32_DIR)/$(PACKAGE_NSIS_EXE) .
+	@rm -rf $(PACKAGE_TMP)
+
+package_binary: $(PACKAGE_BINARY_TGZ)
+
+$(PACKAGE_BINARY_TGZ): $(PACKAGE_SOURCE_TARGZ)
+	@echo "Checking permissions."
+	@if [ `whoami` != root ] ; then echo "You need to be root to build $@." && exit 1 ; fi
+	@echo "Creating temporary directory."
+	@rm -rf $(PACKAGE_TMP)
+	@install -d $(PACKAGE_TMP)
+	@echo "Preparing source."
+	@cp $(PACKAGE_SOURCE_TARGZ) $(PACKAGE_TMP)
+	@cd $(PACKAGE_TMP) && tar xzf $(PACKAGE_SOURCE_TARGZ)
+	@cd $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR) && ./configure --enable-static --disable-doc-info --target=$(TARGET) --prefix=$(prefix)
+	@echo "Compiling."
+	@$(GMAKE) -C $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)
+	@echo "Cleaning up install directories."
+	@$(GMAKE) -C $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR) uninstall
+	@echo "Installing."
+	@$(GMAKE) -C $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR) install
+	@echo "Creating tarball."
+	@tar cfP $(PACKAGE_TMP)/$(PACKAGE_BINARY_TAR) $(GAMEDIR)/liquidwar $(GAMEDIR)/liquidwar-server $(GAMEDIR)/liquidwar-mapgen $(BINDIR)/liquidwar $(BINDIR)/liquidwar-server $(BINDIR)/liquidwar-mapgen $(DOCDIR) $(DATADIR) $(MANDIR)/liquidwar.6.gz $(MANDIR)/liquidwar-server.6.gz $(MANDIR)/liquidwar-mapgen.6.gz $(PIXDIR)/liquidwar.xpm $(DESKTOPDIR)/liquidwar.desktop
+	@echo "Compressing."
+	@gzip -c -9 $(PACKAGE_TMP)/$(PACKAGE_BINARY_TAR) > $(PACKAGE_BINARY_TGZ)
+	@echo "Cleaning up install directories."
+	@$(GMAKE) -C $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR) uninstall
+	@echo "Deleting temporary directory."
+	@rm -rf $(PACKAGE_TMP) 
+
+package_source_rpm: $(PACKAGE_SOURCE_RPM)
+
+$(PACKAGE_SOURCE_RPM): $(PACKAGE_SOURCE_TARGZ)
+	@echo "Checking permissions."
+	@if [ `whoami` != root ] ; then echo "You need to be root to build $@." && exit 1 ; fi
+	@echo "Building source rpm."
+	@rpm -ts --sign $(PACKAGE_SOURCE_TARGZ)
+	@echo "Copying source rpm."
+	@cp $(PACKAGE_SOURCE_RPM_TARGET)/$(PACKAGE_SOURCE_RPM) .
+
+package_binary_rpm: $(PACKAGE_BINARY_RPM)
+
+$(PACKAGE_BINARY_RPM): $(PACKAGE_SOURCE_TARGZ)
+	@echo "Checking permissions."
+	@if [ `whoami` != root ] ; then echo "You need to be root to build $@." && exit 1 ; fi
+	@echo "Building binary rpm."
+	@rpm -tb --sign --target $(TARGET) $(PACKAGE_SOURCE_TARGZ)
+	@echo "Copying binary rpm."
+	@cp $(PACKAGE_BINARY_RPM_TARGET)/$(PACKAGE_BINARY_RPM) .
+
+package_macosx_tgz: $(PACKAGE_MACOSX_TGZ)
+
+$(PACKAGE_MACOSX_TGZ): $(PACKAGE_SOURCE_TARGZ)
+	@echo "Creating temporary directory."
+	@rm -rf $(PACKAGE_TMP)
+	@install -d $(PACKAGE_TMP)
+	@echo "Preparing source."
+	@cp $(PACKAGE_SOURCE_TARGZ) $(PACKAGE_TMP)
+	@cd $(PACKAGE_TMP) && tar xzf $(PACKAGE_SOURCE_TARGZ)
+	# Static builds do not seem to work well on Mac OS X yet. 
+	#@cd $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR) && ./configure --enable-static --disable-doc-info --target=$(TARGET) --prefix=$(prefix)
+	@cd $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR) && ./configure --disable-doc-info --target=$(TARGET) --prefix=$(prefix)
+	@echo "Compiling."
+	@$(GMAKE) -C $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)
+	@echo "Creating directory structure."
+	@install -d "$(PACKAGE_TMP)/Liquid War.app"
+	@install -d "$(PACKAGE_TMP)/Liquid War.app/Contents"
+	@install -d "$(PACKAGE_TMP)/Liquid War.app/Contents/MacOS"
+	@install -d "$(PACKAGE_TMP)/Liquid War.app/Contents/Resources"
+	@echo "Copying files."
+	@cp  $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/src/liquidwar "$(PACKAGE_TMP)/Liquid War.app/Contents/Resources"
+	@cp  $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/src/liquidwar-server "$(PACKAGE_TMP)/Liquid War.app/Contents/Resources"
+	@cp  $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/src/liquidwar-mapgen "$(PACKAGE_TMP)/Liquid War.app/Contents/Resources"
+	@cp  $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/data/liquidwar.dat "$(PACKAGE_TMP)/Liquid War.app/Contents/Resources"
+	@cp  -r $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/custom/map "$(PACKAGE_TMP)/Liquid War.app/Contents/Resources"
+	@cp  -r $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/custom/texture "$(PACKAGE_TMP)/Liquid War.app/Contents/Resources"
+	@cp  -r $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/custom/music "$(PACKAGE_TMP)/Liquid War.app/Contents/Resources"
+	@cp  $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/misc/globe.icns "$(PACKAGE_TMP)/Liquid War.app/Contents/Resources/Liquid War.icns"
+	@cp  $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/misc/macosx_launcher.sh "$(PACKAGE_TMP)/Liquid War.app/Contents/MacOS/Liquid War"
+	@cp  $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/misc/macosx_info.plist "$(PACKAGE_TMP)/Liquid War.app/Contents/Info.plist"
+	@cp  $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/misc/macosx_readme.rtf "$(PACKAGE_TMP)/Readme.rtf"
+	@cp  $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/COPYING "$(PACKAGE_TMP)/gpl.txt"
+	@cp  $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/doc/pdf/liquidwar.pdf "$(PACKAGE_TMP)"
+	@echo "Cleaning up."
+	@find $(PACKAGE_TMP) -name CVS -o -name .arch-ids -o -name "{arch}" | xargs rm -rf
+	@echo "Removing source."
+	@rm -rf $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)
+	@echo "Creating tarball."
+	@cd $(PACKAGE_TMP) && tar cf $(PACKAGE_MACOSX_TAR) *
+	@echo "Compressing."
+	@gzip -c -9 $(PACKAGE_TMP)/$(PACKAGE_MACOSX_TAR) > $(PACKAGE_MACOSX_TGZ)
+	@echo "Deleting temporary directory."
+	@rm -rf $(PACKAGE_TMP) 
+
+package_macosx_dmg: $(PACKAGE_MACOSX_DMG)
+
+$(PACKAGE_MACOSX_DMG):
+	@echo "Under construction..."
+	# There's a script which can be used to generate .dmg files on:
+	# http://www.omnigroup.com/mailman/archive/macosx-talk/2002-November/001271.html
+	# Definitely need to take a look a at it.
+

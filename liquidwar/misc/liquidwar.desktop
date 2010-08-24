@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=Liquid War
+Comment=A unique multiplayer wargame
+TryExec=liquidwar
+Exec=liquidwar
+Icon=liquidwar
+Categories=Game;ArcadeGame;
+Terminal=false

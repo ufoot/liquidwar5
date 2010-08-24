@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE file SYSTEM "file:xml/file.dtd">
+<file title="Rules">
+
+  <chap title="The Liquid War concept">
+    <text>
+      Liquid War is a wargame. 
+      But it is different from common wargames.    
+    </text>
+    <text>
+      When playing Liquid War, one has to eat one's opponent.
+      There can be from 2 to 6 players.
+      There are no weapons, the only thing you have to do
+      is to move a cursor in a 2-D battlefield.
+      This cursor is followed by your army, which is composed
+      by a great many little fighters.
+      Fighters are represented by small colored squares.
+      All the fighters who have the same color
+      belong to the same team.
+      One very often controls
+      several thousands fighters at the same time.
+      And when fighters from different teams meet, 
+      they eat each other, it is as simple as that.
+    </text>
+  </chap>
+  
+  <chap title="How do teams react?">
+    <text>
+      Teams are composed of little fighters.
+      These fighters all act independently, 
+      so it can happen that one single fighters does something
+      different from what all the other do.
+    </text>
+    <text>
+      The main goal of these fighters is to reach the cursor you control. 
+      And to do that, they are in a way quite clever,
+      for they choose the shortest way to reach it.
+      Check it if you want, but it is true, they *really*
+      choose *the* shortest way to reach the cursor.
+      That is the whole point with Liquid War.
+    </text>
+    <text>
+      But these fighters are not perfect,
+      so when they choose this shortest way,
+      they do as if they were alone on the battlefield.
+      That's to say that if there is a fighter blocking
+      their way, they won't have the idea to choose
+      another way, which is free from fighters but
+      would have been longer otherwise.
+      So fighters can be blocked.             
+    </text>
+  </chap>
+
+  <chap title="Who eats whom?">
+    <text>
+      When two fighters from different team meet each other,
+      they first try to avoid fighting, and they dodge. 
+      But if there is no way for them to move,
+      they get angry and attack the guy which is blocking them.
+      Sometimes, they attack each other and both loose health.
+      But it can happen that a fighter is attacked by
+      another one, which is himself not attacked at all.
+    </text>
+    <text>
+      Here is an example of this behaviour:
+      A blue fighter and a red fighter both want to move to 
+      their right, for that would be the shortest way
+      to reach their cursor if there was nobody on the battlefield.
+      But they are blocked by other fighters.
+      If, for instance, the red fighter is on the right
+      and the blue fighter on the left,
+      it is the red fighter which will be eaten.
+    </text>
+    <text>
+      When a fighter is attacked, he first looses health,
+      that is to say that he gets darker.
+      When his health reaches 0, his color changes
+      and he becomes a member of the team by which
+      he has been attacked.
+      Therefore the number of fighters on the battlefield
+      always remains the same.                           
+    </text>
+    <text>
+      When fighters of a same team get stuck together
+      and block each other, then they regenerate,
+      that is to say that they get brighter.        
+    </text>
+    <text>
+      However, I think the best way for you to understand
+      the way it works is to try the game...
+    </text>
+  </chap>
+
+  <chap title="Basic strategy">
+    <text>
+      When I play Liquid War, I always try to surround my opponents,
+      and it usually works. 
+    </text>
+    <text>
+      By the way, the computer has no strategy at all,
+      he is a poor player, and if you get beaten by him,
+      it means you have to improve yourself a lot!
+    </text>
+    <text>
+      But still, the computer doesn't do one thing
+      which I've seen many beginners doing:
+      he never keeps his cursor motionless right in
+      the middle of his own fighters,
+      for this is the best way to loose.
+    </text>
+  </chap>
+
+  <chap title="More strategy">
+    <text>
+       Here are some more tips, kindly submitted by Jan Samohyl.
+    </text>
+    <list>
+      <elem>
+         Try to cut your opponent off walls and surround him completely with
+         your troops; when trying to  penetrate his forces inside a tunnel, keep
+         your troops at the wall (and force them ocassionaly to attack off the
+         wall). I think this is a biggest weakness of the computer AI, that it
+         doesn't know this.
+      </elem>
+      <elem>
+         When luring your troops to outflank an enemy, always move your cursor
+         through the enemy, not the other way around.
+      </elem>
+      <elem>
+         To penetrate very narrow tunnels, stand back for a while and let some
+         enemy troops come from the tunnel to you. Then surround them, destroy,
+         repeat.
+      </elem>
+      <elem>
+         I have observed that with more than 2 players (6), the game difficulty
+         depends on the map in the following way: If the playing field is
+         completely empty, without any holes (topologically equivalent to full
+         circle), the game is the easiest, because you can just go through the
+         middle to outflank your opponent. If there is a single large obstacle
+         (ie. playfield is topologically equivalent to ring (the area between two
+         nested circles)), the game is the most difficult, because you have to
+         choose one direction for the attack, and cannot simply defend the other
+         direction. For other maps, it seems to really depend on their similarity
+         to one of these two extreme situations (and army size, of course,
+         because it changes the relative size of obstacles). Also, if you would
+         later add another cursor, this property would probably disappear (maybe
+         then games with n+1 obstacles would be the hardest ones with n cursors).
+      </elem>
+      <elem>
+         If you want a particularly challenging computer game (at least for
+         some maps), use several players, max out attack, min out defense, max
+         out base health (opposite would be harder, but game then changes to the
+         large cloud of black troops, so you don't see anything) and give winner
+         an advantage.
+      </elem>
+    </list>
+  </chap>
+
+  <chap title="The winner is...">
+    <text>
+      The clever guy who has got the greatest number
+      of fighters in his team at the end of the game.
+      Or the one who exterminates all the other teams!
+    </text>
+  </chap>
+
+</file>

@@ -1,0 +1,40 @@
+This documentation is written in XML.
+
+Basically, a Python program (makedoc.py) is used to parse the xml
+source files, and generate a formatted output in another format.
+There are already several tools already available which can do this,
+among them sgmltools, which is based on docbook.
+So you might wonder: why did I write my own doc generator?
+Well, there are several reasons:
+1 - it was a good excuse to write Python code. I'm very interested
+    in Python but could not find anything to do with it until I
+    realize it could help me at generating documentation.
+2 - docbook is too big for me to learn. I do not have time nor
+    motivation to learn such a complex DTD. Besides, when I write
+    docs, I like to concentrate on the contents. The "DTD" (a very
+    small one indeed) I use is *really* basic, so writting docs is
+    really an easy and quick task for me.
+3 - sgmltools was not flexible enough for me. Indeed, I use my little
+    doc generator to create some of the pages of http://www.ufoot.org.
+    Therefore I the parser to be able to generate pages with a given
+    look and feel, and for instance I do not like the "prev" and "next"
+    buttons generated on HTML pages by sgmltools. Rather than wasting
+    time trying to get rid of those, I just wrote my own simple
+    generator.
+4 - I love programming. Just can't help it. I feel frustrated when
+    I use a ready-to-use product 8-)
+
+The following formats can be generated:
+- html : browsable doc
+- ps   : printable doc (an intermediate dvi file is also available)
+- pdf  : printable doc for Microsoft platforms, with poor ps support
+- txt  : universal reference, readable on *any* computer
+- man  : doc for die-hard man-page users =8-)
+- texi : texinfo doc (the GNU projet documentation format)
+- php3 : what I upload on http://www.ufoot.org
+
+Note that the parser currently uses xmllib, which is shipped with
+Python 1.5.2 but is marked as deprecated in Python 2.x. I don't feel
+the need to upgrade my scripts since Python 2.x is not as common as
+Python 1.5.2 yet, and besides I don't really enjoy touching code
+when it already works...

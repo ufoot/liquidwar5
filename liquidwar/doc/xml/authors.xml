@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE file SYSTEM "file:xml/file.dtd">
+<file title="Authors">
+
+  <chap title="Thom-Thom">
+    <text>
+      Liquid War rules have been invented by
+      Thomas Colcombet.
+    </text>
+    <text>
+      He was trying to find algorithms to find the shortest path
+      from one point to another, and found the Liquid War
+      algorithm. Then it came to his mind that a game could
+      be build upon this algorithm, and Liquid War was born.
+      He programmed the first two versions of Liquid War
+      using Borland Pascal for DOS, and gave me some information
+      about the algorithm so that I could re-program it.
+    </text>
+  </chap>
+
+  <chap title="U-Foot">
+    <text>
+      I'm the guy who programmed the latest versions of Liquid War.
+      I enhanced the algorithms, and did quite a bunch of work
+      to have the game playable by (almost) anyone, that's to
+      say create a correct GUI.
+    </text>
+    <text>
+      If you want to join me, here's all the information you'll ever need:
+    </text>
+    <code>
+Christian Mauduit
+
+E-mail: "ufoot@ufoot.org" 
+Web site: "http://www.ufoot.org"
+
+GnuPG public key: FD409E94 - "http://www.ufoot.org/gnupg.pub"
+GnuPG fingerprint: 4762 1EBA 5FA3 E62F 299C  B0BB DE3F 2BCD FD40 9E94
+
+Snail mail: 32 rue Jean Moulin  95100 Argenteuil  FRANCE
+    </code>
+  </chap>
+
+  <chap title="Other contributors">
+    <text>
+      As Liquid War is now free software, protected by the GPL,
+      anyone is allowed to view, edit, modify, re-compile
+      the source code, and distribute it, as long as Liquid 
+      War is still distributed under the GPL.
+    </text>
+    <text>
+      Here's a list of the contributors:
+    </text>
+    <list>
+      <elem>
+	Alstar: drew a map, which is now included in the main distribution.
+      </elem>
+      <elem>
+        Peter Wang: ported Liquid War to GNU/Linux.
+      </elem>
+      <elem>
+	Cort Danger Stratton : helped me setting up network support.
+      </elem>
+      <elem>
+	Tim Chadburn : wrote midi files for the game. His contribution has
+	been truely appreciated since it's rather hard to find GNU GPL
+	compliant artwork. He also wrote documentation and helped with
+	midi support in general.
+      </elem>
+      <elem>
+        Jan Gretschuskin : contributed 11 maps, and made the German
+	translation. So if you run Liquid War with German menus, you
+	know who you have to thank -> Jan! 8-) 
+	Also do not forget to visit "http://www.game-factor.de"
+      </elem>
+      <elem>
+        Mouse : contributed a map.
+      </elem>
+      <elem>
+        Rene Stach : drew 3 maps.
+      </elem>
+      <elem>
+	Roderick Schertler : implemented HTTP 1.1 support.
+      </elem>
+      <elem>
+	Ryan D. Brown : ported Liquid War to Mac OS X.
+      </elem>
+      <elem>
+	Eduard Bloch : maintained the Debian package, 
+	and helped with German support.
+      </elem>
+      <elem>
+	Michael Terry : provided a .desktop file for better integration
+	with Gnome, KDE and other UNIX desktop environments.
+      </elem>
+      <elem>
+	Kasper Hviid : contributed many maps, with their own
+	textures, and made the Danish translation. Great work, also
+	available on "http://levels.2v1.cz/index.html"
+      </elem>
+      <elem>
+	David Redick : wrote an external random map generator,
+	available on "http://xdavidx.sqrville.org/lwmapgen/index.html"
+      </elem>
+      <elem>
+	Alexandre Pineau : maintains the Debian package.
+      </elem>
+      <elem>
+	Michael Wagner : translated the web site in German.
+      </elem>
+      <elem>
+	Peter Williams : fixed the "too many opened socket" server bug.
+      </elem>
+      <elem>
+	Jan Samohyl : submitted strategy tips.
+      </elem>
+      <elem>
+	Gavin : wrote the Liquid War fanfic.
+      </elem>
+      <elem>
+	Dave Vasilevsky : fixed the Mac OS X port.
+      </elem>
+      <elem>
+	2 of omega : contributed a map.
+      </elem>
+      <elem>
+	666-REFIZUL-666 : created many maps (distributed separately).
+      </elem>
+      <elem>
+	Thomas Klausner : fixed Makefile for FreeBSD
+      </elem>
+      <elem>
+	Joan Dolc : helped with Mac OS/X port
+      </elem>
+    </list>
+    <text>
+      Many other people helped me by submitting bug reports and patches,
+      and I want to thank them for their precious help. Thanks to all the
+      Debian people too, who nicely maintain the Liquid War .deb package.
+    </text>
+  </chap>
+
+</file>

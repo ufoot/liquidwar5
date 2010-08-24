@@ -1,0 +1,48 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<TITLE>Liquid War - a unique multiplayer wargame</TITLE>
+</HEAD>
+<BODY>
+<CENTER>
+<H1>Liquid War - a unique multiplayer wargame</H1>
+v@VERSION@
+</CENTER>
+<HR>
+<H2>Hello!</H2>
+Thanks for taking interest in Liquid War. This documentation
+should help you to understand and use Liquid War.
+<P>
+It is also available:
+<UL>
+<LI>Online, on <A HREF="http://www.ufoot.org/liquidwar/v5">www.ufoot.org/liquidwar/v5</A>.
+<LI>As a <A HREF="../ps/liquidwar.ps">PostScript file</A>.
+<LI>As a <A HREF="../pdf/liquidwar.pdf">PDF file</A>.
+</UL>
+<HR>
+<H2>Table of contents</H2>
+<UL>
+<LI><A HREF="rules.html">Rules</A></LI>
+<LI><A HREF="authors.html">Authors</A></LI>
+<LI><A HREF="mailinglists.html">Mailing lists</A></LI>
+<LI><A HREF="fanfic.html">Fanfic</A></LI>
+<LI><A HREF="options.html">Menus and hot keys</A></LI>
+<LI><A HREF="network.html">Network game</A></LI>
+<LI><A HREF="parameters.html">Command line parameters</A></LI>
+<LI><A HREF="platforms.html">Platform specific issues</A></LI>
+<LI><A HREF="userlevels.html">User levels</A></LI>
+<LI><A HREF="algorithm.html">Core algorithm</A></LI>
+<LI><A HREF="source.html">Source code</A></LI>
+<LI><A HREF="bugs.html">Bugs</A></LI>
+<LI><A HREF="todo.html">To do</A></LI>
+<LI><A HREF="wip.html">Work in progress</A></LI>
+<LI><A HREF="copying.html">Copying</A></LI>
+</UL>
+<HR>
+<CENTER>
+This documentation is also available on:
+<A HREF="http://www.ufoot.org/liquidwar/v5">www.ufoot.org/liquidwar/v5</A>.
+</CENTER>
+</BODY>
+</HTML>

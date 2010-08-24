@@ -1,0 +1,3 @@
+.SH AUTHOR
+Christian Mauduit <ufoot@ufoot.org>
+

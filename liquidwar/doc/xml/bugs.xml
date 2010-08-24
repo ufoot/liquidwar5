@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE file SYSTEM "file:xml/file.dtd">
+<file title="Bugs">
+
+  <chap title="Report a new bug">
+    <text>
+      If you have troubles with Liquid War 5,
+      if you think it is a bug,
+      and if it is not described in this file, then just
+      send a (precise...) decription of your problem
+      to the Liquid War user mailing list.
+    </text>
+    <text>
+      Besides, it happens that now most bug reports come from
+      the Debian tracking system
+      "http://bugs.debian.org/cgi-bin/pkgreport.cgi?pkg=liquidwar".
+      Thanks to the Debian users and maintainers, it's a very
+      valuable feedback source.
+    </text>
+    <text>
+      Additionnaly, on online bug tracking system has been set up.
+      It uses Flyspray "http://flyspray.rocks.cc/".
+      It's accessible on "http://www.ufoot.org/bugtracker/" or
+      "http://www.ufoot.org/bugtracker/index.php?project=2".
+      I try to collect everything here : bugs reported on the mailing-list,
+      bugs from Debian, and bugs I found myself. Alternatively
+      you can report bugs directly on it 8-)
+    </text>
+  </chap>
+
+  <chap title="Network">
+    <text>
+      Network support in Liquid War is far from being perfect, so there
+      are a bunch of little problems which can appear. Basically, once
+      the game is correctly started on a LAN, you should have no problems,
+      but getting the game started might be difficult.
+    </text>
+  </chap>
+
+  <chap title="Mouse does not work">
+    <text>
+      Some users reported that they were unable to control the Liquid War
+      cursor with the mouse. Well, the answer is a typical Microsoftish
+      "this ain't a bug, it's a feature!".
+    </text>
+    <text>
+      More seriously, you're supposed to move the cursor with the keyboard
+      in Liquid War. There's no way to handle the cursor "like a mouse pointer"
+      (*). This is due to:
+    </text>
+    <list>
+      <elem>
+	Severe limitations in the Liquid War core algorithm.
+      </elem>
+      <elem>
+	The fact that moving the cursor "too fast" would really change the
+	gameplay of Liquid War. As a Liquid War integrist 8-) I can tell you
+	the game would really not be the same if you could move the cursor
+	as fast as you wish. It's part of the game that sometimes it takes
+	you ages to recover from a strategical mistakes. You need to think
+	twice before going to the very end of a level. That's strategy.
+	At least that's how I view things... Anyways as I mentionned above
+	there's a limitation in the core algorithm.
+      </elem>
+    </list>
+    <text>
+      (*) This is not perfectly true, there's a way to control the cursor
+      with the mouse, but it's designed for the case "4 people want to play
+      on the same computer and one single keyboard is not enough".
+      Controlling the cursor with the mouse in Liquid War is possible but
+      yet rather hard to master 8-/ Try it and you'll understand what I mean.
+      This mode can be set up in the "Teams" menu.
+    </text>
+  </chap>
+
+  <chap title="Game does not start">
+    <text>
+      On non UNIX platforms such as Windows or DOS, Liquid War
+      is distributed in a .zip file. It's IMPORTANT that you
+      unzip the .zip files with an "unzipper" which preserves
+      the directory structure. Most install problems under
+      Windows come from broken unzipping programs which extract
+      all files in the same directory... WinZip 8.x or the unzip32.exe
+      utility that comes with DJGPP are both able to uncompress
+      Liquid War .zip files correctly.
+    </text>
+    <text>
+      On Liquid War 5.5.9 and later, the Windows version should detect
+      this problem automatically and warn you with a message which
+      basically says something like "Unable to load datafile.
+      Are you sure Liquid War is correctly installed?".
+      If you get this message, you need to reinstall the game by
+      unzipping it with a "correct" unzipping program which does
+      not wreck directory structrure up.
+    </text>
+  </chap>
+
+  <chap title="Interference with other Windows programs">
+    <text>
+      It's been reported that Liquid War can run very slowly on Windows
+      when some other programs (Mozilla for instance) are running.
+      So if Liquid War's menus seem to be really really slow, then
+      try to shut down other applications and run the game again.
+    </text>
+    <text>
+      This problem does not seem to apply on GNU/Linux - at least if you
+      do not run 300 daemons together on your machine 8-)
+    </text>
+  </chap>
+
+  <chap title="Datafile bugs">
+    <text>
+      Sometimes there are some problems when compiling the datafile,
+      this includes:
+    </text>
+    <list>
+      <elem>
+        The liquidwarcol, liquidwarmap and liquidwartex utilities
+	might freeze or segfault. Typing "make" again often solves
+	the problem.
+      </elem>
+      <elem>
+        The background image sometimes ends up using the wrong palette,
+	which has a very nasty consequence: it looks ugly. 
+      </elem>
+    </list>
+    <text>
+      These bugs are quite hard to get rid off, since I can not
+      reproduce them easily. The good solution would be to completely
+      rewrite the liquidwarcol, liquidwarmap and liquidwartex utilities.
+    </text>
+  </chap>
+
+  <chap title="Midi does not work on OSS">
+    <part title="Preamble">
+      <text>
+	IF your midi music on Liquid War, or indeed any other 
+	Allegro game, doesn't work and you are using the OSS 
+	(Open Sound System) drivers (these are the sound drivers 
+	which come with the standard kernel distribution), this may
+	well be because Allegro only supports "FM synthesis" 
+	and not "wavetable" when it is using OSS. FM synthesis 
+	is a very old method of making sound from MIDI and 
+	has long since been replaced by wavetable synthesis, with the net
+	result that it's quite possible you've got OSS MIDI 
+	working nicely in other applications without having FM 
+	support set up at all. This is what I found. (It has 
+	to be said that I didn't find the FM sound quality quite as bad
+	as people have said, though).
+      </text>
+      <text>
+	In this situation, it looks to me like you have the following choices:
+      </text>
+    </part>
+    <part title="Hack Allegro...">
+      <text>
+	...to implement wavetable midi on OSS :-)
+      </text>
+      <text>
+	and for the rest of us...
+      </text>
+    </part>
+    <part title="Use Allegro's DIGMID midi driver...">
+      <text>
+	...which creates audio from MIDI using a set of patches 
+	(more info here: "http://www.talula.demon.co.uk/allegro/digmid.html") 
+	and plays back through your sound card's audio.
+      </text>
+    </part>
+    <part title="Get an FM driver up and running..."> 
+      <text>
+	...Which is comprised of the following steps:
+      </text>
+      <list>
+	<elem>
+	  Find out which FM driver is appropriate for your sound card.
+          If you have distribution-specific tools and docs for setting up sound, try those.
+          If not, you will need to be familiar with the knowledge in the Sound-HOWTO and
+          Kernel-HOWTO i.e. know how to compile kernels and modules and deal with sound
+          drivers.
+	</elem>
+	<elem>
+	  Look through the OSS modules in 'make menuconfig' and see if anything
+          catches your eye. See if there is any specific documentation on your sound card on
+          "http://www.linuxdoc.org". Do a few web searches. For my AWE64, I use the OPL3 driver.
+	</elem>
+	<elem>
+	  Compile and install the FM driver module, or set up your system to use the new
+          kernel if you want to compile the driver in.
+	</elem>
+	<elem>
+	  Load the module, or boot your new kernel. It is very important that you pay
+          attention to what is said in the 'help' for your FM driver in 'make menuconfig'
+          and read any necessary files in the Documentation/sound/ directory. For example,
+          I just had a nice half-hour wondering why the hell my FM wasn't working now when
+          it had been before - with the OPL3 driver, you have to give the option io=0x388
+          to insmod. Which is stated nice and clear in the docs, but of course I had forgotten
+          since then. You can prevent such happenings by recording options permanently in
+          /etc/modules.conf - see the manpage etc.
+	</elem>
+	<elem>
+	  Try the game. If it's worked you will hear particularly beepy music. Enjoy!
+	</elem>
+      </list>
+    </part>
+    <part title="Opl3 occult FAQ">
+      <text>	
+	--IMPORTANT-- If you are using Liquid War, your FM will only work if you go to the
+	map 'Elephant inside a boa' and proceed to chase each other round in circles for at
+	least 10 minutes. This cures a bug in the design of the OPL3 interface which
+	conflicts badly with the core Liquid War algorithms. How the hell the music hardware
+	even knows about the core algorithms I don't know, but that's what I made of the
+	now-defunct opl3-occult-FAQ, from which here is an excerpt:
+      </text>
+      <code>
+	Many roads a man must take. Those with one-track minds are DOOMED, I tells ya.
+      </code>
+      <text>	
+	----  The Liquid War algorithm calculates distances to one place, the cursor.
+      </text>
+      <text>
+	And:
+      </text>
+      <code>
+	Man or machine, face or code, must stand strong and solid; must not just ooze away as slime.
+      </code>
+      <text>
+	---- We think it might just take objection to the whole 'slimy' nature of the LW
+	beings. As well as it being LIQUID War.
+      </text>
+      <text>
+	So, our carefully tailored approach, is to firstly have the players going in all
+	the possible different directions evenly by moving around the map in circles, and
+	secondly to divert the opl3's attention from the general slimy liquidness of it all
+	by emphasizing the solidity, reality, and natural goodness of that classic
+	tapestry: an elephant inside a boa.
+      </text>
+      <text>
+	That and it's a f***ing ace level.
+      </text>
+    </part>
+  </chap>
+
+  <chap title="Checksum errors">
+    <text>
+      The Liquid War server is a "light" servers which - to some extent -
+      has no idea about what is going on in the game. It simply replicates
+      key strokes between clients and each client maintains its own
+      game state. Normally, the game is designed so that given the same
+      user input, it will behave exactly the same.
+    </text>
+    <text>
+      However, it happens that sometimes 2 clients can behave differently,
+      and this is a (severe) bug. One consequence is that messages reporting
+      "Checksum errors" appear on the server's and on the client's console
+      output. This bug appears when using non-default rules settings.
+      Basically, if someones tweaks his rules, then the checksum errors appear.
+      Of course I double-triple checked that options were correctly sent on the
+      network, but, well, could not fix the bug. Yet. The short term solution
+      seems to play with default factory settings...
+    </text>
+    <text>
+      I'm highly interested in bug-reports concerning this problem.
+    </text>
+  </chap>
+
+</file>

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE file SYSTEM "file:xml/file.dtd">
+<file title="Platform specific issues">
+
+  <chap title="General remarks">
+    <text>
+      Liquid War is now a cross-platform game, thanks to Allegro.
+      So now you can play under different OS.
+    </text>
+    <text>
+      The same source tree will compile on all supported platforms, 
+      but with slight differences when running. C preprocessor
+      #defines are used to code some platform specific stuff,
+      and in some cases there are different files for the
+      DOS, Windows and UNIX versions.
+    </text>
+    <text>
+      As I said, I try to use the same code for all platforms.
+      This is in the long term the best choice.
+      Otherwise there would different branches of the source tree,
+      and I don't think this is a very good solution.
+    </text>
+    <text>
+      Therefore some optimizations that were performed in the
+      old DOS-only version have been totally removed, for they
+      were 100% platform dependent (ie mode-X asm coding).
+      So the new versions are all a little slower
+      than the old 5.1 stuff, but the performance loss is only
+      about 20%, which is not significant with today's PCs.
+      And anyways the performance loss is most of the time limited
+      to the goog old VGA 320x200x8 mode-X, which starts being
+      kind of obsolete.
+    </text>
+  </chap>
+
+  <chap title="DOS">
+    <text>
+      This is the original version.
+      It's the fastest one as far as I know, the safest one and
+      it will always be I think, since Allegro was first designed
+      for DOS, and DOS allows a full unconditionnal access to all
+      the hardware ressources LW requires.
+      LW doesn't use any hardware
+      acceleration and it's not been designed to do so.
+      Unfortunately there's no network support for the DOS version
+      of Liquid War.
+    </text>
+  </chap>
+
+  <chap title="Windows">
+    <text>
+      When running under a Windows box, the DOS release used to be
+      safer than the native Windows port. Now that DOS support is getting
+      really poor with recent versions of Windows, the native Windows
+      release of Liquid War starts begin the good choice for Windows users.
+      And Allegro for Windows is getting quite stable in the 4.x series.
+    </text>
+    <text>
+      The other reason to choose this release rather than the DOS release
+      is that it has network support.
+    </text>
+    <text>
+      If you have problems running Liquid War under Windows, please check out
+      the "data\lwwin.log" file which should be written each time you run the game.
+      It contains the information which is displayed on the console under
+      other platforms, and might give you a clue about what's going wrong.
+    </text>
+  </chap>
+
+  <chap title="GNU/Linux">
+    <text>
+      This port is the most recent one, and also the one I prefer.
+      Paths have been changed to an UNIXish style,
+      ie the data is stored in:
+    </text>
+    <code>
+      /usr/local/share/games/liquidwar
+    </code>
+    <text>
+      the executable in:
+    </text>
+    <code>
+      /usr/local/games
+    </code>
+    <text>
+      and the configuration file is
+    </text>
+    <code>
+      ~/.liquidwarrc
+    </code>
+    <text>
+      Since not all GNU/Linux distributions have /usr/local/games in their path,
+      I also put a symbolic link to the binaries in /usr/local/bin.
+      I believe Liquid War is quite FHS compliant, so if its default
+      directories do not match your configuration, blame your distro
+      for not following the standards 8-) AFAIK the only touchy
+      directory is /usr/local/share/pixmaps which I've seen on many distribution
+      but does not seem to be referenced in the FHS.
+    </text>
+    <text>
+      With the latest releases of Allegro, Liquid War is becoming pretty
+      stable under GNU/Linux. You should also know that the GNU/Linux port is usually
+      the most up to date, since I very very seldom boot Windows at home
+      and do most of the coding under GNU/Linux.
+    </text>
+  </chap>
+
+  <chap title="FreeBSD">
+    <text>
+      This is the latest port, so I expect it to be a little touchy to
+      install and/or run for some time.
+    </text>
+    <text>
+      Note that to compile the game you'll need to install GNU tools like
+      gmake and gcc. Liquid War won't compile with the genuine make and cc
+      commands.
+    </text>
+    <text>
+      One thing you might ask is: "why do you provide the binary as a plain
+      .tgz file, it would be much nicer if a standard FreeBSD port was 
+      provided instead!". The answer is that the statically linked binary
+      should work flawlessly and does not raise any dependency problem.
+      Also I don't know how to make a BSD port
+      and I'm not really interested in doing it. If it's easy to do, then someone
+      can simply do it and send it back to me. If it's hard to do, then I do not
+      really have the time nor motivation to do it. What I did is make the
+      code and install scripts FreeBSD friendly so that it would be possible to
+      compile the game under FreeBSD. Packaging is another story. 
+    </text>
+  </chap>
+
+  <chap title="Mac OS X">
+    <text>
+      There's currently a beta version of a Mac OS X port for Liquid War.
+      Ryan D. Brown nicely managed to compile and run the game under Mac OS X,
+      and the latest news was that it does basically work. Still, this port
+      did not go through intensive testing, so there might still be some bugs,
+      expecially concerning networking.
+    </text>
+    <text>
+      There were some byte endianess problems in previous ( &lt;=5.5.8 ) 
+      releases of LW, but I tried to fix them and they should be gone now.
+    </text>
+    <text>
+      As of today, we're trying to find out a convenient way to package and
+      release the Mac OS X version of LW. You can contact us on the
+      mailing list if you're interested in this port.
+    </text>
+  </chap>
+
+</file>
+
