@@ -72,6 +72,7 @@ static int TIME_TABLE[17] = { 15, 30, 45, 60,
   600, 900, 1200, 1800,
   3600
 };
+
 static int TICKER_PAUSED;
 static int TICKER_START;
 static int TICKER_PAUSE_START;

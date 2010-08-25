@@ -43,154 +43,26 @@
 /*****************************************************************************/
 
 /********************************************************************/
-/* nom           : menu.c                                           */
-/* contenu       : aaffichages des menus principaux                 */
-/* date de modif : 3 mai 98                                         */
+/* nom           : lw6.h                                            */
+/* contenu       : advertising for Liquid War 6                     */
+/* date de modif : 2010                                             */
 /********************************************************************/
+
+#ifndef LIQUID_WAR_INCLUDE_LW6
+#define LIQUID_WAR_INCLUDE_LW6
 
 /*==================================================================*/
 /* includes                                                         */
 /*==================================================================*/
 
-#include <string.h>
-
-#include "back.h"
-#include "dialog.h"
-#include "disk.h"
-#include "help.h"
-#include "level.h"
-#include "menu.h"
-#include "options.h"
-#include "play.h"
-#include "netplay.h"
-#include "team.h"
-#include "netgame.h"
-#include "network.h"
-#include "error.h"
-#include "about.h"
-#include "lang.h"
-#include "log.h"
-
 /*==================================================================*/
-/* fonctions                                                        */
+/* variables globales                                               */
 /*==================================================================*/
 
-/*------------------------------------------------------------------*/
-int
-confirm_quit (void)
-{
-  DIALOG d[3];
+/*==================================================================*/
+/* fonctions globales                                               */
+/*==================================================================*/
 
-  memset (d, 0, sizeof (d));
+int lw6_advertise_menu (int fade_in);
 
-  d[2].proc = NULL;
-  standard_button (d, 0, 0, 2, 1);
-  standard_button (d + 1, 1, 0, 2, 1);
-  d[0].dp = lw_lang_string (LW_LANG_STRING_MENU_EXIT);
-#ifdef DOS
-  d[0].dp = lw_lang_string (LW_LANG_STRING_MENU_EXITDOS);
 #endif
-#ifdef WIN32
-  d[0].dp = lw_lang_string (LW_LANG_STRING_MENU_EXITWINDOWS);
-#endif
-#ifdef UNIX
-  d[0].dp = lw_lang_string (LW_LANG_STRING_MENU_EXITUNIX);
-#endif
-  d[1].dp = lw_lang_string (LW_LANG_STRING_MENU_BACK);
-  d[0].key = 'q';
-  d[1].key = 'w';
-
-  return (my_do_dialog (d, 0) == 0);
-}
-
-/*------------------------------------------------------------------*/
-/* lancement du menu principal                                      */
-/*------------------------------------------------------------------*/
-
-/*------------------------------------------------------------------*/
-void
-main_menu (int fade_in)
-{
-  DIALOG d[11];
-  int i, choix = 4, retour = 0;
-
-  memset (d, 0, sizeof (d));
-
-  display_back_image ();
-
-  if (fade_in)
-    {
-      my_fade_in ();
-    }
-
-  while (retour != MENU_EXIT)
-    {
-      for (i = 0; i < 6; ++i)
-	standard_button (d + i + 4, 0, i, 1, 6);
-
-      quick_buttons (d);
-      d[MENU_QUICK_BACK].flags = D_HIDDEN;
-      d[MENU_QUICK_MAIN].flags = D_HIDDEN;
-      d[4].dp = lw_lang_string (LW_LANG_STRING_MENU_PLAY);
-      d[5].dp = lw_lang_string (LW_LANG_STRING_MENU_NETGAME);
-      d[6].dp = lw_lang_string (LW_LANG_STRING_MENU_MAP);
-      d[7].dp = lw_lang_string (LW_LANG_STRING_MENU_TEAMS);
-      d[8].dp = lw_lang_string (LW_LANG_STRING_MENU_OPTIONS);
-      d[9].dp = lw_lang_string (LW_LANG_STRING_MENU_ABOUT);
-      d[10].proc = 0;
-
-      choix = my_do_dialog (d, choix);
-      switch (choix)
-	{
-	case -1:
-	case MENU_QUICK_QUIT:
-	  if (confirm_quit ())
-	    retour = MENU_EXIT;
-	  break;
-	case MENU_QUICK_PLAY:
-	  retour = MENU_PLAY;
-	  break;
-	case 4:
-	  LW_NETWORK_ON = 0;
-	  retour = play_sequence ();
-	  break;
-	case 5:
-#ifndef DOS
-	  retour = network_game ();
-#else
-	  retour = error_no_network_support ();
-#endif
-	  break;
-	case 6:
-	  retour = choose_map ();
-	  break;
-	case 7:
-	  retour = choose_teams ();
-	  break;
-	case 8:
-	  retour = options ();
-	  break;
-	case 9:
-	  retour = lw_about ();
-	  break;
-	}
-      /*
-       * We handle the quick top-right "Play" button
-       */
-      if (retour == MENU_PLAY)
-	{
-	  if (LW_NETWORK_ON)
-	    {
-#ifndef DOS
-	      retour = netplay_sequence ();
-#else
-	      retour = play_sequence ();
-#endif
-	    }
-	  else
-	    {
-	      retour = play_sequence ();
-	    }
-	}
-    }
-}

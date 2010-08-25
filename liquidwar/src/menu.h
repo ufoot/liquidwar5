@@ -64,6 +64,6 @@
 /*==================================================================*/
 
 int confirm_quit (void);
-void main_menu (void);
+void main_menu (int fade_in);
 
 #endif

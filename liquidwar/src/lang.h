@@ -285,7 +285,10 @@
 #define LW_LANG_STRING_POPUP_CUSTOMFAIL          183
 #define LW_LANG_STRING_POPUP_GRAPHICSFAIL        184
 
-#define LW_LANG_NB_STRINGS                       185
+#define LW_LANG_STRING_LW6_INFO                  185
+#define LW_LANG_STRING_LW6_OK                    186
+
+#define LW_LANG_NB_STRINGS                       187
 
 /*==================================================================*/
 /* globals                                                          */

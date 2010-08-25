@@ -114,6 +114,7 @@ OBJ_NAMES = \
 	language \
 	level \
 	logcli \
+	lw6 \
 	main \
 	map \
 	maptex \

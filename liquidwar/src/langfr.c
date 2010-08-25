@@ -340,6 +340,10 @@ lw_langfr_init ()
     "Impossible de charger les fichiers de données utilisateur.";
   LW_LANGFR_DATA[LW_LANG_STRING_POPUP_GRAPHICSFAIL] =
     "Impossible de passer en mode graphique.";
+
+  LW_LANGFR_DATA[LW_LANG_STRING_LW6_INFO] =
+    "Depuis 2005 une nouvelle version de Liquid War est en cours de developpement. Il est maintenant temps de l'essayer! Bien sur si vous preferez continuer a jouer avec ce bon vieux Liquid War 5, pas de probleme ;) La nouvelle version s'appelle \"Liquid War 6\", elle est disponible sur\n\nhttp://www.gnu.org/software/liquidwar6/";
+  LW_LANGFR_DATA[LW_LANG_STRING_LW6_OK] = "OK";
 }
 
 /*------------------------------------------------------------------*/

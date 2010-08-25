@@ -64,6 +64,7 @@
 #include "init.h"
 #include "log.h"
 #include "menu.h"
+#include "lw6.h"
 #include "parser.h"
 #include "sound.h"
 #include "startup.h"
@@ -146,7 +147,15 @@ main (int argc, char **argv)
 
       start_graphic ();
       start_water ();
-      main_menu ();
+      if (CONFIG_LW6_ADVERTISING_DONE)
+	{
+	  main_menu (1);
+	}
+      else
+	{
+	  CONFIG_LW6_ADVERTISING_DONE = lw6_advertise_menu (1);
+	  main_menu (0);
+	}
 
       my_exit (EXIT_CODE_OK);
     }

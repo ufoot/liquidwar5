@@ -312,6 +312,10 @@ lw_langen_init ()
     "Unable to load custom data.";
   LW_LANGEN_DATA[LW_LANG_STRING_POPUP_GRAPHICSFAIL] =
     "Unable to initialize graphics.";
+
+  LW_LANGEN_DATA[LW_LANG_STRING_LW6_INFO] =
+    "Since 2005, a complete rewrite of Liquid War is being hacked on. It's now time to give it a try! Of course, you can still play good old Liquid War 5 if you like it better ;) The new version is called \"Liquid War 6\" and is available on\n\nhttp://www.gnu.org/software/liquidwar6/";
+  LW_LANGEN_DATA[LW_LANG_STRING_LW6_OK] = "OK";
 }
 
 /*------------------------------------------------------------------*/

@@ -1,4 +1,8 @@
 
+2010-08-25  Christian Mauduit (ufoot@ufoot.org)
+
+	* Information "Liquid War 6 is out" when starting game.
+
 2009-11-14  Christian Mauduit (ufoot@ufoot.org)
 
 	* Fixed Debian Bug #555468, missing -lm in mapgen Makefile

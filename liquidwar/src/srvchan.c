@@ -944,18 +944,21 @@ lw_srvchan_wait_teams (LW_SRVCHAN * chan, int *free_teams,
 		      break;
 		    case LW_NETMESS_CODE_PROGRAM:
 		      ret_mess = lw_srvchan_handle_program (chan->sock, mess,
-							    &(chan->
-							      program_ok));
+							    &
+							    (chan->
+							     program_ok));
 		      break;
 		    case LW_NETMESS_CODE_VERSION:
 		      ret_mess = lw_srvchan_handle_version (chan->sock, mess,
-							    &(chan->
-							      version_ok));
+							    &
+							    (chan->
+							     version_ok));
 		      break;
 		    case LW_NETMESS_CODE_PASSWORD:
 		      ret_mess = lw_srvchan_handle_password (chan->sock, mess,
-							     &(chan->
-							       password_ok),
+							     &
+							     (chan->
+							      password_ok),
 							     password);
 		      break;
 		    case LW_NETMESS_CODE_FREE:
@@ -977,8 +980,8 @@ lw_srvchan_wait_teams (LW_SRVCHAN * chan, int *free_teams,
 		      break;
 		    case LW_NETMESS_CODE_QUIT:
 		      ret_mess = lw_srvchan_handle_quit (chan->sock, mess,
-							 &(chan->
-							   normal_quit));
+							 &
+							 (chan->normal_quit));
 		      break;
 		    default:
 		      ret_mess = lw_srvchan_handle_unknown (sock, mess);
@@ -1130,8 +1133,8 @@ lw_srvchan_keepalive (LW_SRVCHAN * chan,
 		      break;
 		    case LW_NETMESS_CODE_QUIT:
 		      ret_mess = lw_srvchan_handle_quit (chan->sock, mess,
-							 &(chan->
-							   normal_quit));
+							 &
+							 (chan->normal_quit));
 		      break;
 		    default:
 		      ret_mess = lw_srvchan_handle_unknown (chan->sock, mess);
