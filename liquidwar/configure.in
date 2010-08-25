@@ -1,5 +1,5 @@
 # Liquid War is a multiplayer wargame
-# Copyright (C) 1998-2008 Christian Mauduit
+# Copyright (C) 1998-2010 Christian Mauduit
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -461,7 +461,7 @@ dnl behavior, you can explicitly use a given executable to replace
 dnl "make" by exporting it in the environment var "$MAKE".
 AC_CHECK_PROG(GMAKE,gmake,yes,no)
 AC_MSG_CHECKING(for which GNU Make to use)
-if which -s "$MAKE"; then
+if test -n "$MAKE" && which "$MAKE"; then
   GMAKE=$MAKE
 else
   if test "$GMAKE" = "yes" ; then
