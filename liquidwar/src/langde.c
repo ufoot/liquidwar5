@@ -336,7 +336,7 @@ lw_langde_init ()
   LW_LANGDE_DATA[LW_LANG_STRING_POPUP_INITFAIL] =
     "Initalisierung fehlgeschlagen.";
   LW_LANGDE_DATA[LW_LANG_STRING_POPUP_MEMTROUBLE] =
-    "Für Bilder ist nicht genug Speicher vorhanden.";
+    "Fuer Bilder ist nicht genug Speicher vorhanden.";
   LW_LANGDE_DATA[LW_LANG_STRING_POPUP_BIGDATA] =
     "Nicht genug Speicher vorhanden.";
   LW_LANGDE_DATA[LW_LANG_STRING_POPUP_LOADFAIL] =
