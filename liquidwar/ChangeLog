@@ -1,4 +1,14 @@
 
+2011-05-30  Christian Mauduit (ufoot@ufoot.org)
+
+	* Updated config.guess & other configure scripts.
+
+	* Mac OS X package fix.
+
+	* Fixed RPM generation.
+
+	* target -> host in configure/Makefile
+
 2011-04-30  Christian Mauduit (ufoot@ufoot.org)
 
 	* Copyright 2010 -> 2011.

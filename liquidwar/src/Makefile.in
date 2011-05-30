@@ -1,12 +1,13 @@
 
 prefix =          @prefix@
 exec_prefix =     @exec_prefix@
+datarootdir =     @datarootdir@
 datadir =         @datadir@
 
 DATADIR =         $(datadir)/games/liquidwar
 GAMEDIR =         $(exec_prefix)/games
 
-TARGET_OPT =      @TARGET_OPT@
+HOST_OPT =        @HOST_OPT@
 STATIC =          @STATIC@
 SNPRINTF =        @SNPRINTF@
 ALCFLAGS =        @ALCFLAGS@
@@ -15,19 +16,19 @@ DEBUG =           @DEBUG@
 EFENCE =          @EFENCE@
 PTHREAD =         @PTHREAD@
 
-ifeq ($(TARGET_OPT),yes)
-	TARGET =          @target@
-	TARGET_CPU =      @target_cpu@
-	TARGET_CPU_CC =   "-march=@target_cpu@"
+ifeq ($(HOST_OPT),yes)
+	HOST =          @host@
+	HOST_CPU =      @host_cpu@
+	HOST_CPU_CC =   "-march=@host_cpu@"
 else
-	TARGET =          default
-	TARGET_CPU =      default
-	TARGET_CPU_CC =
+	HOST =          default
+	HOST_CPU =      default
+	HOST_CPU_CC =
 endif
 
 # -mcpu=x86_64 doesn't work, here's a workarround
-ifeq ("@target_cpu@","x86_64")
-	TARGET_CPU_CC =   "-m64"
+ifeq ("@host_cpu@","x86_64")
+	HOST_CPU_CC =   "-m64"
 endif
 
 
@@ -235,21 +236,21 @@ CONFIG_OPTIONS = \
 	-DCONFIG_UNIX_SRV=\"$(GAMEDIR)/liquidwar-server\" \
 	-DCONFIG_UNIX_GEN=\"$(GAMEDIR)/liquidwar-mapgen\"
 
-CMD_CC = $(CC) $(CFLAGS) $(ALCFLAGS) -c $(DEBUG_FLAGS) -Wall -W $(TARGET_CPU_CC) $(CONFIG_OPTIONS) $(DEBUG_OPTIONS) $(SPRINTF_OPTIONS) $(ASM_OPTIONS) -DUNIX -D_THREAD_SAFE
+CMD_CC = $(CC) $(CFLAGS) $(ALCFLAGS) -c $(DEBUG_FLAGS) -Wall -W $(HOST_CPU_CC) $(CONFIG_OPTIONS) $(DEBUG_OPTIONS) $(SPRINTF_OPTIONS) $(ASM_OPTIONS) -DUNIX -D_THREAD_SAFE
 CMD_AS = $(AS) $(ASFLAGS) --32
 
 all: $(EXE_FILES)
 
 liquidwar: $(OBJ_FILES)
-	@echo "Linking $@ (target=$(TARGET), debug=$(DEBUG), static=$(STATIC), asm=$(ASM))"
+	@echo "Linking $@ (host=$(HOST), debug=$(DEBUG), static=$(STATIC), asm=$(ASM))"
 	@$(CC) $(LDFLAGS) $(LINK_OPTIONS) -o $@ $(OBJ_FILES) $(PTHREAD) $(EXTERN_LIBS) 
 
 liquidwar-server: $(OBJ_FILES_SRV)
-	@echo "Linking $@ (target=$(TARGET), debug=$(DEBUG), static=$(STATIC))"
+	@echo "Linking $@ (host=$(HOST), debug=$(DEBUG), static=$(STATIC))"
 	@$(CC) $(LDFLAGS) $(LINK_OPTIONS) -o $@ $(OBJ_FILES_SRV) $(PTHREAD)
 
 liquidwar-mapgen: $(OBJ_FILES_MAPGEN)
-	@echo "Linking $@ (target=$(TARGET), debug=$(DEBUG), static=$(STATIC))"
+	@echo "Linking $@ (host=$(HOST), debug=$(DEBUG), static=$(STATIC))"
 	@$(CC) $(LDFLAGS) $(LINK_OPTIONS) -o $@ $(OBJ_FILES_MAPGEN) -lm $(PTHREAD) $(EXTERN_LIBS) 
 
 dep:
@@ -269,7 +270,7 @@ distclean:
 	@rm -f Makefile Makefile.dep
 
 %.o: %.c
-	@echo "Compiling $< (cpu=$(TARGET_CPU), debug=$(DEBUG), asm=$(ASM))"
+	@echo "Compiling $< (cpu=$(HOST_CPU), debug=$(DEBUG), asm=$(ASM))"
 	@$(CMD_CC) $< -o $@
 
 %.o: %.s
@@ -285,7 +286,7 @@ check:
 
 print_config:
 	@echo "The configuration options to generate binaries are:"
-	@echo "Target      :" $(TARGET)
+	@echo "Host        :" $(HOST)
 	@echo "Debug       :" $(DEBUG)
 	@echo "Static link :" $(STATIC)
 	@echo "Assembly    :" $(ASM)

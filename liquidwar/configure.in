@@ -25,7 +25,6 @@ AC_INIT()
 AC_PROG_CC
 
 AC_CANONICAL_HOST
-AC_CANONICAL_TARGET
 
 dnl Now we check if we need to use ou own snprintf function
 AC_CHECK_FUNC(snprintf,[SNPRINTF=yes],[SNPRINTF=no])
@@ -136,14 +135,14 @@ AC_CHECK_PROG(MAKEINFO,makeinfo,yes,no)
 dnl checking if the cpu is of the i386 family
 I386="no"
 for i in i386 i486 i586 i686 ; do
-  if test "$i" = "$target_cpu" ; then
+  if test "$i" = "$host_cpu" ; then
     I386="yes"
   fi;
 done;
 
 dnl checking if we or on Mac OS/X
 OSX="no"
-if echo "$target_os" | grep "arwin"; then
+if echo "$host_os" | grep "arwin"; then
   OSX="yes"
 fi
 
@@ -429,27 +428,27 @@ AC_ARG_ENABLE(static,[  --enable-static         Enable static link],
 AC_SUBST(STATIC)
 
 dnl This flag allows the user to bypass the "-march=xxx" gcc option
-AC_MSG_CHECKING(for target specific optimizations)
-AC_ARG_ENABLE(target-opt,[  --disable-target-opt    Disable target specific optimizations],
+AC_MSG_CHECKING(for host specific optimizations)
+AC_ARG_ENABLE(host-opt,[  --disable-host-opt      Disable host specific optimizations],
 [
   if test "$I386" == "yes" && test "$enableval" != "no" ; then
-    TARGET_OPT=yes
+    HOST_OPT=yes
     AC_MSG_RESULT([enabled])
   else
-    TARGET_OPT=no
+    HOST_OPT=no
     AC_MSG_RESULT([disabled])
   fi
 ],
 [
   if test "$I386" == "yes" ; then
-    TARGET_OPT=yes
+    HOST_OPT=yes
     AC_MSG_RESULT([enabled])
   else
-    TARGET_OPT=no
+    HOST_OPT=no
     AC_MSG_RESULT([disabled])
   fi
 ])
-AC_SUBST(TARGET_OPT)
+AC_SUBST(HOST_OPT)
 
 
 
@@ -472,6 +471,26 @@ else
 fi 
 AC_MSG_RESULT([$GMAKE])
 AC_SUBST(GMAKE)
+
+
+
+dnl RPM building dirs may differ
+AC_MSG_CHECKING([checking for RPMS dir])
+if test -d /root/rpmbuild/RPMS ; then
+  RPMS_DIR=/root/rpmbuild/RPMS
+else
+  RPMS_DIR=/usr/src/rpm/RPMS
+fi
+AC_MSG_RESULT([$RPMS_DIR])
+AC_SUBST(RPMS_DIR)
+AC_MSG_CHECKING([checking for SRPMS dir])
+if test -d /root/rpmbuild/SRPMS ; then
+  SRPMS_DIR=/root/rpmbuild/SRPMS
+else
+  SRPMS_DIR=/usr/src/rpm/SRPMS
+fi
+AC_MSG_RESULT([$SRPMS_DIR])
+AC_SUBST(SRPMS_DIR)
 
 
 

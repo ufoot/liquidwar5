@@ -117,14 +117,30 @@ int STARTUP_CAPTURE = 0;
 int STARTUP_TOMBOLA = 0;
 
 #ifdef UNIX
+#ifdef ALLEGRO_MACOSX
+/*
+ * We test with ALLEGRO_MACOSX and no custom OSX define
+ * for this is still a variant of the UNIX port, only
+ * some paths differ (because of the .app bundle layout)
+ */
 static char *DEFAULT_CFG_PATH = CONFIG_UNIX_CFG;
 static char *DEFAULT_LOG_PATH = "";
+static char *DEFAULT_SRV_PATH = "./liquidwar-server"
+  static char *DEFAULT_GEN_PATH = "./liquidwar-mapgen"
+  static char *DEFAULT_DAT_PATH = "../Resources/data/liquidwar.dat"
+  static char *DEFAULT_MAP_PATH = "../Resources/custom/map/"
+  static char *DEFAULT_TEX_PATH = "../Resources/custom/texture/"
+  static char *DEFAULT_MID_PATH = "../Resources/custom/music/"
+#else
+static char *DEFAULT_CFG_PATH = CONFIG_UNIX_CFG;
+static char *DEFAULT_LOG_PATH = "";
+static char *DEFAULT_SRV_PATH = CONFIG_UNIX_SRV;
+static char *DEFAULT_GEN_PATH = CONFIG_UNIX_GEN;
 static char *DEFAULT_DAT_PATH = CONFIG_UNIX_DAT;
 static char *DEFAULT_MAP_PATH = CONFIG_UNIX_MAP;
 static char *DEFAULT_TEX_PATH = CONFIG_UNIX_TEX;
 static char *DEFAULT_MID_PATH = CONFIG_UNIX_MID;
-static char *DEFAULT_SRV_PATH = CONFIG_UNIX_SRV;
-static char *DEFAULT_GEN_PATH = CONFIG_UNIX_GEN;
+#endif
 #else
 #ifdef WIN32
 static char *DEFAULT_CFG_PATH = "data/lwwin.cfg";

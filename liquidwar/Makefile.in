@@ -2,6 +2,7 @@
 prefix =          @prefix@
 exec_prefix =     @exec_prefix@
 bindir =          @bindir@
+datarootdir =     @datarootdir@
 datadir =         @datadir@
 mandir =          @mandir@
 infodir =         @infodir@
@@ -24,19 +25,17 @@ MANDIR =          $(datadir)/man/man6
 INFODIR =         $(datadir)/info
 INFODIRDIR =      $(infodir)
 
-ifeq (@TARGET_OPT@,yes)
-	TARGET =          @target@
-	TARGET_CPU =      @target_cpu@
-else
-	TARGET =          unknown
-	TARGET_CPU =      unknown
-endif
+HOST =          @host@
+HOST_CPU =      @host_cpu@
 
 VERSION =         @VERSION@
 VERSION_REL =     @VERSION_REL@
 VERSION_COMPACT = @VERSION_COMPACT@
 
 GMAKE = @GMAKE@
+
+RPMS_DIR = @RPMS_DIR@
+SRPMS_DIR = @SRPMS_DIR@
 
 MAKE_BIN_DIR = ./src
 MAKE_DATA_DIR = ./data
@@ -48,8 +47,8 @@ PACKAGE_SOURCE_DIR = liquidwar-$(VERSION)
 PACKAGE_SOURCE_TAR = $(PACKAGE_SOURCE_DIR).tar
 PACKAGE_SOURCE_TARGZ = $(PACKAGE_SOURCE_TAR).gz
 
-PACKAGE_BINARY_TAR = liquidwar-$(VERSION).$(TARGET).tar
-PACKAGE_BINARY_TGZ = liquidwar-$(VERSION).$(TARGET).tgz
+PACKAGE_BINARY_TAR = liquidwar-$(VERSION).$(HOST).tar
+PACKAGE_BINARY_TGZ = liquidwar-$(VERSION).$(HOST).tgz
 
 PACKAGE_DOS_DIR = LW5
 PACKAGE_DOS_EXE = lwdos.exe lwdosmap.exe
@@ -65,11 +64,11 @@ PACKAGE_WIN32_ALLEGDLL = /storage/download/liquidwar/v5/allegro/alleg42.dll
 
 PACKAGE_NSIS_EXE = lw$(VERSION_COMPACT).exe
 
-PACKAGE_SOURCE_RPM_TARGET = /usr/src/rpm/SRPMS
+PACKAGE_SOURCE_RPM_TARGET = $(SRPMS_DIR)
 PACKAGE_SOURCE_RPM = liquidwar-$(VERSION)-$(VERSION_REL).src.rpm
 
-PACKAGE_BINARY_RPM_TARGET = /usr/src/rpm/RPMS/$(TARGET_CPU)
-PACKAGE_BINARY_RPM = liquidwar-$(VERSION)-$(VERSION_REL).$(TARGET_CPU).rpm
+PACKAGE_BINARY_RPM_TARGET = $(RPMS_DIR)/$(HOST_CPU)
+PACKAGE_BINARY_RPM = liquidwar-$(VERSION)-$(VERSION_REL).$(HOST_CPU).rpm
 
 PACKAGE_MACOSX_TAR = liquidwar-$(VERSION).macosx.tar
 PACKAGE_MACOSX_TGZ = liquidwar-$(VERSION).macosx.tgz
@@ -206,7 +205,7 @@ uninstall:
 
 clean:
 	@for d in $(MAKE_DIRS); do $(GMAKE) -C $$d clean; done
-	@find . -name "*~" -o -name "*#*" -o -name ".*#*" | xargs rm -f 	
+	@find . -name "*~" -o -name "*#*" -o -name ".*#*" | xargs rm -f
 
 world_clean:
 	@rm -f $(PACKAGE_SOURCE_TARGZ)
@@ -217,14 +216,14 @@ world_clean:
 	@rm -f $(PACKAGE_WIN32_ZIP)
 	@rm -f $(PACKAGE_NSIS_EXE)
 
-# target used when preparing packages
+# used when preparing packages
 packageclean: clean world_clean
 	@rm -r -f Makefile config.cache config.status config.log autom4te.cache
 	@rm -f misc/liquidward misc/macosx_info.plist misc/liquidwar.nsi
 	@find . -name "*.o" -o -name "*.obj" | xargs rm -f
 	@find . -name "*.tar.gz" -o -name "*.tgz" -o -name "*.zip" -o -name "*.rpm" -o -name "*.deb" -o -name "*.tgz" | xargs rm -f
 	@find . -name ".xvpics" | xargs rm -rf
-	@find . -name "lwmap.bmp" | xargs rm -rf
+	@find . -name "lwmap.bmp" | xargs rm -f
 	@rm -rf LW5 lwdos*exe lwwin*exe _tmpfile.arg *.log vc60.* *.idb *.pch
 	@rm -rf data/lwwin* data/lwdos*
 	@rm -rf starter
@@ -346,7 +345,7 @@ $(PACKAGE_WIN32_ZIP): $(PACKAGE_WIN32_EXE) $(PACKAGE_WIN32_ALLEGDLL)
 	@cp -r custom/texture $(PACKAGE_TMP)/$(PACKAGE_WIN32_DIR)/custom
 	@cp -r custom/music $(PACKAGE_TMP)/$(PACKAGE_WIN32_DIR)/custom
 	@install -d $(PACKAGE_TMP)/$(PACKAGE_WIN32_DIR)/doc
-	@cp -r doc/html doc/txt doc/ps doc/pdf $(PACKAGE_TMP)/$(PACKAGE_WIN32_DIR)/doc
+	@cp -r doc/html doc/txt doc/pdf $(PACKAGE_TMP)/$(PACKAGE_WIN32_DIR)/doc
 	@install -d $(PACKAGE_TMP)/$(PACKAGE_WIN32_DIR)/misc
 	@cp -r misc/lwserver.bat misc/lwpopup.js $(PACKAGE_TMP)/$(PACKAGE_WIN32_DIR)/misc
 	@echo "Cleaning up."
@@ -383,7 +382,7 @@ $(PACKAGE_BINARY_TGZ): $(PACKAGE_SOURCE_TARGZ)
 	@echo "Preparing source."
 	@cp $(PACKAGE_SOURCE_TARGZ) $(PACKAGE_TMP)
 	@cd $(PACKAGE_TMP) && tar xzf $(PACKAGE_SOURCE_TARGZ)
-	@cd $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR) && ./configure --enable-static --disable-doc-info --target=$(TARGET) --prefix=$(prefix)
+	@cd $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR) && ./configure --enable-static --disable-doc-info --host=$(HOST) --prefix=$(prefix)
 	@echo "Compiling."
 	@$(GMAKE) -C $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)
 	@echo "Cleaning up install directories."
@@ -405,7 +404,7 @@ $(PACKAGE_SOURCE_RPM): $(PACKAGE_SOURCE_TARGZ)
 	@echo "Checking permissions."
 	@if [ `whoami` != root ] ; then echo "You need to be root to build $@." && exit 1 ; fi
 	@echo "Building source rpm."
-	@rpm -ts --sign $(PACKAGE_SOURCE_TARGZ)
+	@rpmbuild -ts --sign $(PACKAGE_SOURCE_TARGZ)
 	@echo "Copying source rpm."
 	@cp $(PACKAGE_SOURCE_RPM_TARGET)/$(PACKAGE_SOURCE_RPM) .
 
@@ -415,7 +414,7 @@ $(PACKAGE_BINARY_RPM): $(PACKAGE_SOURCE_TARGZ)
 	@echo "Checking permissions."
 	@if [ `whoami` != root ] ; then echo "You need to be root to build $@." && exit 1 ; fi
 	@echo "Building binary rpm."
-	@rpm -tb --sign --target $(TARGET) $(PACKAGE_SOURCE_TARGZ)
+	@rpmbuild -tb --sign $(PACKAGE_SOURCE_TARGZ)
 	@echo "Copying binary rpm."
 	@cp $(PACKAGE_BINARY_RPM_TARGET)/$(PACKAGE_BINARY_RPM) .
 
@@ -428,9 +427,7 @@ $(PACKAGE_MACOSX_TGZ): $(PACKAGE_SOURCE_TARGZ)
 	@echo "Preparing source."
 	@cp $(PACKAGE_SOURCE_TARGZ) $(PACKAGE_TMP)
 	@cd $(PACKAGE_TMP) && tar xzf $(PACKAGE_SOURCE_TARGZ)
-	# Static builds do not seem to work well on Mac OS X yet. 
-	#@cd $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR) && ./configure --enable-static --disable-doc-info --target=$(TARGET) --prefix=$(prefix)
-	@cd $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR) && ./configure --disable-doc-info --target=$(TARGET) --prefix=$(prefix)
+	@cd $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR) && ./configure --disable-doc-info --host=$(HOST) --prefix=/opt
 	@echo "Compiling."
 	@$(GMAKE) -C $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)
 	@echo "Creating directory structure."
@@ -438,24 +435,37 @@ $(PACKAGE_MACOSX_TGZ): $(PACKAGE_SOURCE_TARGZ)
 	@install -d "$(PACKAGE_TMP)/Liquid War.app/Contents"
 	@install -d "$(PACKAGE_TMP)/Liquid War.app/Contents/MacOS"
 	@install -d "$(PACKAGE_TMP)/Liquid War.app/Contents/Resources"
+	@install -d "$(PACKAGE_TMP)/Liquid War.app/Contents/Resources/data"
+	@install -d "$(PACKAGE_TMP)/Liquid War.app/Contents/Resources/custom"
+	@install -d "$(PACKAGE_TMP)/Liquid War.app/Contents/Resources/doc"
 	@echo "Copying files."
-	@cp  $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/src/liquidwar "$(PACKAGE_TMP)/Liquid War.app/Contents/Resources"
-	@cp  $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/src/liquidwar-server "$(PACKAGE_TMP)/Liquid War.app/Contents/Resources"
-	@cp  $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/src/liquidwar-mapgen "$(PACKAGE_TMP)/Liquid War.app/Contents/Resources"
-	@cp  $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/data/liquidwar.dat "$(PACKAGE_TMP)/Liquid War.app/Contents/Resources"
-	@cp  -r $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/custom/map "$(PACKAGE_TMP)/Liquid War.app/Contents/Resources"
-	@cp  -r $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/custom/texture "$(PACKAGE_TMP)/Liquid War.app/Contents/Resources"
-	@cp  -r $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/custom/music "$(PACKAGE_TMP)/Liquid War.app/Contents/Resources"
-	@cp  $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/misc/globe.icns "$(PACKAGE_TMP)/Liquid War.app/Contents/Resources/Liquid War.icns"
-	@cp  $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/misc/macosx_launcher.sh "$(PACKAGE_TMP)/Liquid War.app/Contents/MacOS/Liquid War"
+	@cp  $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/src/liquidwar "$(PACKAGE_TMP)/Liquid War.app/Contents/MacOS/"
+	@cp  $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/src/liquidwar-server "$(PACKAGE_TMP)/Liquid War.app/Contents/MacOS/"
+	@cp  $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/src/liquidwar-mapgen "$(PACKAGE_TMP)/Liquid War.app/Contents/MacOS/"
+	@cp  $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/data/liquidwar.dat "$(PACKAGE_TMP)/Liquid War.app/Contents/Resources/data/"
+	@cp  -r $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/custom/map "$(PACKAGE_TMP)/Liquid War.app/Contents/Resources/custom/"
+	@cp  -r $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/custom/texture "$(PACKAGE_TMP)/Liquid War.app/Contents/Resources/custom/"
+	@cp  -r $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/custom/music "$(PACKAGE_TMP)/Liquid War.app/Contents/Resources/custom/"
+	@cp  $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/misc/liquidwar.icns "$(PACKAGE_TMP)/Liquid War.app/Contents/Resources/"
 	@cp  $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/misc/macosx_info.plist "$(PACKAGE_TMP)/Liquid War.app/Contents/Info.plist"
-	@cp  $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/misc/macosx_readme.rtf "$(PACKAGE_TMP)/Readme.rtf"
-	@cp  $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/COPYING "$(PACKAGE_TMP)/gpl.txt"
-	@cp  $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/doc/pdf/liquidwar.pdf "$(PACKAGE_TMP)"
+	@cp  $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/COPYING "$(PACKAGE_TMP)/Liquid War.app/Contents/Resources/doc/"
+	@cp  $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/COPYING "$(PACKAGE_TMP)/License.txt"
+	@cp  $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/ChangeLog "$(PACKAGE_TMP)/Liquid War.app/Contents/Resources/doc/"
+	@cp  $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/README "$(PACKAGE_TMP)/Liquid War.app/Contents/Resources/doc/"
+	@cp  $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/README.de "$(PACKAGE_TMP)/Liquid War.app/Contents/Resources/doc/"
+	@cp  $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/README.dk "$(PACKAGE_TMP)/Liquid War.app/Contents/Resources/doc/"
+	@cp  $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/README.fr "$(PACKAGE_TMP)/Liquid War.app/Contents/Resources/doc/"
+	@cp  -r $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/doc/html $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/doc/txt $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/doc/pdf "$(PACKAGE_TMP)/Liquid War.app/Contents/Resources/doc/"
+	@cp  $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/doc/pdf/liquidwar.pdf "$(PACKAGE_TMP)/Liquid War.pdf"
+	@echo "Updating dynamic libraries dependencies"
+	@if which otool; then for i in `otool -L $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/src/liquidwar | grep dylib | grep -v /usr | grep /opt | cut -d "(" -f 1` ; do j=$${i##*/}; cp $$i "$(PACKAGE_TMP)/Liquid War.app/Contents/MacOS/"; chmod 644 "$(PACKAGE_TMP)/Liquid War.app/Contents/MacOS/$$j"; install_name_tool -id @executable_path/$$j "$(PACKAGE_TMP)/Liquid War.app/Contents/MacOS/$$j"; install_name_tool -change $$i @executable_path/$$j "$(PACKAGE_TMP)/Liquid War.app/Contents/MacOS/liquidwar"; done ; fi # yes, this is complicated, the idea is to run otool -L to find every library dependency, keep only those in /opt installed by macports or from source, then run install_name_tool to change references to a path relative to the executable path, so that it's findable within the package and does not rely on some developper's local install. One more point: we can't put libs outsite @executable_path (./MacOS) because if path is too long install_name_path won't work... See -headerpad_max_install_names option in LDFLAGS, might help too
 	@echo "Cleaning up."
-	@find $(PACKAGE_TMP) -name CVS -o -name .arch-ids -o -name "{arch}" | xargs rm -rf
+	@find $(PACKAGE_TMP) -name DUMMY -exec rm -f "{}" \;
+	@find $(PACKAGE_TMP) -name "*.in" -exec rm -f "{}" \;
+	@find $(PACKAGE_TMP) -name "*.inc" -exec rm -f "{}" \;
 	@echo "Removing source."
 	@rm -rf $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)
+	@rm -f $(PACKAGE_TMP)/$(PACKAGE_SOURCE_TARGZ)
 	@echo "Creating tarball."
 	@cd $(PACKAGE_TMP) && tar cf $(PACKAGE_MACOSX_TAR) *
 	@echo "Compressing."
@@ -465,9 +475,16 @@ $(PACKAGE_MACOSX_TGZ): $(PACKAGE_SOURCE_TARGZ)
 
 package_macosx_dmg: $(PACKAGE_MACOSX_DMG)
 
-$(PACKAGE_MACOSX_DMG):
-	@echo "Under construction..."
-	# There's a script which can be used to generate .dmg files on:
-	# http://www.omnigroup.com/mailman/archive/macosx-talk/2002-November/001271.html
-	# Definitely need to take a look a at it.
+$(PACKAGE_MACOSX_DMG): $(PACKAGE_MACOSX_TGZ)
+	@echo "Creating temporary directory."
+	@rm -rf $(PACKAGE_TMP)
+	@install -d $(PACKAGE_TMP)
+	@echo "Preparing binary."
+	@cp $(PACKAGE_MACOSX_TGZ) $(PACKAGE_TMP)
+	@cd $(PACKAGE_TMP) && tar xzf $(PACKAGE_MACOSX_TGZ)
+	@rm -f $(PACKAGE_TMP)/$(PACKAGE_MACOSX_TGZ)
+	@echo "Creating disk image."
+	@rm -f $@ && if which hdiutil ; then hdiutil create -srcfolder "$(PACKAGE_TMP)" $@ ; fi
+	@echo "Deleting temporary directory."
+	@rm -rf $(PACKAGE_TMP) 
 
