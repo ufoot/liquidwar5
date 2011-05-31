@@ -18,10 +18,8 @@
       valuable feedback source.
     </text>
     <text>
-      Additionnaly, on online bug tracking system has been set up.
-      It uses Flyspray "http://flyspray.rocks.cc/".
-      It's accessible on "http://www.ufoot.org/bugtracker/" or
-      "http://www.ufoot.org/bugtracker/index.php?project=2".
+      Additionnaly, on online bug tracking system has been set up
+      on "http://savannah.nongnu.org/bugs/?group=liquidwar".
       I try to collect everything here : bugs reported on the mailing-list,
       bugs from Debian, and bugs I found myself. Alternatively
       you can report bugs directly on it 8-)
@@ -92,19 +90,6 @@
       If you get this message, you need to reinstall the game by
       unzipping it with a "correct" unzipping program which does
       not wreck directory structrure up.
-    </text>
-  </chap>
-
-  <chap title="Interference with other Windows programs">
-    <text>
-      It's been reported that Liquid War can run very slowly on Windows
-      when some other programs (Mozilla for instance) are running.
-      So if Liquid War's menus seem to be really really slow, then
-      try to shut down other applications and run the game again.
-    </text>
-    <text>
-      This problem does not seem to apply on GNU/Linux - at least if you
-      do not run 300 daemons together on your machine 8-)
     </text>
   </chap>
 
