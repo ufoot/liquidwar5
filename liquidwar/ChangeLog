@@ -1,6 +1,8 @@
 
 2011-05-31  Christian Mauduit (ufoot@ufoot.org)
 
+	* Added hi-res icon.
+
 	* Changed READMEs charset to UTF-8.
 
 	* Makefile distclean fix.
