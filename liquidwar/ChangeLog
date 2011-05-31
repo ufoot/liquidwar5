@@ -1,4 +1,8 @@
 
+2011-05-31  Christian Mauduit (ufoot@ufoot.org)
+
+	* Renamed win32 nsis package.
+
 2011-05-30  Christian Mauduit (ufoot@ufoot.org)
 
 	* Updated config.guess & other configure scripts.
