@@ -1,4 +1,3 @@
-
 2011-05-31  Christian Mauduit (ufoot@ufoot.org)
 
 	* Added hi-res icon.
@@ -6,6 +5,7 @@
 	* Changed READMEs charset to UTF-8.
 
 	* Makefile distclean fix.
+
 
 2011-05-30  Christian Mauduit (ufoot@ufoot.org)
 
@@ -17,37 +17,46 @@
 
 	* target -> host in configure/Makefile
 
+
 2011-04-30  Christian Mauduit (ufoot@ufoot.org)
 
 	* Copyright 2010 -> 2011.
+
 
 2010-08-25  Christian Mauduit (ufoot@ufoot.org)
 
 	* Information "Liquid War 6 is out" when starting game.
 
+
 2009-11-14  Christian Mauduit (ufoot@ufoot.org)
 
 	* Fixed Debian Bug #555468, missing -lm in mapgen Makefile
+
 
 2009-08-19  Christian Mauduit (ufoot@ufoot.org)
 
 	* Makefile updates for native OS/X support.
 
+
 2009-07-31  Christian Mauduit (ufoot@ufoot.org)
 
 	* Security patch by Mikhail Yakshin.
+
 
 2009-04-22  Christian Mauduit (ufoot@ufoot.org)
 
 	* New solsystem map by Rezifull
 
+
 2008-05-10  Christian Mauduit (ufoot@ufoot.org)
 
 	* .desktop patch by SA Gevatter (FreeDesktop.org compliance)
 
+
 2008-03-25  Christian Mauduit (ufoot@ufoot.org)
 
 	* Added sample logrotate.d file.
+
 
 2008-03-24  Christian Mauduit (ufoot@ufoot.org)
 	
@@ -57,9 +66,11 @@
 
 	* Now somewhat version agnostic, will accept 5.6.3 & more.
 
+
 2007-11-16  Christian Mauduit (ufoot@ufoot.org)
 
 	* Fixed CPU detection, ASM was compiled on x86_64 but isn't linkable.
+
 
 2007-10-17  Christian Mauduit (ufoot@ufoot.org)
 
