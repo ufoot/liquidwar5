@@ -1,5 +1,7 @@
 2011-05-31  Christian Mauduit (ufoot@ufoot.org)
 
+	* Added icon support under X-Windows.
+
 	* Doc update.
 
 	* Added hi-res icon.

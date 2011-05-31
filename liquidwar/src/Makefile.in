@@ -163,6 +163,7 @@ OBJ_NAMES = \
 	watchdog \
 	wave \
 	wwwcli \
+	x11icon \
 	$(SNPRINTF_NAMES) \
 	$(ASM_NAMES)
 
