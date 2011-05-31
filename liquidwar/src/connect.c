@@ -476,8 +476,7 @@ connect_on_server_keepalive (void *arg)
 		    {
 		      if (!lw_protocol_ask_teamstartinfo (&data->sock, i,
 							  &
-							  (data->
-							   team_start_info
+							  (data->team_start_info
 							   [i])))
 			{
 			  result = 0;
