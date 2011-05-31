@@ -1,7 +1,7 @@
 
 2011-05-31  Christian Mauduit (ufoot@ufoot.org)
 
-	* Renamed win32 nsis package.
+	* Makefile distclean fix.
 
 2011-05-30  Christian Mauduit (ufoot@ufoot.org)
 

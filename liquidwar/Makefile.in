@@ -62,7 +62,7 @@ PACKAGE_WIN32_ZIP = lw$(VERSION_COMPACT)w.zip
 # the following line should be edited to match your configuration
 PACKAGE_WIN32_ALLEGDLL = /storage/download/liquidwar/v5/allegro/alleg42.dll
 
-PACKAGE_NSIS_EXE = liquidwar-$(VERSION).exe
+PACKAGE_NSIS_EXE = lw$(VERSION_COMPACT).exe
 
 PACKAGE_SOURCE_RPM_TARGET = $(SRPMS_DIR)
 PACKAGE_SOURCE_RPM = liquidwar-$(VERSION)-$(VERSION_REL).src.rpm
