@@ -342,7 +342,7 @@ lw_langfr_init ()
     "Impossible de passer en mode graphique.";
 
   LW_LANGFR_DATA[LW_LANG_STRING_LW6_INFO] =
-    "Depuis 2005 une nouvelle version de Liquid War est en cours de developpement. Il est maintenant temps de l'essayer! Bien sur si vous preferez continuer a jouer avec ce bon vieux Liquid War 5, pas de probleme ;) La nouvelle version s'appelle \"Liquid War 6\", elle est disponible sur\n\nhttp://www.gnu.org/software/liquidwar6/";
+    "Ce programme est obsolete, vous devriez essayer Liquid War 6, disponible sur\n\nhttp://www.gnu.org/software/liquidwar6/\n\nDans tous les cas, Liquid War 5 reste encore disponible et vous pouvez y jouer librement. Seules les failles de securite majeures seront corrigees, ne pas s'attendre a de gros changement sur cette vieille version.";
   LW_LANGFR_DATA[LW_LANG_STRING_LW6_OK] = "OK";
 }
 
