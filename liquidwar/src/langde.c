@@ -347,7 +347,7 @@ lw_langde_init ()
     "Graphiken konnten nicht geladen werden.";
 
   LW_LANGDE_DATA[LW_LANG_STRING_LW6_INFO] =
-    "This program is obsolete, please consider upgrading to Liquid War 6, available on\n\nhttp://www.gnu.org/software/liquidwar6/\n\nHowever, Liquid War 5 is still available for your convenience, and you can play it freely. Only major security holes will be fixed, expect no major changes on this legacy branch.";
+    "Dieses Programm ist veraltet. Denke ueber ein Upgrade auf Liquid War 6 nach, welches unter folgender Adresse verfuegbar ist:\n\nhttp://www.gnu.org/software/liquidwar6/\n\nLiquid War 5 steht dir weiterhin zur Verfuegung, und kann kostenlos benutzt werden. In Zukunft werden jedoch nur noch groessere Sicherheitsloecher gefixt, eine Weiterentwicklung des Liquid War 5 Baumes sollte nicht erwartet werden.";
   LW_LANGDE_DATA[LW_LANG_STRING_LW6_OK] = "OK";
 }
 
