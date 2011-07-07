@@ -148,5 +148,24 @@
     </text>
   </chap>
 
+  <chap title="GP2X">
+    <text>
+      Liquid War has been ported to the GP2X handheld gaming platform, thanks
+      to the fact George Foot ported Allegro to this platform.
+      More informations on "http://www.glost.eclipse.co.uk/gfoot/gp2x/allegro.html"
+    </text>
+    <text>
+      FYI, Allegro 4.2.0 needed a trivial patch which is in the ./misc directory
+      of the source LW distribution and adds src/misc/colconv.c to the list of needed
+      files, and was compiled with the following options:
+    </text>
+    <code>
+./configure --prefix=$GP2X_USER_PREFIX --build=x86_64-pc-linux-gnu --host=arm-open2x-linux --enable-lgp2x=$GP2X_SYSTEM_PREFIX
+    </code>
+    <text>
+      It might also be necessary to run make then make install the make and make install 
+      again since library detection is weird in cross-platform environments.
+    </text>
+  </chap>
 </file>
 
