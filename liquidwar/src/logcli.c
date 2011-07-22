@@ -112,6 +112,7 @@ log_init (void)
     }
 #endif
 
+  log_flush ();
   lw_mutex_unlock (&LOG_MUTEX);
 }
 
@@ -128,6 +129,7 @@ log_exit (void)
     }
 #endif
 
+  log_flush ();
   lw_mutex_unlock (&LOG_MUTEX);
 }
 
@@ -147,6 +149,7 @@ log_print_str (char *str)
     }
 #endif
 
+  log_flush ();
   lw_mutex_unlock (&LOG_MUTEX);
 }
 
@@ -166,6 +169,7 @@ log_print_int (int i)
     }
 #endif
 
+  log_flush ();
   lw_mutex_unlock (&LOG_MUTEX);
 }
 
@@ -182,10 +186,10 @@ log_println ()
   if (LW_LOG_FILE)
     {
       fprintf (LW_LOG_FILE, "\n");
-      log_flush ();
     }
 #endif
 
+  log_flush ();
   lw_mutex_unlock (&LOG_MUTEX);
 }
 
@@ -202,10 +206,10 @@ log_println_str (char *str)
   if (LW_LOG_FILE)
     {
       fprintf (LW_LOG_FILE, "%s\n", str);
-      log_flush ();
     }
 #endif
 
+  log_flush ();
   lw_mutex_unlock (&LOG_MUTEX);
 }
 
@@ -222,10 +226,10 @@ log_println_int (int i)
   if (LW_LOG_FILE)
     {
       fprintf (LW_LOG_FILE, "%d\n", i);
-      log_flush ();
     }
 #endif
 
+  log_flush ();
   lw_mutex_unlock (&LOG_MUTEX);
 }
 
@@ -233,8 +237,9 @@ log_println_int (int i)
 void
 log_flush ()
 {
-  lw_mutex_lock (&LOG_MUTEX);
-
+#ifdef GP2X
+usleep(10000);
+#endif
 #ifndef WIN32
   fflush (stdout);
 #endif
@@ -244,8 +249,6 @@ log_flush ()
       fflush (LW_LOG_FILE);
     }
 #endif
-
-  lw_mutex_unlock (&LOG_MUTEX);
 }
 
 /*------------------------------------------------------------------*/
@@ -269,6 +272,7 @@ log_beep ()
 #endif
     }
 
+  log_flush ();
   lw_mutex_unlock (&LOG_MUTEX);
 }
 

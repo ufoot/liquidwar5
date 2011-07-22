@@ -1,0 +1,76 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+	<title>GP2X Hardware Acceleration in Allegro</title>
+</head>
+<body>
+
+<h1>GP2X Hardware Acceleration in Allegro</h1>
+
+<h2>Credits</h2>
+
+<p>The hardware acceleration in GP2X Allegro is heavily based on
+paeryn's code for SDL.  He did all the hard work!
+
+</p><h2>What is accelerated</h2>
+
+<ul>
+
+<li><strong>Trivial filling operations</strong> - <em>rectfill,
+hline, vline, clear_to_color</em> - when applied to a bitmap in
+video memory, i.e.  the screen, a video bitmap, or a subbitmap
+of either.
+
+</li><li><strong>Blitting operations</strong> - <em>blit, masked_blit,
+draw_sprite</em> - where the source and destination are both in
+video memory.
+
+</li></ul>
+
+<p>Acceleration is only supported in 8bpp and 16bpp modes; GP2X
+Allegro only supports those modes anyway, so that's OK.
+
+</p><p>Allegro uses 5Mb for video memory, and you can set a graphics
+mode with any virtual size you like subject to available memory.
+
+</p><p>To take advantage of hardware accelerated blitting, it's
+easiest to use video bitmaps.  First create one the size of the
+visible screen (SCREEN_W x SCREEN_H), then use show_video_bitmap
+to ensure the screen is scrolled properly, and do all your
+drawing there.  Then create additional video bitmaps for your
+sprites, etc, and use blit or draw_sprite as normal to draw them
+to your primary video bitmap.
+
+</p><p>You can combine that with page flipping by creating two
+screen-sized video bitmaps, and drawing to one while the other
+is visible, swapping which is which each frame.
+
+
+</p><h2>Hardware Scrolling</h2>
+
+<p>If you're not using video bitmaps, you can scroll the visible
+screen around the virtual screen, but there's a 32-bit granularity so
+you're restricted to even X coordinates in 16bpp or multiples of
+4 in 8bpp.
+
+</p><p>It's not trivial to combine this with using video bitmaps,
+though it can be done.
+
+
+</p><h2>Example - Parallax Demo</h2>
+
+<p>I've uploaded an example which uses page flipped video
+bitmaps to take advantage of the hardware acceleration.  It
+draws lots of layers of random pipe-like tiles, using
+accelerated masked blits or sprites or something, I don't
+totally remember!
+
+</p><ul>
+<li><a href="http://www.glost.eclipse.co.uk/gfoot/gp2x/parallax.cc">parallax.cc</a>
+</li><li><a href="http://www.glost.eclipse.co.uk/gfoot/gp2x/parallax.zip">GP2X binary of Parallax example</a>
+</li></ul>
+
+
+
+
+
+</body></html>

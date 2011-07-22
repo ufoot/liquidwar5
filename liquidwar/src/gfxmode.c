@@ -79,8 +79,13 @@ int GFX_MODE_H[5] = { 240, 384, 480, 600, 768 };
 #endif
 
 #ifdef UNIX
+#ifdef GP2X
+int GFX_MODE_W[5] = { 320, 320, 320, 320, 320 };
+int GFX_MODE_H[5] = { 240, 240, 240, 240, 240 };
+#else
 int GFX_MODE_W[5] = { 320, 512, 640, 800, 1024 };
 int GFX_MODE_H[5] = { 240, 384, 480, 600, 768 };
+#endif
 #endif
 
 #ifdef DOS
@@ -116,6 +121,21 @@ static int GFX_MODE_TYPE_WINDOWED[] = { GFX_DIRECTX_WIN,
 #endif
 
 #ifdef UNIX
+#ifdef GP2X
+static int GFX_MODE_TYPE_FULLSCREEN[] = { GFX_GP2X,
+  GFX_GP2X,
+  GFX_GP2X,
+  GFX_GP2X,
+  GFX_GP2X
+};
+
+static int GFX_MODE_TYPE_WINDOWED[] = { GFX_GP2X,
+  GFX_GP2X,
+  GFX_GP2X,
+  GFX_GP2X,
+  GFX_GP2X
+};
+#else
 static int GFX_MODE_TYPE_FULLSCREEN[] = { GFX_AUTODETECT_FULLSCREEN,
   GFX_AUTODETECT_FULLSCREEN,
   GFX_AUTODETECT_FULLSCREEN,
@@ -129,6 +149,7 @@ static int GFX_MODE_TYPE_WINDOWED[] = { GFX_AUTODETECT_WINDOWED,
   GFX_AUTODETECT_WINDOWED,
   GFX_AUTODETECT_WINDOWED
 };
+#endif
 #endif
 
 /*==================================================================*/

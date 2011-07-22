@@ -452,6 +452,19 @@ AC_SUBST(HOST_OPT)
 
 
 
+dnl Wether we're compiling for GP2X
+AC_MSG_CHECKING(for gp2x support)
+if echo "$host" | grep "open2x" ; then
+  GP2X=yes
+  AC_MSG_RESULT([enabled])
+else
+  GP2X=no
+  AC_MSG_RESULT([disabled])
+fi
+AC_SUBST(GP2X)
+
+
+
 dnl Here we test the $MAKE environment var, to use the correct "make".
 dnl Indeed, LW *requires* GNU Make to be compiled. If a "gmake" command
 dnl exists, the script will autodetect it and use that command, otherwise
