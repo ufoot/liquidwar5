@@ -238,7 +238,7 @@ void
 log_flush ()
 {
 #ifdef GP2X
-usleep(10000);
+  usleep (100);
 #endif
 #ifndef WIN32
   fflush (stdout);

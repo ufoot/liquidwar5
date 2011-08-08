@@ -214,6 +214,10 @@ set_resolution (int res, int flip, int fullscreen, int *flip_enabled)
   int toggle;
   int i;
 
+#ifdef GP2X
+  fullscreen = 1;
+#endif
+
   if (flip_enabled)
     {
       *flip_enabled = 0;
