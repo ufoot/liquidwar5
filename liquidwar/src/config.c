@@ -293,15 +293,13 @@ load_default_options (void)
   CONFIG_JOYSTICK_ON = 1;
   CONFIG_PAGE_FLIP = 0;
   CONFIG_LANGUAGE = LW_LANG_LANGUAGE_AUTO;
-#ifdef ASM
   /*
-   * We activate waves only if assembly code is available,
-   * else it's not a good idea for it's too slow.
+   * Previous versions used to have waves disabled on behalf
+   * of performance, with today computers being 100 times faster
+   * than primitive stuff that ran LW in the first place, one
+   * might admit this is on by default. Looks better.
    */
-  CONFIG_WAVE_ON = STARTUP_ASM ? 1 : 0;
-#else
-  CONFIG_WAVE_ON = 0;
-#endif
+  CONFIG_WAVE_ON = 1;
 
   CONFIG_FRAMES_PER_SEC_LIMIT = 6;
   CONFIG_ROUNDS_PER_SEC_LIMIT = 4;
