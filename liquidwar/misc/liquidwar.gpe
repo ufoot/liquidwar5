@@ -25,6 +25,7 @@
 LIQUIDWAR_BIN=./liquidwar
 LIQUIDWAR_DAT=./liquidwar.dat
 LIQUIDWAR_LOG=./liquidwar.log
+LIQUIDWAR_DEV=./liquidwar.dev
 
 #clear_screen () {
 #	dd if=/dev/zero of=/dev/fb0 count=1536 bs=100
@@ -37,6 +38,10 @@ LIQUIDWAR_LOG=./liquidwar.log
 if test -f $LIQUIDWAR_BIN -a -x $LIQUIDWAR_BIN -a -f $LIQUIDWAR_DAT
 then
 	#$LIQUIDWAR_BIN -dat $LIQUIDWAR_DAT > $LIQUIDWAR_LOG 2>&1
+	ls -al /dev > $LIQUIDWAR_DEV
+	echo mknod >> $LIQUIDWAR_DEV
+	mknod /dev/fb1 c 29 32 >> $LIQUIDWAR_DEV
+	ls -al /dev >> $LIQUIDWAR_DEV
 	$LIQUIDWAR_BIN -silent -dat $LIQUIDWAR_DAT > $LIQUIDWAR_LOG 2>&1
 	#sync
 	#clear_screen
