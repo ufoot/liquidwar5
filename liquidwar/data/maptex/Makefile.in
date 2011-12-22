@@ -39,11 +39,11 @@ TEXTURES_BMP =  2d \
 	papercut \
 	pastel \
 	place \
-	psyforcegeometry.bmp \
-	psyforcemultiroom.bmp \
-	psyforcespheralcube.bmp \
-	psyforcesquares.bmp \
-	psyforceultramultiroom.bmp \
+	psyforcegeometry \
+	psyforcemultiroom \
+	psyforcespheralcube \
+	psyforcesquares \
+	psyforceultramultiroom \
 	puckman \
 	rect \
 	rectangle \
