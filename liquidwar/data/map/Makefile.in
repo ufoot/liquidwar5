@@ -113,6 +113,11 @@ MAP_NAMES = \
 	poisson \
 	policier \
 	portable \
+	psyforcegeometry.bmp \
+	psyforcemultiroom.bmp \
+	psyforcespheralcube.bmp \
+	psyforcesquares.bmp \
+	psyforceultramultiroom.bmp \
 	puckman \
 	quaders \
 	rect \
