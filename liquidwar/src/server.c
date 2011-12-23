@@ -351,7 +351,6 @@ main (int argc, char **argv)
   char *metaserver;
   int nb_teams;
   int port;
-  int res = 1;
 
   lw_sock_init ();
 
@@ -400,7 +399,7 @@ main (int argc, char **argv)
 		    {
 		      if (lw_srvcont_final_ok (&cont))
 			{
-			  res = lw_srvcont_replicate_keys
+			  lw_srvcont_replicate_keys
 			    (&cont, &www_data, get_lag (), get_password ());
 			}
 		    }

@@ -291,9 +291,11 @@ disp_distorted_area (void)
   char *src;
   int x, y, w, h, lim_w, lim_h, init_w, init_h;
   int *y_corres;
-  int fp_x, ip_x, fp_y, ip_y, fp_y0, ip_y0;
+  int fp_x, fp_y, fp_y0, ip_y0;
   int fp_x0[MAX_W_DISPLAY];
   int reste_x;
+#ifdef ASM
+  int ip_x, ip_y;
   int temp = 0;
   int bmp_color_depth;
   int bmp_linear;
@@ -302,6 +304,7 @@ disp_distorted_area (void)
   bmp_color_depth = bitmap_color_depth (DISTORSION_TARGET);
   bmp_linear = is_linear_bitmap (DISTORSION_TARGET);
   bmp_memory = is_memory_bitmap (DISTORSION_TARGET);
+#endif
 
   w = DISTORSION_TARGET->w;
   h = DISTORSION_TARGET->h;
@@ -319,17 +322,17 @@ disp_distorted_area (void)
   for (y = 0; y < h; ++y)
     {
       fp_y = fp_y0;
-      ip_y = ip_y0;
       fp_x = init_w;
-      ip_x = 0;
       src = (char *) CURRENT_AREA_DISP->dat + ip_y0 * CURRENT_AREA_W;
       y_corres = WAVE_SHAPE_Y_CORRES[y];
 
 #ifdef ASM
+      ip_x = 0;
+      ip_y = ip_y0;
       /*
        * draw_distor_line works on memory 8-bit bitmaps only
        */
-      if (STARTUP_ASM && bmp_memory && bmp_color_depth == 8)
+      if (STARTUP_ASM && bmp_memory && bmp_linear && bmp_color_depth == 8)
 	{
 	  draw_distor_line (DISTORSION_TARGET,
 			    CURRENT_AREA_W,
@@ -348,38 +351,36 @@ disp_distorted_area (void)
 			    src, temp, temp, temp, temp, temp);
 	}
       else
-#else
-      temp = 0;
 #endif
-      for (x = 0; x < w; ++x)
-	{
-	  putpixel (DISTORSION_TARGET, x, y, *src);
+	for (x = 0; x < w; ++x)
+	  {
+	    putpixel (DISTORSION_TARGET, x, y, *src);
 
-	  reste_x = fp_x0[x] += WAVE_SHAPE_X_CORRES[x][y];
-	  fp_x += WAVE_SHAPE_WX[x];
-	  while (reste_x < -fp_x)
-	    {
-	      fp_x += lim_w;
-	      src--;
-	    }
-	  while (reste_x + fp_x >= lim_w)
-	    {
-	      fp_x -= lim_w;
-	      src++;
-	    }
+	    reste_x = fp_x0[x] += WAVE_SHAPE_X_CORRES[x][y];
+	    fp_x += WAVE_SHAPE_WX[x];
+	    while (reste_x < -fp_x)
+	      {
+		fp_x += lim_w;
+		src--;
+	      }
+	    while (reste_x + fp_x >= lim_w)
+	      {
+		fp_x -= lim_w;
+		src++;
+	      }
 
-	  fp_y += y_corres[x];
-	  while (fp_y < 0)
-	    {
-	      fp_y += lim_h;
-	      src -= CURRENT_AREA_W;
-	    }
-	  while (fp_y >= lim_h)
-	    {
-	      fp_y -= lim_h;
-	      src += CURRENT_AREA_W;
-	    }
-	}
+	    fp_y += y_corres[x];
+	    while (fp_y < 0)
+	      {
+		fp_y += lim_h;
+		src -= CURRENT_AREA_W;
+	      }
+	    while (fp_y >= lim_h)
+	      {
+		fp_y -= lim_h;
+		src += CURRENT_AREA_W;
+	      }
+	  }
 
       fp_y0 += WAVE_SHAPE_HY[y];
       while (fp_y0 >= lim_h)

@@ -160,6 +160,14 @@ my_draw_textbox (char *thetext, int *listsize, int draw, int offset,
   if (disabled)
     fg = disable;
 
+  if (fg)
+    {
+      /*
+       * Not elegant, but test above here just to get
+       * rid of compiler warning about fg not being used.
+       */
+    }
+
   /* loop over the entire string */
   while (1)
     {
@@ -958,7 +966,8 @@ my_edit_proc (int msg, DIALOG * d, int c)
   static int ignore_next_uchar = FALSE;
   BITMAP *gui_bmp;
   int last_was_space, new_pos, i, k;
-  int f, l, p, w, x, fg, b, scroll;
+  int f, l, p, w, x, b, scroll;
+  int fg;
   char buf[16];
   char *s, *t;
   ASSERT (d);
@@ -1167,6 +1176,14 @@ my_edit_proc (int msg, DIALOG * d, int c)
 	  return D_USED_CHAR;
 	}
       break;
+    }
+
+  if (fg)
+    {
+      /*
+       * Not elegant, but test above here just to get
+       * rid of compiler warning about fg not being used.
+       */
     }
 
   return D_O_K;
@@ -1379,7 +1396,8 @@ my_draw_listbox (DIALOG * d)
 {
   BITMAP *gui_bmp = gui_get_screen ();
   int height, listsize, i, len, bar, x, y, w;
-  int fg_color, fg, bg;
+  int fg_color, bg;
+  int fg;
   char *sel = d->dp2;
   char s[1024];
 
@@ -1457,6 +1475,14 @@ my_draw_listbox (DIALOG * d)
 
   /* draw frame, maybe with scrollbar */
   _draw_scrollable_frame (d, listsize, d->d2, height, fg_color, d->bg);
+
+  if (fg)
+    {
+      /*
+       * Not elegant, but test above here just to get
+       * rid of compiler warning about fg not being used.
+       */
+    }
 }
 
 

@@ -110,7 +110,7 @@ int
 play_sequence_ex (void)
 {
   char *message;
-  int result, retour = 0;
+  int retour = 0;
   DIALOG d[2];
   DIALOG_PLAYER *dp;
   int flip_enabled = 0;
@@ -188,9 +188,9 @@ play_sequence_ex (void)
 	   */
 	  if (need_to_change_mode (CONFIG_GFX_GAME,
 				   CONFIG_GFX_MENU, CONFIG_PAGE_FLIP))
-	    result = set_resolution (CONFIG_GFX_GAME,
-				     CONFIG_PAGE_FLIP,
-				     CONFIG_FULLSCREEN, &flip_enabled);
+	    set_resolution (CONFIG_GFX_GAME,
+			    CONFIG_PAGE_FLIP,
+			    CONFIG_FULLSCREEN, &flip_enabled);
 
 	  lw_mouse_hide ();
 
@@ -246,8 +246,7 @@ play_sequence_ex (void)
 	  if (need_to_change_mode (CONFIG_GFX_GAME,
 				   CONFIG_GFX_MENU,
 				   CONFIG_PAGE_FLIP && flip_enabled))
-	    result =
-	      set_resolution (CONFIG_GFX_MENU, 0, CONFIG_FULLSCREEN, NULL);
+	    set_resolution (CONFIG_GFX_MENU, 0, CONFIG_FULLSCREEN, NULL);
 
 	  lw_mouse_show ();
 

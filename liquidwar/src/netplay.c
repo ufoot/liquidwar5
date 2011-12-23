@@ -167,7 +167,6 @@ connect_on_server_start (int *sock, char *address, int port)
   LW_NETPLAY_CONNECT_DATA *connect_data;
   LW_NETPLAY_CONNECT_DATA connect_data_stack;
   int esc_pressed = 0;
-  int dummy;
 
   connect_data = (LW_NETPLAY_CONNECT_DATA *)
     malloc (sizeof (LW_NETPLAY_CONNECT_DATA));
@@ -223,7 +222,7 @@ connect_on_server_start (int *sock, char *address, int port)
        * We call keypressed() to force Allegro to call automatically
        * poll_keyboard() if needed
        */
-      dummy = keypressed ();
+      keypressed ();
       rest (LW_NETPLAY_DELAY);
       lw_capture_dump_menu ();
       my_exit_poll ();

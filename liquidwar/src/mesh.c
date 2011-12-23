@@ -166,12 +166,11 @@ static int
 group_mesher (MESHER * mesher, BITMAP * map, int step)
 {
   int found = 0;
-  int x, y, w, h, size, i, j, k;
+  int x, y, w, h, i, j, k;
   MESHER *ne, *se, *sw, *nw, *test;
 
   w = map->w;
   h = map->h;
-  size = h * w;
 
   for (y = 0; y < h - step; y += step * 2)
     for (x = 0; x < w - step; x += step * 2)
@@ -306,15 +305,23 @@ static void
 test_one_mesh (MESH * test)
 {
   MESH m;
-  MESH *bof;
-  int i;
 
-  i = m.x = test->x;
-  i = m.y = test->y;
+  m.x = test->x;
+  m.y = test->y;
   m.side = test->side;
   m.info[NB_TEAMS - 1] = test->info[NB_TEAMS - 1];
+  m.link[NB_DIRS - 1] = test->link[NB_DIRS - 1];
 
-  bof = m.link[NB_DIRS - 1] = test->link[NB_DIRS - 1];
+  if (m.x >= 0 && m.y >= 0)
+    {
+      /*
+       * Test above is worth nothing, actually it's
+       * to get rid of a computer warning, but to
+       * be honest this function existence is just
+       * to check memory handling is OK and show
+       * up basic pointers errors and reveal bugs.
+       */
+    }
 }
 
 /*------------------------------------------------------------------*/

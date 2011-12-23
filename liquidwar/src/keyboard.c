@@ -203,7 +203,6 @@ wait_no_key (void)
 {
   int touched, i;
   int start_tick;
-  int dummy;
 
   start_tick = get_ticker ();
 
@@ -213,7 +212,7 @@ wait_no_key (void)
       /*
        * Force a all to poll_keyboard if needed
        */
-      dummy = keypressed ();
+      keypressed ();
 
       touched = 0;
       lw_mouse_update_control ();
@@ -232,7 +231,6 @@ wait_key_pressed (void)
 {
   int touched = 0, i, result = 0;
   int start_tick;
-  int dummy;
 
   start_tick = get_ticker ();
 
@@ -243,7 +241,7 @@ wait_key_pressed (void)
       /*
        * Force a all to poll_keyboard if needed
        */
-      dummy = keypressed ();
+      keypressed ();
 
       lw_mouse_update_control ();
       my_poll_joystick ();

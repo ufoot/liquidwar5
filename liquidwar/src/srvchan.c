@@ -950,17 +950,20 @@ lw_srvchan_wait_teams (LW_SRVCHAN * chan, int *free_teams,
 		    case LW_NETMESS_CODE_PROGRAM:
 		      ret_mess = lw_srvchan_handle_program (chan->sock, mess,
 							    &
-							    (chan->program_ok));
+							    (chan->
+							     program_ok));
 		      break;
 		    case LW_NETMESS_CODE_VERSION:
 		      ret_mess = lw_srvchan_handle_version (chan->sock, mess,
 							    &
-							    (chan->version_ok));
+							    (chan->
+							     version_ok));
 		      break;
 		    case LW_NETMESS_CODE_PASSWORD:
 		      ret_mess = lw_srvchan_handle_password (chan->sock, mess,
 							     &
-							     (chan->password_ok),
+							     (chan->
+							      password_ok),
 							     password);
 		      break;
 		    case LW_NETMESS_CODE_FREE:

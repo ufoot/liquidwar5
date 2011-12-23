@@ -306,7 +306,9 @@ move_fighters (void)
   int *move_offset, *move_x, *move_y;
   int sens, start, table;
   int cpu_influence[NB_TEAMS] = { 0, 0, 0, 0, 0, 0 };
+#ifdef ASM
   int temp = 0;
+#endif
 
   sens = 0;
 
@@ -391,157 +393,157 @@ move_fighters (void)
 			 LOCAL_DIR,
 			 temp, temp, temp, temp, temp, temp, temp, temp);
   else
-#else
-  temp = 0;
 #endif
-  for (i = 0; i < CURRENT_ARMY_SIZE; ++i)
-    {
-      team = f->team;
-      ACTIVE_FIGHTERS[team]++;
-      start = (start < NB_DIRS - 1) ? start + 1 : 0;
+    for (i = 0; i < CURRENT_ARMY_SIZE; ++i)
+      {
+	team = f->team;
+	ACTIVE_FIGHTERS[team]++;
+	start = (start < NB_DIRS - 1) ? start + 1 : 0;
 
-      p = CURRENT_AREA + (f->y * CURRENT_AREA_W + f->x);
+	p = CURRENT_AREA + (f->y * CURRENT_AREA_W + f->x);
 
-      if (p->mesh->info[team].update.time >= 0)
-	{
-	  p->mesh->info[team].state.dir =
-	    get_close_dir (p->mesh, f, team, (sens++) % 2, start);
-	}
-      else if ((-p->mesh->info[team].update.time) < GLOBAL_CLOCK)
-	{
-	  p->mesh->info[team].state.dir =
-	    get_main_dir (p->mesh, team, (sens++) % 2, start);
-	  p->mesh->info[team].update.time = -GLOBAL_CLOCK;
-	}
+	if (p->mesh->info[team].update.time >= 0)
+	  {
+	    p->mesh->info[team].state.dir =
+	      get_close_dir (p->mesh, f, team, (sens++) % 2, start);
+	  }
+	else if ((-p->mesh->info[team].update.time) < GLOBAL_CLOCK)
+	  {
+	    p->mesh->info[team].state.dir =
+	      get_main_dir (p->mesh, team, (sens++) % 2, start);
+	    p->mesh->info[team].update.time = -GLOBAL_CLOCK;
+	  }
 
-      dir = p->mesh->info[team].state.dir;
+	dir = p->mesh->info[team].state.dir;
 
-      move_offset = FIGHTER_MOVE_OFFSET[table][dir];
-      move_x = FIGHTER_MOVE_X[table][dir];
-      move_y = FIGHTER_MOVE_Y[table][dir];
+	move_offset = FIGHTER_MOVE_OFFSET[table][dir];
+	move_x = FIGHTER_MOVE_X[table][dir];
+	move_y = FIGHTER_MOVE_Y[table][dir];
 
-      if (((p0 = p + move_offset[0])->mesh) && (!p0->fighter))
-	{
-	  erase_fighter (f);
-	  p0->fighter = f;
-	  p->fighter = NULL;
-	  f->x += move_x[0];
-	  f->y += move_y[0];
-	  disp_fighter (f);
-	}
-      else
-	{
-	  if (((p1 = p + move_offset[1])->mesh) && (!p1->fighter))
-	    {
-	      erase_fighter (f);
-	      p1->fighter = f;
-	      p->fighter = NULL;
-	      f->x += move_x[1];
-	      f->y += move_y[1];
-	      disp_fighter (f);
-	    }
-	  else
-	    {
-	      if (((p2 = p + move_offset[2])->mesh) && (!p2->fighter))
-		{
-		  erase_fighter (f);
-		  p2->fighter = f;
-		  p->fighter = NULL;
-		  f->x += move_x[2];
-		  f->y += move_y[2];
-		  disp_fighter (f);
-		}
-	      else
-		{
-		  if (((p3 = p + move_offset[3])->mesh) && (!p3->fighter))
-		    {
-		      erase_fighter (f);
-		      p3->fighter = f;
-		      p->fighter = NULL;
-		      f->x += move_x[3];
-		      f->y += move_y[3];
-		      disp_fighter (f);
-		    }
-		  else
-		    {
-		      if (((p4 = p + move_offset[4])->mesh) && (!p4->fighter))
-			{
-			  erase_fighter (f);
-			  p4->fighter = f;
-			  p->fighter = NULL;
-			  f->x += move_x[4];
-			  f->y += move_y[4];
-			  disp_fighter (f);
-			}
-		      else
-			{
-			  if (p0->mesh
-			      && p0->fighter && p0->fighter->team != team)
-			    {
-			      p0->fighter->health -= attack[team];
-			      if (p0->fighter->health < 0)
-				{
-				  while (p0->fighter->health < 0)
-				    p0->fighter->health += new_health[team];
-				  p0->fighter->team = team;
-				}
-			      disp_fighter (p0->fighter);
-			    }
-			  else
-			    {
-			      if (p1->mesh
-				  && p1->fighter && p1->fighter->team != team)
-				{
-				  p1->fighter->health -= attack[team]
-				    >> SIDE_ATTACK_FACTOR;
-				  if (p1->fighter->health < 0)
-				    {
-				      while (p1->fighter->health < 0)
-					p1->fighter->health +=
-					  new_health[team];
-				      p1->fighter->team = team;
-				    }
-				  disp_fighter (p1->fighter);
-				}
-			      else
-				{
-				  if (p2->mesh
-				      && p2->fighter
-				      && p2->fighter->team != team)
-				    {
-				      p2->fighter->health -= attack[team]
-					>> SIDE_ATTACK_FACTOR;
-				      if (p2->fighter->health < 0)
-					{
-					  while (p2->fighter->health < 0)
-					    p2->fighter->health +=
-					      new_health[team];
-					  p2->fighter->team = team;
-					}
-				      disp_fighter (p2->fighter);
-				    }
-				  else
-				    {
-				      if (p0->mesh
-					  && p0->fighter
-					  && p0->fighter->team == team)
-					{
-					  p0->fighter->health +=
-					    defense[team];
-					  if (p0->fighter->health >=
-					      MAX_FIGHTER_HEALTH)
-					    p0->fighter->health =
-					      MAX_FIGHTER_HEALTH - 1;
-					  disp_fighter (p0->fighter);
-					}
-				    }
-				}
-			    }
-			}
-		    }
-		}
-	    }
-	}
-      f++;
-    }
+	if (((p0 = p + move_offset[0])->mesh) && (!p0->fighter))
+	  {
+	    erase_fighter (f);
+	    p0->fighter = f;
+	    p->fighter = NULL;
+	    f->x += move_x[0];
+	    f->y += move_y[0];
+	    disp_fighter (f);
+	  }
+	else
+	  {
+	    if (((p1 = p + move_offset[1])->mesh) && (!p1->fighter))
+	      {
+		erase_fighter (f);
+		p1->fighter = f;
+		p->fighter = NULL;
+		f->x += move_x[1];
+		f->y += move_y[1];
+		disp_fighter (f);
+	      }
+	    else
+	      {
+		if (((p2 = p + move_offset[2])->mesh) && (!p2->fighter))
+		  {
+		    erase_fighter (f);
+		    p2->fighter = f;
+		    p->fighter = NULL;
+		    f->x += move_x[2];
+		    f->y += move_y[2];
+		    disp_fighter (f);
+		  }
+		else
+		  {
+		    if (((p3 = p + move_offset[3])->mesh) && (!p3->fighter))
+		      {
+			erase_fighter (f);
+			p3->fighter = f;
+			p->fighter = NULL;
+			f->x += move_x[3];
+			f->y += move_y[3];
+			disp_fighter (f);
+		      }
+		    else
+		      {
+			if (((p4 = p + move_offset[4])->mesh)
+			    && (!p4->fighter))
+			  {
+			    erase_fighter (f);
+			    p4->fighter = f;
+			    p->fighter = NULL;
+			    f->x += move_x[4];
+			    f->y += move_y[4];
+			    disp_fighter (f);
+			  }
+			else
+			  {
+			    if (p0->mesh
+				&& p0->fighter && p0->fighter->team != team)
+			      {
+				p0->fighter->health -= attack[team];
+				if (p0->fighter->health < 0)
+				  {
+				    while (p0->fighter->health < 0)
+				      p0->fighter->health += new_health[team];
+				    p0->fighter->team = team;
+				  }
+				disp_fighter (p0->fighter);
+			      }
+			    else
+			      {
+				if (p1->mesh
+				    && p1->fighter
+				    && p1->fighter->team != team)
+				  {
+				    p1->fighter->health -= attack[team]
+				      >> SIDE_ATTACK_FACTOR;
+				    if (p1->fighter->health < 0)
+				      {
+					while (p1->fighter->health < 0)
+					  p1->fighter->health +=
+					    new_health[team];
+					p1->fighter->team = team;
+				      }
+				    disp_fighter (p1->fighter);
+				  }
+				else
+				  {
+				    if (p2->mesh
+					&& p2->fighter
+					&& p2->fighter->team != team)
+				      {
+					p2->fighter->health -= attack[team]
+					  >> SIDE_ATTACK_FACTOR;
+					if (p2->fighter->health < 0)
+					  {
+					    while (p2->fighter->health < 0)
+					      p2->fighter->health +=
+						new_health[team];
+					    p2->fighter->team = team;
+					  }
+					disp_fighter (p2->fighter);
+				      }
+				    else
+				      {
+					if (p0->mesh
+					    && p0->fighter
+					    && p0->fighter->team == team)
+					  {
+					    p0->fighter->health +=
+					      defense[team];
+					    if (p0->fighter->health >=
+						MAX_FIGHTER_HEALTH)
+					      p0->fighter->health =
+						MAX_FIGHTER_HEALTH - 1;
+					    disp_fighter (p0->fighter);
+					  }
+				      }
+				  }
+			      }
+			  }
+		      }
+		  }
+	      }
+	  }
+	f++;
+      }
 }

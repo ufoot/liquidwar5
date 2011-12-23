@@ -145,11 +145,13 @@ lw_netconf_send (int *sock, LW_NETCONF * config)
 				  if (lw_sock_send_str (sock, buffer))
 				    {
 				      LW_MACRO_SPRINTF1 (buffer, "%d",
-							 config->asm_algorithm);
+							 config->
+							 asm_algorithm);
 				      if (lw_sock_send_str (sock, buffer))
 					{
 					  LW_MACRO_SPRINTF1 (buffer, "%d",
-							     config->min_map_res);
+							     config->
+							     min_map_res);
 					  if (lw_sock_send_str (sock, buffer))
 					    {
 					      result = 1;

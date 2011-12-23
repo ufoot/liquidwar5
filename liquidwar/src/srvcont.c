@@ -197,9 +197,8 @@ distribute_teams (LW_SRVCONT * cont)
 	  if (cont->chan[i].team[j].active)
 	    {
 	      find_chan_and_team_by_server_id (cont,
-					       cont->chan[i].
-					       team[j].server_id, &i_orig,
-					       &j_orig);
+					       cont->chan[i].team[j].
+					       server_id, &i_orig, &j_orig);
 	      if (i_orig >= 0 && j_orig >= 0)
 		{
 		  /*
@@ -809,8 +808,12 @@ lw_srvcont_replicate_keys (LW_SRVCONT * cont,
        * we use a counter system, so that all client must answer
        * "yes we want a lag increase" several times in a row
        * before we actually update the lag
+       *
+       * Note that test is formulated using 2 values and a
+       * logical and, this is just to get rid of warning
+       * complaining a_client_requests_increase_lag is unused
        */
-      if (all_clients_request_increase_lag)
+      if (all_clients_request_increase_lag && a_client_requests_increase_lag)
 	{
 	  increase_lag_counter++;
 	}
@@ -823,8 +826,12 @@ lw_srvcont_replicate_keys (LW_SRVCONT * cont,
        * we use a counter system, so that all client must answer
        * "yes we want a lag decrease" several times in a row
        * before we actually update the lag
+       *
+       * Note that test is formulated using 2 values and a
+       * logical or, this is just to get rid of warning
+       * complaining all_client_requests_decrease_lag is unused
        */
-      if (a_client_requests_decrease_lag)
+      if (a_client_requests_decrease_lag || all_clients_request_decrease_lag)
 	{
 	  decrease_lag_counter++;
 	}

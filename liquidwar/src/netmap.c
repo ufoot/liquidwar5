@@ -87,13 +87,11 @@ lw_netmap_send (int *sock, void *netmap)
 {
   int result = 0;
   char *ptr;
-  unsigned char *header;
   int size;
   int sent;
   int to_send;
 
   ptr = (char *) netmap;
-  header = (unsigned char *) netmap;
   if (lw_sock_send_buffer (sock, ptr, 8))
     {
       if (lw_sock_send_buffer (sock, ptr + 8, LW_MAP_SYSTEM_NAME_SIZE))

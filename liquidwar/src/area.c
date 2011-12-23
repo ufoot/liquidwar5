@@ -85,7 +85,7 @@ reset_game_area (void)
 int
 create_game_area (void)
 {
-  int x, y, i, test;
+  int x, y, i;
 
   CURRENT_AREA = malloc_in_big_data_bottom
     (CURRENT_AREA_W * CURRENT_AREA_H * sizeof (PLACE));
@@ -106,7 +106,6 @@ create_game_area (void)
 	    {
 	      CURRENT_AREA[(CURRENT_MESH[i].y + y) * CURRENT_AREA_W
 			   + CURRENT_MESH[i].x + x].mesh = CURRENT_MESH + i;
-	      test = CURRENT_MESH[i].info[0].state.grad;
 	    }
     }
 

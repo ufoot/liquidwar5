@@ -113,7 +113,6 @@ lw_capture_dump_menu ()
 {
   int result = 1;
   static int last_dump_time = 0;
-  int dummy;
 
   /*
    * We don't dump stuff if the last dump is too recent.
@@ -145,7 +144,7 @@ lw_capture_dump_menu ()
 	  /*
 	   * Force a all to poll_keyboard if needed
 	   */
-	  dummy = keypressed ();
+	  keypressed ();
 
 	  rest (10);
 	}

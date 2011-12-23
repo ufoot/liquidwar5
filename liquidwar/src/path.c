@@ -80,7 +80,7 @@ lw_path_get_system_name (const char *filename)
   char buf1[LW_STARTUP_MAX_PATH_LENGTH];
   static char buf2[LW_STARTUP_MAX_PATH_LENGTH];
   char *start;
-  char *end;
+  //char *end;
   char *search;
 
   LW_MACRO_STRCPY (buf1, filename);
@@ -97,14 +97,17 @@ lw_path_get_system_name (const char *filename)
 
   LW_MACRO_STRCPY (buf2, start);
 
-  if ((search = strchr (buf2, '.')) != NULL)
-    {
-      end = search;
-    }
-  else
-    {
-      end = buf2 + strlen (buf2);
-    }
+  search = strchr (buf2, '.');
+  /*
+     if (search != NULL)
+     {
+     end = search;
+     }
+     else
+     {
+     end = buf2 + strlen (buf2);
+     }
+   */
 
   if (search == NULL)
     {

@@ -239,22 +239,28 @@ place_all_team (void)
 void
 test_army (void)
 {
-  int i, k, test, x, y;
+  int i, k, x, y;
   FIGHTER f;
-  FIGHTER *fp;
   MESH *m;
 
   for (i = 0; i < CURRENT_ARMY_SIZE; ++i)
     {
-      test = f.team = CURRENT_ARMY[i].team;
+      f.team = CURRENT_ARMY[i].team;
       x = f.x = CURRENT_ARMY[i].x;
       y = f.y = CURRENT_ARMY[i].y;
-      test = f.health = CURRENT_ARMY[i].health;
+      f.health = CURRENT_ARMY[i].health;
       k = y * CURRENT_AREA_W + x;
-      fp = CURRENT_AREA[k].fighter;
       m = CURRENT_AREA[k].mesh;
       if (m)
-	test = m->info[0].state.grad;
+	if (m->info[0].state.grad)
+	  {
+	    /*
+	     * test above does nothing, but at least
+	     * it queries memory, should we have an
+	     * ugly bug, at least it would reveal
+	     * it now rather than show up later.
+	     */
+	  }
     }
 }
 
