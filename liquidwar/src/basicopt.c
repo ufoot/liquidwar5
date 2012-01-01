@@ -22,7 +22,7 @@
 
 /*****************************************************************************/
 /* Liquid War is a multiplayer wargame                                       */
-/* Copyright (C) 1998-2011 Christian Mauduit                                 */
+/* Copyright (C) 1998-2012 Christian Mauduit                                 */
 /*                                                                           */
 /* This program is free software; you can redistribute it and/or modify      */
 /* it under the terms of the GNU General Public License as published by      */
@@ -124,7 +124,7 @@ lw_basicopt_legal_info (char *name)
   log_println_str (name);
   log_println ();
   log_println_str ("v" LW_VERSION " compiled on " __DATE__ " at " __TIME__);
-  log_println_str ("Copyright (C) 1998-2011 Christian Mauduit");
+  log_println_str ("Copyright (C) 1998-2012 Christian Mauduit");
   log_println ();
   log_println_str
     ("This program is free software; you can redistribute it and/or modify");

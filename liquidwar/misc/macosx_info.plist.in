@@ -2,7 +2,7 @@
 <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <!--
 Liquid War is a multiplayer wargame.
-Copyright (C) 1998-2011 Christian Mauduit (ufoot@ufoot.org)
+Copyright (C) 1998-2012 Christian Mauduit (ufoot@ufoot.org)
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -43,7 +43,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
         <key>NSAppleScriptEnabled</key>
         <string>false</string>
         <key>NSHumanReadableCopyright</key>
-        <string>Copyright (C)  1998 - 2011  Christian Mauduit  &lt;ufoot@ufoot.org&gt;</string>
+        <string>Copyright (C)  1998 - 2012  Christian Mauduit  &lt;ufoot@ufoot.org&gt;</string>
         <key>NSPrincipalClass</key>
         <string>NSApplication</string>
 </dict>
