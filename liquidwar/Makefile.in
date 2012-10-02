@@ -178,6 +178,7 @@ install_readme:
 	@install -c -m 0644 README.fr $(DESTDIR)$(DOCDIR)
 	@install -c -m 0644 README.de $(DESTDIR)$(DOCDIR)
 	@install -c -m 0644 README.dk $(DESTDIR)$(DOCDIR)
+	@install -c -m 0644 README.pl $(DESTDIR)$(DOCDIR)
 
 uninstall:
 	@echo "Removing binary $(GAMEDIR)/liquidwar."
@@ -303,6 +304,7 @@ $(PACKAGE_DOS_ZIP): $(PACKAGE_DOS_EXE) $(PACKAGE_DOS_CWSDPMI)
 	@cp README.fr $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR)/readmefr.txt
 	@cp README.de $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR)/readmede.txt
 	@cp README.dk $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR)/readmedk.txt
+	@cp README.pl $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR)/readmepl.txt
 	@cp COPYING $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR)/license.txt
 	@cp ChangeLog $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR)/changes.txt
 	@cp misc/liquidwar.ico $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR)/lw.ico
@@ -342,6 +344,7 @@ $(PACKAGE_WIN32_ZIP): $(PACKAGE_WIN32_EXE) $(PACKAGE_WIN32_ALLEGDLL)
 	@cp README.fr $(PACKAGE_TMP)/$(PACKAGE_WIN32_DIR)/readmefr.txt
 	@cp README.de $(PACKAGE_TMP)/$(PACKAGE_WIN32_DIR)/readmede.txt
 	@cp README.dk $(PACKAGE_TMP)/$(PACKAGE_WIN32_DIR)/readmedk.txt
+	@cp README.pl $(PACKAGE_TMP)/$(PACKAGE_WIN32_DIR)/readmepl.txt
 	@cp COPYING $(PACKAGE_TMP)/$(PACKAGE_WIN32_DIR)/license.txt
 	@cp ChangeLog $(PACKAGE_TMP)/$(PACKAGE_WIN32_DIR)/changes.txt
 	@install -d $(PACKAGE_TMP)/$(PACKAGE_WIN32_DIR)/data
@@ -461,6 +464,7 @@ $(PACKAGE_MACOSX_TGZ): $(PACKAGE_SOURCE_TARGZ)
 	@cp  $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/README.de "$(PACKAGE_TMP)/Liquid War.app/Contents/Resources/doc/"
 	@cp  $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/README.dk "$(PACKAGE_TMP)/Liquid War.app/Contents/Resources/doc/"
 	@cp  $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/README.fr "$(PACKAGE_TMP)/Liquid War.app/Contents/Resources/doc/"
+	@cp  $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/README.pl "$(PACKAGE_TMP)/Liquid War.app/Contents/Resources/doc/"
 	@cp  -r $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/doc/html $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/doc/txt $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/doc/pdf "$(PACKAGE_TMP)/Liquid War.app/Contents/Resources/doc/"
 	@cp  $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/doc/pdf/liquidwar.pdf "$(PACKAGE_TMP)/Liquid War.pdf"
 	@echo "Updating dynamic libraries dependencies"
@@ -517,6 +521,7 @@ $(PACKAGE_GP2X_ZIP): $(PACKAGE_SOURCE_TARGZ)
 	@cp README.fr $(PACKAGE_TMP)/$(PACKAGE_GP2X_DIR)/readmefr.txt
 	@cp README.de $(PACKAGE_TMP)/$(PACKAGE_GP2X_DIR)/readmede.txt
 	@cp README.dk $(PACKAGE_TMP)/$(PACKAGE_GP2X_DIR)/readmedk.txt
+	@cp README.pl $(PACKAGE_TMP)/$(PACKAGE_GP2X_DIR)/readmepl.txt
 	@cp -r doc/html $(PACKAGE_TMP)/$(PACKAGE_GP2X_DIR)/doc
 	@find $(PACKAGE_TMP)/$(PACKAGE_GP2X_DIR) -name .cvsignore -o -name CVS -o -name .arch-ids -o -name "{arch}" -o -name DUMMY -o -name "*.inc" -o -name "*.in" | xargs rm -rf
 	@cd $(PACKAGE_TMP) && zip -r $(PACKAGE_GP2X_ZIP) $(PACKAGE_GP2X_DIR)

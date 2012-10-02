@@ -119,6 +119,7 @@ OBJ_NAMES = \
 	langdk \
 	langen \
 	langfr \
+	langpl \
 	language \
 	level \
 	logcli \

@@ -63,6 +63,7 @@
 #include "langdk.h"
 #include "langen.h"
 #include "langfr.h"
+#include "langpl.h"
 #include "config.h"
 
 /*==================================================================*/
@@ -79,6 +80,7 @@ lw_lang_init ()
   lw_langdk_init ();
   lw_langen_init ();
   lw_langfr_init ();
+  lw_langpl_init ();
 }
 
 /*------------------------------------------------------------------*/
@@ -98,7 +100,7 @@ lw_lang_string (int id)
     case LW_LANG_LANGUAGE_DEUTSCH:
       result = lw_langde_string (id);
       break;
-    case LW_LANG_LANGUAGE_DANISH:
+    case LW_LANG_LANGUAGE_DANSK:
       result = lw_langdk_string (id);
       break;
     case LW_LANG_LANGUAGE_ENGLISH:
@@ -106,6 +108,9 @@ lw_lang_string (int id)
       break;
     case LW_LANG_LANGUAGE_FRANCAIS:
       result = lw_langfr_string (id);
+      break;
+    case LW_LANG_LANGUAGE_POLSKI:
+      result = lw_langpl_string (id);
       break;
     }
 
@@ -130,7 +135,7 @@ lw_lang_language (int lang)
     case LW_LANG_LANGUAGE_DEUTSCH:
       result = lw_langde_string (LW_LANG_STRING_LANGUAGE);
       break;
-    case LW_LANG_LANGUAGE_DANISH:
+    case LW_LANG_LANGUAGE_DANSK:
       result = lw_langdk_string (LW_LANG_STRING_LANGUAGE);
       break;
     case LW_LANG_LANGUAGE_ENGLISH:
@@ -138,6 +143,9 @@ lw_lang_language (int lang)
       break;
     case LW_LANG_LANGUAGE_FRANCAIS:
       result = lw_langfr_string (LW_LANG_STRING_LANGUAGE);
+      break;
+    case LW_LANG_LANGUAGE_POLSKI:
+      result = lw_langpl_string (LW_LANG_STRING_LANGUAGE);
       break;
     }
 
@@ -187,7 +195,7 @@ lw_lang_auto ()
 	if (strncmp (env_lang, "DK", 2) == 0 ||
 	    strncmp (env_lang, "dk", 2) == 0)
 	  {
-	    language = LW_LANG_LANGUAGE_DANISH;
+	    language = LW_LANG_LANGUAGE_DANSK;
 	  }
 
 	/*
@@ -198,6 +206,16 @@ lw_lang_auto ()
 	    strncmp (env_lang, "fr", 2) == 0)
 	  {
 	    language = LW_LANG_LANGUAGE_FRANCAIS;
+	  }
+
+	/*
+	 * We try and check if LANG is set to "PL..." to enable Polish
+	 * support.
+	 */
+	if (strncmp (env_lang, "PL", 2) == 0 ||
+	    strncmp (env_lang, "pl", 2) == 0)
+	  {
+	    language = LW_LANG_LANGUAGE_POLSKI;
 	  }
       }
   }
@@ -213,8 +231,10 @@ lw_lang_auto ()
      * Lists of some Windows language codes, got it online:
      * http://msdn.microsoft.com/library/default.asp?url=/library/en-us/intl/nls_238z.asp
      *
-     * 0x0406 Danish
+     * 0x0006 Danish
+     * 0x0406 Danish (Denmark)
      * 
+     * 0x000c French
      * 0x040c French (Standard) 
      * 0x080c French (Belgian) 
      * 0x0c0c French (Canadian) 
@@ -222,15 +242,20 @@ lw_lang_auto ()
      * 0x140c French (Luxembourg) 
      * 0x180c Windows 98/Me, Windows 2000/XP: French (Monaco)
      *
+     * 0x0007 German  
      * 0x0407 German (Standard) 
      * 0x0807 German (Switzerland) 
      * 0x0c07 German (Austria) 
      * 0x1007 German (Luxembourg) 
      * 0x1407 German (Liechtenstein)
+     *
+     * 0x0015 Polish
+     * 0x0415 Polisg (Poland)
      */
 
     switch (lang_id)
       {
+      case 0x0007:
       case 0x0407:
       case 0x0807:
       case 0x0c07:
@@ -238,9 +263,11 @@ lw_lang_auto ()
       case 0x1407:
 	language = LW_LANG_LANGUAGE_DEUTSCH;
 	break;
+      case 0x0006:
       case 0x0406:
-	language = LW_LANG_LANGUAGE_DANISH;
+	language = LW_LANG_LANGUAGE_DANSK;
 	break;
+      case 0x000c:
       case 0x040c:
       case 0x080c:
       case 0x0c0c:
@@ -248,6 +275,10 @@ lw_lang_auto ()
       case 0x140c:
       case 0x180c:
 	language = LW_LANG_LANGUAGE_FRANCAIS;
+	break;
+      case 0x0015:
+      case 0x0415:
+	language = LW_LANG_LANGUAGE_POLSKI;
 	break;
       }
   }

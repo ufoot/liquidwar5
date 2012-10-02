@@ -66,9 +66,10 @@
 #define LW_LANG_LANGUAGE_ENGLISH                   0
 #define LW_LANG_LANGUAGE_FRANCAIS                  1
 #define LW_LANG_LANGUAGE_DEUTSCH                   2
-#define LW_LANG_LANGUAGE_DANISH                    3
+#define LW_LANG_LANGUAGE_DANSK                    3
+#define LW_LANG_LANGUAGE_POLSKI                    4
 
-#define LW_LANG_NB_LANGUAGES                       4
+#define LW_LANG_NB_LANGUAGES                       5
 
 /*------------------------------------------------------------------*/
 /* Declaration of all available strings                             */
