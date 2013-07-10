@@ -9,11 +9,12 @@
 #include "func_list.h"
 
 
-void hole()
+void
+hole ()
 {
-     map.color = 255;
-     clear_invert_map();
-     rand_poly();
+  map.color = 255;
+  clear_invert_map ();
+  rand_poly ();
 
-return;
+  return;
 }

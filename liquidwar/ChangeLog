@@ -1,3 +1,7 @@
+2013-07-10  Christian Mauduit (ufoot@ufoot.org)
+
+	* Fixed Debian issue #716610, was caused by lazy arg parsing.
+
 2013-01-08  Christian Mauduit (ufoot@ufoot.org)
 
 	* Copyright 2012 -> 2013.

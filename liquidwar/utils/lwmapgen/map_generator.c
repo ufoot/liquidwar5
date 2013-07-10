@@ -26,54 +26,55 @@
 #include "map.h"
 
 
-void map_generator( char *filename, int size, int grid_size, int func_id )
+void
+map_generator (char *filename, int size, int grid_size, int func_id)
 {
-     char *fname;
+  char *fname;
 
-     if( filename == NULL )
-          fname = default_filename;
-     else
-          fname = filename;
+  if (filename == NULL)
+    fname = default_filename;
+  else
+    fname = filename;
 
-     map.filename = malloc( sizeof(char)*strlen(fname) );
-     if( map.filename == NULL )
-     {
-          fprintf(stderr, "fatal error: can't malloc space for map filename.\n");
-          exit(EXIT_FAILURE);
-     }
-     strcpy(map.filename, fname);
+  map.filename = malloc (sizeof (char) * strlen (fname));
+  if (map.filename == NULL)
+    {
+      fprintf (stderr, "fatal error: can't malloc space for map filename.\n");
+      exit (EXIT_FAILURE);
+    }
+  strcpy (map.filename, fname);
 
-printf("map.filename = %s\n", map.filename);
+  printf ("map.filename = %s\n", map.filename);
 
-     map.width  = map_size[size][0];
-     map.height = map_size[size][1];
+  map.width = map_size[size][0];
+  map.height = map_size[size][1];
 
-     map.map = create_bitmap_ex(8, map.width, map.height);
+  map.map = create_bitmap_ex (8, map.width, map.height);
 
-     if( grid_size == RANDOM_MAP_GRID_SIZE )
-          grid_size = rand_num(MIN_MAP_GRID_SIZE, MAX_MAP_GRID_SIZE-1);
-     map.num_row = map_grid_size[grid_size][0];
-     map.num_col = map_grid_size[grid_size][1];
+  if (grid_size == RANDOM_MAP_GRID_SIZE)
+    grid_size = rand_num (MIN_MAP_GRID_SIZE, MAX_MAP_GRID_SIZE - 1);
+  map.num_row = map_grid_size[grid_size][0];
+  map.num_col = map_grid_size[grid_size][1];
 
-     map.sec_width  = (float)map.width  / (float)map.num_col;
-     map.sec_height = (float)map.height / (float)map.num_row;
+  map.sec_width = (float) map.width / (float) map.num_col;
+  map.sec_height = (float) map.height / (float) map.num_row;
 
-     map.color = 0;
+  map.color = 0;
 
-     map.func_id = func_id;
-     map.func = func[func_id].func;
+  map.func_id = func_id;
+  map.func = func[func_id].func;
 
 
-     clear_map();
+  clear_map ();
 
-     printf("Generating random map using:\n\t%2d)  %s\t%s\n",
-          func_id, func[func_id].name, func[func_id].desc);
+  printf ("Generating random map using:\n\t%2d)  %s\t%s\n",
+	  func_id, func[func_id].name, func[func_id].desc);
 
-print_map();
+  print_map ();
 
-     (*map.func)();
+  (*map.func) ();
 
-print_map();
+  print_map ();
 
-return;
+  return;
 }

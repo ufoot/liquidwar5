@@ -9,9 +9,10 @@
 #include "cut.h"
 
 
-void lines()
+void
+lines ()
 {
-     clear_invert_map();
-     cut();
-return;
+  clear_invert_map ();
+  cut ();
+  return;
 }

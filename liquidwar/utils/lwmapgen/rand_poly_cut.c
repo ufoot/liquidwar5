@@ -10,9 +10,10 @@
 #include "cut.h"
 
 
-void rand_poly_cut()
+void
+rand_poly_cut ()
 {
-     rand_poly();
-     cut();
-return;
+  rand_poly ();
+  cut ();
+  return;
 }

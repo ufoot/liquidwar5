@@ -14,22 +14,23 @@
 #include "misc.h"
 
 
-void rand_func()
+void
+rand_func ()
 {
-     int i;
-     void (*rfunc)();
+  int i;
+  void (*rfunc) ();
 
-     /*
-     * NOTE: I'm assuming that rand_func is the
-     * first function listed in func.c
-     * that way I can just pick from 1 to MAX_FUNC-1
-     * and the code will be simple.
-     */
-     i = rand_num(1, MAX_FUNC-1);
-     rfunc = func[i].func;
+  /*
+   * NOTE: I'm assuming that rand_func is the
+   * first function listed in func.c
+   * that way I can just pick from 1 to MAX_FUNC-1
+   * and the code will be simple.
+   */
+  i = rand_num (1, MAX_FUNC - 1);
+  rfunc = func[i].func;
 
-     printf("Random Function:  %2d) %s\t%s\n", i, func[i].name, func[i].desc);
-     (*rfunc)();
+  printf ("Random Function:  %2d) %s\t%s\n", i, func[i].name, func[i].desc);
+  (*rfunc) ();
 
-return;
+  return;
 }

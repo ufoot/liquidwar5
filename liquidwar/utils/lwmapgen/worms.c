@@ -17,78 +17,83 @@
 #endif
 
 
-int filled( int centerx, int centery, int rad, int startdeg, int col, int seg )
+int
+filled (int centerx, int centery, int rad, int startdeg, int col, int seg)
 {
-     int deg;
-     int result = 0;
-     int check_degrees;
+  int deg;
+  int result = 0;
+  int check_degrees;
 
-     /*
-     * int seg is the current segment - if this is the first segment of a
-     * worm (seg = 0) check 360 degrees around it instead of just 180
-     */
+  /*
+   * int seg is the current segment - if this is the first segment of a
+   * worm (seg = 0) check 360 degrees around it instead of just 180
+   */
 
-     if( 0 == seg )
-          check_degrees = 180;
-     else
-          check_degrees = 90;
+  if (0 == seg)
+    check_degrees = 180;
+  else
+    check_degrees = 90;
 
 
-     for( deg = startdeg-check_degrees; deg < startdeg+check_degrees; deg += 5 )
-     {
+  for (deg = startdeg - check_degrees; deg < startdeg + check_degrees;
+       deg += 5)
+    {
 
-          if( getpixel(map.map, centerx+(rad*cos(M_PI*deg/180)), centery+(rad*sin(M_PI*deg/180))) == col )
-          {
-               result = 1;
-               break;
-          }
-     }
+      if (getpixel
+	  (map.map, centerx + (rad * cos (M_PI * deg / 180)),
+	   centery + (rad * sin (M_PI * deg / 180))) == col)
+	{
+	  result = 1;
+	  break;
+	}
+    }
 
-return result;
+  return result;
 }
 
 
-void worms()
+void
+worms ()
 {
-     int r, c, segs;
-     int centerx, centery;
-     int radius, segments;
-     int degree, change;
+  int r, c, segs;
+  int centerx, centery;
+  int radius, segments;
+  int degree, change;
 
 
-     /* 5-15 */
-     radius = rand()%10+5;
-     segments = rand()%10+5;
+  /* 5-15 */
+  radius = rand () % 10 + 5;
+  segments = rand () % 10 + 5;
 
 
-     for( r = 0; r < map.num_row; r++ )
-     {
-          for( c = 0; c < map.num_col; c++ )
-          {
-               rand_point_section_offset(&centerx, &centery, r, c, 0);
-               degree = rand()%360;
+  for (r = 0; r < map.num_row; r++)
+    {
+      for (c = 0; c < map.num_col; c++)
+	{
+	  rand_point_section_offset (&centerx, &centery, r, c, 0);
+	  degree = rand () % 360;
 
-               for( segs = 0; segs < segments; segs++ )
-               {
-                    /* -15 to 14 */
-                    change = rand()%30-15;
-                    degree += change;
+	  for (segs = 0; segs < segments; segs++)
+	    {
+	      /* -15 to 14 */
+	      change = rand () % 30 - 15;
+	      degree += change;
 
-                    centerx += radius*cos(M_PI*degree/180);
-                    centery += radius*sin(M_PI*degree/180);
+	      centerx += radius * cos (M_PI * degree / 180);
+	      centery += radius * sin (M_PI * degree / 180);
 
-                    if( filled(centerx, centery, radius+1, degree, 0, segs) == 0 )
-                    {
-                         circlefill(map.map, centerx, centery, radius, 0);
-                    }
-                    else
-                    {
-                         /* encountered another worm, stopping... */
-                         break;
-                    }
-               }
-          } /* for(c..) */
-     } /* for(r..) */
+	      if (filled (centerx, centery, radius + 1, degree, 0, segs) == 0)
+		{
+		  circlefill (map.map, centerx, centery, radius, 0);
+		}
+	      else
+		{
+		  /* encountered another worm, stopping... */
+		  break;
+		}
+	    }
+	}			/* for(c..) */
+    }				/* for(r..) */
 
-return;
+  return;
 }
