@@ -34,6 +34,12 @@ if cd liquidwar ; then
 	    echo "******** $0 $(date) ********"
 	    if make install; then
 		echo "******** $0 $(date) ********"
+	        if make dist; then
+		    echo "******** $0 $(date) ********"
+	        else
+		    echo "make dist failed"
+		    exit 5
+	        fi
 	    else
 		echo "make install failed"
 		exit 4

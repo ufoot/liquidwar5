@@ -1,3 +1,7 @@
+2013-12-30  Christian Mauduit (ufoot@ufoot.org)
+
+	* Added make dist to Jenkins script.
+
 2013-07-10  Christian Mauduit (ufoot@ufoot.org)
 
 	* Fixed Debian issue #716610, was caused by lazy arg parsing.
