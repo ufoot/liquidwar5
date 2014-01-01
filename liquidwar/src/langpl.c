@@ -22,7 +22,7 @@
 
 /*****************************************************************************/
 /* Liquid War is a multiplayer wargame                                       */
-/* Copyright (C) 1998-2013 Christian Mauduit                                 */
+/* Copyright (C) 1998-2014 Christian Mauduit                                 */
 /*                                                                           */
 /* This program is free software; you can redistribute it and/or modify      */
 /* it under the terms of the GNU General Public License as published by      */
@@ -79,7 +79,7 @@ lw_langpl_init ()
   LW_LANGPL_DATA[LW_LANG_STRING_HELP_CREDITS] =
     "Idea:: \n* Thomas Colcombet\n\nKod: \n* Christian Mauduit\n\nMuzyka:\n* Tim Chadburn\n\nInni:\n* Alstar\n* Peter Wang\n* Cort Danger Stratton\n* Jan Gretschuskin (www.game-factor.de)\n* Mouse\n* Rene Stach\n* Roderick Schertler\n* Ryan D. Brown\n* Eduard Bloch\n* Michael Terry\n* Kasper Hviid\n* David Redick\n* Alexandre Pineau\n* Michael Wagner\n* Peter Williams\n* Jan Samohyl\n* Gavin\n* Dave Vasilevsky\n* 2 of Omega\n* 666-REFIZUL-666\n* Thomas Klausner\n* Joan Dolc\n* Mikhail Yakshin\n* Valerie Mauduit\n* Florence Mauduit\n* Joey Dodson\n* Jan Szenborn\n\nWięcej informacji na www.ufoot.org/liquidwar/v5\n";
   LW_LANGPL_DATA[LW_LANG_STRING_HELP_COPYRIGHT] =
-    "Liquid War jest wojenną grą multiplayer.\nCopyright (C) 1998-2013 Christian Mauduit (ufoot@ufoot.org)\n\nTen program jest darmowy; możesz go rozpowszechniać i/lub modyfikować zgodnie z zasadami GNU General Public License wydanej przez Free Software Foundation, zgodnie z wersją drugą tej licencji albo (według Twojego wyboru) późniejszą wersją.\n\nTen program jest rozpowszechniany z nadzieją na bycie użytecznym, ale CAŁKOWICIE BEZ GWARANCJI; nawet bez gwarancji PRZYDATNOŚCI HANDLOWEJ albo PRZYDATNOŚCI DO OKREŚLONYCH ZASTOSOWAŃ. Zobacz GNU General Public License po więcej szczegółów.\n\nPowinieneś dostać kopię licencji GNU razem z tym programem; jeżeli nie, napisz do Free Software Foundation, Inc., 51 Franklin St, 5 piętro, Boston, MA  02110-1301  USA\n\nWięcej informacji na www.ufoot.org/liquidwar/v5\n";
+    "Liquid War jest wojenną grą multiplayer.\nCopyright (C) 1998-2014 Christian Mauduit (ufoot@ufoot.org)\n\nTen program jest darmowy; możesz go rozpowszechniać i/lub modyfikować zgodnie z zasadami GNU General Public License wydanej przez Free Software Foundation, zgodnie z wersją drugą tej licencji albo (według Twojego wyboru) późniejszą wersją.\n\nTen program jest rozpowszechniany z nadzieją na bycie użytecznym, ale CAŁKOWICIE BEZ GWARANCJI; nawet bez gwarancji PRZYDATNOŚCI HANDLOWEJ albo PRZYDATNOŚCI DO OKREŚLONYCH ZASTOSOWAŃ. Zobacz GNU General Public License po więcej szczegółów.\n\nPowinieneś dostać kopię licencji GNU razem z tym programem; jeżeli nie, napisz do Free Software Foundation, Inc., 51 Franklin St, 5 piętro, Boston, MA  02110-1301  USA\n\nWięcej informacji na www.ufoot.org/liquidwar/v5\n";
   /*
    * Stupid Microsoft VC++ can't handle strings over 2048 chars correctly,
    * (compiler error C2026) so we had to split this one...

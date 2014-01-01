@@ -21,7 +21,7 @@ U-Foot
 -------------- I N F O R M A T I O N S     L E G A L E S -------------
 
 Liquid War est un "wargame" multijoueur.
-Copyright (C) 1998-2013 Christian Mauduit (ufoot@ufoot.org)
+Copyright (C) 1998-2014 Christian Mauduit (ufoot@ufoot.org)
 
 Ce programme est un logiciel libre ; vous pouvez le redistribuer et/ou le 
 modifier conformément aux dispositions de la Licence Publique Générale GNU, 
