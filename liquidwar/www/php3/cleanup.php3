@@ -1,4 +1,4 @@
-<?
+<?php
 /*****************************************************************************/
 /* Meta-server which registers game servers                                  */
 /* Copyright (C) 2002-2014 Christian Mauduit                                 */

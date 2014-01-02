@@ -1,3 +1,7 @@
+2014-01-02  Christian Mauduit (ufoot@ufoot.org)
+
+	* Using proper PHP tags.
+
 2013-12-30  Christian Mauduit (ufoot@ufoot.org)
 
 	* Added make dist to Jenkins script.

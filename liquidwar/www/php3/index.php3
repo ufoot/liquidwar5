@@ -1,4 +1,4 @@
-<?
+<?php
 /*****************************************************************************/
 /* Meta-server which registers game servers                                  */
 /* Copyright (C) 2002-2014 Christian Mauduit                                 */
@@ -46,7 +46,7 @@ find out which servers are running in the world.
 <H2>List of active servers</H2>
 You can use this list "as is" but you can
 also get it directly from the game.
-<?
+<?php
 $result=metaserver_list("1.0","","");
 ?>
 <TABLE BORDER=1>
@@ -60,7 +60,7 @@ $result=metaserver_list("1.0","","");
 <TH>Password</TH>
 <TH>Comment</TH>
 </TR>
-<?
+<?php
 if ($result) 
 {
   for ($i=0;$result[$i];++$i)
@@ -84,7 +84,7 @@ if ($result)
 This chat-box is not moderated, so I'm not responsible
 for its content. Still, if you think something's going wrong,
 <A HREF="mailto:ufoot@ufoot.org">contact me</A>. 
-<?
+<?php
 if ($GLOBALS['message'] && isset($GLOBALS['post']))
 {
   if (metaserver_write("1.0",$GLOBALS['game'],$GLOBALS['message']))
@@ -97,7 +97,7 @@ if ($GLOBALS['message'] && isset($GLOBALS['post']))
   }
 }
 ?>
-<?
+<?php
 $result=metaserver_read("1.0","",0);
 ?>
 <TABLE BORDER=1>
@@ -107,7 +107,7 @@ $result=metaserver_read("1.0","",0);
 <TH>Game</TH>
 <TH>Message</TH>
 </TR>
-<?
+<?php
 if ($result) 
 {
   for ($i=0;$result[$i];++$i)
