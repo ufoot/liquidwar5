@@ -1,3 +1,7 @@
+2014-03-30  Christian Mauduit (ufoot@ufoot.org)
+
+	* Fixed DOS & MS-Windows Makefiles to include Polish.
+
 2014-01-02  Christian Mauduit (ufoot@ufoot.org)
 
 	* Using proper PHP tags.
