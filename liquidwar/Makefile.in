@@ -277,7 +277,7 @@ $(PACKAGE_SOURCE_TARGZ):
 	@echo "Cleaning up."
 	@$(GMAKE) -C $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR) packageclean
 	@touch $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/.cvsignore
-	@find $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR) -name .cvsignore -o -name CVS -o -name .arch-ids -o -name "{arch}" | xargs rm -rf
+	@find $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR) -name .cvsignore -o -name CVS -o -name .arch-ids -o -name "{arch}" -o -name ".git" -o -name ".gitignore" | xargs rm -rf
 	@cd $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR) 
 	@echo "Creating tarball."
 	@cd $(PACKAGE_TMP) && tar cf $(PACKAGE_SOURCE_TAR) $(PACKAGE_SOURCE_DIR)
