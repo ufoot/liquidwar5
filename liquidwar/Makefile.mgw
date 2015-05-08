@@ -1,5 +1,5 @@
 # Liquid War is a multiplayer wargame
-# Copyright (C) 1998-2014 Christian Mauduit
+# Copyright (C) 1998-2015 Christian Mauduit
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by

@@ -20,7 +20,7 @@ U-Foot
 ----------------- L E G A L     I N F O R M A T I O N ----------------
 
 Liquid War jest wojenną grą multiplayer.
-Copyright (C) 1998-2014 Christian Mauduit (ufoot@ufoot.org)
+Copyright (C) 1998-2015 Christian Mauduit (ufoot@ufoot.org)
 
 Niniejszy program jest wolnym oprogramowaniem; możesz go 
 rozprowadzać dalej i/lub modyfikować na warunkach Powszechnej
