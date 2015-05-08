@@ -1,2 +1,13 @@
 autom4te.cache
 configure
+Makefile
+config.log
+config.status
+index.html
+begin.man
+liquidwar.tex
+begin.texi
+liquidwar.nsi
+liquidward
+macosx_info.plist
+Makefile.dep
