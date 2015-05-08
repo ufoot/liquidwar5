@@ -11,3 +11,4 @@ liquidwar.nsi
 liquidward
 macosx_info.plist
 Makefile.dep
+*.o
