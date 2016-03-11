@@ -544,6 +544,7 @@ AC_OUTPUT( \
 	   misc/liquidward \
 	   misc/macosx_info.plist \
 	   misc/liquidwar.nsi \
+	   misc/Dockerfile \
 	   liquidwar.spec)
 
 dnl Change the liquidward attribute

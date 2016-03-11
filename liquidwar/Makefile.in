@@ -226,7 +226,7 @@ world_clean:
 # used when preparing packages
 packageclean: clean world_clean
 	@rm -r -f Makefile config.cache config.status config.log autom4te.cache
-	@rm -f misc/liquidward misc/macosx_info.plist misc/liquidwar.nsi
+	@rm -f misc/liquidward misc/macosx_info.plist misc/liquidwar.nsi misc/DockerFile
 	@find . -name "*.o" -o -name "*.obj" | xargs rm -f
 	@find . -name "*.tar.gz" -o -name "*.tgz" -o -name "*.zip" -o -name "*.rpm" -o -name "*.deb" -o -name "*.tgz" | xargs rm -f
 	@find . -name ".xvpics" | xargs rm -rf
@@ -527,4 +527,9 @@ $(PACKAGE_GP2X_ZIP): $(PACKAGE_SOURCE_TARGZ)
 	@cd $(PACKAGE_TMP) && zip -r $(PACKAGE_GP2X_ZIP) $(PACKAGE_GP2X_DIR)
 	@cp $(PACKAGE_TMP)/$(PACKAGE_GP2X_ZIP) .
 	@rm -rf $(PACKAGE_TMP) 
+
+docker: $(PACKAGE_SOURCE_TARGZ)
+	@cp $(PACKAGE_SOURCE_TARGZ) misc/$(PACKAGE_SOURCE_TARGZ)
+	@cd misc && docker build .
+	@rm -f misc/$(PACKAGE_SOURCE_TARGZ)
 
