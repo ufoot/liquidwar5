@@ -62,12 +62,12 @@ if ($result) {
         echo $result[$i]["password"].",";
         echo "\"comment\":\"";
         echo db_quote($result[$i]["comment"],METASERVER_SIZE_COMMENT)."\n";
-        echo "\""
-            if ($i<count($result)-1) {
-                echo "},\n";
-            } else {
-                echo "}\n";
-            }
+        echo "\"";
+        if ($i<count($result)-1) {
+            echo "},\n";
+        } else {
+            echo "}\n";
+        }
     }
 }
 
