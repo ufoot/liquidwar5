@@ -556,7 +556,7 @@ $(PACKAGE_MISC_SOURCE_TARGZ): $(PACKAGE_SOURCE_TARGZ)
 	@cp $< $@
 
 docker: $(PACKAGE_MISC_SOURCE_TARGZ)
-	@cd $(DOCKER_DIR) && docker build -f Dockerfile-build .
-	@cd $(DOCKER_DIR) && docker build -f Dockerfile-server .
+	@cd $(DOCKER_DIR) && docker build -f Dockerfile-build -t ufoot/liquidwar:build-$(VERSION) .
+	@cd $(DOCKER_DIR) && docker build -f Dockerfile-server -t ufoot/liquidwar:server-$(VERSION) .
 	@rm -f $<
 
