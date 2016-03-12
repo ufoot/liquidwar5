@@ -3,6 +3,7 @@ configure
 Makefile
 Dockerfile-build
 Dockerfile-server
+Dockerfile-metaserver
 config.log
 config.status
 index.html

@@ -1,0 +1,47 @@
+# Liquid War is a multiplayer wargame
+# Copyright (C) 1998-2016 Christian Mauduit
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+#
+# Liquid War homepage : http://www.ufoot.org/liquidwar/v5
+# Contact author      : ufoot@ufoot.org
+
+FROM debian
+MAINTAINER Christian Mauduit "ufoot@ufoot.org"
+LABEL package="liquidwar" version="@VERSION@" org.ufoot.liquidwar.os="debian" org.ufoot.liquidwar.type="metaserver" description="Liquid War metaserver image, runs a metaserver on a LAMP stack (Linux/Apache/MySQL/PHP) listening on port 8053. Homepage http://www.ufoot.org/liquidwar/v5"
+
+ENV DEBIAN_FRONTEND noninteractive
+RUN (apt-get update && apt-get upgrade -y -q && apt-get dist-upgrade -y -q && apt-get -y -q autoclean && apt-get -y -q autoremove)
+
+# typical LAMP install
+RUN apt-get install -y -q apache2 mysql-server libapache2-mod-php5 php5-mysql
+RUN apt-get clean
+
+# set up Apache
+COPY 010-metaserver.conf /etc/apache2/sites-available/010-metaserver.conf
+
+# set up Mysql
+RUN /etc/init.d/mysql start
+RUN /etc/init.d/mysql stop
+
+# startup script
+RUN install -d /usr/local/bin
+COPY lamp.sh /usr/local/bin/lamp.sh
+
+# run server on default port
+EXPOSE 8053
+ENTRYPOINT /usr/local/bin/lamp.sh
+
+

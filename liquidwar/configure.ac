@@ -546,6 +546,7 @@ AC_OUTPUT( \
 	   misc/liquidwar.nsi \
 	   misc/docker/Dockerfile-build \
 	   misc/docker/Dockerfile-server \
+	   misc/docker/Dockerfile-metaserver \
 	   liquidwar.spec)
 
 dnl Change the liquidward attribute

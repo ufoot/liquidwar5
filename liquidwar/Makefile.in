@@ -250,7 +250,7 @@ world_clean:
 # used when preparing packages
 packageclean: clean world_clean
 	@rm -r -f Makefile config.cache config.status config.log autom4te.cache
-	@rm -f misc/liquidward misc/macosx_info.plist misc/liquidwar.nsi misc/docker/Dockerfile-build misc/docker/Dockerfile-server
+	@rm -f misc/liquidward misc/macosx_info.plist misc/liquidwar.nsi misc/docker/Dockerfile-build misc/docker/Dockerfile-server misc/docker/Dockerfile-metaserver
 	@find . -name "*.o" -o -name "*.obj" | xargs rm -f
 	@find . -name "*.tar.gz" -o -name "*.tgz" -o -name "*.zip" -o -name "*.rpm" -o -name "*.deb" -o -name "*.tgz" | xargs rm -f
 	@find . -name ".xvpics" | xargs rm -rf
@@ -555,10 +555,20 @@ $(PACKAGE_GP2X_ZIP): $(PACKAGE_SOURCE_TARGZ)
 $(PACKAGE_MISC_SOURCE_TARGZ): $(PACKAGE_SOURCE_TARGZ)
 	@cp $< $@
 
-docker: $(PACKAGE_MISC_SOURCE_TARGZ)
+docker: docker-build docker-server docker-metaserver
+
+docker-build: $(PACKAGE_MISC_SOURCE_TARGZ)
 	@cd $(DOCKER_DIR) && docker build -f Dockerfile-build -t ufoot/liquidwar-build:$(VERSION) .
 	@cd $(DOCKER_DIR) && docker build -f Dockerfile-build -t ufoot/liquidwar-build:latest .
+	@rm -f $<
+
+docker-server: $(PACKAGE_MISC_SOURCE_TARGZ)
 	@cd $(DOCKER_DIR) && docker build -f Dockerfile-server -t ufoot/liquidwar-server:$(VERSION) .
 	@cd $(DOCKER_DIR) && docker build -f Dockerfile-server -t ufoot/liquidwar-server:latest .
+	@rm -f $<
+
+docker-metaserver: $(PACKAGE_MISC_SOURCE_TARGZ)
+	@cd $(DOCKER_DIR) && docker build -f Dockerfile-metaserver -t ufoot/liquidwar-metaserver:$(VERSION) .
+	@cd $(DOCKER_DIR) && docker build -f Dockerfile-metaserver -t ufoot/liquidwar-metaserver:latest .
 	@rm -f $<
 
