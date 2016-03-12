@@ -20,16 +20,17 @@
 
 FROM debian
 MAINTAINER Christian Mauduit "ufoot@ufoot.org"
+LABEL package="liquidwar" version="version" org.ufoot.liquidwar.os="debian" org.ufoot.liquidwar.type="build" description="Liquid War build image, contains all the requirements to build the program, and has it built once. Homepage http://www.ufoot.org/liquidwar/v5"
 
 ENV DEBIAN_FRONTEND noninteractive
-
-# Depots, mises a jour et installs de Apache/PHP5
-
 RUN (apt-get update && apt-get upgrade -y -q && apt-get dist-upgrade -y -q && apt-get -y -q autoclean && apt-get -y -q autoremove)
-RUN apt-get install -y -q gcc make liballegro4-dev python texinfo texlive
 
-# Installation et configuration de MariaDB
+# minimal build requirements
+RUN apt-get install -y -q gcc make liballegro4-dev 
+# optional build tools
+RUN apt-get install -y -q python texinfo texlive
 
+# our build
 RUN install -d /usr/local/src
 COPY liquidwar-@VERSION@.tar.gz /usr/local/src/liquidwar-@VERSION@.tar.gz
 RUN cd /usr/local/src && tar xzf liquidwar-@VERSION@.tar.gz

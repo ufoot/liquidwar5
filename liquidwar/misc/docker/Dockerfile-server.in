@@ -20,18 +20,23 @@
 
 FROM debian
 MAINTAINER Christian Mauduit "ufoot@ufoot.org"
+LABEL package="liquidwar" version="@VERSION@" org.ufoot.liquidwar.os="debian" org.ufoot.liquidwar.type="server" description="Liquid War server image, contains a running instance the program, listening on default port 8035. Homepage http://www.ufoot.org/liquidwar/v5"
 
 ENV DEBIAN_FRONTEND noninteractive
-
-# Depots, mises a jour et installs de Apache/PHP5
-
 RUN (apt-get update && apt-get upgrade -y -q && apt-get dist-upgrade -y -q && apt-get -y -q autoclean && apt-get -y -q autoremove)
-RUN apt-get install -y -q gcc make liballegro4-dev python texinfo texlive
 
-# Installation et configuration de MariaDB
+# minimal build requirements
+RUN apt-get install -y -q gcc make liballegro4-dev
 
+# our build
 RUN install -d /usr/local/src
 COPY liquidwar-@VERSION@.tar.gz /usr/local/src/liquidwar-@VERSION@.tar.gz
 RUN cd /usr/local/src && tar xzf liquidwar-@VERSION@.tar.gz
 RUN cd /usr/local/src/liquidwar-@VERSION@ && ./configure && make && make install
+
+# run server
+RUN install -d /var/games/liquidwar && chown nobody:games /var/games/liquidwar
+EXPOSE 8035
+ENTRYPOINT /usr/local/bin/liquidwar-server -2 -public -comment Public_Liquid_War_5_server_running_in_Docker_instance
+
 

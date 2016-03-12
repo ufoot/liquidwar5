@@ -83,7 +83,7 @@ PASSWORD=
 # the comment which will be associated to the server
 # by default, it contains the name of the machine, but you might
 # want to put your e-mail here for instance
-COMMENT="Public_server_running_on_"`hostname` 
+COMMENT="Public_Liquid_War_5_server_running_on_host_"`hostname` 
 
 # the user which should be used to start the daemon
 # by default, it is set to "nobody:games", this assumes that
@@ -93,7 +93,7 @@ COMMENT="Public_server_running_on_"`hostname`
 # or change the $USER value, but remember: do *not* set it to root!
 USER=nobody:games
 
-# if you want the server to warn you whenevver someone connects on it,
+# if you want the server to warn you whenever someone connects on it,
 # you might set up a callback script by uncommenting the line below.
 # You'll also need to edit and install the liquidwar_notify.sh script 
 # manually
