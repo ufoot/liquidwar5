@@ -5,7 +5,7 @@ DOC_MAN =            @DOC_MAN@
 DOC_INFO =           @DOC_INFO@
 DOC_PS =             @DOC_PS@
 DOC_PDF =            @DOC_PDF@
-DOC_PHP3 =           @DOC_PHP3@
+DOC_PHP =           @DOC_PHP@
 DOC_UWC =            @DOC_UWC@
 
 VERSION =            @VERSION@
@@ -27,7 +27,7 @@ FILES = rules \
 	copying
 
 HTML_FILES = $(addprefix html/,$(addsuffix .html,$(FILES)))
-PHP3_FILES = $(addprefix php3/,$(addsuffix .php3,$(FILES)))
+PHP_FILES = $(addprefix php/,$(addsuffix .php,$(FILES)))
 TEX_FILES = $(addprefix tex/,$(addsuffix .tex,$(FILES)))
 MAN_FILES = $(addprefix man/,$(addsuffix .man,$(FILES)))
 TXT_FILES = $(addprefix txt/,$(addsuffix .txt,$(FILES)))
@@ -42,7 +42,7 @@ UWC_FILES = $(addprefix uwc/,$(addsuffix .uwc,$(FILES)))
 # - if format xxx must be skipped, then the ./configure
 #   script has set $(XXX) to "no" so we build target
 #   xxx_no, which is a "fake" empty target.
-all: txt_$(DOC_TXT) html_$(DOC_HTML) man_$(DOC_MAN) info_$(DOC_INFO) ps_$(DOC_PS) pdf_$(DOC_PDF) php3_$(DOC_PHP3) uwc_$(DOC_UWC)
+all: txt_$(DOC_TXT) html_$(DOC_HTML) man_$(DOC_MAN) info_$(DOC_INFO) ps_$(DOC_PS) pdf_$(DOC_PDF) php_$(DOC_PHP) uwc_$(DOC_UWC)
 
 txt_yes: $(TXT_FILES)
 
@@ -56,7 +56,7 @@ ps_yes: ps/liquidwar.ps
 
 pdf_yes: pdf/liquidwar.pdf 
 
-php3_yes: $(PHP3_FILES)
+php_yes: $(PHP_FILES)
 
 uwc_yes: $(UWC_FILES)
 
@@ -72,7 +72,7 @@ ps_no:
 
 pdf_no:
 
-php3_no:
+php_no:
 
 uwc_no:
 
@@ -112,9 +112,9 @@ html/%.html: xml/%.xml makedoc.py html/header.inc html/footer.inc
 	@echo Creating $@ from $<
 	@python -c "import makedoc; makedoc.make_html('$@','$<','html/header.inc','html/footer.inc')"
 
-php3/%.php3: xml/%.xml makedoc.py
+php/%.php: xml/%.xml makedoc.py
 	@echo Creating $@ from $<
-	@python -c "import makedoc; makedoc.make_php3('$@','$<')"
+	@python -c "import makedoc; makedoc.make_php('$@','$<')"
 
 tex/%.tex: xml/%.xml makedoc.py
 	@echo Creating $@ from $<
@@ -144,7 +144,7 @@ dummy:
 clean:
 	@rm -f *~ */*~ 
 	@rm -f makedoc.pyc
-	@rm -f $(HTML_FILES) $(PHP3_FILES) $(TEX_FILES) $(MAN_FILES) $(TXT_FILES) $(TEXI_FILES) $(UWC_FILES)
+	@rm -f $(HTML_FILES) $(PHP_FILES) $(TEX_FILES) $(MAN_FILES) $(TXT_FILES) $(TEXI_FILES) $(UWC_FILES)
 	@rm -f tex/liquidwar.toc tex/liquidwar.log tex/liquidwar.dvi tex/liquidwar.aux ps/liquidwar.ps pdf/liquidwar.pdf man/liquidwar.6 man/liquidwar.6.gz man/liquidwar-server.6.gz man/liquidwar-mapgen.6.gz man/liquidwar.man info/liquidwar.info* texi/liquidwar.texi texi/liquidwar.info*
 
 distclean: 

@@ -184,7 +184,7 @@ DOC_MAN_POSSIBLE="\"$PYTHON\" = \"yes\" -a \"$GZIP\" = \"yes\""
 DOC_INFO_POSSIBLE="\"$PYTHON\" = \"yes\" -a \"$GZIP\" = \"yes\" -a \"$MAKEINFO\" = \"yes\""
 DOC_PS_POSSIBLE="\"$PYTHON\" = \"yes\" -a \"$LATEX\" = \"yes\" -a \"$DVIPS\" = \"yes\""
 DOC_PDF_POSSIBLE="\"$PYTHON\" = \"yes\" -a \"$PDFLATEX\" = \"yes\""
-DOC_PHP3_POSSIBLE="\"$PYTHON\" = \"yes\""
+DOC_PHP_POSSIBLE="\"$PYTHON\" = \"yes\""
 DOC_UWC_POSSIBLE="\"$PYTHON\" = \"yes\""
 
 dnl Plain text documentation
@@ -326,24 +326,24 @@ AC_ARG_ENABLE(doc-pdf,[  --disable-doc-pdf       Disable PDF doc],
 AC_SUBST(DOC_PDF)
 
 dnl Php3 documentation
-dnl php3 doc is disabled by default, I use it to generate www.ufoot.org
+dnl php doc is disabled by default, I use it to generate www.ufoot.org
 dnl pages, but it should be of no use for most users.
-AC_MSG_CHECKING(for php3 doc)
-AC_ARG_ENABLE(doc-php3,[  --enable-doc-php3       Enable php3 doc],
+AC_MSG_CHECKING(for php doc)
+AC_ARG_ENABLE(doc-php,[  --enable-doc-php       Enable php doc],
 [
-  if test "$enableval" != "no" -a DOC_PHP3_POSSIBLE; then
-    DOC_PHP3=yes
+  if test "$enableval" != "no" -a DOC_PHP_POSSIBLE; then
+    DOC_PHP=yes
     AC_MSG_RESULT([enabled])
   else
-    DOC_PHP3=no
+    DOC_PHP=no
     AC_MSG_RESULT([disabled])
   fi
 ],
 [
-  DOC_PHP3=no
+  DOC_PHP=no
   AC_MSG_RESULT([disabled])
 ])
-AC_SUBST(DOC_PHP3)
+AC_SUBST(DOC_PHP)
 
 dnl UWiKiCMS documentation
 dnl uwc doc is disabled by default, I use it to generate www.ufoot.org

@@ -284,7 +284,7 @@ class XMLToHTML(XMLToX):
         result=format_html(result)
         return result
 
-class XMLToPHP3(XMLToX):
+class XMLToPHP(XMLToX):
     def __init__(self):
         XMLToX.__init__(self)
     def start_file(self,title):
@@ -581,10 +581,10 @@ def make_html(html_file,xml_file,header,footer):
     header_file.close()
     footer_file.close()
 
-def make_php3(php3_file,xml_file):
+def make_php(php_file,xml_file):
     parser=xml.sax.make_parser()
-    handler=(XMLToPHP3())
-    run_parser(handler,php3_file,xml_file)
+    handler=(XMLToPHP())
+    run_parser(handler,php_file,xml_file)
 
 def make_tex(tex_file,xml_file):
     parser=xml.sax.make_parser()

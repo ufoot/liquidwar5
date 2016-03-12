@@ -80,13 +80,13 @@ function db_close_connection($connection)
 //----------------------------------------------------------------------
 function db_handle_error($message)
 {
-  // My provider uses a patched PHP3 system, which does not support
+  // My provider uses a patched PHP system, which does not support
   // the standard "mail" function but has a replacement called "email".
   // It uses 1 more argument which is a username, used to fill the
   // "From" field. For a standard install, comment the "email" line
   // and uncomment the "mail" line.
-  email("webmaster","errors@ufoot.org","[php3error]",$message);
-  // mail("errors@xxx.xxx","[php3error]",$message);
+  email("webmaster","errors@ufoot.org","[phperror]",$message);
+  // mail("errors@xxx.xxx","[phperror]",$message);
 }
 
 //----------------------------------------------------------------------

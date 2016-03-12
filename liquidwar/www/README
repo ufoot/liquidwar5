@@ -12,9 +12,9 @@ You do not need to do it, since there's a permanent meta-server running
 on http://www.ufoot.org. Anyway, I see no reasons not to share this code.
 
 To set up the meta-server, you'll need:
-- a working PHP3 capable system. Wether you run it on UNIX or Windows, as an
+- a working PHP capable system. Wether you run it on UNIX or Windows, as an
   Apache module or as a CGI has absolutely no importance. You simply need
-  PHP3 pages to work, and must load the MySQL PHP module. I have no idea 
+  PHP pages to work, and must load the MySQL PHP module. I have no idea 
   wether this meta-server would work or not with a PHP4 engine.
 - a MySQL server. I believe almost any version of MySQL would fit, since I
   use very basic SQL queries. I would have prefered to run the meta-server on
@@ -23,9 +23,9 @@ To set up the meta-server, you'll need:
 
 Note that the meta-server is not installed when you type "make install" in
 the root source directory. If you want to install a meta-server, you'll
-need to set up the MySQL database and copy the PHP3 pages yourself.
-You'll also probably need to edit the "db.php3" file since it contains the
+need to set up the MySQL database and copy the PHP pages yourself.
+You'll also probably need to edit the "db.php" file since it contains the
 user and password required to connect to MySQL the server. When you set up 
-the php3 server, it is a good idea to make it fetch "/index.php3" when HTTP
-clients request "/". This is the default on many PHP3 installs anyway.
+the php server, it is a good idea to make it fetch "/index.php" when HTTP
+clients request "/". This is the default on many PHP installs anyway.
 

@@ -23,9 +23,9 @@
 
 // system page called to remove old servers from the database
 
-require 'db.php3';
-require 'html.php3';
-require 'metaserver.php3';
+require 'db.php';
+require 'html.php';
+require 'metaserver.php';
 
 header("Content-Type: text/plain");
 

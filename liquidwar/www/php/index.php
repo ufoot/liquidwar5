@@ -21,9 +21,9 @@
 /* Contact author : ufoot@ufoot.org                                          */
 /*****************************************************************************/
 
-require 'db.php3';
-require 'html.php3';
-require 'metaserver.php3';
+require 'db.php';
+require 'html.php';
+require 'metaserver.php';
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
 <HTML>
@@ -122,7 +122,7 @@ if ($result)
 }
 ?>
 </TABLE>
-<FORM METHOD="POST" ACTION="index.php3">
+<FORM METHOD="POST" ACTION="index.php">
 <TEXTAREA COLS=70 ROWS=15 NAME="message"></TEXTAREA>
 <BR>
 <SELECT NAME="game">
