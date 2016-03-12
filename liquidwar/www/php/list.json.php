@@ -37,32 +37,24 @@ echo "\"servers\":[\n";
 if ($result) {
     for ($i=0;$result[$i];++$i) {
         echo "    {";
-        echo "\"address\":\"";
-        echo db_quote($result[$i]["address"],METASERVER_SIZE_ADDRESS).",";
-        echo "\",";
+        echo "\"address\":";
+        echo json_encode($result[$i]["address"],METASERVER_SIZE_ADDRESS).",";
         echo "\"port\":";
         echo $result[$i]["port"].",";
-        echo ",";
-        echo "\"game\":\"";
-        echo db_quote($result[$i]["game"],METASERVER_SIZE_GAME).",";
-        echo "\",";
-        echo "\"version\":\"";
-        echo db_quote($result[$i]["version"],METASERVER_SIZE_VERSION).",";
-        echo "\",";
+        echo "\"game\":";
+        echo json_encode($result[$i]["game"],METASERVER_SIZE_GAME).",";
+        echo "\"version\":";
+        echo json_encode($result[$i]["version"],METASERVER_SIZE_VERSION).",";
         echo "\"uptime\":";
         echo $result[$i]["uptime"].",";
-        echo ",";
         echo "\"busy_players\":";
         echo $result[$i]["busy_players"].",";
-        echo ",";
         echo "\"max_players\":";
         echo $result[$i]["max_players"].",";
-        echo ",";
         echo "\"password\":";
         echo $result[$i]["password"].",";
-        echo "\"comment\":\"";
-        echo db_quote($result[$i]["comment"],METASERVER_SIZE_COMMENT)."\n";
-        echo "\"";
+        echo "\"comment\":";
+        echo json_encode($result[$i]["comment"],METASERVER_SIZE_COMMENT);
         if ($i<count($result)-1) {
             echo "},\n";
         } else {
