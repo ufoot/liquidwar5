@@ -250,7 +250,7 @@ world_clean:
 # used when preparing packages
 packageclean: clean world_clean
 	@rm -r -f Makefile config.cache config.status config.log autom4te.cache
-	@rm -f misc/liquidward misc/macosx_info.plist misc/liquidwar.nsi misc/docker/DockerFile-build misc/docker/Dockerfile-server
+	@rm -f misc/liquidward misc/macosx_info.plist misc/liquidwar.nsi misc/docker/Dockerfile-build misc/docker/Dockerfile-server
 	@find . -name "*.o" -o -name "*.obj" | xargs rm -f
 	@find . -name "*.tar.gz" -o -name "*.tgz" -o -name "*.zip" -o -name "*.rpm" -o -name "*.deb" -o -name "*.tgz" | xargs rm -f
 	@find . -name ".xvpics" | xargs rm -rf
