@@ -230,7 +230,8 @@ Use "-private" to get rid of this question.
 	should amount to something like:
       </text>
       <code>
-docker run -i -p 8035:8035 ufoot/liquidwar-server:5.6.5
+docker pull ufoot/liquidwar-server
+docker run -i -p 8035:8035 ufoot/liquidwar-server
       </code>
     </part>
   </chap>
