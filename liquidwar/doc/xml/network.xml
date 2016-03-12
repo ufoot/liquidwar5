@@ -213,6 +213,26 @@ Use "-private" to get rid of this question.
 	CTRL-C.
       </text>
     </part>
+    <part title="Using Docker">
+      <text>
+	Docker (see "http://docs.docker.com/" for details) is a convenient
+	way to launch a server without re-inventing (rather, re-compiling)
+	the wheel.
+      </text>
+      <text>
+	You might want to run the server this way if, for instance, you
+	need to have it run on a remote box where you do not wish to install
+	a complex Liquid War stack, Allegro and the rest.
+      </text>
+      <text>
+	Please visit "https://hub.docker.com/r/ufoot/liquidwar/" for a list
+	of available images, once it's installed, running the server
+	should amount to something like:
+      </text>
+      <code>
+docker run -i -p 8035:8035 ufoot/liquidwar:server-5.6.5
+      </code>
+    </part>
   </chap>
 
   <chap title="Using the meta-server">
