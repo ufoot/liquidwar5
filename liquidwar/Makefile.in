@@ -1,3 +1,22 @@
+# Liquid War is a multiplayer wargame
+# Copyright (C) 1998-2015 Christian Mauduit
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+#
+# Liquid War homepage : http://www.ufoot.org/liquidwar/v5
+# Contact author      : ufoot@ufoot.org
 
 prefix =          @prefix@
 exec_prefix =     @exec_prefix@
@@ -43,9 +62,12 @@ MAKE_UTILS_DIR = ./utils
 MAKE_DOC_DIR = ./doc
 MAKE_DIRS = $(MAKE_BIN_DIR) $(MAKE_UTILS_DIR) $(MAKE_DATA_DIR) $(MAKE_DOC_DIR)
 
+DOCKER_DIR = ./misc/docker
+
 PACKAGE_SOURCE_DIR = liquidwar-$(VERSION)
 PACKAGE_SOURCE_TAR = $(PACKAGE_SOURCE_DIR).tar
 PACKAGE_SOURCE_TARGZ = $(PACKAGE_SOURCE_TAR).gz
+PACKAGE_MISC_SOURCE_TARGZ = $(DOCKER_DIR)/$(PACKAGE_SOURCE_TARGZ)
 
 PACKAGE_BINARY_TAR = liquidwar-$(VERSION).$(HOST).tar
 PACKAGE_BINARY_TGZ = liquidwar-$(VERSION).$(HOST).tgz
@@ -210,9 +232,11 @@ uninstall:
 clean:
 	@for d in $(MAKE_DIRS); do $(GMAKE) -C $$d clean; done
 	@find . -name "*~" -o -name "*#*" -o -name ".*#*" | xargs rm -f
+	@rm -f $(PACKAGE_MISC_SOURCE_TARGZ)
 
 world_clean:
 	@rm -f $(PACKAGE_SOURCE_TARGZ)
+	@rm -f $(PACKAGE_MISC_SOURCE_TARGZ)
 	@rm -f $(PACKAGE_BINARY_TGZ)
 	@rm -f $(PACKAGE_SOURCE_RPM)
 	@rm -f $(PACKAGE_BINARY_RPM)
@@ -226,7 +250,7 @@ world_clean:
 # used when preparing packages
 packageclean: clean world_clean
 	@rm -r -f Makefile config.cache config.status config.log autom4te.cache
-	@rm -f misc/liquidward misc/macosx_info.plist misc/liquidwar.nsi misc/DockerFile
+	@rm -f misc/liquidward misc/macosx_info.plist misc/liquidwar.nsi misc/docker/DockerFile-build misc/docker/Dockerfile-server
 	@find . -name "*.o" -o -name "*.obj" | xargs rm -f
 	@find . -name "*.tar.gz" -o -name "*.tgz" -o -name "*.zip" -o -name "*.rpm" -o -name "*.deb" -o -name "*.tgz" | xargs rm -f
 	@find . -name ".xvpics" | xargs rm -rf
@@ -528,8 +552,11 @@ $(PACKAGE_GP2X_ZIP): $(PACKAGE_SOURCE_TARGZ)
 	@cp $(PACKAGE_TMP)/$(PACKAGE_GP2X_ZIP) .
 	@rm -rf $(PACKAGE_TMP) 
 
-docker: $(PACKAGE_SOURCE_TARGZ)
-	@cp $(PACKAGE_SOURCE_TARGZ) misc/$(PACKAGE_SOURCE_TARGZ)
-	@cd misc && docker build .
-	@rm -f misc/$(PACKAGE_SOURCE_TARGZ)
+$(PACKAGE_MISC_SOURCE_TARGZ): $(PACKAGE_SOURCE_TARGZ)
+	@cp $< $@
+
+docker: $(PACKAGE_MISC_SOURCE_TARGZ)
+	@cd $(DOCKER_DIR) && docker build -f Dockerfile-build .
+	@cd $(DOCKER_DIR) && docker build -f Dockerfile-server .
+	@rm -f $<
 

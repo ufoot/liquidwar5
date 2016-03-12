@@ -1,7 +1,8 @@
 autom4te.cache
 configure
 Makefile
-Dockerfile
+Dockerfile-build
+Dockerfile-server
 config.log
 config.status
 index.html

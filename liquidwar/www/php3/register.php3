@@ -29,14 +29,14 @@ require 'metaserver.php3';
 
 header("Content-Type: text/plain");
 
-$result=metaserver_register($_SERVER["protocol"],
-			    $_SERVER["game"],
-			    $_SERVER["version"],
-			    $_SERVER["port"],
-			    $_SERVER["busy_players"],
-			    $_SERVER["max_players"],
-			    $_SERVER["password"],
-			    $_SERVER["comment"]);
+$result=metaserver_register($_GET["protocol"],
+			    $_GET["game"],
+			    $_GET["version"],
+			    $_GET["port"],
+			    $_GET["busy_players"],
+			    $_GET["max_players"],
+			    $_GET["password"],
+			    $_GET["comment"]);
 
 if ($result) 
 {

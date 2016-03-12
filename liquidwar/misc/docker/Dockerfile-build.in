@@ -26,7 +26,7 @@ ENV DEBIAN_FRONTEND noninteractive
 # Depots, mises a jour et installs de Apache/PHP5
 
 RUN (apt-get update && apt-get upgrade -y -q && apt-get dist-upgrade -y -q && apt-get -y -q autoclean && apt-get -y -q autoremove)
-RUN apt-get install -y -q liballegro4-dev
+RUN apt-get install -y -q gcc make liballegro4-dev python texinfo texlive
 
 # Installation et configuration de MariaDB
 

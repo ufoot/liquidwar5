@@ -29,9 +29,9 @@ require 'metaserver.php3';
 
 header("Content-Type: text/plain");
 
-$result=metaserver_list($_SERVER["protocol"],
-			$_SERVER["game"],
-			$_SERVER["version"]);
+$result=metaserver_list($_GET["protocol"],
+			$_GET["game"],
+			$_GET["version"]);
 
 if ($result) 
 {
