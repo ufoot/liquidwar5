@@ -85,9 +85,9 @@ This chat-box is not moderated, so I'm not responsible
 for its content. Still, if you think something's going wrong,
 <A HREF="mailto:ufoot@ufoot.org">contact me</A>. 
 <?php
-if ($GLOBALS['message'] && isset($GLOBALS['post']))
+if ($_SERVER['message'] && isset($_SERVER['post']))
 {
-  if (metaserver_write("1.0",$GLOBALS['game'],$GLOBALS['message']))
+  if (metaserver_write("1.0",$_SERVER['game'],$_SERVER['message']))
   {
     echo "<P>Message successfully posted.";
   }

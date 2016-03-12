@@ -90,7 +90,7 @@ function metaserver_register($protocol,
   $game=db_quote($game,METASERVER_SIZE_GAME);
   $version=db_quote($version,METASERVER_SIZE_VERSION);
   $ping=time();
-  $real_address=$GLOBALS['HTTP_X_FORWARDED_FOR'] ? $GLOBALS['HTTP_X_FORWARDED_FOR'] : $GLOBALS['REMOTE_ADDR'];
+  $real_address=$_SERVER['HTTP_X_FORWARDED_FOR'] ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR'];
   $address=db_quote($real_address,METASERVER_SIZE_ADDRESS);
   $port=floor($port);
   $busy_players=floor($busy_players);
@@ -258,7 +258,7 @@ function metaserver_write($protocol,
 
       metaserver_cleanup_chat_ex($connection);
 
-      $address=db_quote($GLOBALS['REMOTE_ADDR'],METASERVER_SIZE_ADDRESS);
+      $address=db_quote($_SERVER['REMOTE_ADDR'],METASERVER_SIZE_ADDRESS);
       $post_date=time();
       $game=db_quote($game,METASERVER_SIZE_GAME);
       $message=db_quote($message,METASERVER_SIZE_MESSAGE);
