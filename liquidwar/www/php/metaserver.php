@@ -33,10 +33,10 @@ define("METASERVER_SIZE_MESSAGE",1000);
 define("METASERVER_LIST_TIME_LIMIT",5*60);
 // 5 seconds
 define("METASERVER_CHAT_WRITE_LIMIT",5);
-// 1 month
-define("METASERVER_CHAT_PURGE_LIMIT",31*24*60*60);
-// 30 messages
-define("METASERVER_CHAT_MAX_MESSAGES",30);
+// 2 days
+define("METASERVER_CHAT_PURGE_LIMIT",2*24*60*60);
+// 80 messages
+define("METASERVER_CHAT_MAX_MESSAGES",80);
 
 //----------------------------------------------------------------------
 // Cleans up the database, ie removes old inactive servers (high-level)
