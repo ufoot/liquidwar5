@@ -27,8 +27,7 @@ RUN (apt-get update && apt-get upgrade -y -q && apt-get dist-upgrade -y -q && ap
 
 # minimal build requirements
 RUN apt-get install -y -q gcc make liballegro4-dev
-# required to run safely
-RUN apt-get install -y -q sudo
+RUN apt-get clean
 
 # our build
 RUN install -d /usr/local/src
@@ -36,8 +35,9 @@ COPY liquidwar-@VERSION@.tar.gz /usr/local/src/liquidwar-@VERSION@.tar.gz
 RUN cd /usr/local/src && tar xzf liquidwar-@VERSION@.tar.gz
 RUN cd /usr/local/src/liquidwar-@VERSION@ && ./configure && make && make install
 
-# run server
+# run server on default port
 EXPOSE 8035
-ENTRYPOINT sudo -u nobody /usr/local/bin/liquidwar-server -2 -public -comment Public_Liquid_War_5_server_running_in_Docker_instance
+USER nobody
+ENTRYPOINT /usr/local/bin/liquidwar-server -2 -public -comment Public_Liquid_War_5_server_running_in_Docker_instance
 
 

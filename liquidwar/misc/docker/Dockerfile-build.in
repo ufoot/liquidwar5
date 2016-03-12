@@ -25,10 +25,9 @@ LABEL package="liquidwar" version="version" org.ufoot.liquidwar.os="debian" org.
 ENV DEBIAN_FRONTEND noninteractive
 RUN (apt-get update && apt-get upgrade -y -q && apt-get dist-upgrade -y -q && apt-get -y -q autoclean && apt-get -y -q autoremove)
 
-# minimal build requirements
-RUN apt-get install -y -q gcc make liballegro4-dev 
-# optional build tools
-RUN apt-get install -y -q python texinfo texlive
+# complete build requirements
+RUN apt-get install -y -q gcc make liballegro4-dev python texinfo texlive texlive-latex-base
+RUN apt-get clean
 
 # our build
 RUN install -d /usr/local/src
