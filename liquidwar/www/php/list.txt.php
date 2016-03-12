@@ -30,23 +30,21 @@ require 'metaserver.php';
 header("Content-Type: text/plain");
 
 $result=metaserver_list($_GET["protocol"],
-			$_GET["game"],
-			$_GET["version"]);
+$_GET["game"],
+$_GET["version"]);
 
-if ($result) 
-{
-  for ($i=0;$result[$i];++$i)
-  {
-    echo db_quote($result[$i]["address"],METASERVER_SIZE_ADDRESS).",";
-    echo $result[$i]["port"].",";
-    echo db_quote($result[$i]["game"],METASERVER_SIZE_GAME).",";
-    echo db_quote($result[$i]["version"],METASERVER_SIZE_VERSION).",";
-    echo $result[$i]["uptime"].",";
-    echo $result[$i]["busy_players"].",";
-    echo $result[$i]["max_players"].",";
-    echo $result[$i]["password"].",";
-    echo db_quote($result[$i]["comment"],METASERVER_SIZE_COMMENT)."\n";
-  }
+if ($result) {
+    for ($i=0;$result[$i];++$i) {
+        echo db_quote($result[$i]["address"],METASERVER_SIZE_ADDRESS).",";
+        echo $result[$i]["port"].",";
+        echo db_quote($result[$i]["game"],METASERVER_SIZE_GAME).",";
+        echo db_quote($result[$i]["version"],METASERVER_SIZE_VERSION).",";
+        echo $result[$i]["uptime"].",";
+        echo $result[$i]["busy_players"].",";
+        echo $result[$i]["max_players"].",";
+        echo $result[$i]["password"].",";
+        echo db_quote($result[$i]["comment"],METASERVER_SIZE_COMMENT)."\n";
+    }
 }
 
 // We use this EOF trick otherwise there's no HTTP data sent if there

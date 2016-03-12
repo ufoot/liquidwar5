@@ -61,22 +61,20 @@ $result=metaserver_list("1.0","","");
 <TH>Comment</TH>
 </TR>
 <?php
-if ($result) 
-{
-  for ($i=0;$result[$i];++$i)
-  {
-    echo "<TR>";
-    echo "<TD>".html_format($result[$i]["address"])."</TD>";
-    echo "<TD>".html_format($result[$i]["port"])."</TD>";
-    echo "<TD>".html_format($result[$i]["game"])."</TD>";
-    echo "<TD>".html_format($result[$i]["version"])."</TD>";
-    echo "<TD>".html_uptime($result[$i]["uptime"])."</TD>";
-    echo "<TD>".html_format($result[$i]["busy_players"])."/".html_format($result[$i]["max_players"])."</TD>";
-    echo "<TD>".(html_format($result[$i]["password"]) ? "yes" : "no")."</TD>";
-    echo "<TD>".html_format($result[$i]["comment"])."</TD>";
-    echo "</TR>\n";
-  }
-}
+    if ($result) {
+        for ($i=0;$result[$i];++$i) {
+            echo "<TR>";
+            echo "<TD>".html_format($result[$i]["address"])."</TD>";
+            echo "<TD>".html_format($result[$i]["port"])."</TD>";
+            echo "<TD>".html_format($result[$i]["game"])."</TD>";
+            echo "<TD>".html_format($result[$i]["version"])."</TD>";
+            echo "<TD>".html_uptime($result[$i]["uptime"])."</TD>";
+            echo "<TD>".html_format($result[$i]["busy_players"])."/".html_format($result[$i]["max_players"])."</TD>";
+            echo "<TD>".(html_format($result[$i]["password"]) ? "yes" : "no")."</TD>";
+            echo "<TD>".html_format($result[$i]["comment"])."</TD>";
+            echo "</TR>\n";
+        }
+    }
 ?>
 </TABLE>
 <HR>
@@ -85,17 +83,14 @@ This chat-box is not moderated, so I'm not responsible
 for its content. Still, if you think something's going wrong,
 <A HREF="mailto:ufoot@ufoot.org">contact me</A>. 
 <?php
-if ($_SERVER['message'] && isset($_SERVER['post']))
-{
-  if (metaserver_write("1.0",$_SERVER['game'],$_SERVER['message']))
-  {
-    echo "<P>Message successfully posted.";
-  }
-  else
-  {
-    echo "<P><B>Message not posted.</B>";
-  }
-}
+    if ($_SERVER['message'] && isset($_SERVER['post'])) {
+        if (metaserver_write("1.0",$_SERVER['game'],$_SERVER['message'])) {
+            echo "<P>Message successfully posted.";
+        }
+        else {
+            echo "<P><B>Message not posted.</B>";
+        }
+    }
 ?>
 <?php
 $result=metaserver_read("1.0","",0);
@@ -108,18 +103,16 @@ $result=metaserver_read("1.0","",0);
 <TH>Message</TH>
 </TR>
 <?php
-if ($result) 
-{
-  for ($i=0;$result[$i];++$i)
-  {
-    echo "<TR>";
-    echo "<TD>".html_format($result[$i]["address"])."</TD>";
-    echo "<TD>".html_uptime($result[$i]["age"])."</TD>";
-    echo "<TD>".html_format($result[$i]["game"])."</TD>";
-    echo "<TD>".html_format($result[$i]["message"])."</TD>";
-    echo "</TR>\n";
-  }
-}
+    if ($result) {
+        for ($i=0;$result[$i];++$i) {
+            echo "<TR>";
+            echo "<TD>".html_format($result[$i]["address"])."</TD>";
+            echo "<TD>".html_uptime($result[$i]["age"])."</TD>";
+            echo "<TD>".html_format($result[$i]["game"])."</TD>";
+            echo "<TD>".html_format($result[$i]["message"])."</TD>";
+            echo "</TR>\n";
+        }
+    }
 ?>
 </TABLE>
 <FORM METHOD="POST" ACTION="index.php">

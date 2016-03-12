@@ -31,12 +31,10 @@ header("Content-Type: text/plain");
 
 $result=metaserver_cleanup();
 
-if ($result) 
-{
+if ($result) {
   echo "OK\n";
 }
-else
-{
+else {
   echo "error\n";
 }
 

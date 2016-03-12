@@ -26,18 +26,17 @@
 //----------------------------------------------------------------------
 function html_format($text)
 {
-  $html=htmlentities($text);
+    $html=htmlentities($text);
 
-  /*
-   * Now if the HTML string is empty, we replace it by &nbsp; which
-   * avoids weird behaviors with cell borders in HTML tables.
-   */
-  if ($html=="")
-    {
-      $html="&nbsp;";
+    /*
+     * Now if the HTML string is empty, we replace it by &nbsp; which
+     * avoids weird behaviors with cell borders in HTML tables.
+     */
+    if ($html=="") {
+        $html="&nbsp;";
     }
 
-  return $html;
+    return $html;
 }
 
 //----------------------------------------------------------------------
@@ -45,36 +44,30 @@ function html_format($text)
 //----------------------------------------------------------------------
 function html_uptime($timestamp)
 {
-  $seconds=$timestamp%60;
-  $minutes=floor($timestamp/60)%60;
-  $hours=floor($timestamp/3600)%24;
-  $days=floor($timestamp/(3600*24));
+    $seconds=$timestamp%60;
+    $minutes=floor($timestamp/60)%60;
+    $hours=floor($timestamp/3600)%24;
+    $days=floor($timestamp/(3600*24));
 
-  if ($days>0)
-    {
-      if ($days>1)
-	{
-	  $uptime=$days." days";
-	}
-      else
-	{
-	  $uptime="1 day";
-	}
+    if ($days>0) {
+        if ($days>1) {
+            $uptime=$days." days";
+        }
+        else{
+            $uptime="1 day";
+        }
     }
-  else if ($hours>0)
-    {
-      $uptime=$hours." h";
+    else if ($hours>0) {
+        $uptime=$hours." h";
     }
-  else if ($minutes>0)
-    {
-      $uptime=$minutes." min";
+    else if ($minutes>0) {
+        $uptime=$minutes." min";
     }
-  else 
-    {
-      $uptime=$seconds." sec";
+    else {
+        $uptime=$seconds." sec";
     }
 
-  return $uptime;
+    return $uptime;
 }
 
 //----------------------------------------------------------------------
@@ -82,9 +75,9 @@ function html_uptime($timestamp)
 //----------------------------------------------------------------------
 function html_date($timestamp)
 {
-  $date=date("Y-m-d H:i:s",$timestamp);
+    $date=date("Y-m-d H:i:s",$timestamp);
 
-  return $date;
+    return $date;
 }
 
 ?>

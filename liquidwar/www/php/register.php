@@ -30,21 +30,19 @@ require 'metaserver.php';
 header("Content-Type: text/plain");
 
 $result=metaserver_register($_GET["protocol"],
-			    $_GET["game"],
-			    $_GET["version"],
-			    $_GET["port"],
-			    $_GET["busy_players"],
-			    $_GET["max_players"],
-			    $_GET["password"],
-			    $_GET["comment"]);
+$_GET["game"],
+$_GET["version"],
+$_GET["port"],
+$_GET["busy_players"],
+$_GET["max_players"],
+$_GET["password"],
+$_GET["comment"]);
 
-if ($result) 
-{
-  echo "OK\n";
+if ($result) {
+    echo "OK\n";
 }
-else
-{
-  echo "error\n";
+else {
+    echo "error\n";
 }
 
 ?>

@@ -31,32 +31,28 @@ define("METASERVER_DB_BASE","proxad");
 //----------------------------------------------------------------------
 function db_open_connection()
 {
-  $i=0;
-  $connection=0;
+    $i=0;
+    $connection=0;
 
-  while ($i<5 && !$connection)
-    {
-      $connection=mysql_connect(METASERVER_DB_HOST,
-				METASERVER_DB_USER,
-				METASERVER_DB_PASSWORD);
-      sleep($i);
-      $i+=1;
+    while ($i<5 && !$connection) {
+        $connection=mysql_connect(METASERVER_DB_HOST,
+        METASERVER_DB_USER,
+        METASERVER_DB_PASSWORD);
+        sleep($i);
+        $i+=1;
     }
 
-  if ($connection)
-    {
-      mysql_select_db(METASERVER_DB_BASE);
-      if ($i>1)
-	{
-	  db_handle_error("First attempt to open the metaserver MySQL database failed");
-	}
+    if ($connection) {
+        mysql_select_db(METASERVER_DB_BASE);
+        if ($i>1) {
+            db_handle_error("First attempt to open the metaserver MySQL database failed");
+        }
     }
-  else
-    {
-      db_handle_error("Unable to open connection with the metaserver MySQL database");
+    else {
+        db_handle_error("Unable to open connection with the metaserver MySQL database");
     }
 
-  return $connection;
+    return $connection;
 }
 
 //----------------------------------------------------------------------
@@ -64,14 +60,13 @@ function db_open_connection()
 //----------------------------------------------------------------------
 function db_close_connection($connection)
 {
-  if ($connection)
-    {
-      // Here we do not really close the connection since MySQL shares
-      // connections if they are opened with the same parameters,
-      // and it interferes with other php code on my web site.
-      // Anyway the connection will be closed at the end of the PHP page
-      //
-      // mysql_close($connection);
+    if ($connection) {
+        // Here we do not really close the connection since MySQL shares
+        // connections if they are opened with the same parameters,
+        // and it interferes with other php code on my web site.
+        // Anyway the connection will be closed at the end of the PHP page
+        //
+        // mysql_close($connection);
     }
 }
 
@@ -80,13 +75,13 @@ function db_close_connection($connection)
 //----------------------------------------------------------------------
 function db_handle_error($message)
 {
-  // My provider uses a patched PHP system, which does not support
-  // the standard "mail" function but has a replacement called "email".
-  // It uses 1 more argument which is a username, used to fill the
-  // "From" field. For a standard install, comment the "email" line
-  // and uncomment the "mail" line.
-  email("webmaster","errors@ufoot.org","[phperror]",$message);
-  // mail("errors@xxx.xxx","[phperror]",$message);
+    // My provider uses a patched PHP system, which does not support
+    // the standard "mail" function but has a replacement called "email".
+    // It uses 1 more argument which is a username, used to fill the
+    // "From" field. For a standard install, comment the "email" line
+    // and uncomment the "mail" line.
+    email("webmaster","errors@ufoot.org","[phperror]",$message);
+    // mail("errors@xxx.xxx","[phperror]",$message);
 }
 
 //----------------------------------------------------------------------
@@ -94,34 +89,33 @@ function db_handle_error($message)
 //----------------------------------------------------------------------
 function db_quote($field,$size=65535)
 {
-  $result="";
-  $len=strlen($field);
+    $result="";
+    $len=strlen($field);
 
-  for ($i=0;($i<$len) && ($i<$size);++$i) 
-    {
-      // We filter all non ASCII 128 "normal" characters
-      $c=substr($field,$i,1);
-      $ascii=ord($c);
-      if ($ascii>=32 && $ascii<=127) 
-	{
-	  // We replace any ' by '', this is the SQL default
-	  if ($c=="'") 
-	    {
-	      $c="''";
-	    }
-	  // We filter $ \ " and %, one never knows...
-	  else if (strchr("\$\\\"%",$c))
-	    {
-	      $c="";
-	    }
+    for ($i=0;($i<$len) && ($i<$size);++$i) {
+        // We filter all non ASCII 128 "normal" characters
+        $c=substr($field,$i,1);
+        $ascii=ord($c);
+        if ($ascii>=32 && $ascii<=127) 
+            {
+                // We replace any ' by '', this is the SQL default
+                if ($c=="'") 
+                    {
+                        $c="''";
+                    }
+                // We filter $ \ " and %, one never knows...
+                else if (strchr("\$\\\"%",$c))
+                    {
+                        $c="";
+                    }
 
-	  $result.=$c;
-	}
+                $result.=$c;
+            }
     }
 
-  $result="'".$result."'";
+    $result="'".$result."'";
 
-  return $result;
+    return $result;
 }
 
 //----------------------------------------------------------------------
@@ -129,24 +123,18 @@ function db_quote($field,$size=65535)
 //----------------------------------------------------------------------
 function db_exec_query_select($connection,$query)
 {
-  $i=0;
+    $i=0;
 
-  if ($connection)
-    {
-      $res=mysql_query($query,$connection);
+    if ($connection) {
+        $res=mysql_query($query,$connection);
 
-      while ($arr=mysql_fetch_array($res,MYSQL_ASSOC))
-	{
-	  $data[$i]=$arr;
-	  $i++;
-	}
+        while ($arr=mysql_fetch_array($res,MYSQL_ASSOC)) {
+            $data[$i]=$arr;
+            $i++;
+        }
     }
-  //  else
-  //  {
-  //   $text=mysql_error_text();
-  //  }
 
-  return $data;
+    return $data;
 }
 
 //----------------------------------------------------------------------
@@ -154,23 +142,17 @@ function db_exec_query_select($connection,$query)
 //----------------------------------------------------------------------
 function db_exec_query($connection,$query)
 {
-  $rows=-1;
+    $rows=-1;
 
-  if ($connection)
-    {
-      $res=mysql_query($query,$connection);
+    if ($connection) {
+        $res=mysql_query($query,$connection);
 
-      if ($res)
-	{
-	  $rows=mysql_affected_rows($connection);
-	}
+        if ($res) {
+            $rows=mysql_affected_rows($connection);
+        }
     }
-  //  else
-  //  {
-  //   $text=mysql_error_text();
-  //  }
 
-  return $rows;
+    return $rows;
 }
 
 
