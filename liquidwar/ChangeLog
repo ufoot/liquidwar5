@@ -1,3 +1,9 @@
+2016-03-12  Christian Mauduit (ufoot@ufoot.org)
+
+	* Introduced Docker files to build the game and run a server.
+
+	* Fixed PHP metaserver.
+
 2014-03-30  Christian Mauduit (ufoot@ufoot.org)
 
 	* Fixed DOS & MS-Windows Makefiles to include Polish.
