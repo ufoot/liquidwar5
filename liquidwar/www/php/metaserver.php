@@ -328,14 +328,6 @@ $limit)
 
     $data=db_exec_query_select($connection,$query);
 
-    $size = sizeof($data);
-    for ($i=0;$i<floor($size/2);++$i) {
-        $j=$size-$i-1;
-        $temp=$data[$i];
-        $data[$i]=$data[$j];
-        $data[$j]=$temp;
-    }				    
-
     $now=time();
     for ($i=0;$data[$i];++$i) {
         $data[$i]["age"]=$now-$data[$i]["post_date"];
