@@ -20,7 +20,7 @@
 
 FROM debian
 MAINTAINER Christian Mauduit "ufoot@ufoot.org"
-LABEL package="liquidwar" version="@VERSION@" org.ufoot.liquidwar.os="debian" org.ufoot.liquidwar.type="server" description="Liquid War server image, contains a running instance the program, listening on default port 8035. Homepage http://www.ufoot.org/liquidwar/v5"
+LABEL package="liquidwar" version="@VERSION@" org.ufoot.liquidwar.os="debian" org.ufoot.liquidwar.type="server" description="Liquid War server image, contains a running instance of the program, listening on default port 8035. Homepage http://www.ufoot.org/liquidwar/v5"
 
 ENV DEBIAN_FRONTEND noninteractive
 RUN (apt-get update && apt-get upgrade -y -q && apt-get dist-upgrade -y -q && apt-get -y -q autoclean && apt-get -y -q autoremove)

@@ -57,7 +57,7 @@
 #define LW_SERVER_DEFAULT_ADDRESS     "127.0.0.1"
 #define LW_SERVER_DEFAULT_PORT        8035
 #define LW_SERVER_DEFAULT_LAG         6
-#define LW_SERVER_DEFAULT_METASERVER  "www.ufoot.org/metaserver/"
+#define LW_SERVER_DEFAULT_METASERVER  "www.ufoot.org:8053/"
 
 #define LW_SERVER_METASERVER_PROTOCOL "1.0"
 

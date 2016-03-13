@@ -67,7 +67,10 @@ DOCKER_DIR = ./misc/docker
 PACKAGE_SOURCE_DIR = liquidwar-$(VERSION)
 PACKAGE_SOURCE_TAR = $(PACKAGE_SOURCE_DIR).tar
 PACKAGE_SOURCE_TARGZ = $(PACKAGE_SOURCE_TAR).gz
-PACKAGE_MISC_SOURCE_TARGZ = $(DOCKER_DIR)/$(PACKAGE_SOURCE_TARGZ)
+
+PACKAGE_DOCKER_SOURCE_TARGZ = $(DOCKER_DIR)/$(PACKAGE_SOURCE_TARGZ)
+PACKAGE_DOCKER_METASERVER_TARGZ = $(DOCKER_DIR)/metaserver.tar.gz
+PACKAGE_DOCKER_TABLES_SQL = $(DOCKER_DIR)/tables.sql
 
 PACKAGE_BINARY_TAR = liquidwar-$(VERSION).$(HOST).tar
 PACKAGE_BINARY_TGZ = liquidwar-$(VERSION).$(HOST).tgz
@@ -232,11 +235,13 @@ uninstall:
 clean:
 	@for d in $(MAKE_DIRS); do $(GMAKE) -C $$d clean; done
 	@find . -name "*~" -o -name "*#*" -o -name ".*#*" | xargs rm -f
-	@rm -f $(PACKAGE_MISC_SOURCE_TARGZ)
+	@rm -f $(PACKAGE_DOCKER_SOURCE_TARGZ) $(PACKAGE_DOCKER_METASERVER_TARGZ) $(PACKAGE_DOCKER_TABLES_SQL)
 
 world_clean:
 	@rm -f $(PACKAGE_SOURCE_TARGZ)
-	@rm -f $(PACKAGE_MISC_SOURCE_TARGZ)
+	@rm -f $(PACKAGE_DOCKER_SOURCE_TARGZ)
+	@rm -f $(PACKAGE_DOCKER_METASERVER_TARGZ)
+	@rm -f $(PACKAGE_DOCKER_TABLES_SQL)
 	@rm -f $(PACKAGE_BINARY_TGZ)
 	@rm -f $(PACKAGE_SOURCE_RPM)
 	@rm -f $(PACKAGE_BINARY_RPM)
@@ -552,23 +557,30 @@ $(PACKAGE_GP2X_ZIP): $(PACKAGE_SOURCE_TARGZ)
 	@cp $(PACKAGE_TMP)/$(PACKAGE_GP2X_ZIP) .
 	@rm -rf $(PACKAGE_TMP) 
 
-$(PACKAGE_MISC_SOURCE_TARGZ): $(PACKAGE_SOURCE_TARGZ)
+$(PACKAGE_DOCKER_SOURCE_TARGZ): $(PACKAGE_SOURCE_TARGZ)
 	@cp $< $@
+
+$(PACKAGE_DOCKER_METASERVER_TARGZ): www/php/metaserver.php
+	@cd www && rm -rf metaserver && install -d metaserver && cp php/*.php metaserver/ && chmod 644 metaserver/* && tar --owner=root --group=staff -czf metaserver.tar.gz metaserver && rm -rf metaserver
+	@mv -f www/metaserver.tar.gz $@
+
+$(PACKAGE_DOCKER_TABLES_SQL): www/mysql/tables.sql
+	cp $< $@
 
 docker: docker-build docker-server docker-metaserver
 
-docker-build: $(PACKAGE_MISC_SOURCE_TARGZ)
+docker-build: $(PACKAGE_DOCKER_SOURCE_TARGZ)
 	@cd $(DOCKER_DIR) && docker build -f Dockerfile-build -t ufoot/liquidwar-build:$(VERSION) .
 	@cd $(DOCKER_DIR) && docker build -f Dockerfile-build -t ufoot/liquidwar-build:latest .
 	@rm -f $<
 
-docker-server: $(PACKAGE_MISC_SOURCE_TARGZ)
+docker-server: $(PACKAGE_DOCKER_SOURCE_TARGZ)
 	@cd $(DOCKER_DIR) && docker build -f Dockerfile-server -t ufoot/liquidwar-server:$(VERSION) .
 	@cd $(DOCKER_DIR) && docker build -f Dockerfile-server -t ufoot/liquidwar-server:latest .
 	@rm -f $<
 
-docker-metaserver: $(PACKAGE_MISC_SOURCE_TARGZ)
+docker-metaserver: $(PACKAGE_DOCKER_METASERVER_TARGZ) $(PACKAGE_DOCKER_TABLES_SQL)
 	@cd $(DOCKER_DIR) && docker build -f Dockerfile-metaserver -t ufoot/liquidwar-metaserver:$(VERSION) .
 	@cd $(DOCKER_DIR) && docker build -f Dockerfile-metaserver -t ufoot/liquidwar-metaserver:latest .
-	@rm -f $<
+	@rm -f $(PACKAGE_DOCKER_METASERVER_TARGZ) $(PACKAGE_DOCKER_TABLES_SQL)
 

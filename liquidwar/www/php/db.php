@@ -22,9 +22,9 @@
 /*****************************************************************************/
 
 define("METASERVER_DB_HOST","localhost");
-define("METASERVER_DB_USER","ufoot");
-define("METASERVER_DB_PASSWORD","");
-define("METASERVER_DB_BASE","proxad");
+define("METASERVER_DB_USER","www");
+define("METASERVER_DB_PASSWORD","dd02c7c2232759874e1c205587017bed");
+define("METASERVER_DB_BASE","metaserver");
 
 //----------------------------------------------------------------------
 // opens the connection with the database

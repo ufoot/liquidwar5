@@ -31,10 +31,18 @@ RUN apt-get clean
 
 # set up Apache
 COPY 010-metaserver.conf /etc/apache2/sites-available/010-metaserver.conf
+RUN cd /etc/apache2/sites-enabled && ln -s ../sites-available/010-metaserver.conf .
+RUN cd /etc/apache2/mods-enabled && ln -s ../mods-available/rewrite.load .
+COPY metaserver.tar.gz /root/metaserver.tar.gz
+RUN cd /var/www && tar xzf /root/metaserver.tar.gz
 
-# set up Mysql
-RUN /etc/init.d/mysql start
-RUN /etc/init.d/mysql stop
+# set up Mysql, note the clear password, as the MySQL server is sandboxed
+# within Docker, revealing this is not that bad, one could typically imagine
+# a no-password through UNIX socket connection, but doing this with an exposed
+# password represents the same threat and is much easier to handle. Use at your
+# own risk anyway, this is not a stronghold, you've been warned.
+COPY tables.sql /root/tables.sql
+RUN /etc/init.d/mysql start && mysqladmin create metaserver && (mysql < /root/tables.sql metaserver) && (echo "GRANT SELECT, INSERT ON metaserver.* TO www IDENTIFIED BY 'dd02c7c2232759874e1c205587017bed';" | mysql) && (echo "FLUSH PRIVILEGES;" | mysql ) && echo "done" ; /etc/init.d/mysql stop
 
 # startup script
 RUN install -d /usr/local/bin

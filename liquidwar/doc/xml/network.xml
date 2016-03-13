@@ -233,6 +233,16 @@ Use "-private" to get rid of this question.
 docker pull ufoot/liquidwar-server
 docker run -i -p 8035:8035 ufoot/liquidwar-server
       </code>
+      <text>
+	Additionnally, images are provided to run the metaserver, which
+	is responsible for registering and listing all running games.
+	While there's no real reason to run your own since one should permanently
+	be available on ufoot.org, it's quite straightforward to run your own:
+      </text>
+      <code>
+docker pull ufoot/liquidwar-metaserver
+docker run -i -p 8053:8053 ufoot/liquidwar-metaserver
+      </code>
     </part>
   </chap>
 

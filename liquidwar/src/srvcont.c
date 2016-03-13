@@ -197,8 +197,9 @@ distribute_teams (LW_SRVCONT * cont)
 	  if (cont->chan[i].team[j].active)
 	    {
 	      find_chan_and_team_by_server_id (cont,
-					       cont->chan[i].team[j].
-					       server_id, &i_orig, &j_orig);
+					       cont->chan[i].
+					       team[j].server_id, &i_orig,
+					       &j_orig);
 	      if (i_orig >= 0 && j_orig >= 0)
 		{
 		  /*
