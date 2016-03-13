@@ -572,15 +572,12 @@ docker: docker-build docker-server docker-metaserver
 docker-build: $(PACKAGE_DOCKER_SOURCE_TARGZ)
 	@cd $(DOCKER_DIR) && docker build -f Dockerfile-build -t ufoot/liquidwar-build:$(VERSION) .
 	@cd $(DOCKER_DIR) && docker build -f Dockerfile-build -t ufoot/liquidwar-build:latest .
-	@rm -f $<
 
 docker-server: $(PACKAGE_DOCKER_SOURCE_TARGZ)
 	@cd $(DOCKER_DIR) && docker build -f Dockerfile-server -t ufoot/liquidwar-server:$(VERSION) .
 	@cd $(DOCKER_DIR) && docker build -f Dockerfile-server -t ufoot/liquidwar-server:latest .
-	@rm -f $<
 
 docker-metaserver: $(PACKAGE_DOCKER_METASERVER_TARGZ) $(PACKAGE_DOCKER_TABLES_SQL)
 	@cd $(DOCKER_DIR) && docker build -f Dockerfile-metaserver -t ufoot/liquidwar-metaserver:$(VERSION) .
 	@cd $(DOCKER_DIR) && docker build -f Dockerfile-metaserver -t ufoot/liquidwar-metaserver:latest .
-	@rm -f $(PACKAGE_DOCKER_METASERVER_TARGZ) $(PACKAGE_DOCKER_TABLES_SQL)
 
