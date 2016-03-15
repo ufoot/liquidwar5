@@ -68,7 +68,7 @@
 /*==================================================================*/
 
 #define LW_HTTPUTIL_PORT              80
-#define LW_HTTPUTIL_HOST_SIZE         200
+#define LW_HTTPUTIL_HOST_PORT_SIZE         200
 #define LW_HTTPUTIL_REQUEST_SIZE      1000
 #define LW_HTTPUTIL_EMPTY_LINES_LIMIT 10
 #define LW_HTTPUTIL_MIN_LEN           1
@@ -105,29 +105,45 @@ lw_httputil_get_page (char *content, char *url, int size)
 {
   int result = 0;
   char ip[LW_SOCK_IP_SIZE];
-  char host[LW_HTTPUTIL_HOST_SIZE + 1];
+  char host_port[LW_HTTPUTIL_HOST_PORT_SIZE + 1];
+  char host_only[LW_HTTPUTIL_HOST_PORT_SIZE + 1];
   char request[LW_HTTPUTIL_REQUEST_SIZE + 1];
   char data[LW_SOCK_MESSAGE_SIZE];
   int data_len;
   char *search;
   int sock;
   int empty_lines = 0;
+  int port = LW_HTTPUTIL_PORT;
 
   memset (content, 0, size);
 
-  LW_MACRO_STRCPY (host, url);
+  LW_MACRO_STRCPY (host_port, url);
 
-  search = strchr (host, '/');
+  search = strchr (host_port, '/');
   if (search)
     {
       (*search) = '\0';
     }
+  search = NULL;
 
-  LW_MACRO_SPRINTF2 (request, LW_HTTPUTIL_GET_CMD, url, host);
-
-  if (lw_dnsutil_name_to_ip (ip, host))
+  memcpy (host_only, host_port, LW_HTTPUTIL_HOST_PORT_SIZE + 1);
+  search = strchr (host_only, ':');
+  if (search)
     {
-      if (lw_sock_connect (&sock, ip, LW_HTTPUTIL_PORT))
+      (*search) = '\0';
+      port = atoi (search + 1);
+      if (port < 1 || port > 65535)
+	{
+	  port = LW_HTTPUTIL_PORT;
+	}
+    }
+  search = NULL;
+
+  LW_MACRO_SPRINTF2 (request, LW_HTTPUTIL_GET_CMD, url, host_only);
+
+  if (lw_dnsutil_name_to_ip (ip, host_only))
+    {
+      if (lw_sock_connect (&sock, ip, port))
 	{
 	  if (lw_sock_send_str (&sock, request))
 	    {
@@ -146,7 +162,7 @@ lw_httputil_get_page (char *content, char *url, int size)
 		  result = 0;
 		  LW_MACRO_SNPRINTF2 (content, size,
 				      "Failure from web server \"%s\": \"%s\"",
-				      host, data);
+				      host_port, data);
 		}
 	      if (result)
 		{
@@ -210,7 +226,8 @@ lw_httputil_get_page (char *content, char *url, int size)
     }
   else
     {
-      LW_MACRO_SNPRINTF1 (content, size, "Unable to find host \"%s\"!", host);
+      LW_MACRO_SNPRINTF1 (content, size, "Unable to find host \"%s\"!",
+			  host_only);
     }
 
   return result;
