@@ -42,7 +42,7 @@ RUN cd /var/www && tar xzf /root/metaserver.tar.gz
 # password represents the same threat and is much easier to handle. Use at your
 # own risk anyway, this is not a stronghold, you've been warned.
 COPY tables.sql /root/tables.sql
-RUN /etc/init.d/mysql start && mysqladmin create metaserver && (mysql < /root/tables.sql metaserver) && (echo "GRANT SELECT, INSERT ON metaserver.* TO www IDENTIFIED BY 'dd02c7c2232759874e1c205587017bed';" | mysql) && (echo "FLUSH PRIVILEGES;" | mysql ) && echo "done" ; /etc/init.d/mysql stop
+RUN /etc/init.d/mysql start && mysqladmin create metaserver && (mysql < /root/tables.sql metaserver) && (echo "GRANT SELECT, INSERT, UPDATE, DELETE ON metaserver.* TO www IDENTIFIED BY 'dd02c7c2232759874e1c205587017bed';" | mysql) && (echo "FLUSH PRIVILEGES;" | mysql ) && echo "done" ; /etc/init.d/mysql stop
 
 # startup script
 RUN install -d /usr/local/bin
