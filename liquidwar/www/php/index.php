@@ -29,7 +29,10 @@ require 'metaserver.php';
 <HTML>
 <HEAD>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META HTTP-EQUIV="Content-Language" CONTENT="en" />
 <TITLE>U-Foot's meta-server</TITLE>
+<LINK REL="shortcut icon" HREF="/favicon.ico" TYPE="image/x-icon" />
+<META NAME="viewport" CONTENT="width=device-width; initial-scale=1.0;" />
 </HEAD>
 <BODY>
 <CENTER>
