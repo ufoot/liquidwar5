@@ -561,7 +561,7 @@ $(PACKAGE_DOCKER_SOURCE_TARGZ): $(PACKAGE_SOURCE_TARGZ)
 	@cp $< $@
 
 $(PACKAGE_DOCKER_METASERVER_TARGZ): www/php/metaserver.php
-	@cd www && rm -rf metaserver && install -d metaserver && cp php/*.php metaserver/ && cp php/favicon.ico metaserver/ && chmod 644 metaserver/* && tar --owner=root --group=staff -czf metaserver.tar.gz metaserver && rm -rf metaserver
+	@cd www && rm -rf metaserver && install -d metaserver && cp php/*.php metaserver/ && cp php/favicon.ico metaserver/ && cp php/robots.txt metaserver/ && chmod 644 metaserver/* && tar --owner=root --group=staff -czf metaserver.tar.gz metaserver && rm -rf metaserver
 	@mv -f www/metaserver.tar.gz $@
 
 $(PACKAGE_DOCKER_TABLES_SQL): www/mysql/tables.sql
