@@ -20,7 +20,7 @@
 
 FROM debian
 MAINTAINER Christian Mauduit "ufoot@ufoot.org"
-LABEL package="liquidwar" version="version" org.ufoot.liquidwar.os="debian" org.ufoot.liquidwar.type="build" description="Liquid War build image, contains all the requirements to build the program, and has it built once. Homepage http://www.ufoot.org/liquidwar/v5"
+LABEL package="liquidwar" version="@VERSION@" org.ufoot.liquidwar.os="debian" org.ufoot.liquidwar.type="build" description="Liquid War build image, contains all the requirements to build the program, and has it built once. Homepage http://www.ufoot.org/liquidwar/v5"
 
 ENV DEBIAN_FRONTEND noninteractive
 RUN (apt-get update && apt-get upgrade -y -q && apt-get dist-upgrade -y -q && apt-get -y -q autoclean && apt-get -y -q autoremove)
