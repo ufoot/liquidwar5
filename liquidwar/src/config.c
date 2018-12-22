@@ -121,6 +121,7 @@
 #define LABEL_MIN_MAP_RES "MIN_MAP_RES"
 #define LABEL_USE_DEFAULT_TEXTURE "USE_DEFAULT_TEXTURE"
 #define LABEL_ALLOW_NETWORK_BOTS "ALLOW_NETWORK_BOTS"
+#define LABEL_LW6_ADVERTISING_SKIP "LW6_ADVERTISING_SKIP"
 #define LABEL_LW6_ADVERTISING_DONE "LW6_ADVERTISING_DONE"
 
 int CONFIG_GFX_GAME;
@@ -170,6 +171,7 @@ char CONFIG_PASSWORD[PASSWORD_SIZE + 1];
 int CONFIG_MIN_MAP_RES;
 int CONFIG_USE_DEFAULT_TEXTURE;
 int CONFIG_ALLOW_NETWORK_BOTS;
+int CONFIG_LW6_ADVERTISING_SKIP;
 int CONFIG_LW6_ADVERTISING_DONE;
 
 LW_NETCONF LW_CONFIG_CURRENT_RULES;
@@ -311,6 +313,13 @@ load_default_options (void)
 
   CONFIG_USE_DEFAULT_TEXTURE = 1;
 
+  /*
+   * TBH I'm really questionning myself wether I should advertise
+   * for LW6 at this stage. Given the fact, very likely, if I push
+   * something strong, it might be called Liquid War 7. Even numbers
+   * are cursed in the LW series.
+   */
+  CONFIG_LW6_ADVERTISING_SKIP = 1;
   CONFIG_LW6_ADVERTISING_DONE = 0;
 
   load_default_rules ();
@@ -491,6 +500,9 @@ load_disk_options (void)
       CONFIG_ALLOW_NETWORK_BOTS =
         get_config_int (LABEL_MAIN, LABEL_ALLOW_NETWORK_BOTS,
                         CONFIG_ALLOW_NETWORK_BOTS);
+      CONFIG_LW6_ADVERTISING_SKIP =
+        get_config_int (LABEL_MAIN, LABEL_LW6_ADVERTISING_SKIP,
+                        CONFIG_LW6_ADVERTISING_SKIP);
       CONFIG_LW6_ADVERTISING_DONE =
         get_config_int (LABEL_MAIN, LABEL_LW6_ADVERTISING_DONE,
                         CONFIG_LW6_ADVERTISING_DONE);
@@ -610,6 +622,8 @@ save_config_options (void)
                   CONFIG_USE_DEFAULT_TEXTURE);
   set_config_int (LABEL_MAIN, LABEL_ALLOW_NETWORK_BOTS,
                   CONFIG_ALLOW_NETWORK_BOTS);
+  set_config_int (LABEL_MAIN, LABEL_LW6_ADVERTISING_SKIP,
+                  CONFIG_LW6_ADVERTISING_SKIP);
   set_config_int (LABEL_MAIN, LABEL_LW6_ADVERTISING_DONE,
                   CONFIG_LW6_ADVERTISING_DONE);
 

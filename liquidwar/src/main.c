@@ -147,7 +147,7 @@ main (int argc, char **argv)
 
       start_graphic ();
       start_water ();
-      if (CONFIG_LW6_ADVERTISING_DONE)
+      if (CONFIG_LW6_ADVERTISING_DONE || CONFIG_LW6_ADVERTISING_SKIP)
         {
           main_menu (1);
         }
