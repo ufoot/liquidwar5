@@ -51,7 +51,7 @@
 /* includes                                                         */
 /*==================================================================*/
 
-#include <allegro.h>
+#include <allegro5/allegro.h>
 
 #include "ping.h"
 #include "thrdgen.h"

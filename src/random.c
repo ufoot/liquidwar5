@@ -53,7 +53,7 @@
 
 
 #include <stdio.h>
-#include <allegro.h>
+#include <allegro5/allegro.h>
 
 #include "random.h"
 #include "alleg2.h"

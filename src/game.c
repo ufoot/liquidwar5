@@ -56,7 +56,7 @@
 #ifdef UNIX
 #include <unistd.h>
 #endif
-#include <allegro.h>
+#include <allegro5/allegro.h>
 
 #include "area.h"
 #include "autoplay.h"

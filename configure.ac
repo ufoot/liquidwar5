@@ -30,22 +30,16 @@ dnl Now we check if we need to use ou own snprintf function
 AC_CHECK_FUNC(snprintf,[SNPRINTF=yes],[SNPRINTF=no])
 AC_SUBST(SNPRINTF)
 
+dnl Checking for allegro-5.
+echo -n "checking for Allegro 5... "
 
-dnl Checking for allegro-config, the very-needed Allegro file
+PKG_PROG_PKG_CONFIG([0.25])
+PKG_CHECK_MODULES([ALLEGRO], [allegro-5])
 
-AC_CHECK_PROG(ALLEGRO_CONFIG,allegro-config,yes,no)
-
-if test $ALLEGRO_CONFIG != "yes"; then
-   AC_MSG_ERROR(Unable to find allegro-config - this tool is normally installed by Allegro and must be placed in a directory which is in your PATH. Allegro is a game programming library required by Liquid War. It is available on http://www.talula.demon.co.uk/allegro/. You need to install the complete Allegro developpement package to build Liquid War.)
-fi;
-
-dnl Various checks for Allegro
-
-echo -n "checking for Allegro... "
-ALCFLAGS=`allegro-config --cflags 2>/dev/null`
-ALLIBS=`allegro-config --libs 2>/dev/null`
-ALVERSION=`allegro-config --version 2>/dev/null`
-ALDVERSION=`echo ALVERSION | awk 'BEGIN { FS = "."; } { printf "%d",($1 * 1000 + $2) * 1000 + $3;}'`
+ALCFLAGS=$(pkg-config --cflags)
+ALLIBS=$(pkg-config --libs allegro-5)
+ALVERSION=$(pkg-config --modversion allegro-5)
+ALDVERSION=$(echo ALVERSION | awk 'BEGIN { FS = "."; } { printf "%d",($1 * 1000 + $2) * 1000 + $3;}')
 
 AC_SUBST(ALCFLAGS)
 AC_SUBST(ALLIBS)
@@ -60,19 +54,11 @@ fi
 dnl
 dnl version check
 dnl
-if test $ALDVERSION -gt 4002000 ; then
-   AC_MSG_ERROR(An old version of Allegro ($ALVERSION) has been detected - please upgrade to 4.2.0 or better.)
+if test $ALDVERSION -gt 5000000 ; then
+   AC_MSG_ERROR(An old version of Allegro ($ALVERSION) has been detected - please upgrade to 5.0.0 or better.)
 else
    echo "found $ALVERSION".
 fi
-
-dnl disabled this. assume allegro-config doesn't lie and all files are
-dnl available
-#AC_CHECK_HEADER(allegro.h,,[AC_MSG_ERROR(Missing some include file. Please reinstall Allegro.)])
-
-dnl disabled this. assume allegro-config doesn't lie and all files are
-dnl available
-#AC_CHECK_LIB(alleg,main,,[AC_MSG_ERROR(Compilation probe failed. Please check your Allegro installation.)])
 
 dnl very often, dat (the datafile compiler) is not installed,
 dnl and we _really_ need it...

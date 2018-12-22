@@ -53,7 +53,7 @@
 /*==================================================================*/
 
 #include <string.h>
-#include <allegro.h>
+#include <allegro5/allegro.h>
 
 #include "config.h"
 #include "decal.h"

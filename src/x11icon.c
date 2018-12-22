@@ -1,4 +1,4 @@
-#include <allegro.h>
+#include <allegro5/allegro.h>
 /* XPM */
 static const char *allegico_xpm[] = {
 /* columns rows colors chars-per-pixel */
