@@ -71,6 +71,7 @@
 #include <ctype.h>
 #include <errno.h>
 
+#include "macro.h"
 #include "sockgen.h"
 #include "log.h"
 
@@ -157,7 +158,7 @@ lw_sock_peek_ex (int *sock, int len)
 	    {
 	      if (FD_ISSET (sock_copy, &read))
 		{
-		  /* 
+		  /*
 		   * First we test if there's enough data available
 		   */
 		  if (recv (sock_copy, buffer, len, MSG_PEEK) == len)
@@ -203,9 +204,8 @@ lw_sock_send_str_ex (int *sock, char *str)
        * We put the string in a buffer, since we'll probably have
        * to modify it (cut if it's too long, add a tailing CR+LF).
        */
-      len = strlen (str);
-      len = MIN (len, LW_SOCK_MESSAGE_SIZE - 3);
-      strncpy (buffer, str, len);
+      len = LW_SOCK_MESSAGE_SIZE - 3;
+      LW_MACRO_STRNCPY (buffer, str, len);
       buffer[len] = '\x0d';
       ++len;
       buffer[len] = '\x0a';
@@ -555,7 +555,7 @@ lw_sock_send_buffer_ex (int *sock, char *buffer, int len)
 	    {
 	      if (result)
 		{
-		  strncpy (trace, buffer, len);
+		  LW_MACRO_STRNCPY(trace, buffer, len);
 		  trace[len] = '\0';
 		  log_print_int (sock_copy);
 		  log_print_str (" > [");
@@ -669,7 +669,7 @@ lw_sock_recv_buffer_ex (int *sock, char *buffer, int len)
 	    {
 	      if (result)
 		{
-		  strncpy (trace, buffer, len);
+		  LW_MACRO_STRNCPY (trace, buffer, len);
 		  trace[len] = '\0';
 		  log_print_int (sock_copy);
 		  log_print_str (" < [");
