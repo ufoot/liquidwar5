@@ -14,12 +14,12 @@ char default_filename[10] = "lwmap.bmp";
 
 /* [2] for w == 0, h == 1 */
 int map_size[MAX_MAP_SIZE][2] = {
-  {128, 95},			/* 0 */
-  {160, 120},			/* 1 */
-  {256, 190},			/* 2 */
-  {320, 240},			/* 3 */
-  {512, 380},			/* 4 */
-  {640, 480}			/* 5 */
+  {128, 95},                    /* 0 */
+  {160, 120},                   /* 1 */
+  {256, 190},                   /* 2 */
+  {320, 240},                   /* 3 */
+  {512, 380},                   /* 4 */
+  {640, 480}                    /* 5 */
 };
 
 
@@ -27,17 +27,17 @@ int map_size[MAX_MAP_SIZE][2] = {
 /* the maps just look better if the ratio is the same */
 int map_grid_size[MAX_MAP_GRID_SIZE][2] = {
   /* this is random. keep at top */
-  {0, 0},			/* 0 */
+  {0, 0},                       /* 0 */
 
-  {2, 3},			/* 1 */
-  {4, 6},			/* 2 */
-  {6, 9},			/* 3 */
-  {8, 12},			/* 4 */
-  {10, 15},			/* 5 */
-  {12, 18},			/* 6 */
-  {14, 21},			/* 7 */
-  {16, 24},			/* 8 */
-  {18, 26}			/* 9 */
+  {2, 3},                       /* 1 */
+  {4, 6},                       /* 2 */
+  {6, 9},                       /* 3 */
+  {8, 12},                      /* 4 */
+  {10, 15},                     /* 5 */
+  {12, 18},                     /* 6 */
+  {14, 21},                     /* 7 */
+  {16, 24},                     /* 8 */
+  {18, 26}                      /* 9 */
 };
 
 
@@ -73,7 +73,7 @@ print_map ()
   printf ("Row/Col:  %d/%d\n", map.num_row, map.num_col);
   printf ("Section:  %fx%f\n", map.sec_width, map.sec_height);
   printf ("Function: (%d) %s\t%s\n", map.func_id,
-	  func[map.func_id].name, func[map.func_id].desc);
+          func[map.func_id].name, func[map.func_id].desc);
 }
 
 /*****************************************************************************/

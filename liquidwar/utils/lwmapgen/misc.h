@@ -10,16 +10,16 @@
 
 
 /* a random number from min to max inclusive on both ends */
-int rand_num( int min, int max);
+int rand_num (int min, int max);
 
 
 /* size == the size of the elements in the array/grid */
 
-void * create_array( int length, int size );
-void delete_array( void *array );
+void *create_array (int length, int size);
+void delete_array (void *array);
 
-void ** create_grid( int r, int c, int size );
-void delete_grid( void **grid, int r );
+void **create_grid (int r, int c, int size);
+void delete_grid (void **grid, int r);
 
 
 #endif

@@ -89,127 +89,127 @@ do_args (int argc, char **argv)
   for (i = 1; i < argc; i++)
     {
       if (strcmp (argv[i], "-o") == 0 || strcmp (argv[i], "--out") == 0)
-	{
-	  if (i >= argc - 1)
-	    {
-	      fprintf (stderr,
-		       "fatal error: %s option without any file, need one more arg.\n",
-		       argv[i]);
-	      exit (EXIT_FAILURE);
-	    }
-	  int len = strlen (argv[++i]);
-	  filename = malloc (sizeof (char) * len);
-	  if (filename == NULL)
-	    {
-	      fprintf (stderr,
-		       "fatal error: can't malloc space for map name.\n");
-	      exit (EXIT_FAILURE);
-	    }
-	  strcpy (filename, argv[i]);
-	}
+        {
+          if (i >= argc - 1)
+            {
+              fprintf (stderr,
+                       "fatal error: %s option without any file, need one more arg.\n",
+                       argv[i]);
+              exit (EXIT_FAILURE);
+            }
+          int len = strlen (argv[++i]);
+          filename = malloc (sizeof (char) * len);
+          if (filename == NULL)
+            {
+              fprintf (stderr,
+                       "fatal error: can't malloc space for map name.\n");
+              exit (EXIT_FAILURE);
+            }
+          strcpy (filename, argv[i]);
+        }
       else if (strcmp (argv[i], "-s") == 0 || strcmp (argv[i], "--size") == 0)
-	{
-	  if (i >= argc - 1)
-	    {
-	      fprintf (stderr,
-		       "fatal error: %s option without any size, need one more arg.\n",
-		       argv[i]);
-	      exit (EXIT_FAILURE);
-	    }
-	  size = atoi (argv[++i]);
-	  if (size < MIN_MAP_SIZE)
-	    {
-	      fprintf (stderr,
-		       "map size too small using: %d\n", MIN_MAP_SIZE);
-	      size = MIN_MAP_SIZE;
-	    }
-	  else if (size >= MAX_MAP_SIZE)
-	    {
-	      fprintf (stderr,
-		       "map size too large using: %d\n", MAX_MAP_SIZE - 1);
-	      size = MAX_MAP_SIZE - 1;
-	    }
-	}
+        {
+          if (i >= argc - 1)
+            {
+              fprintf (stderr,
+                       "fatal error: %s option without any size, need one more arg.\n",
+                       argv[i]);
+              exit (EXIT_FAILURE);
+            }
+          size = atoi (argv[++i]);
+          if (size < MIN_MAP_SIZE)
+            {
+              fprintf (stderr,
+                       "map size too small using: %d\n", MIN_MAP_SIZE);
+              size = MIN_MAP_SIZE;
+            }
+          else if (size >= MAX_MAP_SIZE)
+            {
+              fprintf (stderr,
+                       "map size too large using: %d\n", MAX_MAP_SIZE - 1);
+              size = MAX_MAP_SIZE - 1;
+            }
+        }
       else if (strcmp (argv[i], "-g") == 0 || strcmp (argv[i], "--grid") == 0)
-	{
-	  if (i >= argc - 1)
-	    {
-	      fprintf (stderr,
-		       "fatal error: %s option without any value, need one more arg.\n",
-		       argv[i]);
-	      exit (EXIT_FAILURE);
-	    }
-	  grid_size = atoi (argv[++i]);
-	  if (grid_size == RANDOM_MAP_GRID_SIZE)
-	    {
-	      /* ok.. don't do anything */
-	    }
-	  else if (grid_size < MIN_MAP_GRID_SIZE)
-	    {
-	      fprintf (stderr,
-		       "map grid too small using: %d\n", MIN_MAP_GRID_SIZE);
-	      grid_size = MIN_MAP_GRID_SIZE;
-	    }
-	  else if (grid_size >= MAX_MAP_GRID_SIZE)
-	    {
-	      fprintf (stderr,
-		       "map grid too large using: %d\n",
-		       MAX_MAP_GRID_SIZE - 1);
-	      grid_size = MAX_MAP_GRID_SIZE - 1;
-	    }
-	}
+        {
+          if (i >= argc - 1)
+            {
+              fprintf (stderr,
+                       "fatal error: %s option without any value, need one more arg.\n",
+                       argv[i]);
+              exit (EXIT_FAILURE);
+            }
+          grid_size = atoi (argv[++i]);
+          if (grid_size == RANDOM_MAP_GRID_SIZE)
+            {
+              /* ok.. don't do anything */
+            }
+          else if (grid_size < MIN_MAP_GRID_SIZE)
+            {
+              fprintf (stderr,
+                       "map grid too small using: %d\n", MIN_MAP_GRID_SIZE);
+              grid_size = MIN_MAP_GRID_SIZE;
+            }
+          else if (grid_size >= MAX_MAP_GRID_SIZE)
+            {
+              fprintf (stderr,
+                       "map grid too large using: %d\n",
+                       MAX_MAP_GRID_SIZE - 1);
+              grid_size = MAX_MAP_GRID_SIZE - 1;
+            }
+        }
       else if (strcmp (argv[i], "-f") == 0
-	       || strcmp (argv[i], "--function") == 0)
-	{
-	  int f;
+               || strcmp (argv[i], "--function") == 0)
+        {
+          int f;
 
-	  if (i >= argc - 1)
-	    {
-	      fprintf (stderr,
-		       "fatal error: %s option without any function, need one more arg.\n",
-		       argv[i]);
-	      exit (EXIT_FAILURE);
-	    }
-	  i++;
-	  for (f = 0; f < MAX_FUNC; f++)
-	    {
-	      if (strcmp (argv[i], func[f].name) == 0)
-		break;
-	    }
-	  if (f >= MAX_FUNC)
-	    {
-	      fprintf (stderr,
-		       "fatal error: can't find function: %s\n", argv[i]);
-	      exit (EXIT_FAILURE);
-	    }
-	  else
-	    func_id = f;
-	}
+          if (i >= argc - 1)
+            {
+              fprintf (stderr,
+                       "fatal error: %s option without any function, need one more arg.\n",
+                       argv[i]);
+              exit (EXIT_FAILURE);
+            }
+          i++;
+          for (f = 0; f < MAX_FUNC; f++)
+            {
+              if (strcmp (argv[i], func[f].name) == 0)
+                break;
+            }
+          if (f >= MAX_FUNC)
+            {
+              fprintf (stderr,
+                       "fatal error: can't find function: %s\n", argv[i]);
+              exit (EXIT_FAILURE);
+            }
+          else
+            func_id = f;
+        }
       else if (strcmp (argv[i], "-l") == 0 || strcmp (argv[i], "--list") == 0)
-	{
-	  int f;
-	  printf ("Random map generating functions:\n");
-	  for (f = 0; f < MAX_FUNC; f++)
-	    printf ("%2d)  %s\t%s\n", f, func[f].name, func[f].desc);
+        {
+          int f;
+          printf ("Random map generating functions:\n");
+          for (f = 0; f < MAX_FUNC; f++)
+            printf ("%2d)  %s\t%s\n", f, func[f].name, func[f].desc);
 
-	  exit (EXIT_SUCCESS);
-	}
+          exit (EXIT_SUCCESS);
+        }
       else if (strcmp (argv[i], "--help") == 0)
-	{
-	  print_version ();
-	  print_help ();
-	  exit (EXIT_SUCCESS);
-	}
+        {
+          print_version ();
+          print_help ();
+          exit (EXIT_SUCCESS);
+        }
       else if (strcmp (argv[i], "--version") == 0)
-	{
-	  print_version ();
-	  exit (EXIT_SUCCESS);
-	}
+        {
+          print_version ();
+          exit (EXIT_SUCCESS);
+        }
       else
-	{
-	  fprintf (stderr, "error: unknown arg: %s\n", argv[i]);
-	  fprintf (stderr, "ignoring...\n");
-	}
+        {
+          fprintf (stderr, "error: unknown arg: %s\n", argv[i]);
+          fprintf (stderr, "ignoring...\n");
+        }
     }
 
   return;
@@ -250,7 +250,7 @@ print_help ()
   for (i = MIN_MAP_GRID_SIZE; i < MAX_MAP_GRID_SIZE; i++)
     {
       if (i > 0 && i % 8 == 0)
-	printf ("\n");
+        printf ("\n");
       printf ("(%d)%dx%d  ", i, map_grid_size[i][0], map_grid_size[i][1]);
     }
   printf ("\n");
@@ -264,8 +264,8 @@ void
 print_version ()
 {
   printf ("Liquid War Random Map Generator Version 0.0.1\n"
-	  "Copyright (C) 2003, David Redick, Chris Guirl, Christian Mauduit.\n"
-	  "Released under the GNU General Public License (v2).\n");
+          "Copyright (C) 2003, David Redick, Chris Guirl, Christian Mauduit.\n"
+          "Released under the GNU General Public License (v2).\n");
 
   return;
 }

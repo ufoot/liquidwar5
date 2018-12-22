@@ -144,23 +144,23 @@ acknowledge_flag (char *str)
     {
       found = 1;
       switch (str[1])
-	{
-	case '?':
-	case 'h':
-	case 'H':
-	  FLAG_HELP = 1;
-	  break;
-	case 'b':
-	case 'B':
-	  FLAG_BACKUP = 1;
-	  break;
-	case 's':
-	case 'S':
-	  FLAG_SILENT = 1;
-	  break;
-	default:
-	  found = 0;
-	}
+        {
+        case '?':
+        case 'h':
+        case 'H':
+          FLAG_HELP = 1;
+          break;
+        case 'b':
+        case 'B':
+          FLAG_BACKUP = 1;
+          break;
+        case 's':
+        case 'S':
+          FLAG_SILENT = 1;
+          break;
+        default:
+          found = 0;
+        }
     }
   return found;
 }
@@ -174,45 +174,45 @@ read_command_line (void)
   for (i = 1; i < ARGC; ++i)
     {
       if ((!acknowledge_flag (ARGV[i])))
-	{
-	  if (j == 0)
-	    FIRST_COLOR = atoi (ARGV[i]);
-	  if (j == 1)
-	    NUMBER_OF_COLORS = atoi (ARGV[i]);
-	  if (j >= 2)
-	    FILENAMES[j - 2] = ARGV[i];
-	  j++;
-	}
+        {
+          if (j == 0)
+            FIRST_COLOR = atoi (ARGV[i]);
+          if (j == 1)
+            NUMBER_OF_COLORS = atoi (ARGV[i]);
+          if (j >= 2)
+            FILENAMES[j - 2] = ARGV[i];
+          j++;
+        }
     }
   NUMBER_OF_FILES = j - 2;
   if (NUMBER_OF_FILES > 0)
     {
       if (FIRST_COLOR < 0)
-	{
-	  success = 0;
-	  printf ("ERROR! First color number must be >= 0.\n");
-	}
+        {
+          success = 0;
+          printf ("ERROR! First color number must be >= 0.\n");
+        }
       if (FIRST_COLOR > 255)
-	{
-	  success = 0;
-	  printf ("ERROR! First color number must be < 255.\n");
-	}
+        {
+          success = 0;
+          printf ("ERROR! First color number must be < 255.\n");
+        }
       if (NUMBER_OF_COLORS < 1)
-	{
-	  success = 0;
-	  printf ("ERROR! Number of colors must be > 1.\n");
-	}
+        {
+          success = 0;
+          printf ("ERROR! Number of colors must be > 1.\n");
+        }
       if (NUMBER_OF_COLORS + FIRST_COLOR > 256)
-	{
-	  success = 0;
-	  printf ("ERROR! Last color number must be < 256.\n");
-	}
+        {
+          success = 0;
+          printf ("ERROR! Last color number must be < 256.\n");
+        }
     }
   else
     {
       success = 0;
       if (!FLAG_HELP)
-	printf ("ERROR! Two few arguments.\n");
+        printf ("ERROR! Two few arguments.\n");
     }
   return success;
 }
@@ -300,9 +300,9 @@ recalculate_number_of_colors ()
   for (y = 0; y < BITMAP_SRC->h && n < NUMBER_OF_COLORS; ++y)
     for (x = 0; x < BITMAP_SRC->w && n < NUMBER_OF_COLORS; ++x)
       {
-	color = PALETTE_SRC[getpixel (BITMAP_SRC, x, y)];
-	if (!exist_color (pal, color))
-	  pal[n++] = color;
+        color = PALETTE_SRC[getpixel (BITMAP_SRC, x, y)];
+        if (!exist_color (pal, color))
+          pal[n++] = color;
       }
   NUMBER_OF_COLORS = n;
 }
@@ -329,15 +329,15 @@ create_new_palette (void)
       index = getpixel (BITMAP_SRC, x, y);
       color = PALETTE_SRC[index];
       if ((!exist_color (PALETTE_DST, color)) ||
-	  (nb_retries > LW_TEXTURE_RANDOM_MAX_RETRIES))
-	{
-	  PALETTE_DST[FIRST_COLOR + (i++)] = color;
-	  nb_retries = 0;
-	}
+          (nb_retries > LW_TEXTURE_RANDOM_MAX_RETRIES))
+        {
+          PALETTE_DST[FIRST_COLOR + (i++)] = color;
+          nb_retries = 0;
+        }
       else
-	{
-	  nb_retries++;
-	}
+        {
+          nb_retries++;
+        }
     }
 }
 
@@ -370,17 +370,17 @@ create_converted_bitmap (void)
 
   for (i = 0; i < 256; ++i)
     corres[i] = bestfit_color (PALETTE_DST,
-			       PALETTE_SRC[i].r,
-			       PALETTE_SRC[i].g, PALETTE_SRC[i].b);
+                               PALETTE_SRC[i].r,
+                               PALETTE_SRC[i].g, PALETTE_SRC[i].b);
   BITMAP_DST = create_bitmap (BITMAP_SRC->w, BITMAP_SRC->h);
   for (y = 0; y < BITMAP_SRC->h; ++y)
     for (x = 0; x < BITMAP_SRC->w; ++x)
       {
-	index = corres[getpixel (BITMAP_SRC, x, y)];
-	index = (index < FIRST_COLOR ||
-		 index >= FIRST_COLOR + NUMBER_OF_COLORS) ?
-	  FIRST_COLOR : index;
-	putpixel (BITMAP_DST, x, y, index);
+        index = corres[getpixel (BITMAP_SRC, x, y)];
+        index = (index < FIRST_COLOR ||
+                 index >= FIRST_COLOR + NUMBER_OF_COLORS) ?
+          FIRST_COLOR : index;
+        putpixel (BITMAP_DST, x, y, index);
       }
 }
 
@@ -425,22 +425,22 @@ main (int argc, char **argv)
   if (read_command_line ())
     {
       for (i = 0; i < NUMBER_OF_FILES; ++i)
-	{
-	  if (load_file (FILENAMES[i]))
-	    {
-	      if (FLAG_BACKUP)
-		save_backup (FILENAMES[i]);
-	      convert_bitmap (FILENAMES[i]);
-	      save_file (FILENAMES[i]);
-	    }
-	}
+        {
+          if (load_file (FILENAMES[i]))
+            {
+              if (FLAG_BACKUP)
+                save_backup (FILENAMES[i]);
+              convert_bitmap (FILENAMES[i]);
+              save_file (FILENAMES[i]);
+            }
+        }
     }
   else
     {
       if (FLAG_HELP)
-	display_long_help ();
+        display_long_help ();
       else
-	display_short_help ();
+        display_short_help ();
     }
   allegro_exit ();
 

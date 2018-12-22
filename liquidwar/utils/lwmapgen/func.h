@@ -15,9 +15,9 @@
 
 typedef struct
 {
-     char *name;
-     char *desc;
-     void (*func)();
+  char *name;
+  char *desc;
+  void (*func) ();
 } func_t;
 
 extern func_t func[MAX_FUNC];

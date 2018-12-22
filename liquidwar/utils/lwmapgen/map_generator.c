@@ -68,7 +68,7 @@ map_generator (char *filename, int size, int grid_size, int func_id)
   clear_map ();
 
   printf ("Generating random map using:\n\t%2d)  %s\t%s\n",
-	  func_id, func[func_id].name, func[func_id].desc);
+          func_id, func[func_id].name, func[func_id].desc);
 
   print_map ();
 

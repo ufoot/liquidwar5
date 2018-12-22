@@ -24,7 +24,7 @@
 #define LWMAPGEN_MAP_GENERATOR_H
 
 
-void map_generator( char *filename, int size, int grid_size, int func_id );
+void map_generator (char *filename, int size, int grid_size, int func_id);
 
 
 #endif

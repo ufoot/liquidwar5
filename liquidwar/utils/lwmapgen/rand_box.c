@@ -22,29 +22,29 @@ rand_box ()
   for (r = 0; r < map.num_row; r++)
     {
       for (c = 0; c < map.num_col; c++)
-	{
-	  offset (&xoffset, &yoffset, r, c);
+        {
+          offset (&xoffset, &yoffset, r, c);
 
-	  rand_point_section (&startx, &starty, 1);
+          rand_point_section (&startx, &starty, 1);
 
-	  /* +1 because we don't want 0 dimensions =] */
-	  bwidth = rand () % (int) map.sec_width + 1;
-	  bheight = rand () % (int) map.sec_height + 1;
+          /* +1 because we don't want 0 dimensions =] */
+          bwidth = rand () % (int) map.sec_width + 1;
+          bheight = rand () % (int) map.sec_height + 1;
 
-	  /*
-	   * if the box goes outside the section
-	   * then just make the box smaller
-	   * NOTE: -1 is for the padding
-	   */
-	  if (startx + bwidth > map.sec_width - 1)
-	    bwidth -= (startx + bwidth) - (map.sec_width - 1);
+          /*
+           * if the box goes outside the section
+           * then just make the box smaller
+           * NOTE: -1 is for the padding
+           */
+          if (startx + bwidth > map.sec_width - 1)
+            bwidth -= (startx + bwidth) - (map.sec_width - 1);
 
-	  if (starty + bheight > map.sec_height - 1)
-	    bheight -= (starty + bheight) - (map.sec_height - 1);
+          if (starty + bheight > map.sec_height - 1)
+            bheight -= (starty + bheight) - (map.sec_height - 1);
 
-	  rectfill (map.map, startx + xoffset, starty + yoffset,
-		    startx + bwidth + xoffset, starty + bheight + yoffset, 0);
-	}
+          rectfill (map.map, startx + xoffset, starty + yoffset,
+                    startx + bwidth + xoffset, starty + bheight + yoffset, 0);
+        }
     }
 
   return;

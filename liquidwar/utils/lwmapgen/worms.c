@@ -40,12 +40,12 @@ filled (int centerx, int centery, int rad, int startdeg, int col, int seg)
     {
 
       if (getpixel
-	  (map.map, centerx + (rad * cos (M_PI * deg / 180)),
-	   centery + (rad * sin (M_PI * deg / 180))) == col)
-	{
-	  result = 1;
-	  break;
-	}
+          (map.map, centerx + (rad * cos (M_PI * deg / 180)),
+           centery + (rad * sin (M_PI * deg / 180))) == col)
+        {
+          result = 1;
+          break;
+        }
     }
 
   return result;
@@ -69,31 +69,31 @@ worms ()
   for (r = 0; r < map.num_row; r++)
     {
       for (c = 0; c < map.num_col; c++)
-	{
-	  rand_point_section_offset (&centerx, &centery, r, c, 0);
-	  degree = rand () % 360;
+        {
+          rand_point_section_offset (&centerx, &centery, r, c, 0);
+          degree = rand () % 360;
 
-	  for (segs = 0; segs < segments; segs++)
-	    {
-	      /* -15 to 14 */
-	      change = rand () % 30 - 15;
-	      degree += change;
+          for (segs = 0; segs < segments; segs++)
+            {
+              /* -15 to 14 */
+              change = rand () % 30 - 15;
+              degree += change;
 
-	      centerx += radius * cos (M_PI * degree / 180);
-	      centery += radius * sin (M_PI * degree / 180);
+              centerx += radius * cos (M_PI * degree / 180);
+              centery += radius * sin (M_PI * degree / 180);
 
-	      if (filled (centerx, centery, radius + 1, degree, 0, segs) == 0)
-		{
-		  circlefill (map.map, centerx, centery, radius, 0);
-		}
-	      else
-		{
-		  /* encountered another worm, stopping... */
-		  break;
-		}
-	    }
-	}			/* for(c..) */
-    }				/* for(r..) */
+              if (filled (centerx, centery, radius + 1, degree, 0, segs) == 0)
+                {
+                  circlefill (map.map, centerx, centery, radius, 0);
+                }
+              else
+                {
+                  /* encountered another worm, stopping... */
+                  break;
+                }
+            }
+        }                       /* for(c..) */
+    }                           /* for(r..) */
 
   return;
 }

@@ -144,19 +144,19 @@ acknowledge_flag (char *str)
     {
       found = 1;
       switch (str[1])
-	{
-	case '?':
-	case 'h':
-	case 'H':
-	  FLAG_HELP = 1;
-	  break;
-	case 's':
-	case 'S':
-	  FLAG_SILENT = 1;
-	  break;
-	default:
-	  found = 0;
-	}
+        {
+        case '?':
+        case 'h':
+        case 'H':
+          FLAG_HELP = 1;
+          break;
+        case 's':
+        case 'S':
+          FLAG_SILENT = 1;
+          break;
+        default:
+          found = 0;
+        }
     }
   return found;
 }
@@ -171,43 +171,43 @@ read_command_line (void)
     {
       success = 0;
       if (!FLAG_HELP)
-	printf ("ERROR! Too few arguments.\n");
+        printf ("ERROR! Too few arguments.\n");
     }
   else
     {
       for (i = 1; i < ARGC; ++i)
-	{
-	  if ((!acknowledge_flag (ARGV[i])))
-	    {
-	      if (j == 0)
-		FIRST_COLOR = atoi (ARGV[i]);
-	      if (j == 1)
-		COLOR_NUMBER = atoi (ARGV[i]);
-	      if (j >= 2)
-		FILENAMES[j - 2] = ARGV[i];
-	      j++;
-	    }
-	}
+        {
+          if ((!acknowledge_flag (ARGV[i])))
+            {
+              if (j == 0)
+                FIRST_COLOR = atoi (ARGV[i]);
+              if (j == 1)
+                COLOR_NUMBER = atoi (ARGV[i]);
+              if (j >= 2)
+                FILENAMES[j - 2] = ARGV[i];
+              j++;
+            }
+        }
       if (COLOR_NUMBER < 8 || COLOR_NUMBER > 32)
-	{
-	  /*
-	   * COLOR_NUMBER must be <=32 for weird implementation
-	   * reasons. There's no easy way to change this easily.
-	   */
-	  success = 0;
-	  if (!FLAG_HELP)
-	    printf ("ERROR! Color number must be between 8 and 32");
-	}
+        {
+          /*
+           * COLOR_NUMBER must be <=32 for weird implementation
+           * reasons. There's no easy way to change this easily.
+           */
+          success = 0;
+          if (!FLAG_HELP)
+            printf ("ERROR! Color number must be between 8 and 32");
+        }
       else
-	{
-	  NUMBER_OF_FILES = j - 2;
-	  if (NUMBER_OF_FILES <= 0)
-	    {
-	      success = 0;
-	      if (!FLAG_HELP)
-		printf ("ERROR! Too few arguments.\n");
-	    }
-	}
+        {
+          NUMBER_OF_FILES = j - 2;
+          if (NUMBER_OF_FILES <= 0)
+            {
+              success = 0;
+              if (!FLAG_HELP)
+                printf ("ERROR! Too few arguments.\n");
+            }
+        }
     }
   return success;
 }
@@ -251,17 +251,17 @@ get_range (void)
   for (y = 0; y < BITMAP_SRC->h; ++y)
     for (x = 0; x < BITMAP_SRC->w; ++x)
       if (getpixel (BITMAP_SRC, x, y) >= FIRST_COLOR ||
-	  getpixel (BITMAP_SRC, x, y) < FIRST_COLOR + COLOR_NUMBER)
-	{
-	  if (min_x > x)
-	    min_x = x;
-	  if (min_y > y)
-	    min_y = y;
-	  if (max_x < x)
-	    max_x = x;
-	  if (max_y < y)
-	    max_y = y;
-	}
+          getpixel (BITMAP_SRC, x, y) < FIRST_COLOR + COLOR_NUMBER)
+        {
+          if (min_x > x)
+            min_x = x;
+          if (min_y > y)
+            min_y = y;
+          if (max_x < x)
+            max_x = x;
+          if (max_y < y)
+            max_y = y;
+        }
   DST_X = min_x;
   DST_Y = min_y;
   DST_W = max_x - min_x + 1;
@@ -319,25 +319,25 @@ convert_to_buffer (void)
   for (y = 0; y < DST_H; ++y)
     for (x = 0; x < DST_W; ++x)
       {
-	coul = getpixel (BITMAP_SRC, DST_X + x, DST_Y + y) - FIRST_COLOR;
-	toadd = 1 << pos8;
-	octet[0] |= (coul & 1) ? toadd : 0;
-	octet[1] |= (coul & 2) ? toadd : 0;
-	octet[2] |= (coul & 4) ? toadd : 0;
-	octet[3] |= (coul & 8) ? toadd : 0;
-	octet[4] |= (coul & 16) ? toadd : 0;
+        coul = getpixel (BITMAP_SRC, DST_X + x, DST_Y + y) - FIRST_COLOR;
+        toadd = 1 << pos8;
+        octet[0] |= (coul & 1) ? toadd : 0;
+        octet[1] |= (coul & 2) ? toadd : 0;
+        octet[2] |= (coul & 4) ? toadd : 0;
+        octet[3] |= (coul & 8) ? toadd : 0;
+        octet[4] |= (coul & 16) ? toadd : 0;
 
-	if (pos8 == 7 || (y == DST_H - 1 && x == DST_W - 1))
-	  {
-	    for (i = 0; i < 5; ++i)
-	      {
-		BUFFER[pos++] = octet[i];
-		octet[i] = 0;
-	      }
-	    pos8 = 0;
-	  }
-	else
-	  pos8++;
+        if (pos8 == 7 || (y == DST_H - 1 && x == DST_W - 1))
+          {
+            for (i = 0; i < 5; ++i)
+              {
+                BUFFER[pos++] = octet[i];
+                octet[i] = 0;
+              }
+            pos8 = 0;
+          }
+        else
+          pos8++;
       }
 }
 
@@ -420,23 +420,23 @@ main (int argc, char **argv)
   if (read_command_line ())
     {
       for (i = 0; i < NUMBER_OF_FILES; ++i)
-	{
-	  if (load_file (FILENAMES[i]))
-	    {
-	      get_range ();
-	      convert_to_buffer ();
-	      update_system_name (FILENAMES[i]);
-	      change_ext (FILENAMES[i]);
-	      write_to_disk (FILENAMES[i]);
-	    }
-	}
+        {
+          if (load_file (FILENAMES[i]))
+            {
+              get_range ();
+              convert_to_buffer ();
+              update_system_name (FILENAMES[i]);
+              change_ext (FILENAMES[i]);
+              write_to_disk (FILENAMES[i]);
+            }
+        }
     }
   else
     {
       if (FLAG_HELP)
-	display_long_help ();
+        display_long_help ();
       else
-	display_short_help ();
+        display_short_help ();
     }
   allegro_exit ();
 

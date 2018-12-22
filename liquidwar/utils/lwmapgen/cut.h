@@ -6,6 +6,6 @@
 #ifndef LWMAPGEN_CUT_H
 #define LWMAPGEN_CUT_H
 
-void cut();
+void cut ();
 
 #endif

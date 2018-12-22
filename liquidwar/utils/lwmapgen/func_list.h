@@ -18,19 +18,19 @@
 #define LWMAPGEN_FUNC_LIST_H
 
 
-void big_quad();
-void boxes();
-void bubbles();
-void circles();
-void circuit();
-void hole();
-void lines();
-void rand_box();
-void rand_func();
-void rand_poly();
-void rand_poly_cut();
-void street();
-void worms();
+void big_quad ();
+void boxes ();
+void bubbles ();
+void circles ();
+void circuit ();
+void hole ();
+void lines ();
+void rand_box ();
+void rand_func ();
+void rand_poly ();
+void rand_poly_cut ();
+void street ();
+void worms ();
 
 
 #endif

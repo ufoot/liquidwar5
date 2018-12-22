@@ -157,19 +157,19 @@ acknowledge_flag (char *str)
     {
       found = 1;
       switch (str[1])
-	{
-	case '?':
-	case 'h':
-	case 'H':
-	  FLAG_HELP = 1;
-	  break;
-	case 's':
-	case 'S':
-	  FLAG_SILENT = 1;
-	  break;
-	default:
-	  found = 0;
-	}
+        {
+        case '?':
+        case 'h':
+        case 'H':
+          FLAG_HELP = 1;
+          break;
+        case 's':
+        case 'S':
+          FLAG_SILENT = 1;
+          break;
+        default:
+          found = 0;
+        }
     }
   return found;
 }
@@ -183,17 +183,17 @@ read_command_line (void)
   for (i = 1; i < ARGC; ++i)
     {
       if ((!acknowledge_flag (ARGV[i])))
-	{
-	  FILENAMES[j] = ARGV[i];
-	  j++;
-	}
+        {
+          FILENAMES[j] = ARGV[i];
+          j++;
+        }
     }
   NUMBER_OF_FILES = j;
   if (NUMBER_OF_FILES <= 0)
     {
       success = 0;
       if (!FLAG_HELP)
-	printf ("ERROR! Two few arguments.\n");
+        printf ("ERROR! Two few arguments.\n");
     }
   return success;
 }
@@ -234,9 +234,9 @@ sort_light_and_dark (BITMAP * bmp, PALETTE pal)
   for (i = 0; i < 256; ++i)
     {
       if (6 * pal[i].r + 3 * pal[i].g + pal[i].b > LIGHT_OR_DARK_TRESHOLD)
-	table[i] = CONSIDERED_AS_LIGHT;
+        table[i] = CONSIDERED_AS_LIGHT;
       else
-	table[i] = CONSIDERED_AS_DARK;
+        table[i] = CONSIDERED_AS_DARK;
     }
 
   for (y = 0; y < bmp->h; ++y)
@@ -317,28 +317,28 @@ convert_to_buffer (void)
     {
       wall_color = CONSIDERED_AS_DARK;
       while (pos_src < wh)
-	{
-	  l = 0;
-	  if (data[pos_src] == wall_color)
-	    {
-	      while (pos_src < wh && (data[pos_src] == wall_color) && l < 127)
-		{
-		  l++;
-		  pos_src++;
-		}
-	      BUFFER[pos_dst++] = l;
-	    }
-	  else
-	    {
-	      while (pos_src < wh && data[pos_src] != wall_color && l < 127)
-		{
-		  l++;
-		  pos_src++;
-		}
-	      BUFFER[pos_dst++] = -l;
-	      BG_SIZE += l;
-	    }
-	}
+        {
+          l = 0;
+          if (data[pos_src] == wall_color)
+            {
+              while (pos_src < wh && (data[pos_src] == wall_color) && l < 127)
+                {
+                  l++;
+                  pos_src++;
+                }
+              BUFFER[pos_dst++] = l;
+            }
+          else
+            {
+              while (pos_src < wh && data[pos_src] != wall_color && l < 127)
+                {
+                  l++;
+                  pos_src++;
+                }
+              BUFFER[pos_dst++] = -l;
+              BG_SIZE += l;
+            }
+        }
     }
   BUFFER[pos_dst++] = 0;
 
@@ -399,14 +399,14 @@ update_readable_name (char *str)
        */
       search = strchr (READABLE_NAME, 10);
       if (search)
-	{
-	  (*search) = 0;
-	}
+        {
+          (*search) = 0;
+        }
       search = strchr (READABLE_NAME, 13);
       if (search)
-	{
-	  (*search) = 0;
-	}
+        {
+          (*search) = 0;
+        }
     }
   else
     {
@@ -416,9 +416,9 @@ update_readable_name (char *str)
       strncpy (READABLE_NAME, str, sizeof (READABLE_NAME));
       search = strchr (READABLE_NAME, '.');
       if (search)
-	{
-	  (*search) = '\0';
-	}
+        {
+          (*search) = '\0';
+        }
     }
 }
 
@@ -543,29 +543,29 @@ main (int argc, char **argv)
   if (read_command_line ())
     {
       for (i = 0; i < NUMBER_OF_FILES; ++i)
-	{
-	  if (load_file (FILENAMES[i]))
-	    {
-	      sort_light_and_dark (BITMAP_SRC, PALETTE_SRC);
-	      get_range ();
-	      if (BITMAP_SRC->w != BITMAP_DST->w
-		  || BITMAP_SRC->h != BITMAP_DST->h)
-		write_with_new_size (FILENAMES[i]);
-	      convert_to_buffer ();
-	      change_ext_to_txt (FILENAMES[i]);
-	      update_system_name (FILENAMES[i]);
-	      update_readable_name (FILENAMES[i]);
-	      change_ext_to_map (FILENAMES[i]);
-	      write_to_disk (FILENAMES[i]);
-	    }
-	}
+        {
+          if (load_file (FILENAMES[i]))
+            {
+              sort_light_and_dark (BITMAP_SRC, PALETTE_SRC);
+              get_range ();
+              if (BITMAP_SRC->w != BITMAP_DST->w
+                  || BITMAP_SRC->h != BITMAP_DST->h)
+                write_with_new_size (FILENAMES[i]);
+              convert_to_buffer ();
+              change_ext_to_txt (FILENAMES[i]);
+              update_system_name (FILENAMES[i]);
+              update_readable_name (FILENAMES[i]);
+              change_ext_to_map (FILENAMES[i]);
+              write_to_disk (FILENAMES[i]);
+            }
+        }
     }
   else
     {
       if (FLAG_HELP)
-	display_long_help ();
+        display_long_help ();
       else
-	display_short_help ();
+        display_short_help ();
     }
   allegro_exit ();
 

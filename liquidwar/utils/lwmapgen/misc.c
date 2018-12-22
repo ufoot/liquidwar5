@@ -13,7 +13,7 @@ rand_num (int min, int max)
   if (min > max)
     {
       fprintf (stderr, "for rand_num(%d, %d), max must be > min.\n", min,
-	       max);
+               max);
       return max;
     }
   else if (min == max)
@@ -32,7 +32,7 @@ create_array (int length, int size)
   if (length == 0 || size == 0)
     {
       fprintf (stderr, "can't create an array of 0 length. [%d](%d)\n",
-	       length, size);
+               length, size);
       return NULL;
     }
 
@@ -64,8 +64,8 @@ create_grid (int r, int c, int size)
   if (r == 0 || c == 0 || size == 0)
     {
       fprintf (stderr,
-	       "can't create grid with 0 dimenson/size [%d][%d](%d).\n", r, c,
-	       size);
+               "can't create grid with 0 dimenson/size [%d][%d](%d).\n", r, c,
+               size);
       return NULL;
     }
 

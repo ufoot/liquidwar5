@@ -25,11 +25,11 @@ circles ()
   for (r = 0; r < map.num_row; r++)
     {
       for (c = 0; c < map.num_col; c++)
-	{
-	  rand_point_section_offset (&centerx, &centery, r, c, 0);
-	  radius = rand () % size + 1;
-	  circlefill (map.map, centerx, centery, radius, 0);
-	}
+        {
+          rand_point_section_offset (&centerx, &centery, r, c, 0);
+          radius = rand () % size + 1;
+          circlefill (map.map, centerx, centery, radius, 0);
+        }
     }
 
   return;

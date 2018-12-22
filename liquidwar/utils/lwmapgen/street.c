@@ -65,31 +65,31 @@ street ()
       /* do the branches */
       start = rand () % 2;
       for (c = start; c < map.num_col; c += 2)
-	{
-	  section_center (&startx, &starty, r, c);
+        {
+          section_center (&startx, &starty, r, c);
 
-	  way = rand () % 3;
+          way = rand () % 3;
 
-	  /* draw up */
-	  if (r != 0 && (way == 0 || way == 2))
-	    {
-	      tor = rand () % r;
-	      section_center (&endx, &endy, tor, c);
-	      rectfill (map.map, startx - size, starty, endx + size, endy,
-			255);
-	    }
+          /* draw up */
+          if (r != 0 && (way == 0 || way == 2))
+            {
+              tor = rand () % r;
+              section_center (&endx, &endy, tor, c);
+              rectfill (map.map, startx - size, starty, endx + size, endy,
+                        255);
+            }
 
-	  /* draw down */
-	  if (r != map.num_row - 1 && (way == 1 || way == 2))
-	    {
+          /* draw down */
+          if (r != map.num_row - 1 && (way == 1 || way == 2))
+            {
 
-	      tor = rand_num (r, map.num_row - r);
-	      /* tor = rand()%(map.num_row-r-1)+r+1; */
-	      section_center (&endx, &endy, tor, c);
-	      rectfill (map.map, startx - size, starty, endx + size, endy,
-			255);
-	    }
-	}
+              tor = rand_num (r, map.num_row - r);
+              /* tor = rand()%(map.num_row-r-1)+r+1; */
+              section_center (&endx, &endy, tor, c);
+              rectfill (map.map, startx - size, starty, endx + size, endy,
+                        255);
+            }
+        }
     }
 
 
@@ -107,30 +107,30 @@ street ()
       /* do the branches */
       start = rand () % 2;
       for (r = start; r < map.num_row; r += 2)
-	{
-	  section_center (&startx, &starty, r, c);
+        {
+          section_center (&startx, &starty, r, c);
 
-	  way = rand () % 3;
+          way = rand () % 3;
 
-	  /* draw left */
-	  if (c != 0 && (way == 0 || way == 2))
-	    {
-	      toc = rand () % c;
-	      section_center (&endx, &endy, r, toc);
-	      rectfill (map.map, startx, starty - size, endx, endy + size,
-			255);
-	    }
+          /* draw left */
+          if (c != 0 && (way == 0 || way == 2))
+            {
+              toc = rand () % c;
+              section_center (&endx, &endy, r, toc);
+              rectfill (map.map, startx, starty - size, endx, endy + size,
+                        255);
+            }
 
-	  /* draw right */
-	  if (c != map.num_col - 1 && (way == 1 || way == 2))
-	    {
-	      toc = rand_num (c, map.num_col - c);
-	      /* toc = rand()%(map.num_col-c-1)+c+1; */
-	      section_center (&endx, &endy, r, toc);
-	      rectfill (map.map, startx - size, starty - size, endx,
-			endy + size, 255);
-	    }
-	}
+          /* draw right */
+          if (c != map.num_col - 1 && (way == 1 || way == 2))
+            {
+              toc = rand_num (c, map.num_col - c);
+              /* toc = rand()%(map.num_col-c-1)+c+1; */
+              section_center (&endx, &endy, r, toc);
+              rectfill (map.map, startx - size, starty - size, endx,
+                        endy + size, 255);
+            }
+        }
     }
 
   return;

@@ -33,34 +33,34 @@ extern int map_grid_size[MAX_MAP_GRID_SIZE][2];
 
 typedef struct
 {
-     char *filename;        /* should not be changed */
+  char *filename;               /* should not be changed */
 
-     int width, height;     /* should not be changed */
-     BITMAP *map;
+  int width, height;            /* should not be changed */
+  BITMAP *map;
 
-     /* grid size */
-     int num_row, num_col;
+  /* grid size */
+  int num_row, num_col;
 
-     /* section size */
-     float sec_width, sec_height;     /* should not be changed */
+  /* section size */
+  float sec_width, sec_height;  /* should not be changed */
 
-     /* the color to draw with */
-     int color;     /* 0 == normal, 255 == inverted */
+  /* the color to draw with */
+  int color;                    /* 0 == normal, 255 == inverted */
 
-     int func_id;
-     void (*func)();
+  int func_id;
+  void (*func) ();
 } map_t;
 
 extern map_t map;
 
 
 /* sets up the map for drawing */
-void clear_map();
-void clear_invert_map();
+void clear_map ();
+void clear_invert_map ();
 
 /* print all the map info to stdout */
 /* really for debugging */
-void print_map();
+void print_map ();
 
 
 /*****************************************************************************/
@@ -80,16 +80,16 @@ void print_map();
 #define section(r,c)     ( (r*map.num_col)+c )
 
 /* get r, c from i */
-void section_rc( int *row, int *col, int i );
+void section_rc (int *row, int *col, int i);
 
 
-void offset( int *xoffset, int *yoffset, int r, int c );
+void offset (int *xoffset, int *yoffset, int r, int c);
 
-void rand_point_section( int *x, int *y, int pad );
+void rand_point_section (int *x, int *y, int pad);
 
-void rand_point_section_offset( int *x, int *y, int r, int c, int pad );
+void rand_point_section_offset (int *x, int *y, int r, int c, int pad);
 
-void section_center( int *x, int *y, int r, int c );
+void section_center (int *x, int *y, int r, int c);
 
 /*****************************************************************************/
 
