@@ -88,7 +88,7 @@ sqrt255 (int i)
 {
   int result;
 
-  result = fsqrt (i * 256) / 256;
+  result = fixsqrt (i * 256) / 256;
   if (result > 255)
     result = 255;
 

@@ -337,7 +337,7 @@ move_fighters (void)
       coef += 256;
 
       attack[i] = (coef *
-		   fsqrt (fsqrt (1 << (LW_CONFIG_CURRENT_RULES.fighter_attack
+		   fixsqrt (fixsqrt (1 << (LW_CONFIG_CURRENT_RULES.fighter_attack
 				       + cpu_influence[i])))) / (256 * 8);
       if (attack[i] >= MAX_FIGHTER_HEALTH)
 	attack[i] = MAX_FIGHTER_HEALTH - 1;
@@ -345,7 +345,7 @@ move_fighters (void)
 	attack[i] = 1;
 
       defense[i] = (coef *
-		    fsqrt (fsqrt
+		    fixsqrt (fixsqrt
 			   (1 <<
 			    (LW_CONFIG_CURRENT_RULES.fighter_defense +
 			     cpu_influence[i])))) / (256 * 256);
@@ -355,7 +355,7 @@ move_fighters (void)
 	defense[i] = 1;
 
       new_health[i] = (coef *
-		       fsqrt (fsqrt
+		       fixsqrt (fixsqrt
 			      (1 <<
 			       (LW_CONFIG_CURRENT_RULES.fighter_new_health +
 				cpu_influence[i])))) / (256 * 4);

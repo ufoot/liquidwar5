@@ -194,7 +194,7 @@ create_wave_line (int *buffer,
       cycle_tmp /= 2;
       speed--;
     }
-  cycle_tmp = fsqrt (fsqrt (cycle_tmp)) / 2;
+  cycle_tmp = fixsqrt (fixsqrt (cycle_tmp)) / 2;
   cycle_tmp /= SCREEN_W;
   cycle_tmp *= period;
   if (cycle_tmp <= 0)
@@ -203,8 +203,8 @@ create_wave_line (int *buffer,
     }
   cycle_coef = sens * 256 * (itofix (GLOBAL_TICKER % cycle_tmp) / cycle_tmp);
 
-  f0 = fsin (cycle_coef + freq_coef * period2);
-  fp0x0 = (PI_1024 * fcos (cycle_coef + freq_coef * period2)) / 1024;
+  f0 = fixsin (cycle_coef + freq_coef * period2);
+  fp0x0 = (PI_1024 * fixcos (cycle_coef + freq_coef * period2)) / 1024;
 
   alphax03 = (ampli_cst / 256) * ((fp0x0 - 2 * f0) / 256);
   betax02 = (ampli_cst / 256) * ((-fp0x0 + 3 * f0) / 256);
@@ -217,7 +217,7 @@ create_wave_line (int *buffer,
     }
   for (i = period2; i < real_length - period2; ++i)
     {
-      temp = ((ampli_cos) / 256) * (fcos (cycle_coef + freq_coef * i) / 256);
+      temp = ((ampli_cos) / 256) * (fixcos (cycle_coef + freq_coef * i) / 256);
       buffer2[i] = temp / WAVE_SIZE_SCALE;
     }
 
