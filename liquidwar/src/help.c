@@ -107,22 +107,22 @@ display_help (char *str)
     {
       choix = my_do_dialog_no_clear (d, choix);
       switch (choix)
-	{
-	case -1:
-	case MENU_QUICK_BACK:
-	  retour = 1;
-	  break;
-	case MENU_QUICK_PLAY:
-	  retour = MENU_PLAY;
-	  break;
-	case MENU_QUICK_MAIN:
-	  retour = MENU_TOP;
-	  break;
-	case MENU_QUICK_QUIT:
-	  if (confirm_quit ())
-	    retour = MENU_EXIT;
-	  break;
-	}
+        {
+        case -1:
+        case MENU_QUICK_BACK:
+          retour = 1;
+          break;
+        case MENU_QUICK_PLAY:
+          retour = MENU_PLAY;
+          break;
+        case MENU_QUICK_MAIN:
+          retour = MENU_TOP;
+          break;
+        case MENU_QUICK_QUIT:
+          if (confirm_quit ())
+            retour = MENU_EXIT;
+          break;
+        }
     }
   if (retour > 0)
     retour--;

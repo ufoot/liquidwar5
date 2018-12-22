@@ -73,9 +73,9 @@
  */
 typedef struct
 {
-  int key_states[NB_TEAMS];	/* the keys states as in the cursor */
-  int cmd;			/* a special command                */
-  int arg;			/* an argument for the command      */
+  int key_states[NB_TEAMS];     /* the keys states as in the cursor */
+  int cmd;                      /* a special command                */
+  int arg;                      /* an argument for the command      */
   unsigned int checksum;
 }
 LW_NETKEY;

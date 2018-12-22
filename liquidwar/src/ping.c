@@ -132,23 +132,23 @@ lw_ping_try_server (char *address, int port)
       try_data->result = -1;
 
       if (lw_thread_start (try_server_callback, try_data))
-	{
-	  start_time = get_ticker ();
-	  while (try_data->done == 0 &&
-		 get_ticker () < start_time + LW_PING_TEST_MAX)
-	    {
-	      rest (LW_PING_DELAY);
-	    }
-	  result = try_data->result;
-	  try_data->allow_exit = 1;
-	}
+        {
+          start_time = get_ticker ();
+          while (try_data->done == 0 &&
+                 get_ticker () < start_time + LW_PING_TEST_MAX)
+            {
+              rest (LW_PING_DELAY);
+            }
+          result = try_data->result;
+          try_data->allow_exit = 1;
+        }
       else
-	{
-	  /*
-	   * The thread could not be launched...
-	   */
-	  free (try_data);
-	}
+        {
+          /*
+           * The thread could not be launched...
+           */
+          free (try_data);
+        }
     }
 
   return result;
@@ -178,7 +178,7 @@ try_server_callback (void *arg)
     }
 
   result = lw_sock_connect (&(try_data->sock),
-			    try_data->address, try_data->port);
+                            try_data->address, try_data->port);
 
   if (result == 1)
     {
@@ -188,30 +188,30 @@ try_server_callback (void *arg)
       n = 0;
       global_start_time = get_ticker ();
       for (i = 0; result == 1 &&
-	   i < LW_PING_NB_RETRIES &&
-	   get_ticker () < global_start_time + LW_PING_TEST_MAX; ++i)
-	{
-	  start_time = get_ticker ();
-	  result = lw_protocol_do_ping (&try_data->sock);
-	  if (result == 1)
-	    {
-	      delay[i] = get_ticker () - start_time;
-	      n = i + 1;
-	    }
+           i < LW_PING_NB_RETRIES &&
+           get_ticker () < global_start_time + LW_PING_TEST_MAX; ++i)
+        {
+          start_time = get_ticker ();
+          result = lw_protocol_do_ping (&try_data->sock);
+          if (result == 1)
+            {
+              delay[i] = get_ticker () - start_time;
+              n = i + 1;
+            }
 
-	  /*
-	   * We calculate an average ping from all the values we have
-	   */
-	  sum = 0;
-	  for (i = 0; i < n; ++i)
-	    {
-	      sum += delay[i];
-	    }
-	  if (n > 0)
-	    {
-	      try_data->result = sum / n;
-	    }
-	}
+          /*
+           * We calculate an average ping from all the values we have
+           */
+          sum = 0;
+          for (i = 0; i < n; ++i)
+            {
+              sum += delay[i];
+            }
+          if (n > 0)
+            {
+              try_data->result = sum / n;
+            }
+        }
 
       /*
        * OK we're done the calling thread can abort
@@ -222,9 +222,9 @@ try_server_callback (void *arg)
        * We're polite, we tell the server we quit.
        */
       if (result)
-	{
-	  lw_protocol_quit (&try_data->sock);
-	}
+        {
+          lw_protocol_quit (&try_data->sock);
+        }
       lw_sock_close (&try_data->sock);
     }
 

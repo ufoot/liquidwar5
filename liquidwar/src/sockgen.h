@@ -58,7 +58,7 @@ int lw_sock_init ();
 int lw_sock_exit ();
 int lw_sock_listen (int *sock, int port);
 int lw_sock_accept (int *new_sock, char *ip, int *port,
-		    int listening_sock, int wait);
+                    int listening_sock, int wait);
 int lw_sock_connect (int *sock, char *ip, int port);
 int lw_sock_peek_ex (int *sock, int len);
 int lw_sock_send_str_ex (int *sock, char *str);

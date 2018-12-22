@@ -78,14 +78,14 @@ LW_SRVCONT;
 /*==================================================================*/
 
 int lw_srvcont_wait_teams (LW_SRVCONT * cont,
-			   LW_WWWSRV_DATA * www_data,
-			   int nb_teams, int port,
-			   char *password, char *callback);
+                           LW_WWWSRV_DATA * www_data,
+                           int nb_teams, int port,
+                           char *password, char *callback);
 int lw_srvcont_tell_who (LW_SRVCONT * cont);
 int lw_srvcont_final_ok (LW_SRVCONT * cont);
 int lw_srvcont_replicate_keys (LW_SRVCONT * cont,
-			       LW_WWWSRV_DATA * www_data,
-			       int lag, char *password);
+                               LW_WWWSRV_DATA * www_data,
+                               int lag, char *password);
 void lw_srvcont_close (LW_SRVCONT * cont);
 
 #endif

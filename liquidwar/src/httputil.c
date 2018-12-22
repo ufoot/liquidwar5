@@ -133,9 +133,9 @@ lw_httputil_get_page (char *content, char *url, int size)
       (*search) = '\0';
       port = atoi (search + 1);
       if (port < 1 || port > 65535)
-	{
-	  port = LW_HTTPUTIL_PORT;
-	}
+        {
+          port = LW_HTTPUTIL_PORT;
+        }
     }
   search = NULL;
 
@@ -144,90 +144,90 @@ lw_httputil_get_page (char *content, char *url, int size)
   if (lw_dnsutil_name_to_ip (ip, host_only))
     {
       if (lw_sock_connect (&sock, ip, port))
-	{
-	  if (lw_sock_send_str (&sock, request))
-	    {
-	      result = 1;
-	      /* read status line */
-	      if (result && lw_sock_recv_str (&sock, data) != 1)
-		{
-		  result = 0;
-		  LW_MACRO_SNPRINTF0 (content, size,
-				      "Failed to read status line");
-		}
-	      /* make sure status code starts with 2 */
-	      if (result &&
-		  !((search = strchr (data, ' ')) && search[1] == '2'))
-		{
-		  result = 0;
-		  LW_MACRO_SNPRINTF2 (content, size,
-				      "Failure from web server \"%s\": \"%s\"",
-				      host_port, data);
-		}
-	      if (result)
-		{
-		  /* skip past headers */
-		  while ((result =
-			  (result && (lw_sock_recv_str (&sock, data) == 1)))
-			 && data[0])
-		    {
-		      /* nothing to do here */
-		    }
+        {
+          if (lw_sock_send_str (&sock, request))
+            {
+              result = 1;
+              /* read status line */
+              if (result && lw_sock_recv_str (&sock, data) != 1)
+                {
+                  result = 0;
+                  LW_MACRO_SNPRINTF0 (content, size,
+                                      "Failed to read status line");
+                }
+              /* make sure status code starts with 2 */
+              if (result &&
+                  !((search = strchr (data, ' ')) && search[1] == '2'))
+                {
+                  result = 0;
+                  LW_MACRO_SNPRINTF2 (content, size,
+                                      "Failure from web server \"%s\": \"%s\"",
+                                      host_port, data);
+                }
+              if (result)
+                {
+                  /* skip past headers */
+                  while ((result =
+                          (result && (lw_sock_recv_str (&sock, data) == 1)))
+                         && data[0])
+                    {
+                      /* nothing to do here */
+                    }
 
-		  if (result)
-		    {
-		      /* finally, we read the list of servers */
-		      while (lw_sock_recv_str (&sock, data) == 1 &&
-			     empty_lines < LW_HTTPUTIL_EMPTY_LINES_LIMIT)
-			{
-			  data_len = strlen (data);
-			  /*
-			   * If the line is too short, we ignore it,
-			   * in fact, we get many "too short" lines
-			   * such as the size of the file for instance,
-			   * which is shown as an hex number in HTTP 1.1
-			   *
-			   * No "usefull" line should be smaller than 
-			   * LW_HTTPUTIL_MIN_LEN however.
-			   */
-			  if (data_len > LW_HTTPUTIL_MIN_LEN)
-			    {
-			      if ((int) (strlen (content) + data_len) <
-				  size - 2)
-				{
-				  LW_MACRO_STRNCAT (content, data, size);
-				  LW_MACRO_STRNCAT (content, "\n", size);
-				}
-			    }
-			  if (data_len == 0)
-			    {
-			      empty_lines++;
-			    }
-			}
-		    }
-		  else
-		    {
-		      LW_MACRO_SNPRINTF0 (content, size,
-					  "Failed to read headers");
-		    }
-		}
-	    }
-	  else
-	    {
-	      LW_MACRO_SNPRINTF1 (content, size, "Request \"%s\" failed!",
-				  request);
-	    }
-	  lw_sock_close (&sock);
-	}
+                  if (result)
+                    {
+                      /* finally, we read the list of servers */
+                      while (lw_sock_recv_str (&sock, data) == 1 &&
+                             empty_lines < LW_HTTPUTIL_EMPTY_LINES_LIMIT)
+                        {
+                          data_len = strlen (data);
+                          /*
+                           * If the line is too short, we ignore it,
+                           * in fact, we get many "too short" lines
+                           * such as the size of the file for instance,
+                           * which is shown as an hex number in HTTP 1.1
+                           *
+                           * No "usefull" line should be smaller than 
+                           * LW_HTTPUTIL_MIN_LEN however.
+                           */
+                          if (data_len > LW_HTTPUTIL_MIN_LEN)
+                            {
+                              if ((int) (strlen (content) + data_len) <
+                                  size - 2)
+                                {
+                                  LW_MACRO_STRNCAT (content, data, size);
+                                  LW_MACRO_STRNCAT (content, "\n", size);
+                                }
+                            }
+                          if (data_len == 0)
+                            {
+                              empty_lines++;
+                            }
+                        }
+                    }
+                  else
+                    {
+                      LW_MACRO_SNPRINTF0 (content, size,
+                                          "Failed to read headers");
+                    }
+                }
+            }
+          else
+            {
+              LW_MACRO_SNPRINTF1 (content, size, "Request \"%s\" failed!",
+                                  request);
+            }
+          lw_sock_close (&sock);
+        }
       else
-	{
-	  LW_MACRO_SNPRINTF1 (content, size, "Can't connect to \"%s\"!", ip);
-	}
+        {
+          LW_MACRO_SNPRINTF1 (content, size, "Can't connect to \"%s\"!", ip);
+        }
     }
   else
     {
       LW_MACRO_SNPRINTF1 (content, size, "Unable to find host \"%s\"!",
-			  host_only);
+                          host_only);
     }
 
   return result;
@@ -255,29 +255,29 @@ lw_httputil_text_to_urlparam (char *urlparam, char *text, int size)
   for (i = 0; text[i] && j < size; ++i)
     {
       if (text[i] == '_')
-	{
-	  c = ' ';
-	}
+        {
+          c = ' ';
+        }
       else
-	{
-	  c = text[i];
-	}
+        {
+          c = text[i];
+        }
 
       if (isalnum (c))
-	{
-	  urlparam[j] = c;
-	  j++;
-	}
+        {
+          urlparam[j] = c;
+          j++;
+        }
       else
-	{
-	  if (j < size - 2)
-	    {
-	      LW_MACRO_SPRINTF1 (buffer, "%X", c);
-	      urlparam[j] = '%';
-	      urlparam[j + 1] = buffer[0];
-	      urlparam[j + 2] = buffer[1];
-	    }
-	  j += 3;
-	}
+        {
+          if (j < size - 2)
+            {
+              LW_MACRO_SPRINTF1 (buffer, "%X", c);
+              urlparam[j] = '%';
+              urlparam[j + 1] = buffer[0];
+              urlparam[j + 2] = buffer[1];
+            }
+          j += 3;
+        }
     }
 }

@@ -128,7 +128,7 @@ get_profile (int indice)
 {
   if (PROFILE_DATA[indice].record_number > 0)
     return (PROFILE_DATA[indice].total_time
-	    / PROFILE_DATA[indice].record_number);
+            / PROFILE_DATA[indice].record_number);
   else
     return 0;
 }

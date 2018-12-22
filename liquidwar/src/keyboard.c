@@ -105,91 +105,91 @@ is_touched_key (int i)
     switch (i)
       {
       case KEY_JOY1_UP:
-	found = 1;
-	retval = JOYSTICK_CONTROL_JOY1_UP;
-	break;
+        found = 1;
+        retval = JOYSTICK_CONTROL_JOY1_UP;
+        break;
       case KEY_JOY1_RIGHT:
-	found = 1;
-	retval = JOYSTICK_CONTROL_JOY1_RIGHT;
-	break;
+        found = 1;
+        retval = JOYSTICK_CONTROL_JOY1_RIGHT;
+        break;
       case KEY_JOY1_DOWN:
-	found = 1;
-	retval = JOYSTICK_CONTROL_JOY1_DOWN;
-	break;
+        found = 1;
+        retval = JOYSTICK_CONTROL_JOY1_DOWN;
+        break;
       case KEY_JOY1_LEFT:
-	found = 1;
-	retval = JOYSTICK_CONTROL_JOY1_LEFT;
-	break;
+        found = 1;
+        retval = JOYSTICK_CONTROL_JOY1_LEFT;
+        break;
 
       case KEY_JOY1_B1:
-	found = 1;
-	retval = JOYSTICK_CONTROL_JOY1_B1;
-	break;
+        found = 1;
+        retval = JOYSTICK_CONTROL_JOY1_B1;
+        break;
       case KEY_JOY1_B2:
-	found = 1;
-	retval = JOYSTICK_CONTROL_JOY1_B2;
-	break;
+        found = 1;
+        retval = JOYSTICK_CONTROL_JOY1_B2;
+        break;
       case KEY_JOY1_B3:
-	found = 1;
-	retval = JOYSTICK_CONTROL_JOY1_B3;
-	break;
+        found = 1;
+        retval = JOYSTICK_CONTROL_JOY1_B3;
+        break;
       case KEY_JOY1_B4:
-	found = 1;
-	retval = JOYSTICK_CONTROL_JOY1_B4;
-	break;
+        found = 1;
+        retval = JOYSTICK_CONTROL_JOY1_B4;
+        break;
 
       case KEY_JOY2_UP:
-	found = 1;
-	retval = JOYSTICK_CONTROL_JOY2_UP;
-	break;
+        found = 1;
+        retval = JOYSTICK_CONTROL_JOY2_UP;
+        break;
       case KEY_JOY2_RIGHT:
-	found = 1;
-	retval = JOYSTICK_CONTROL_JOY2_RIGHT;
-	break;
+        found = 1;
+        retval = JOYSTICK_CONTROL_JOY2_RIGHT;
+        break;
       case KEY_JOY2_DOWN:
-	found = 1;
-	retval = JOYSTICK_CONTROL_JOY2_DOWN;
-	break;
+        found = 1;
+        retval = JOYSTICK_CONTROL_JOY2_DOWN;
+        break;
       case KEY_JOY2_LEFT:
-	found = 1;
-	retval = JOYSTICK_CONTROL_JOY2_LEFT;
-	break;
+        found = 1;
+        retval = JOYSTICK_CONTROL_JOY2_LEFT;
+        break;
 
       case KEY_JOY2_B1:
-	found = 1;
-	retval = JOYSTICK_CONTROL_JOY2_B1;
-	break;
+        found = 1;
+        retval = JOYSTICK_CONTROL_JOY2_B1;
+        break;
       case KEY_JOY2_B2:
-	found = 1;
-	retval = JOYSTICK_CONTROL_JOY2_B2;
-	break;
+        found = 1;
+        retval = JOYSTICK_CONTROL_JOY2_B2;
+        break;
       }
 
   if (!found)
     switch (i)
       {
       case KEY_MOUSE_UP:
-	retval = MOUSE_CONTROL_UP;
-	break;
+        retval = MOUSE_CONTROL_UP;
+        break;
       case KEY_MOUSE_RIGHT:
-	retval = MOUSE_CONTROL_RIGHT;
-	break;
+        retval = MOUSE_CONTROL_RIGHT;
+        break;
       case KEY_MOUSE_DOWN:
-	retval = MOUSE_CONTROL_DOWN;
-	break;
+        retval = MOUSE_CONTROL_DOWN;
+        break;
       case KEY_MOUSE_LEFT:
-	retval = MOUSE_CONTROL_LEFT;
-	break;
+        retval = MOUSE_CONTROL_LEFT;
+        break;
       default:
 
 
-	if (i >= 128)
-	  {
-	    i -= 128;
-	    retval = (key[i] & KB_EXTENDED) && ALLOWED_KEYBOARD_KEY[i];
-	  }
-	else
-	  retval = (key[i] & KB_NORMAL) && ALLOWED_KEYBOARD_KEY[i];
+        if (i >= 128)
+          {
+            i -= 128;
+            retval = (key[i] & KB_EXTENDED) && ALLOWED_KEYBOARD_KEY[i];
+          }
+        else
+          retval = (key[i] & KB_NORMAL) && ALLOWED_KEYBOARD_KEY[i];
 
       }
 
@@ -218,11 +218,11 @@ wait_no_key (void)
       lw_mouse_update_control ();
       my_poll_joystick ();
       for (i = 0; i < 256; ++i)
-	if (is_touched_key (i))
-	  touched = 1;
+        if (is_touched_key (i))
+          touched = 1;
     }
   while (touched &&
-	 get_ticker () < start_tick + LW_KEYBOARD_WAITNOKEY_TICK_LIMIT);
+         get_ticker () < start_tick + LW_KEYBOARD_WAITNOKEY_TICK_LIMIT);
 }
 
 /*------------------------------------------------------------------*/
@@ -236,7 +236,7 @@ wait_key_pressed (void)
 
   lw_mouse_reset_control ();
   while ((!touched) &&
-	 get_ticker () < start_tick + LW_KEYBOARD_WAITKEYPRESSED_TICK_LIMIT)
+         get_ticker () < start_tick + LW_KEYBOARD_WAITKEYPRESSED_TICK_LIMIT)
     {
       /*
        * Force a all to poll_keyboard if needed
@@ -246,11 +246,11 @@ wait_key_pressed (void)
       lw_mouse_update_control ();
       my_poll_joystick ();
       for (i = 0; i < 256 && !touched; ++i)
-	if (is_touched_key (i))
-	  {
-	    touched = 1;
-	    result = i;
-	  }
+        if (is_touched_key (i))
+          {
+            touched = 1;
+            result = i;
+          }
     }
 
   /*
@@ -285,7 +285,7 @@ lw_keyboard_reset_hack (void)
 
     if (keyboard_state)
       {
-	log_println_str ("Error: unable to reinstall keyboard");
+        log_println_str ("Error: unable to reinstall keyboard");
       }
   }
 #endif

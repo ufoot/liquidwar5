@@ -97,13 +97,13 @@ water_handler (void)
   if (WATER_VOLUME > 0)
     {
       if (HASARD_INDEX % 2)
-	pan = 192;
+        pan = 192;
       else
-	pan = 64;
+        pan = 64;
 
       hasard = HASARD_VALUE[HASARD_INDEX] % SAMPLE_WATER_NUMBER;
       play_sample (SAMPLE_WATER[hasard],
-		   SOUND_VOLUME_VALUES[WATER_VOLUME], pan, 1000, 0);
+                   SOUND_VOLUME_VALUES[WATER_VOLUME], pan, 1000, 0);
     }
 }
 
@@ -172,14 +172,14 @@ play_click (void)
        * simultaneously from several threads.
        */
       if (lw_mutex_trylock (&mutex))
-	{
-	  my_play_sample (SAMPLE_SFX_CLICK, CONFIG_CLICK_VOLUME);
-	  lw_mutex_unlock (&mutex);
-	}
+        {
+          my_play_sample (SAMPLE_SFX_CLICK, CONFIG_CLICK_VOLUME);
+          lw_mutex_unlock (&mutex);
+        }
       else
-	{
-	  log_println_str ("Warning: too many calls to \"play_click\"...");
-	}
+        {
+          log_println_str ("Warning: too many calls to \"play_click\"...");
+        }
     }
 }
 

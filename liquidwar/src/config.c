@@ -347,153 +347,153 @@ load_disk_options (void)
   if (get_config_int (LABEL_MAIN, LABEL_DUMMY, 0) == DUMMY_VALUE)
     {
       CONFIG_GFX_GAME =
-	get_config_int (LABEL_MAIN, LABEL_GFX_GAME, CONFIG_GFX_GAME);
+        get_config_int (LABEL_MAIN, LABEL_GFX_GAME, CONFIG_GFX_GAME);
       CONFIG_GFX_MENU =
-	get_config_int (LABEL_MAIN, LABEL_GFX_MENU, CONFIG_GFX_MENU);
+        get_config_int (LABEL_MAIN, LABEL_GFX_MENU, CONFIG_GFX_MENU);
       CONFIG_FULLSCREEN =
-	get_config_int (LABEL_MAIN, LABEL_FULLSCREEN, CONFIG_FULLSCREEN);
+        get_config_int (LABEL_MAIN, LABEL_FULLSCREEN, CONFIG_FULLSCREEN);
       CONFIG_VIEWPORT_SIZE =
-	get_config_int (LABEL_MAIN, LABEL_VIEWPORT_SIZE,
-			CONFIG_VIEWPORT_SIZE);
+        get_config_int (LABEL_MAIN, LABEL_VIEWPORT_SIZE,
+                        CONFIG_VIEWPORT_SIZE);
 
       for (i = 0; i < 4; ++i)
-	{
-	  number_string[0] = '0' + i;
+        {
+          number_string[0] = '0' + i;
 
-	  CONFIG_WAVE_NUMBER[i] =
-	    get_config_int (LABEL_WAVE_NUMBER, number_string,
-			    CONFIG_WAVE_NUMBER[i]);
-	  CONFIG_WAVE_AMPLI[i] =
-	    get_config_int (LABEL_WAVE_AMPLI, number_string,
-			    CONFIG_WAVE_AMPLI[i]);
-	  CONFIG_WAVE_SPEED[i] =
-	    get_config_int (LABEL_WAVE_SPEED, number_string,
-			    CONFIG_WAVE_SPEED[i]);
-	}
+          CONFIG_WAVE_NUMBER[i] =
+            get_config_int (LABEL_WAVE_NUMBER, number_string,
+                            CONFIG_WAVE_NUMBER[i]);
+          CONFIG_WAVE_AMPLI[i] =
+            get_config_int (LABEL_WAVE_AMPLI, number_string,
+                            CONFIG_WAVE_AMPLI[i]);
+          CONFIG_WAVE_SPEED[i] =
+            get_config_int (LABEL_WAVE_SPEED, number_string,
+                            CONFIG_WAVE_SPEED[i]);
+        }
 
       CONFIG_BRIGHTNESS =
-	get_config_int (LABEL_MAIN, LABEL_BRIGHTNESS, CONFIG_BRIGHTNESS);
+        get_config_int (LABEL_MAIN, LABEL_BRIGHTNESS, CONFIG_BRIGHTNESS);
       CONFIG_CURSOR_INCREASE_SPEED =
-	get_config_int (LABEL_MAIN, LABEL_CURSOR_INCREASE_SPEED,
-			CONFIG_CURSOR_INCREASE_SPEED);
+        get_config_int (LABEL_MAIN, LABEL_CURSOR_INCREASE_SPEED,
+                        CONFIG_CURSOR_INCREASE_SPEED);
       CONFIG_FIGHTER_ATTACK =
-	get_config_int (LABEL_MAIN, LABEL_FIGHTER_ATTACK,
-			CONFIG_FIGHTER_ATTACK);
+        get_config_int (LABEL_MAIN, LABEL_FIGHTER_ATTACK,
+                        CONFIG_FIGHTER_ATTACK);
       CONFIG_FIGHTER_DEFENSE =
-	get_config_int (LABEL_MAIN, LABEL_FIGHTER_DEFENSE,
-			CONFIG_FIGHTER_DEFENSE);
+        get_config_int (LABEL_MAIN, LABEL_FIGHTER_DEFENSE,
+                        CONFIG_FIGHTER_DEFENSE);
       CONFIG_FIGHTER_NEW_HEALTH =
-	get_config_int (LABEL_MAIN, LABEL_FIGHTER_NEW_HEALTH,
-			CONFIG_FIGHTER_NEW_HEALTH);
+        get_config_int (LABEL_MAIN, LABEL_FIGHTER_NEW_HEALTH,
+                        CONFIG_FIGHTER_NEW_HEALTH);
       CONFIG_NUMBER_INFLUENCE =
-	get_config_int (LABEL_MAIN, LABEL_NUMBER_INFLUENCE,
-			CONFIG_NUMBER_INFLUENCE);
+        get_config_int (LABEL_MAIN, LABEL_NUMBER_INFLUENCE,
+                        CONFIG_NUMBER_INFLUENCE);
       CONFIG_SFX_VOLUME =
-	get_config_int (LABEL_MAIN, LABEL_SFX_VOLUME, CONFIG_SFX_VOLUME);
+        get_config_int (LABEL_MAIN, LABEL_SFX_VOLUME, CONFIG_SFX_VOLUME);
       CONFIG_CLICK_VOLUME =
-	get_config_int (LABEL_MAIN, LABEL_CLICK_VOLUME, CONFIG_CLICK_VOLUME);
+        get_config_int (LABEL_MAIN, LABEL_CLICK_VOLUME, CONFIG_CLICK_VOLUME);
       CONFIG_WATER_VOLUME_MENU =
-	get_config_int (LABEL_MAIN, LABEL_WATER_VOLUME_MENU,
-			CONFIG_WATER_VOLUME_MENU);
+        get_config_int (LABEL_MAIN, LABEL_WATER_VOLUME_MENU,
+                        CONFIG_WATER_VOLUME_MENU);
       CONFIG_WATER_VOLUME_GAME =
-	get_config_int (LABEL_MAIN, LABEL_WATER_VOLUME_GAME,
-			CONFIG_WATER_VOLUME_GAME);
+        get_config_int (LABEL_MAIN, LABEL_WATER_VOLUME_GAME,
+                        CONFIG_WATER_VOLUME_GAME);
       CONFIG_MUSIC_VOLUME =
-	get_config_int (LABEL_MAIN, LABEL_MUSIC_VOLUME, CONFIG_MUSIC_VOLUME);
+        get_config_int (LABEL_MAIN, LABEL_MUSIC_VOLUME, CONFIG_MUSIC_VOLUME);
 
       CONFIG_LEVEL_MAP =
-	get_config_int (LABEL_MAIN, LABEL_LEVEL_MAP, CONFIG_LEVEL_MAP);
+        get_config_int (LABEL_MAIN, LABEL_LEVEL_MAP, CONFIG_LEVEL_MAP);
       CONFIG_LEVEL_FG =
-	get_config_int (LABEL_MAIN, LABEL_LEVEL_FG, CONFIG_LEVEL_FG);
+        get_config_int (LABEL_MAIN, LABEL_LEVEL_FG, CONFIG_LEVEL_FG);
       CONFIG_LEVEL_BG =
-	get_config_int (LABEL_MAIN, LABEL_LEVEL_BG, CONFIG_LEVEL_BG);
+        get_config_int (LABEL_MAIN, LABEL_LEVEL_BG, CONFIG_LEVEL_BG);
 
       CONFIG_FIGHTER_NUMBER =
-	get_config_int (LABEL_MAIN, LABEL_FIGHTER_NUMBER,
-			CONFIG_FIGHTER_NUMBER);
+        get_config_int (LABEL_MAIN, LABEL_FIGHTER_NUMBER,
+                        CONFIG_FIGHTER_NUMBER);
 
       for (i = 0; i < 6; ++i)
-	{
-	  number_string[0] = '0' + i;
+        {
+          number_string[0] = '0' + i;
 
-	  CONFIG_KEY_UP[i] =
-	    get_config_int (LABEL_KEY_UP, number_string, CONFIG_KEY_UP[i]);
-	  CONFIG_KEY_LEFT[i] =
-	    get_config_int (LABEL_KEY_LEFT, number_string,
-			    CONFIG_KEY_LEFT[i]);
-	  CONFIG_KEY_DOWN[i] =
-	    get_config_int (LABEL_KEY_DOWN, number_string,
-			    CONFIG_KEY_DOWN[i]);
-	  CONFIG_KEY_RIGHT[i] =
-	    get_config_int (LABEL_KEY_RIGHT, number_string,
-			    CONFIG_KEY_RIGHT[i]);
-	  CONFIG_TEAM_COLOR[i] =
-	    get_config_int (LABEL_TEAM_COLOR, number_string,
-			    CONFIG_TEAM_COLOR[i]);
-	  CONFIG_CONTROL_TYPE[i] =
-	    get_config_int (LABEL_CONTROL_TYPE, number_string,
-			    CONFIG_CONTROL_TYPE[i]);
-	  strncpy (CONFIG_PLAYER_NAME[i],
-		   get_config_string (LABEL_PLAYER_NAME, number_string,
-				      CONFIG_PLAYER_NAME[i]), NAME_SIZE);
-	  CONFIG_PLAYER_NAME[i][NAME_SIZE] = '\0';
-	}
+          CONFIG_KEY_UP[i] =
+            get_config_int (LABEL_KEY_UP, number_string, CONFIG_KEY_UP[i]);
+          CONFIG_KEY_LEFT[i] =
+            get_config_int (LABEL_KEY_LEFT, number_string,
+                            CONFIG_KEY_LEFT[i]);
+          CONFIG_KEY_DOWN[i] =
+            get_config_int (LABEL_KEY_DOWN, number_string,
+                            CONFIG_KEY_DOWN[i]);
+          CONFIG_KEY_RIGHT[i] =
+            get_config_int (LABEL_KEY_RIGHT, number_string,
+                            CONFIG_KEY_RIGHT[i]);
+          CONFIG_TEAM_COLOR[i] =
+            get_config_int (LABEL_TEAM_COLOR, number_string,
+                            CONFIG_TEAM_COLOR[i]);
+          CONFIG_CONTROL_TYPE[i] =
+            get_config_int (LABEL_CONTROL_TYPE, number_string,
+                            CONFIG_CONTROL_TYPE[i]);
+          strncpy (CONFIG_PLAYER_NAME[i],
+                   get_config_string (LABEL_PLAYER_NAME, number_string,
+                                      CONFIG_PLAYER_NAME[i]), NAME_SIZE);
+          CONFIG_PLAYER_NAME[i][NAME_SIZE] = '\0';
+        }
 
       CONFIG_GAME_TIME =
-	get_config_int (LABEL_MAIN, LABEL_GAME_TIME, CONFIG_GAME_TIME);
+        get_config_int (LABEL_MAIN, LABEL_GAME_TIME, CONFIG_GAME_TIME);
       CONFIG_INFO_BAR =
-	get_config_int (LABEL_MAIN, LABEL_INFO_BAR, CONFIG_INFO_BAR);
+        get_config_int (LABEL_MAIN, LABEL_INFO_BAR, CONFIG_INFO_BAR);
       CONFIG_MOUSE_GAP =
-	get_config_int (LABEL_MAIN, LABEL_MOUSE_GAP, CONFIG_MOUSE_GAP);
+        get_config_int (LABEL_MAIN, LABEL_MOUSE_GAP, CONFIG_MOUSE_GAP);
       CONFIG_JOYSTICK_ON =
-	get_config_int (LABEL_MAIN, LABEL_JOYSTICK_ON, CONFIG_JOYSTICK_ON);
+        get_config_int (LABEL_MAIN, LABEL_JOYSTICK_ON, CONFIG_JOYSTICK_ON);
       CONFIG_CPU_ADVANTAGE =
-	get_config_int (LABEL_MAIN, LABEL_CPU_ADVANTAGE,
-			CONFIG_CPU_ADVANTAGE);
+        get_config_int (LABEL_MAIN, LABEL_CPU_ADVANTAGE,
+                        CONFIG_CPU_ADVANTAGE);
       CONFIG_CPU_VS_HUMAN =
-	get_config_int (LABEL_MAIN, LABEL_CPU_VS_HUMAN, CONFIG_CPU_VS_HUMAN);
+        get_config_int (LABEL_MAIN, LABEL_CPU_VS_HUMAN, CONFIG_CPU_VS_HUMAN);
       CONFIG_PAGE_FLIP =
-	get_config_int (LABEL_MAIN, LABEL_PAGE_FLIP, CONFIG_PAGE_FLIP);
+        get_config_int (LABEL_MAIN, LABEL_PAGE_FLIP, CONFIG_PAGE_FLIP);
       CONFIG_LANGUAGE =
-	get_config_int (LABEL_MAIN, LABEL_LANGUAGE, CONFIG_LANGUAGE);
+        get_config_int (LABEL_MAIN, LABEL_LANGUAGE, CONFIG_LANGUAGE);
       CONFIG_WAVE_ON =
-	get_config_int (LABEL_MAIN, LABEL_WAVE_ON, CONFIG_WAVE_ON);
+        get_config_int (LABEL_MAIN, LABEL_WAVE_ON, CONFIG_WAVE_ON);
       CONFIG_FRAMES_PER_SEC_LIMIT =
-	get_config_int (LABEL_MAIN, LABEL_FRAMES_PER_SEC_LIMIT,
-			CONFIG_FRAMES_PER_SEC_LIMIT);
+        get_config_int (LABEL_MAIN, LABEL_FRAMES_PER_SEC_LIMIT,
+                        CONFIG_FRAMES_PER_SEC_LIMIT);
       CONFIG_ROUNDS_PER_SEC_LIMIT =
-	get_config_int (LABEL_MAIN, LABEL_ROUNDS_PER_SEC_LIMIT,
-			CONFIG_ROUNDS_PER_SEC_LIMIT);
+        get_config_int (LABEL_MAIN, LABEL_ROUNDS_PER_SEC_LIMIT,
+                        CONFIG_ROUNDS_PER_SEC_LIMIT);
 
       strncpy (CONFIG_SERVER_ADDRESS,
-	       get_config_string (LABEL_MAIN, LABEL_SERVER_ADDRESS,
-				  CONFIG_SERVER_ADDRESS),
-	       sizeof (CONFIG_SERVER_ADDRESS));
+               get_config_string (LABEL_MAIN, LABEL_SERVER_ADDRESS,
+                                  CONFIG_SERVER_ADDRESS),
+               sizeof (CONFIG_SERVER_ADDRESS));
       CONFIG_SERVER_ADDRESS[sizeof (CONFIG_SERVER_ADDRESS) - 1] = '\0';
 
       CONFIG_SERVER_PORT =
-	get_config_int (LABEL_MAIN, LABEL_SERVER_PORT, CONFIG_SERVER_PORT);
+        get_config_int (LABEL_MAIN, LABEL_SERVER_PORT, CONFIG_SERVER_PORT);
 
       CONFIG_ASM_ALGORITHM =
-	get_config_int (LABEL_MAIN, LABEL_ASM_ALGORITHM,
-			CONFIG_ASM_ALGORITHM);
+        get_config_int (LABEL_MAIN, LABEL_ASM_ALGORITHM,
+                        CONFIG_ASM_ALGORITHM);
 
       strncpy (CONFIG_PASSWORD,
-	       get_config_string (LABEL_MAIN, LABEL_PASSWORD,
-				  CONFIG_PASSWORD), sizeof (CONFIG_PASSWORD));
+               get_config_string (LABEL_MAIN, LABEL_PASSWORD,
+                                  CONFIG_PASSWORD), sizeof (CONFIG_PASSWORD));
       CONFIG_PASSWORD[sizeof (CONFIG_PASSWORD) - 1] = '\0';
 
       CONFIG_MIN_MAP_RES =
-	get_config_int (LABEL_MAIN, LABEL_MIN_MAP_RES, CONFIG_MIN_MAP_RES);
+        get_config_int (LABEL_MAIN, LABEL_MIN_MAP_RES, CONFIG_MIN_MAP_RES);
       CONFIG_USE_DEFAULT_TEXTURE =
-	get_config_int (LABEL_MAIN, LABEL_USE_DEFAULT_TEXTURE,
-			CONFIG_USE_DEFAULT_TEXTURE);
+        get_config_int (LABEL_MAIN, LABEL_USE_DEFAULT_TEXTURE,
+                        CONFIG_USE_DEFAULT_TEXTURE);
       CONFIG_ALLOW_NETWORK_BOTS =
-	get_config_int (LABEL_MAIN, LABEL_ALLOW_NETWORK_BOTS,
-			CONFIG_ALLOW_NETWORK_BOTS);
+        get_config_int (LABEL_MAIN, LABEL_ALLOW_NETWORK_BOTS,
+                        CONFIG_ALLOW_NETWORK_BOTS);
       CONFIG_LW6_ADVERTISING_DONE =
-	get_config_int (LABEL_MAIN, LABEL_LW6_ADVERTISING_DONE,
-			CONFIG_LW6_ADVERTISING_DONE);
+        get_config_int (LABEL_MAIN, LABEL_LW6_ADVERTISING_DONE,
+                        CONFIG_LW6_ADVERTISING_DONE);
 
       return 1;
     }
@@ -540,26 +540,26 @@ save_config_options (void)
       number_string[0] = '0' + i;
 
       set_config_int (LABEL_WAVE_NUMBER, number_string,
-		      CONFIG_WAVE_NUMBER[i]);
+                      CONFIG_WAVE_NUMBER[i]);
       set_config_int (LABEL_WAVE_AMPLI, number_string, CONFIG_WAVE_AMPLI[i]);
       set_config_int (LABEL_WAVE_SPEED, number_string, CONFIG_WAVE_SPEED[i]);
     }
 
   set_config_int (LABEL_MAIN, LABEL_BRIGHTNESS, CONFIG_BRIGHTNESS);
   set_config_int (LABEL_MAIN, LABEL_CURSOR_INCREASE_SPEED,
-		  CONFIG_CURSOR_INCREASE_SPEED);
+                  CONFIG_CURSOR_INCREASE_SPEED);
   set_config_int (LABEL_MAIN, LABEL_FIGHTER_ATTACK, CONFIG_FIGHTER_ATTACK);
   set_config_int (LABEL_MAIN, LABEL_FIGHTER_DEFENSE, CONFIG_FIGHTER_DEFENSE);
   set_config_int (LABEL_MAIN, LABEL_FIGHTER_NEW_HEALTH,
-		  CONFIG_FIGHTER_NEW_HEALTH);
+                  CONFIG_FIGHTER_NEW_HEALTH);
   set_config_int (LABEL_MAIN, LABEL_NUMBER_INFLUENCE,
-		  CONFIG_NUMBER_INFLUENCE);
+                  CONFIG_NUMBER_INFLUENCE);
   set_config_int (LABEL_MAIN, LABEL_SFX_VOLUME, CONFIG_SFX_VOLUME);
   set_config_int (LABEL_MAIN, LABEL_CLICK_VOLUME, CONFIG_CLICK_VOLUME);
   set_config_int (LABEL_MAIN, LABEL_WATER_VOLUME_MENU,
-		  CONFIG_WATER_VOLUME_MENU);
+                  CONFIG_WATER_VOLUME_MENU);
   set_config_int (LABEL_MAIN, LABEL_WATER_VOLUME_GAME,
-		  CONFIG_WATER_VOLUME_GAME);
+                  CONFIG_WATER_VOLUME_GAME);
   set_config_int (LABEL_MAIN, LABEL_MUSIC_VOLUME, CONFIG_MUSIC_VOLUME);
 
   set_config_int (LABEL_MAIN, LABEL_LEVEL_MAP, CONFIG_LEVEL_MAP);
@@ -578,9 +578,9 @@ save_config_options (void)
       set_config_int (LABEL_KEY_RIGHT, number_string, CONFIG_KEY_RIGHT[i]);
       set_config_int (LABEL_TEAM_COLOR, number_string, CONFIG_TEAM_COLOR[i]);
       set_config_int (LABEL_CONTROL_TYPE, number_string,
-		      CONFIG_CONTROL_TYPE[i]);
+                      CONFIG_CONTROL_TYPE[i]);
       set_config_string (LABEL_PLAYER_NAME, number_string,
-			 CONFIG_PLAYER_NAME[i]);
+                         CONFIG_PLAYER_NAME[i]);
     }
 
   set_config_int (LABEL_MAIN, LABEL_GAME_TIME, CONFIG_GAME_TIME);
@@ -594,9 +594,9 @@ save_config_options (void)
   set_config_int (LABEL_MAIN, LABEL_WAVE_ON, CONFIG_WAVE_ON);
 
   set_config_int (LABEL_MAIN, LABEL_FRAMES_PER_SEC_LIMIT,
-		  CONFIG_FRAMES_PER_SEC_LIMIT);
+                  CONFIG_FRAMES_PER_SEC_LIMIT);
   set_config_int (LABEL_MAIN, LABEL_ROUNDS_PER_SEC_LIMIT,
-		  CONFIG_ROUNDS_PER_SEC_LIMIT);
+                  CONFIG_ROUNDS_PER_SEC_LIMIT);
 
   set_config_string (LABEL_MAIN, LABEL_SERVER_ADDRESS, CONFIG_SERVER_ADDRESS);
   set_config_int (LABEL_MAIN, LABEL_SERVER_PORT, CONFIG_SERVER_PORT);
@@ -607,11 +607,11 @@ save_config_options (void)
 
   set_config_int (LABEL_MAIN, LABEL_MIN_MAP_RES, CONFIG_MIN_MAP_RES);
   set_config_int (LABEL_MAIN, LABEL_USE_DEFAULT_TEXTURE,
-		  CONFIG_USE_DEFAULT_TEXTURE);
+                  CONFIG_USE_DEFAULT_TEXTURE);
   set_config_int (LABEL_MAIN, LABEL_ALLOW_NETWORK_BOTS,
-		  CONFIG_ALLOW_NETWORK_BOTS);
+                  CONFIG_ALLOW_NETWORK_BOTS);
   set_config_int (LABEL_MAIN, LABEL_LW6_ADVERTISING_DONE,
-		  CONFIG_LW6_ADVERTISING_DONE);
+                  CONFIG_LW6_ADVERTISING_DONE);
 
   return 0;
 }

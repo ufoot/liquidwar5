@@ -83,9 +83,9 @@ get_game_res_str (void)
   static char str[30];
 
   LW_MACRO_SPRINTF3 (str, "%s:%dx%d",
-		     lw_lang_string (LW_LANG_STRING_GRAPHICS_GAME),
-		     GFX_MODE_W[CONFIG_GFX_GAME],
-		     GFX_MODE_H[CONFIG_GFX_GAME]);
+                     lw_lang_string (LW_LANG_STRING_GRAPHICS_GAME),
+                     GFX_MODE_W[CONFIG_GFX_GAME],
+                     GFX_MODE_H[CONFIG_GFX_GAME]);
 
   return str;
 }
@@ -97,9 +97,9 @@ get_menu_res_str (void)
   static char str[30];
 
   LW_MACRO_SPRINTF3 (str, "%s:%dx%d",
-		     lw_lang_string (LW_LANG_STRING_GRAPHICS_MENU),
-		     GFX_MODE_W[CONFIG_GFX_MENU],
-		     GFX_MODE_H[CONFIG_GFX_MENU]);
+                     lw_lang_string (LW_LANG_STRING_GRAPHICS_MENU),
+                     GFX_MODE_W[CONFIG_GFX_MENU],
+                     GFX_MODE_H[CONFIG_GFX_MENU]);
 
   return str;
 }
@@ -204,15 +204,15 @@ graphic_options (void)
   while (retour == 0)
     {
       for (i = 0; i < 7; ++i)
-	{
-	  standard_button (d + i + 4, 0, y_pos[i], 2, 10);
-	  d[i + 4].proc = my_textbox_proc;
-	}
+        {
+          standard_button (d + i + 4, 0, y_pos[i], 2, 10);
+          d[i + 4].proc = my_textbox_proc;
+        }
       for (i = 0; i < 7; ++i)
-	{
-	  standard_button (d + i + 11, 1, y_pos[i], 2, 10);
-	  d[i + 11].proc = my_slider_proc;
-	}
+        {
+          standard_button (d + i + 11, 1, y_pos[i], 2, 10);
+          d[i + 11].proc = my_slider_proc;
+        }
 
       standard_button (d + 18, 0, 9, 1, 10);
       d[18].dp = lw_lang_string (LW_LANG_STRING_GRAPHICS_ADVANCED);
@@ -226,19 +226,19 @@ graphic_options (void)
       d[9].dp = lw_lang_string (LW_LANG_STRING_GRAPHICS_PAGEFLIPPING);
       d[10].dp = lw_lang_string (LW_LANG_STRING_GRAPHICS_WAVES);
       d[11].dp = d[12].dp = d[13].dp = d[14].dp = d[15].dp = d[16].dp =
-	d[17].dp = NULL;
+        d[17].dp = NULL;
       d[12].d1 = 18;
       d[13].d1 = d[14].d1 = 4;
       d[15].d1 = 8;
       d[16].d1 = 8;
       d[15].dp3 = &CONFIG_VIEWPORT_SIZE;
       for (i = 15; i < 16; ++i)
-	{
-	  d[i].dp = NULL;
-	  d[i].dp2 = slider_int;
-	  temp = d[i].dp3;
-	  d[i].d2 = *temp;
-	}
+        {
+          d[i].dp = NULL;
+          d[i].dp2 = slider_int;
+          temp = d[i].dp3;
+          d[i].d2 = *temp;
+        }
       d[12].dp = d[13].dp = d[14].dp = NULL;
       d[12].d2 = CONFIG_BRIGHTNESS;
       d[13].d2 = CONFIG_GFX_MENU;
@@ -274,95 +274,95 @@ graphic_options (void)
 
       game_res_changed = 0;
       if (menu_res_changed || fullscreen_changed)
-	{
-	  menu_res_changed = 0;
-	  fullscreen_changed = 0;
-	  display_back_image ();
-	  dp = my_init_dialog (d, choix);
-	  my_fade_in ();
-	}
+        {
+          menu_res_changed = 0;
+          fullscreen_changed = 0;
+          display_back_image ();
+          dp = my_init_dialog (d, choix);
+          my_fade_in ();
+        }
       else
-	dp = my_init_dialog (d, choix);
+        dp = my_init_dialog (d, choix);
 
       show_mouse (screen);
       while ((menu_res_changed == 0) &&
-	     (game_res_changed == 0) && my_update_dialog (dp))
-	;
+             (game_res_changed == 0) && my_update_dialog (dp))
+        ;
       choix = shutdown_dialog (dp);
 
 
       if (menu_res_changed)
-	{
-	  if (d[13].d2 != CONFIG_GFX_MENU)
-	    {
-	      my_fade_out ();
-	      if (set_resolution (d[13].d2, 0, CONFIG_FULLSCREEN, NULL))
-		CONFIG_GFX_MENU = 0;
-	      else
-		CONFIG_GFX_MENU = d[13].d2;
-	    }
-	  d[13].dp = get_menu_res_str ();
-	}
+        {
+          if (d[13].d2 != CONFIG_GFX_MENU)
+            {
+              my_fade_out ();
+              if (set_resolution (d[13].d2, 0, CONFIG_FULLSCREEN, NULL))
+                CONFIG_GFX_MENU = 0;
+              else
+                CONFIG_GFX_MENU = d[13].d2;
+            }
+          d[13].dp = get_menu_res_str ();
+        }
       else
-	{
-	  if (game_res_changed)
-	    {
-	      CONFIG_GFX_GAME = d[14].d2;
-	      d[14].dp = get_game_res_str ();
-	      retour = 0;
-	    }
-	  else
-	    {
-	      play_click ();
-	      switch (choix)
-		{
-		case -1:
-		case MENU_QUICK_BACK:
-		  retour = 1;
-		  break;
-		case MENU_QUICK_MAIN:
-		  retour = MENU_TOP;
-		  break;
-		case MENU_QUICK_QUIT:
-		  if (confirm_quit ())
-		    retour = MENU_EXIT;
-		  else
-		    display_back_image ();
-		  break;
-		case MENU_QUICK_PLAY:
-		  retour = MENU_PLAY;
-		  break;
-		case 11:
-		  CONFIG_FULLSCREEN = CONFIG_FULLSCREEN ? 0 : 1;
-		  d[11].dp = get_fullscreen_str ();
-		  scare_mouse ();
-		  my_button_proc (MSG_DRAW, d + 11, 0);
-		  unscare_mouse ();
-		  fullscreen_changed = 1;
-		  my_fade_out ();
-		  set_resolution (d[13].d2, 0, CONFIG_FULLSCREEN, NULL);
-		  break;
-		case 16:
-		  CONFIG_PAGE_FLIP = CONFIG_PAGE_FLIP ? 0 : 1;
-		  d[16].dp = get_page_flip_str ();
-		  scare_mouse ();
-		  my_button_proc (MSG_DRAW, d + 16, 0);
-		  unscare_mouse ();
-		  break;
-		case 17:
-		  CONFIG_WAVE_ON = CONFIG_WAVE_ON ? 0 : 1;
-		  d[17].dp = get_wave_mode_str ();
-		  scare_mouse ();
-		  my_button_proc (MSG_DRAW, d + 17, 0);
-		  unscare_mouse ();
-		  break;
-		case 18:
-		  retour = wave_options ();
-		  display_back_image ();
-		  break;
-		}
-	    }
-	}
+        {
+          if (game_res_changed)
+            {
+              CONFIG_GFX_GAME = d[14].d2;
+              d[14].dp = get_game_res_str ();
+              retour = 0;
+            }
+          else
+            {
+              play_click ();
+              switch (choix)
+                {
+                case -1:
+                case MENU_QUICK_BACK:
+                  retour = 1;
+                  break;
+                case MENU_QUICK_MAIN:
+                  retour = MENU_TOP;
+                  break;
+                case MENU_QUICK_QUIT:
+                  if (confirm_quit ())
+                    retour = MENU_EXIT;
+                  else
+                    display_back_image ();
+                  break;
+                case MENU_QUICK_PLAY:
+                  retour = MENU_PLAY;
+                  break;
+                case 11:
+                  CONFIG_FULLSCREEN = CONFIG_FULLSCREEN ? 0 : 1;
+                  d[11].dp = get_fullscreen_str ();
+                  scare_mouse ();
+                  my_button_proc (MSG_DRAW, d + 11, 0);
+                  unscare_mouse ();
+                  fullscreen_changed = 1;
+                  my_fade_out ();
+                  set_resolution (d[13].d2, 0, CONFIG_FULLSCREEN, NULL);
+                  break;
+                case 16:
+                  CONFIG_PAGE_FLIP = CONFIG_PAGE_FLIP ? 0 : 1;
+                  d[16].dp = get_page_flip_str ();
+                  scare_mouse ();
+                  my_button_proc (MSG_DRAW, d + 16, 0);
+                  unscare_mouse ();
+                  break;
+                case 17:
+                  CONFIG_WAVE_ON = CONFIG_WAVE_ON ? 0 : 1;
+                  d[17].dp = get_wave_mode_str ();
+                  scare_mouse ();
+                  my_button_proc (MSG_DRAW, d + 17, 0);
+                  unscare_mouse ();
+                  break;
+                case 18:
+                  retour = wave_options ();
+                  display_back_image ();
+                  break;
+                }
+            }
+        }
     }
 
   if (retour > 0)

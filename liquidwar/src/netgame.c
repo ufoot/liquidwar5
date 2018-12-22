@@ -163,32 +163,32 @@ network_game (void)
       lw_netmess_cleanup_arg (CONFIG_PASSWORD);
 
       switch (choix)
-	{
-	case -1:
-	case MENU_QUICK_BACK:
-	  retour = 1;
-	  break;
-	case MENU_QUICK_MAIN:
-	  retour = MENU_TOP;
-	  break;
-	case MENU_QUICK_QUIT:
-	  if (confirm_quit ())
-	    retour = MENU_EXIT;
-	  else
-	    display_back_image ();
-	  break;
-	case MENU_QUICK_PLAY:
-	case 4:
-	  /*
-	   * the "Play" and "Start game" buttons have the same meaning here,
-	   * so there's no break;
-	   */
-	  retour = netplay_sequence ();
-	  break;
-	case 15:
-	  retour = internet_find ();
-	  break;
-	}
+        {
+        case -1:
+        case MENU_QUICK_BACK:
+          retour = 1;
+          break;
+        case MENU_QUICK_MAIN:
+          retour = MENU_TOP;
+          break;
+        case MENU_QUICK_QUIT:
+          if (confirm_quit ())
+            retour = MENU_EXIT;
+          else
+            display_back_image ();
+          break;
+        case MENU_QUICK_PLAY:
+        case 4:
+          /*
+           * the "Play" and "Start game" buttons have the same meaning here,
+           * so there's no break;
+           */
+          retour = netplay_sequence ();
+          break;
+        case 15:
+          retour = internet_find ();
+          break;
+        }
     }
 
   if (retour > 0)

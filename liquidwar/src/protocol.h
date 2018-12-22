@@ -83,7 +83,7 @@ int lw_protocol_tell_program (int *sock, char *program);
 int lw_protocol_tell_password (int *sock, char *password);
 int lw_protocol_ask_free_teams (int *sock, int *nb);
 int lw_protocol_reserve_team (int *sock, int num,
-			      int control_type, char *name);
+                              int control_type, char *name);
 int lw_protocol_ask_who (int *sock, int num, LW_WHO * who);
 int lw_protocol_send_map (int *sock, void *map);
 int lw_protocol_recv_map (int *sock, void **map);
@@ -94,7 +94,7 @@ int lw_protocol_waiting (int *sock, int *waited_teams);
 int lw_protocol_force_start (int *sock);
 int lw_protocol_next (int *sock);
 int lw_protocol_ask_teamstartinfo (int *sock, int team,
-				   LW_TEAMSTARTINFO * team_start_info);
+                                   LW_TEAMSTARTINFO * team_start_info);
 int lw_protocol_chat_talk (int *sock, char *text);
 int lw_protocol_chat_listen (int *sock, LW_CHAT_HISTORY * chat_history);
 int lw_protocol_quit (int *sock);

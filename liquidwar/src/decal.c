@@ -94,28 +94,28 @@ eliminate_team (int team)
     {
       PLAYING_TEAMS--;
       for (i = 0; i < NB_TEAMS; ++i)
-	if (CURRENT_CURSOR[i].team == team && CURRENT_CURSOR[i].active)
-	  {
-	    CURRENT_CURSOR[i].active = 0;
-	    CURRENT_CURSOR[i].loose_time = TIME_ELAPSED;
-	    CURRENT_CURSOR[i].score_order = PLAYING_TEAMS + 1;
-	  }
+        if (CURRENT_CURSOR[i].team == team && CURRENT_CURSOR[i].active)
+          {
+            CURRENT_CURSOR[i].active = 0;
+            CURRENT_CURSOR[i].loose_time = TIME_ELAPSED;
+            CURRENT_CURSOR[i].score_order = PLAYING_TEAMS + 1;
+          }
       for (i = 0; i < NB_TEAMS; ++i)
-	if (CURRENT_CURSOR[i].team > team)
-	  CURRENT_CURSOR[i].team--;
+        if (CURRENT_CURSOR[i].team > team)
+          CURRENT_CURSOR[i].team--;
       for (i = 0; i < CURRENT_ARMY_SIZE; ++i)
-	if (CURRENT_ARMY[i].team > team)
-	  CURRENT_ARMY[i].team--;
+        if (CURRENT_ARMY[i].team > team)
+          CURRENT_ARMY[i].team--;
       for (j = team; j < PLAYING_TEAMS; ++j)
-	{
-	  ACTIVE_FIGHTERS[j] = ACTIVE_FIGHTERS[j + 1];
-	  COLOR_FIRST_ENTRY[j] = COLOR_FIRST_ENTRY[j + 1];
+        {
+          ACTIVE_FIGHTERS[j] = ACTIVE_FIGHTERS[j + 1];
+          COLOR_FIRST_ENTRY[j] = COLOR_FIRST_ENTRY[j + 1];
 
-	  for (i = 0; i < CURRENT_MESH_SIZE; ++i)
-	    {
-	      CURRENT_MESH[i].info[j] = CURRENT_MESH[i].info[j + 1];
-	    }
-	}
+          for (i = 0; i < CURRENT_MESH_SIZE; ++i)
+            {
+              CURRENT_MESH[i].info[j] = CURRENT_MESH[i].info[j + 1];
+            }
+        }
 
       return 0;
     }

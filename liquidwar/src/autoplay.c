@@ -111,54 +111,54 @@ calculate_computer_path (int dst_x, int dst_y, int cursor)
 
       path_mesh = CURRENT_AREA[y * CURRENT_AREA_W + x].mesh;
       if (path_mesh)
-	{
-	  COMPUTER_PATH_KEYS[cursor][pos] = 0;
-	  if (dy > 0)
-	    COMPUTER_PATH_KEYS[cursor][pos] += CURSOR_KEY_UP;
-	  if (dx < 0)
-	    COMPUTER_PATH_KEYS[cursor][pos] += CURSOR_KEY_RIGHT;
-	  if (dy < 0)
-	    COMPUTER_PATH_KEYS[cursor][pos] += CURSOR_KEY_DOWN;
-	  if (dx > 0)
-	    COMPUTER_PATH_KEYS[cursor][pos] += CURSOR_KEY_LEFT;
-	  pos++;
-	}
+        {
+          COMPUTER_PATH_KEYS[cursor][pos] = 0;
+          if (dy > 0)
+            COMPUTER_PATH_KEYS[cursor][pos] += CURSOR_KEY_UP;
+          if (dx < 0)
+            COMPUTER_PATH_KEYS[cursor][pos] += CURSOR_KEY_RIGHT;
+          if (dy < 0)
+            COMPUTER_PATH_KEYS[cursor][pos] += CURSOR_KEY_DOWN;
+          if (dx > 0)
+            COMPUTER_PATH_KEYS[cursor][pos] += CURSOR_KEY_LEFT;
+          pos++;
+        }
       start++;
       if (start == NB_DIRS)
-	{
-	  start = 0;
-	  sens = !sens;
-	}
+        {
+          start = 0;
+          sens = !sens;
+        }
     }
 
   if (path_mesh == src_mesh)
     {
       while (pos < COMPUTER_PATH_MAX && (x != src_x || y != src_y))
-	{
-	  COMPUTER_PATH_KEYS[cursor][pos] = 0;
+        {
+          COMPUTER_PATH_KEYS[cursor][pos] = 0;
 
-	  if (y < src_y)
-	    {
-	      y++;
-	      COMPUTER_PATH_KEYS[cursor][pos] += CURSOR_KEY_UP;
-	    }
-	  if (x > src_x)
-	    {
-	      x--;
-	      COMPUTER_PATH_KEYS[cursor][pos] += CURSOR_KEY_RIGHT;
-	    }
-	  if (y > src_y)
-	    {
-	      y--;
-	      COMPUTER_PATH_KEYS[cursor][pos] += CURSOR_KEY_DOWN;
-	    }
-	  if (x < src_x)
-	    {
-	      x++;
-	      COMPUTER_PATH_KEYS[cursor][pos] += CURSOR_KEY_LEFT;
-	    }
-	  pos++;
-	}
+          if (y < src_y)
+            {
+              y++;
+              COMPUTER_PATH_KEYS[cursor][pos] += CURSOR_KEY_UP;
+            }
+          if (x > src_x)
+            {
+              x--;
+              COMPUTER_PATH_KEYS[cursor][pos] += CURSOR_KEY_RIGHT;
+            }
+          if (y > src_y)
+            {
+              y--;
+              COMPUTER_PATH_KEYS[cursor][pos] += CURSOR_KEY_DOWN;
+            }
+          if (x < src_x)
+            {
+              x++;
+              COMPUTER_PATH_KEYS[cursor][pos] += CURSOR_KEY_LEFT;
+            }
+          pos++;
+        }
       COMPUTER_PATH_SIZE[cursor] = pos;
     }
   else
@@ -196,19 +196,19 @@ random_free_xy_by_control_type (int *x, int *y, int team, int control_type)
   for (i = 0; i < NB_TEAMS; ++i)
     {
       if ((CURRENT_CURSOR[i].control_type == control_type
-	   || control_type == CONFIG_CONTROL_TYPE_OFF)
-	  && CURRENT_CURSOR[i].active)
-	{
-	  control_type_array[CURRENT_CURSOR[i].team] = control_type;
-	}
+           || control_type == CONFIG_CONTROL_TYPE_OFF)
+          && CURRENT_CURSOR[i].active)
+        {
+          control_type_array[CURRENT_CURSOR[i].team] = control_type;
+        }
     }
 
   for (i = 0; i < CURRENT_ARMY_SIZE && !foundable; ++i)
     {
       foundable |= ((CURRENT_ARMY[i].team != team) &&
-		    (control_type_array[(int) (CURRENT_ARMY[i].team)] ==
-		     control_type
-		     || control_type == CONFIG_CONTROL_TYPE_OFF));
+                    (control_type_array[(int) (CURRENT_ARMY[i].team)] ==
+                     control_type
+                     || control_type == CONFIG_CONTROL_TYPE_OFF));
     }
 
   if (foundable)
@@ -216,13 +216,13 @@ random_free_xy_by_control_type (int *x, int *y, int team, int control_type)
       random_limit = 0;
 
       while ((!found) && random_limit < LW_AUTOPLAY_RANDOM_LIMIT)
-	{
-	  i = random () % CURRENT_ARMY_SIZE;
-	  found = ((CURRENT_ARMY[i].team != team) &&
-		   (control_type_array[(int) (CURRENT_ARMY[i].team)] ==
-		    control_type || control_type == CONFIG_CONTROL_TYPE_OFF));
-	  random_limit++;
-	}
+        {
+          i = random () % CURRENT_ARMY_SIZE;
+          found = ((CURRENT_ARMY[i].team != team) &&
+                   (control_type_array[(int) (CURRENT_ARMY[i].team)] ==
+                    control_type || control_type == CONFIG_CONTROL_TYPE_OFF));
+          random_limit++;
+        }
     }
 
   if (!found)
@@ -286,16 +286,16 @@ get_computer_next_move (int cursor)
       key_info = 0;
       team = CURRENT_CURSOR[cursor].team;
       f = CURRENT_AREA[CURRENT_CURSOR[cursor].y * CURRENT_AREA_W
-		       + CURRENT_CURSOR[cursor].x].fighter;
+                       + CURRENT_CURSOR[cursor].x].fighter;
       if (f)
-	meme_equipe = (f->team == team);
+        meme_equipe = (f->team == team);
       else
-	meme_equipe = 1;
+        meme_equipe = 1;
       if ((--COMPUTER_PATH_WAIT[cursor]) < 0 || meme_equipe)
-	{
-	  random_free_xy_different_team (&x, &y, team);
-	  calculate_computer_path (x, y, cursor);
-	}
+        {
+          random_free_xy_different_team (&x, &y, team);
+          calculate_computer_path (x, y, cursor);
+        }
     }
 
   return key_info;

@@ -240,8 +240,8 @@ lw_netkey_send (int *sock, LW_NETKEY * netkey)
   encode (netkey_serialized, netkey);
 
   result = lw_sock_send_buffer (sock,
-				(char *) netkey_serialized,
-				LW_NETKEY_SERIALIZED_SIZE);
+                                (char *) netkey_serialized,
+                                LW_NETKEY_SERIALIZED_SIZE);
 
   return result;
 }
@@ -257,8 +257,8 @@ lw_netkey_recv (int *sock, LW_NETKEY * netkey)
   LW_NETKEY_SERIALIZED netkey_serialized;
 
   result = lw_sock_recv_buffer (sock,
-				(char *) netkey_serialized,
-				LW_NETKEY_SERIALIZED_SIZE);
+                                (char *) netkey_serialized,
+                                LW_NETKEY_SERIALIZED_SIZE);
 
   decode (netkey, netkey_serialized);
 

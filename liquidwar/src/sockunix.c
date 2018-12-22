@@ -149,18 +149,18 @@ lw_sock_listen (int *sock, int port)
   if (*sock >= 0)
     {
       setsockopt (*sock, SOL_SOCKET, SO_REUSEADDR,
-		  (char *) &enable, sizeof (int));
+                  (char *) &enable, sizeof (int));
 
       name.sin_family = AF_INET;
       name.sin_addr.s_addr = INADDR_ANY;
       name.sin_port = htons (port);
       if (bind (*sock, (struct sockaddr *) &name, sizeof name) >= 0)
-	{
-	  if (listen ((*sock), LW_SOCK_NB_BACKLOG) >= 0)
-	    {
-	      result = 1;
-	    }
-	}
+        {
+          if (listen ((*sock), LW_SOCK_NB_BACKLOG) >= 0)
+            {
+              result = 1;
+            }
+        }
     }
 
   return result;
@@ -173,7 +173,7 @@ lw_sock_listen (int *sock, int port)
  */
 int
 lw_sock_accept (int *new_sock, char *ip, int *port,
-		int listening_sock, int wait)
+                int listening_sock, int wait)
 {
   int result = 0;
   struct sockaddr_in name;
@@ -194,40 +194,40 @@ lw_sock_accept (int *new_sock, char *ip, int *port,
       FD_ZERO (&read);
       FD_SET (listening_sock, &read);
       if (wait)
-	{
-	  tv.tv_sec = LW_SOCK_ACCEPT_SEC;
-	  tv.tv_usec = LW_SOCK_ACCEPT_USEC;
-	}
+        {
+          tv.tv_sec = LW_SOCK_ACCEPT_SEC;
+          tv.tv_usec = LW_SOCK_ACCEPT_USEC;
+        }
       else
-	{
-	  tv.tv_sec = 0;
-	  tv.tv_usec = 0;
-	}
+        {
+          tv.tv_sec = 0;
+          tv.tv_usec = 0;
+        }
       res = select (listening_sock + 1, &read, NULL, NULL, &tv);
       if (res >= 1)
-	{
-	  (*new_sock) =
-	    accept (listening_sock, (struct sockaddr *) &name, &namelen);
-	  if ((*new_sock) >= 0)
-	    {
-	      li.l_onoff = 0;
-	      li.l_linger = 0;
-	      setsockopt (*new_sock, SOL_SOCKET, SO_KEEPALIVE,
-			  (char *) &enable, sizeof (int));
-	      setsockopt (*new_sock, SOL_SOCKET, SO_OOBINLINE,
-			  (char *) &disable, sizeof (int));
-	      setsockopt (*new_sock, SOL_SOCKET, SO_LINGER,
-			  (char *) &li, sizeof (struct linger));
+        {
+          (*new_sock) =
+            accept (listening_sock, (struct sockaddr *) &name, &namelen);
+          if ((*new_sock) >= 0)
+            {
+              li.l_onoff = 0;
+              li.l_linger = 0;
+              setsockopt (*new_sock, SOL_SOCKET, SO_KEEPALIVE,
+                          (char *) &enable, sizeof (int));
+              setsockopt (*new_sock, SOL_SOCKET, SO_OOBINLINE,
+                          (char *) &disable, sizeof (int));
+              setsockopt (*new_sock, SOL_SOCKET, SO_LINGER,
+                          (char *) &li, sizeof (struct linger));
 
-	      fcntl (*new_sock, F_SETFL, O_NONBLOCK, 0);
+              fcntl (*new_sock, F_SETFL, O_NONBLOCK, 0);
 
-	      strncpy (ip, inet_ntoa (name.sin_addr), LW_SOCK_IP_SIZE - 1);
-	      ip[LW_SOCK_IP_SIZE - 1] = 0;
-	      (*port) = (int) ntohs (name.sin_port);
+              strncpy (ip, inet_ntoa (name.sin_addr), LW_SOCK_IP_SIZE - 1);
+              ip[LW_SOCK_IP_SIZE - 1] = 0;
+              (*port) = (int) ntohs (name.sin_port);
 
-	      result = 1;
-	    }
-	}
+              result = 1;
+            }
+        }
     }
 
   return result;
@@ -255,33 +255,33 @@ lw_sock_connect (int *sock, char *ip, int port)
       name.sin_addr.s_addr = INADDR_ANY;
       name.sin_port = 0;
       if (bind (*sock, (struct sockaddr *) &name, sizeof name) >= 0)
-	{
-	  name.sin_family = AF_INET;
-	  if (inet_aton (ip, &name.sin_addr) != 0)
-	    {
-	      name.sin_port = htons (port);
-	      if (connect ((*sock), (struct sockaddr *) &name, sizeof name) >=
-		  0)
-		{
-		  /*
-		   * Added this code copied/paste from accept.
-		   * don'tknow if it's usefull
-		   */
-		  li.l_onoff = 0;
-		  li.l_linger = 0;
-		  setsockopt (*sock, SOL_SOCKET, SO_KEEPALIVE,
-			      (char *) &enable, sizeof (int));
-		  setsockopt (*sock, SOL_SOCKET, SO_OOBINLINE,
-			      (char *) &disable, sizeof (int));
-		  setsockopt (*sock, SOL_SOCKET, SO_LINGER,
-			      (char *) &li, sizeof (struct linger));
+        {
+          name.sin_family = AF_INET;
+          if (inet_aton (ip, &name.sin_addr) != 0)
+            {
+              name.sin_port = htons (port);
+              if (connect ((*sock), (struct sockaddr *) &name, sizeof name) >=
+                  0)
+                {
+                  /*
+                   * Added this code copied/paste from accept.
+                   * don'tknow if it's usefull
+                   */
+                  li.l_onoff = 0;
+                  li.l_linger = 0;
+                  setsockopt (*sock, SOL_SOCKET, SO_KEEPALIVE,
+                              (char *) &enable, sizeof (int));
+                  setsockopt (*sock, SOL_SOCKET, SO_OOBINLINE,
+                              (char *) &disable, sizeof (int));
+                  setsockopt (*sock, SOL_SOCKET, SO_LINGER,
+                              (char *) &li, sizeof (struct linger));
 
-		  fcntl (*sock, F_SETFL, O_NONBLOCK, 0);
+                  fcntl (*sock, F_SETFL, O_NONBLOCK, 0);
 
-		  result = 1;
-		}
-	    }
-	}
+                  result = 1;
+                }
+            }
+        }
     }
 
   return result;

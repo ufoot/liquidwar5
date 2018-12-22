@@ -97,7 +97,7 @@ options (void)
   while (retour == 0)
     {
       for (i = 0; i < 6; ++i)
-	standard_button (d + i + 4, 0, i, 1, 8);
+        standard_button (d + i + 4, 0, i, 1, 8);
       standard_button (d + 10, 0, 7, 1, 8);
 
       quick_buttons (d);
@@ -115,79 +115,79 @@ options (void)
 
       display_back_image ();
       if (gfxmode_change)
-	{
-	  gfxmode_change = 0;
-	  display_back_image ();
-	  dp = my_init_dialog (d, choix);
-	  my_fade_in ();
-	}
+        {
+          gfxmode_change = 0;
+          display_back_image ();
+          dp = my_init_dialog (d, choix);
+          my_fade_in ();
+        }
       else
-	{
-	  dp = my_init_dialog (d, choix);
-	}
+        {
+          dp = my_init_dialog (d, choix);
+        }
 
       show_mouse (screen);
       while (my_update_dialog (dp))
-	;
+        ;
       choix = shutdown_dialog (dp);
 
       play_click ();
 
       switch (choix)
-	{
-	case -1:
-	case MENU_QUICK_BACK:
-	  retour = 1;
-	  break;
-	case MENU_QUICK_MAIN:
-	  retour = MENU_TOP;
-	  break;
-	case MENU_QUICK_QUIT:
-	  if (confirm_quit ())
-	    retour = MENU_EXIT;
-	  else
-	    display_back_image ();
-	  break;
-	case MENU_QUICK_PLAY:
-	  retour = MENU_PLAY;
-	  break;
-	case 4:
-	  retour = graphic_options ();
-	  break;
-	case 5:
-	  retour = sound_options ();
-	  break;
-	case 6:
-	  retour = rules_options ();
-	  break;
-	case 7:
-	  retour = speeds_options ();
-	  break;
-	case 8:
-	  retour = controls_options ();
-	  break;
-	case 9:
-	  retour = language_options ();
-	  break;
-	case 10:
-	  load_default_options ();
+        {
+        case -1:
+        case MENU_QUICK_BACK:
+          retour = 1;
+          break;
+        case MENU_QUICK_MAIN:
+          retour = MENU_TOP;
+          break;
+        case MENU_QUICK_QUIT:
+          if (confirm_quit ())
+            retour = MENU_EXIT;
+          else
+            display_back_image ();
+          break;
+        case MENU_QUICK_PLAY:
+          retour = MENU_PLAY;
+          break;
+        case 4:
+          retour = graphic_options ();
+          break;
+        case 5:
+          retour = sound_options ();
+          break;
+        case 6:
+          retour = rules_options ();
+          break;
+        case 7:
+          retour = speeds_options ();
+          break;
+        case 8:
+          retour = controls_options ();
+          break;
+        case 9:
+          retour = language_options ();
+          break;
+        case 10:
+          load_default_options ();
 
-	  /*
-	   * The volume might have changed, so we update it
-	   */
-	  WATER_VOLUME = CONFIG_WATER_VOLUME_MENU;
-	  /*
-	   * If the graphics settings changed, we reflect them
-	   */
-	  if (old_gfx_menu != CONFIG_GFX_MENU ||
-	      old_fullscreen != CONFIG_FULLSCREEN)
-	    {
-	      gfxmode_change = 1;
-	      set_resolution (CONFIG_GFX_MENU, 0, CONFIG_FULLSCREEN, NULL);
-	    }
-	  retour = 0;
-	  break;
-	}
+          /*
+           * The volume might have changed, so we update it
+           */
+          WATER_VOLUME = CONFIG_WATER_VOLUME_MENU;
+          /*
+           * If the graphics settings changed, we reflect them
+           */
+          if (old_gfx_menu != CONFIG_GFX_MENU ||
+              old_fullscreen != CONFIG_FULLSCREEN)
+            {
+              gfxmode_change = 1;
+              set_resolution (CONFIG_GFX_MENU, 0, CONFIG_FULLSCREEN, NULL);
+            }
+          retour = 0;
+          break;
+        }
     }
 
   if (retour > 0)

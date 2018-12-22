@@ -84,9 +84,9 @@ lw_thread_start (void (*func) (void *), void *args)
   if (pthread_create (&thread, NULL, (void *(*)(void *)) func, args) == 0)
     {
       if (pthread_detach (thread) == 0)
-	{
-	  result = 1;
-	}
+        {
+          result = 1;
+        }
     }
 
   return result;

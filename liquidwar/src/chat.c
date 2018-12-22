@@ -91,7 +91,7 @@ lw_chat_push (LW_CHAT_HISTORY * history, char *author, char *content)
   strncpy (history->messages[history->n].author, author, NAME_SIZE);
   history->messages[history->n].author[NAME_SIZE] = '\0';
   strncpy (history->messages[history->n].content, content,
-	   LW_CHAT_MESSAGE_SIZE);
+           LW_CHAT_MESSAGE_SIZE);
   history->messages[history->n].content[LW_CHAT_MESSAGE_SIZE] = '\0';
 
   history->n++;
@@ -114,10 +114,10 @@ lw_chat_pop (LW_CHAT_HISTORY * history, LW_CHAT_MESSAGE * message)
       memcpy (message, &(history->messages[0]), sizeof (LW_CHAT_MESSAGE));
 
       for (i = 1; i < history->n; ++i)
-	{
-	  memcpy (&(history->messages[i - 1]),
-		  &(history->messages[i]), sizeof (LW_CHAT_MESSAGE));
-	}
+        {
+          memcpy (&(history->messages[i - 1]),
+                  &(history->messages[i]), sizeof (LW_CHAT_MESSAGE));
+        }
 
       history->n--;
 

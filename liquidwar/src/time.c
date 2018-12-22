@@ -95,17 +95,17 @@ update_play_time (void)
   if (PAUSE_ON)
     {
       if (TICKER_PAUSE_START == 0)
-	TICKER_PAUSE_START = get_ticker ();
+        TICKER_PAUSE_START = get_ticker ();
     }
   else
     {
       if (TICKER_PAUSE_START != 0)
-	{
-	  TICKER_PAUSED += get_ticker () - TICKER_PAUSE_START;
-	  TICKER_PAUSE_START = 0;
-	}
+        {
+          TICKER_PAUSED += get_ticker () - TICKER_PAUSE_START;
+          TICKER_PAUSE_START = 0;
+        }
       else
-	TIME_ELAPSED = (get_ticker () - TICKER_START - TICKER_PAUSED) / 1000;
+        TIME_ELAPSED = (get_ticker () - TICKER_START - TICKER_PAUSED) / 1000;
     }
   TIME_LEFT = TIME_TABLE[LW_CONFIG_CURRENT_RULES.game_time] - TIME_ELAPSED;
 

@@ -100,8 +100,8 @@ static void reset (LW_SRVCONT * cont);
 static int distribute_teams (LW_SRVCONT * cont);
 static void recalc_nb_teams (LW_SRVCONT * cont);
 static void find_chan_and_team_by_server_id (LW_SRVCONT * cont,
-					     int server_id,
-					     int *chan, int *team);
+                                             int server_id,
+                                             int *chan, int *team);
 static int send_lag_key_presses (LW_SRVCONT * cont, int lag);
 static int reject_new_clients (LW_SRVCONT * cont, char *password);
 static void reject_new_clients_callback (void *args);
@@ -141,12 +141,12 @@ distribute_teams (LW_SRVCONT * cont)
   for (i = 0; i < cont->nb_chans; ++i)
     {
       for (j = 0; j < NB_TEAMS; ++j)
-	{
-	  if (cont->chan[i].team[j].active)
-	    {
-	      cont->chan[i].team[j].server_id = k++;
-	    }
-	}
+        {
+          if (cont->chan[i].team[j].active)
+            {
+              cont->chan[i].team[j].server_id = k++;
+            }
+        }
     }
 
   /*
@@ -166,23 +166,23 @@ distribute_teams (LW_SRVCONT * cont)
   for (i = 0; i < cont->nb_chans; ++i)
     {
       for (k = 0; k < cont->nb_teams; ++k)
-	{
-	  if (lw_srvchan_find_team_by_server_id (&(cont->chan[i]), k) < 0)
-	    {
-	      j = lw_srvchan_find_first_free_team (&(cont->chan[i]));
-	      if (j >= 0)
-		{
-		  cont->chan[i].team[j].active = 1;
-		  cont->chan[i].team[j].network = 1;
-		  cont->chan[i].team[j].server_id = k;
-		}
-	      else
-		{
-		  result = 0;
-		  log_println_str ("Unable to find a free team!");
-		}
-	    }
-	}
+        {
+          if (lw_srvchan_find_team_by_server_id (&(cont->chan[i]), k) < 0)
+            {
+              j = lw_srvchan_find_first_free_team (&(cont->chan[i]));
+              if (j >= 0)
+                {
+                  cont->chan[i].team[j].active = 1;
+                  cont->chan[i].team[j].network = 1;
+                  cont->chan[i].team[j].server_id = k;
+                }
+              else
+                {
+                  result = 0;
+                  log_println_str ("Unable to find a free team!");
+                }
+            }
+        }
     }
 
   /*
@@ -193,36 +193,36 @@ distribute_teams (LW_SRVCONT * cont)
   for (i = 0; i < cont->nb_chans; ++i)
     {
       for (j = 0; j < NB_TEAMS; ++j)
-	{
-	  if (cont->chan[i].team[j].active)
-	    {
-	      find_chan_and_team_by_server_id (cont,
-					       cont->chan[i].
-					       team[j].server_id, &i_orig,
-					       &j_orig);
-	      if (i_orig >= 0 && j_orig >= 0)
-		{
-		  /*
-		   * Now we check that we're not uselessely copying
-		   * stuff from the same struct. It's a waste of time
-		   * and can cause some bugs depending on the implementation
-		   * of the LW_MACRO_STRCPY macro.
-		   */
-		  if (i_orig != i || j_orig != j)
-		    {
-		      LW_MACRO_STRCPY (cont->chan[i].team[j].name,
-				       cont->chan[i_orig].team[j_orig].name);
-		      cont->chan[i].team[j].control_type =
-			cont->chan[i_orig].team[j_orig].control_type;
-		    }
-		}
-	      else
-		{
-		  result = 0;
-		  log_println_str ("Unable to find a free team!");
-		}
-	    }
-	}
+        {
+          if (cont->chan[i].team[j].active)
+            {
+              find_chan_and_team_by_server_id (cont,
+                                               cont->chan[i].
+                                               team[j].server_id, &i_orig,
+                                               &j_orig);
+              if (i_orig >= 0 && j_orig >= 0)
+                {
+                  /*
+                   * Now we check that we're not uselessely copying
+                   * stuff from the same struct. It's a waste of time
+                   * and can cause some bugs depending on the implementation
+                   * of the LW_MACRO_STRCPY macro.
+                   */
+                  if (i_orig != i || j_orig != j)
+                    {
+                      LW_MACRO_STRCPY (cont->chan[i].team[j].name,
+                                       cont->chan[i_orig].team[j_orig].name);
+                      cont->chan[i].team[j].control_type =
+                        cont->chan[i_orig].team[j_orig].control_type;
+                    }
+                }
+              else
+                {
+                  result = 0;
+                  log_println_str ("Unable to find a free team!");
+                }
+            }
+        }
     }
 
   /*
@@ -256,12 +256,12 @@ recalc_nb_teams (LW_SRVCONT * cont)
   for (i = 0; i < cont->nb_chans; ++i)
     {
       for (j = 0; j < NB_TEAMS; ++j)
-	{
-	  if (cont->chan[i].team[j].active)
-	    {
-	      cont->nb_teams++;
-	    }
-	}
+        {
+          if (cont->chan[i].team[j].active)
+            {
+              cont->nb_teams++;
+            }
+        }
     }
 }
 
@@ -271,7 +271,7 @@ recalc_nb_teams (LW_SRVCONT * cont)
  */
 static void
 find_chan_and_team_by_server_id (LW_SRVCONT * cont,
-				 int server_id, int *chan, int *team)
+                                 int server_id, int *chan, int *team)
 {
   int i;
   int j;
@@ -280,15 +280,15 @@ find_chan_and_team_by_server_id (LW_SRVCONT * cont,
   for (i = 0; i < cont->nb_chans; ++i)
     {
       for (j = 0; j < NB_TEAMS; ++j)
-	{
-	  if (cont->chan[i].team[j].active &&
-	      (cont->chan[i].team[j].server_id == server_id) &&
-	      !(cont->chan[i].team[j].network))
-	    {
-	      (*chan) = i;
-	      (*team) = j;
-	    }
-	}
+        {
+          if (cont->chan[i].team[j].active &&
+              (cont->chan[i].team[j].server_id == server_id) &&
+              !(cont->chan[i].team[j].network))
+            {
+              (*chan) = i;
+              (*team) = j;
+            }
+        }
     }
 }
 
@@ -298,7 +298,7 @@ find_chan_and_team_by_server_id (LW_SRVCONT * cont,
  */
 static void
 prepare_team_start_info (LW_TEAMSTARTINFO * team_start_info,
-			 LW_SRVCONT * cont)
+                         LW_SRVCONT * cont)
 {
   int i, j, k;
 
@@ -311,16 +311,16 @@ prepare_team_start_info (LW_TEAMSTARTINFO * team_start_info,
   for (i = 0; i < cont->nb_chans; ++i)
     {
       for (j = 0; j < NB_TEAMS; ++j)
-	{
-	  if (cont->chan[i].team[j].active && k < NB_TEAMS)
-	    {
-	      team_start_info[k].active = 1;
-	      team_start_info[k].start = cont->chan[i].start;
-	      LW_MACRO_STRCPY (team_start_info[k].name,
-			       cont->chan[i].team[j].name);
-	      k++;
-	    }
-	}
+        {
+          if (cont->chan[i].team[j].active && k < NB_TEAMS)
+            {
+              team_start_info[k].active = 1;
+              team_start_info[k].start = cont->chan[i].start;
+              LW_MACRO_STRCPY (team_start_info[k].name,
+                               cont->chan[i].team[j].name);
+              k++;
+            }
+        }
     }
 }
 
@@ -334,8 +334,8 @@ prepare_team_start_info (LW_TEAMSTARTINFO * team_start_info,
  */
 int
 lw_srvcont_wait_teams (LW_SRVCONT * cont,
-		       LW_WWWSRV_DATA * www_data,
-		       int nb_teams, int port, char *password, char *callback)
+                       LW_WWWSRV_DATA * www_data,
+                       int nb_teams, int port, char *password, char *callback)
 {
   int free_teams = 0;
   int result = 0;
@@ -374,140 +374,140 @@ lw_srvcont_wait_teams (LW_SRVCONT * cont,
        * Now we just wait until there are enough teams connected
        */
       while (!started)
-	{
-	  free_teams = nb_teams - cont->nb_teams;
+        {
+          free_teams = nb_teams - cont->nb_teams;
 
-	  if (display_waiting_for)
-	    {
-	      log_print_str ("Waiting for ");
-	      log_print_int (free_teams);
-	      if (free_teams > 1)
-		{
-		  log_print_str (" teams...");
-		}
-	      else
-		{
-		  log_print_str (" team...");
-		}
-	      log_println ();
+          if (display_waiting_for)
+            {
+              log_print_str ("Waiting for ");
+              log_print_int (free_teams);
+              if (free_teams > 1)
+                {
+                  log_print_str (" teams...");
+                }
+              else
+                {
+                  log_print_str (" team...");
+                }
+              log_println ();
 
-	      display_waiting_for = 0;
-	    }
+              display_waiting_for = 0;
+            }
 
-	  if (lw_srvchan_wait_teams (&(cont->chan[cont->nb_chans]),
-				     &free_teams,
-				     cont->sock,
-				     &(cont->chan[cont->nb_chans].map),
-				     &(cont->chan[cont->nb_chans].config),
-				     password))
-	    {
-	      if (cont->nb_teams == 0)
-		{
-		  /*
-		   * OK, this guy is the first one to connect on
-		   * the server, so we'll fire the "callback" script/program
-		   */
-		  if (callback && strlen (callback))
-		    {
-		      log_print_str ("Executing \"");
-		      log_print_str (callback);
-		      log_println_str ("\"");
-		      lw_exec_cmd (callback);
-		    }
-		}
-	      cont->nb_teams = nb_teams - free_teams;
-	      ++(cont->nb_chans);
-	      display_waiting_for = 1;
-	    }
+          if (lw_srvchan_wait_teams (&(cont->chan[cont->nb_chans]),
+                                     &free_teams,
+                                     cont->sock,
+                                     &(cont->chan[cont->nb_chans].map),
+                                     &(cont->chan[cont->nb_chans].config),
+                                     password))
+            {
+              if (cont->nb_teams == 0)
+                {
+                  /*
+                   * OK, this guy is the first one to connect on
+                   * the server, so we'll fire the "callback" script/program
+                   */
+                  if (callback && strlen (callback))
+                    {
+                      log_print_str ("Executing \"");
+                      log_print_str (callback);
+                      log_println_str ("\"");
+                      lw_exec_cmd (callback);
+                    }
+                }
+              cont->nb_teams = nb_teams - free_teams;
+              ++(cont->nb_chans);
+              display_waiting_for = 1;
+            }
 
-	  /*
-	   * Now we check if me must force a game start
-	   */
-	  start = 1;
-	  for (i = 0; i < cont->nb_chans; ++i)
-	    {
-	      start = start && cont->chan[i].start;
-	    }
-	  if (cont->nb_teams >= 2 && (start || cont->nb_teams >= nb_teams))
-	    {
-	      if (cont->nb_teams < nb_teams)
-		{
-		  /*
-		   * OK, all the players have pressed the "start" button and there
-		   * are at least 2 playing teams -> we start the game!
-		   */
-		  nb_teams = cont->nb_teams;
-		  log_print_str ("Starting game with only ");
-		  log_print_int (cont->nb_teams);
-		  log_println_str (" teams");
-		}
-	      free_teams = 0;
-	    }
+          /*
+           * Now we check if me must force a game start
+           */
+          start = 1;
+          for (i = 0; i < cont->nb_chans; ++i)
+            {
+              start = start && cont->chan[i].start;
+            }
+          if (cont->nb_teams >= 2 && (start || cont->nb_teams >= nb_teams))
+            {
+              if (cont->nb_teams < nb_teams)
+                {
+                  /*
+                   * OK, all the players have pressed the "start" button and there
+                   * are at least 2 playing teams -> we start the game!
+                   */
+                  nb_teams = cont->nb_teams;
+                  log_print_str ("Starting game with only ");
+                  log_print_int (cont->nb_teams);
+                  log_println_str (" teams");
+                }
+              free_teams = 0;
+            }
 
-	  /*
-	   * The official start signal is: free_teams is set to 0.
-	   * We use an extra flag "started" in case free_teams would
-	   * be recalculated
-	   */
-	  if (free_teams <= 0)
-	    {
-	      free_teams = 0;
-	      started = 1;
-	    }
+          /*
+           * The official start signal is: free_teams is set to 0.
+           * We use an extra flag "started" in case free_teams would
+           * be recalculated
+           */
+          if (free_teams <= 0)
+            {
+              free_teams = 0;
+              started = 1;
+            }
 
 
-	  /*
-	   * We replicate chat messages
-	   */
-	  while (lw_chat_pop (&chat, &chat_mess))
-	    {
-	      for (i = 0; i < cont->nb_chans; ++i)
-		{
-		  lw_chat_push (&(cont->chan[i].chat),
-				chat_mess.author, chat_mess.content);
-		}
-	    }
+          /*
+           * We replicate chat messages
+           */
+          while (lw_chat_pop (&chat, &chat_mess))
+            {
+              for (i = 0; i < cont->nb_chans; ++i)
+                {
+                  lw_chat_push (&(cont->chan[i].chat),
+                                chat_mess.author, chat_mess.content);
+                }
+            }
 
-	  /*
-	   * now we send feedback to all the connected teams
-	   */
-	  prepare_team_start_info (team_start_info, cont);
-	  /*
-	   * loop with a step of -1 to handle correcty the
-	   * possible disconnection of players
-	   */
-	  for (i = cont->nb_chans - 1; i >= 0; --i)
-	    {
-	      if (!lw_srvchan_keepalive (&(cont->chan[i]),
-					 free_teams, team_start_info, &chat))
-		{
-		  /*
-		   * There's an error with this client, so 
-		   * we're simply going to disconnect it...
-		   */
-		  disconnect_client (cont, i, "keepalive failed");
+          /*
+           * now we send feedback to all the connected teams
+           */
+          prepare_team_start_info (team_start_info, cont);
+          /*
+           * loop with a step of -1 to handle correcty the
+           * possible disconnection of players
+           */
+          for (i = cont->nb_chans - 1; i >= 0; --i)
+            {
+              if (!lw_srvchan_keepalive (&(cont->chan[i]),
+                                         free_teams, team_start_info, &chat))
+                {
+                  /*
+                   * There's an error with this client, so 
+                   * we're simply going to disconnect it...
+                   */
+                  disconnect_client (cont, i, "keepalive failed");
 
-		  display_waiting_for = 1;
-		}
-	    }
-	  recalc_nb_teams (cont);
+                  display_waiting_for = 1;
+                }
+            }
+          recalc_nb_teams (cont);
 
-	  www_data->busy_players = cont->nb_teams;
-	  www_data->max_players = nb_teams;
+          www_data->busy_players = cont->nb_teams;
+          www_data->max_players = nb_teams;
 
-	  /*
-	   * We register the server again since the number of 
-	   * connected teams might have changed
-	   */
-	  cur_time = lw_srvtime_seconds ();
-	  if (cur_time - last_time > LW_SRVCONT_REGISTER_DELAY
-	      || display_waiting_for)
-	    {
-	      www_data->log = 0;
-	      lw_wwwsrv_register (www_data);
-	      last_time = cur_time;
-	    }
-	}
+          /*
+           * We register the server again since the number of 
+           * connected teams might have changed
+           */
+          cur_time = lw_srvtime_seconds ();
+          if (cur_time - last_time > LW_SRVCONT_REGISTER_DELAY
+              || display_waiting_for)
+            {
+              www_data->log = 0;
+              lw_wwwsrv_register (www_data);
+              last_time = cur_time;
+            }
+        }
 
       /*
        * For now the server is a "blocking" server which is never statisfied
@@ -546,26 +546,26 @@ lw_srvcont_tell_who (LW_SRVCONT * cont)
     {
       result = 1;
       for (i = cont->nb_chans - 1; i >= 0; --i)
-	{
-	  if (!lw_srvchan_tell_who (&(cont->chan[i]),
-				    cont->chan[0].map,
-				    &(cont->chan[0].config)))
-	    {
-	      /*
-	       * There's been an error exchanging data with this team
-	       * so we decide to "close" it.
-	       */
-	      disconnect_client (cont, i, "can't send game info");
-	    }
-	}
+        {
+          if (!lw_srvchan_tell_who (&(cont->chan[i]),
+                                    cont->chan[0].map,
+                                    &(cont->chan[0].config)))
+            {
+              /*
+               * There's been an error exchanging data with this team
+               * so we decide to "close" it.
+               */
+              disconnect_client (cont, i, "can't send game info");
+            }
+        }
 
       /*
        * We start the game only if there are more than 1 channels opened...
        */
       if (cont->nb_chans > 0)
-	{
-	  result = 1;
-	}
+        {
+          result = 1;
+        }
     }
 
   return result;
@@ -585,9 +585,9 @@ lw_srvcont_final_ok (LW_SRVCONT * cont)
   for (i = cont->nb_chans - 1; i >= 0; --i)
     {
       if (!lw_srvchan_final_ok (&(cont->chan[i])))
-	{
-	  disconnect_client (cont, i, "can't send final ok");
-	}
+        {
+          disconnect_client (cont, i, "can't send final ok");
+        }
     }
 
   /*
@@ -632,17 +632,17 @@ send_lag_key_presses (LW_SRVCONT * cont, int lag)
   for (j = 0; j < lag && result; ++j)
     {
       for (i = cont->nb_chans - 1; i >= 0; --i)
-	{
-	  /*
-	   * We put the checksum to 1, to inform the clients that
-	   * everything is OK
-	   */
-	  cont->chan[i].checksum_send = 1;
-	  if (!lw_srvchan_send_keys (&(cont->chan[i]), &netkey))
-	    {
-	      disconnect_client (cont, i, "error sending lag keys");
-	    }
-	}
+        {
+          /*
+           * We put the checksum to 1, to inform the clients that
+           * everything is OK
+           */
+          cont->chan[i].checksum_send = 1;
+          if (!lw_srvchan_send_keys (&(cont->chan[i]), &netkey))
+            {
+              disconnect_client (cont, i, "error sending lag keys");
+            }
+        }
     }
 
   return result;
@@ -668,37 +668,37 @@ check_checksum (LW_SRVCONT * cont)
        * We do not check checksums if there's only 1 connected client.
        */
       if (cont->nb_chans >= 2)
-	{
-	  for (j = 0; j < cont->nb_chans; ++j)
-	    {
-	      if (cont->chan[i].checksum_recv != cont->chan[j].checksum_recv)
-		{
-		  ok = 0;
-		  nb_diff++;
-		}
-	    }
+        {
+          for (j = 0; j < cont->nb_chans; ++j)
+            {
+              if (cont->chan[i].checksum_recv != cont->chan[j].checksum_recv)
+                {
+                  ok = 0;
+                  nb_diff++;
+                }
+            }
 
-	  /*
-	   * Now if this channel has a different checksum
-	   * than everyone else, we consider there's an error
-	   * on it. But if there's at least one channel that
-	   * has the same checksum, we consider it's OK
-	   * (for this channel only of course...)
-	   */
-	  if (nb_diff >= cont->nb_chans - 1)
-	    {
-	      cont->chan[i].checksum_send = 0;
+          /*
+           * Now if this channel has a different checksum
+           * than everyone else, we consider there's an error
+           * on it. But if there's at least one channel that
+           * has the same checksum, we consider it's OK
+           * (for this channel only of course...)
+           */
+          if (nb_diff >= cont->nb_chans - 1)
+            {
+              cont->chan[i].checksum_send = 0;
 
-	      log_print_str ("Checksum error on client \"");
-	      log_print_str (cont->chan[i].ip);
-	      log_print_str (":");
-	      log_print_int (cont->chan[i].port);
-	      log_print_str ("\" (");
-	      log_print_int (cont->chan[i].checksum_recv);
-	      log_print_str (")");
-	      log_println ();
-	    }
-	}
+              log_print_str ("Checksum error on client \"");
+              log_print_str (cont->chan[i].ip);
+              log_print_str (":");
+              log_print_int (cont->chan[i].port);
+              log_print_str ("\" (");
+              log_print_int (cont->chan[i].checksum_recv);
+              log_print_str (")");
+              log_println ();
+            }
+        }
     }
 
   return ok;
@@ -710,7 +710,7 @@ check_checksum (LW_SRVCONT * cont)
  */
 int
 lw_srvcont_replicate_keys (LW_SRVCONT * cont,
-			   LW_WWWSRV_DATA * www_data, int lag, char *password)
+                           LW_WWWSRV_DATA * www_data, int lag, char *password)
 {
   int result = 1;
   LW_NETKEY netkey;
@@ -755,44 +755,44 @@ lw_srvcont_replicate_keys (LW_SRVCONT * cont,
        * First we get the informations from all the players
        */
       for (i = cont->nb_chans - 1; i >= 0; --i)
-	{
-	  if (lw_srvchan_recv_keys (&(cont->chan[i]), &netkey))
-	    {
-	      /*
-	       * if at least a client does not request a lag
-	       * increase, then we don't do it
-	       */
-	      if (netkey.cmd == LW_NETKEY_CMD_INCREASE_LAG)
-		{
-		  a_client_requests_increase_lag = 1;
-		}
-	      else
-		{
-		  all_clients_request_increase_lag = 0;
-		}
+        {
+          if (lw_srvchan_recv_keys (&(cont->chan[i]), &netkey))
+            {
+              /*
+               * if at least a client does not request a lag
+               * increase, then we don't do it
+               */
+              if (netkey.cmd == LW_NETKEY_CMD_INCREASE_LAG)
+                {
+                  a_client_requests_increase_lag = 1;
+                }
+              else
+                {
+                  all_clients_request_increase_lag = 0;
+                }
 
-	      /*
-	       * if at least a client does not request a lag
-	       * decrease, then we don't do it
-	       */
-	      if (netkey.cmd == LW_NETKEY_CMD_DECREASE_LAG)
-		{
-		  a_client_requests_decrease_lag = 1;
-		}
-	      else
-		{
-		  all_clients_request_decrease_lag = 0;
-		}
-	    }
-	  else
-	    {
-	      /*
-	       * There's been an error receiving data from this team
-	       * so we decide to "close" it.
-	       */
-	      disconnect_client (cont, i, "no more keys");
-	    }
-	}
+              /*
+               * if at least a client does not request a lag
+               * decrease, then we don't do it
+               */
+              if (netkey.cmd == LW_NETKEY_CMD_DECREASE_LAG)
+                {
+                  a_client_requests_decrease_lag = 1;
+                }
+              else
+                {
+                  all_clients_request_decrease_lag = 0;
+                }
+            }
+          else
+            {
+              /*
+               * There's been an error receiving data from this team
+               * so we decide to "close" it.
+               */
+              disconnect_client (cont, i, "no more keys");
+            }
+        }
 
       /*
        * we reset the cmd and arg fields
@@ -815,13 +815,13 @@ lw_srvcont_replicate_keys (LW_SRVCONT * cont,
        * complaining a_client_requests_increase_lag is unused
        */
       if (all_clients_request_increase_lag && a_client_requests_increase_lag)
-	{
-	  increase_lag_counter++;
-	}
+        {
+          increase_lag_counter++;
+        }
       else
-	{
-	  increase_lag_counter = 0;
-	}
+        {
+          increase_lag_counter = 0;
+        }
 
       /*
        * we use a counter system, so that all client must answer
@@ -833,24 +833,24 @@ lw_srvcont_replicate_keys (LW_SRVCONT * cont,
        * complaining all_client_requests_decrease_lag is unused
        */
       if (a_client_requests_decrease_lag || all_clients_request_decrease_lag)
-	{
-	  decrease_lag_counter++;
-	}
+        {
+          decrease_lag_counter++;
+        }
       else
-	{
-	  decrease_lag_counter = 0;
-	}
+        {
+          decrease_lag_counter = 0;
+        }
 
       /*
        * If we need to increase the lag, we send blank key presses
        */
       if (increase_lag_counter >= LW_SRVCONT_INCREASE_LAG_LIMIT
-	  && lag_key_presses_to_send == 0)
-	{
-	  increase_lag_counter = 0;
-	  lag++;
-	  lag_key_presses_to_send++;
-	}
+          && lag_key_presses_to_send == 0)
+        {
+          increase_lag_counter = 0;
+          lag++;
+          lag_key_presses_to_send++;
+        }
 
 
       /*
@@ -859,52 +859,52 @@ lw_srvcont_replicate_keys (LW_SRVCONT * cont,
        */
       skip_keys = 0;
       if (decrease_lag_counter >= LW_SRVCONT_DECREASE_LAG_LIMIT)
-	{
-	  decrease_lag_counter = 0;
-	  lag--;
-	  if (lag_key_presses_to_send > 0)
-	    {
-	      /*
-	       * We cancel the planified lag keys
-	       */
-	      lag_key_presses_to_send--;
-	    }
-	  else
-	    {
-	      /*
-	       * No lag keys planned, we skip the current keys
-	       */
-	      skip_keys = 1;
-	    }
-	}
+        {
+          decrease_lag_counter = 0;
+          lag--;
+          if (lag_key_presses_to_send > 0)
+            {
+              /*
+               * We cancel the planified lag keys
+               */
+              lag_key_presses_to_send--;
+            }
+          else
+            {
+              /*
+               * No lag keys planned, we skip the current keys
+               */
+              skip_keys = 1;
+            }
+        }
 
       if (!skip_keys)
-	{
-	  /*
-	   * Now we send the information to all the players
-	   */
-	  for (i = cont->nb_chans - 1; i >= 0; --i)
-	    {
-	      if (!lw_srvchan_send_keys (&(cont->chan[i]), &netkey))
-		{
-		  /*
-		   * There's been an error receiving data from this team
-		   * so we decide to "close" it.
-		   */
-		  disconnect_client (cont, i, "error sending keys");
-		}
-	    }
-	}
+        {
+          /*
+           * Now we send the information to all the players
+           */
+          for (i = cont->nb_chans - 1; i >= 0; --i)
+            {
+              if (!lw_srvchan_send_keys (&(cont->chan[i]), &netkey))
+                {
+                  /*
+                   * There's been an error receiving data from this team
+                   * so we decide to "close" it.
+                   */
+                  disconnect_client (cont, i, "error sending keys");
+                }
+            }
+        }
 
       /*
        * We send the lag key presses 1 by 1. This is a way
        * to synchronize correctly at the beginning of a game.
        */
       if (lag_key_presses_to_send > 0)
-	{
-	  lag_key_presses_to_send--;
-	  send_lag_key_presses (cont, 1);
-	}
+        {
+          lag_key_presses_to_send--;
+          send_lag_key_presses (cont, 1);
+        }
 
       rounds++;
       last_rounds++;
@@ -914,35 +914,35 @@ lw_srvcont_replicate_keys (LW_SRVCONT * cont,
       elapsed = end - start;
 
       if (((int) elapsed) > LW_SRVCONT_DISPLAY_STATE_DELAY)
-	{
-	  if (rounds <= 0)
-	    {
-	      rounds = 1;
-	    }
-	  if (last_rounds <= 0)
-	    {
-	      last_rounds = 1;
-	    }
+        {
+          if (rounds <= 0)
+            {
+              rounds = 1;
+            }
+          if (last_rounds <= 0)
+            {
+              last_rounds = 1;
+            }
 
-	  log_print_int (rounds);
-	  log_print_str (" rounds, ");
-	  log_print_int (last_rounds / ((int) elapsed));
-	  log_print_str (" rounds/sec, average lag is ");
-	  log_print_int (average_lag / last_rounds);
-	  log_println ();
+          log_print_int (rounds);
+          log_print_str (" rounds, ");
+          log_print_int (last_rounds / ((int) elapsed));
+          log_print_str (" rounds/sec, average lag is ");
+          log_print_int (average_lag / last_rounds);
+          log_println ();
 
-	  start = end;
-	  last_rounds = 0;
-	  average_lag = 0;
-	}
+          start = end;
+          last_rounds = 0;
+          average_lag = 0;
+        }
 
       if (end - start2 > LW_SRVCONT_REGISTER_DELAY)
-	{
-	  start2 += LW_SRVCONT_REGISTER_DELAY;
+        {
+          start2 += LW_SRVCONT_REGISTER_DELAY;
 
-	  www_data->log = 0;
-	  lw_wwwsrv_register (www_data);
-	}
+          www_data->log = 0;
+          lw_wwwsrv_register (www_data);
+        }
     }
 
   return result;
@@ -999,23 +999,23 @@ reject_new_clients (LW_SRVCONT * cont, char *password)
       data.password[PASSWORD_SIZE] = '\0';
 
       if (lw_sock_accept (&(data.sock), data.ip, &(data.port), cont->sock, 0))
-	{
-	  thread_running = 1;
-	  result =
-	    lw_thread_start (reject_new_clients_callback, (void *) &data);
-	  if (!result)
-	    {
-	      lw_sock_close (&(data.sock));
-	      thread_running = 0;
-	    }
-	}
+        {
+          thread_running = 1;
+          result =
+            lw_thread_start (reject_new_clients_callback, (void *) &data);
+          if (!result)
+            {
+              lw_sock_close (&(data.sock));
+              thread_running = 0;
+            }
+        }
       else
-	{
-	  /*
-	   * privacy is set to 0, we do not tell anyone about this server
-	   */
-	  result = 1;
-	}
+        {
+          /*
+           * privacy is set to 0, we do not tell anyone about this server
+           */
+          result = 1;
+        }
     }
   else
     {
@@ -1055,70 +1055,70 @@ reject_new_clients_callback (void *args)
   log_flush ();
 
   while ((!free_received) && ret_mess &&
-	 ((ret = lw_sock_recv_str (&(data.sock), message)) >= 0))
+         ((ret = lw_sock_recv_str (&(data.sock), message)) >= 0))
     {
       if (ret > 0)
-	{
-	  mess = lw_netmess_read (message);
-	  if (mess != NULL)
-	    {
-	      /*
-	       * switch to handle the different possible messages
-	       */
-	      switch (mess->code)
-		{
-		case LW_NETMESS_CODE_PING:
-		  ret_mess = lw_srvchan_handle_ping (data.sock, mess);
-		  break;
-		case LW_NETMESS_CODE_ECHO:
-		  ret_mess = lw_srvchan_handle_echo (data.sock, mess);
-		  break;
-		case LW_NETMESS_CODE_PROGRAM:
-		  ret_mess =
-		    lw_srvchan_handle_program (data.sock, mess, &program);
-		  break;
-		case LW_NETMESS_CODE_VERSION:
-		  ret_mess =
-		    lw_srvchan_handle_version (data.sock, mess, &version);
-		  break;
-		case LW_NETMESS_CODE_PASSWORD:
-		  ret_mess =
-		    lw_srvchan_handle_password (data.sock, mess, &password,
-						data.password);
-		  break;
-		case LW_NETMESS_CODE_FREE:
-		  ret_mess =
-		    lw_srvchan_handle_free (data.sock, mess, 0,
-					    &free_received);
-		  break;
-		case LW_NETMESS_CODE_QUIT:
-		  ret_mess =
-		    lw_srvchan_handle_quit (data.sock, mess, &normal_quit);
-		  break;
-		default:
-		  ret_mess = lw_srvchan_handle_unknown (data.sock, mess);
-		  break;
-		}
+        {
+          mess = lw_netmess_read (message);
+          if (mess != NULL)
+            {
+              /*
+               * switch to handle the different possible messages
+               */
+              switch (mess->code)
+                {
+                case LW_NETMESS_CODE_PING:
+                  ret_mess = lw_srvchan_handle_ping (data.sock, mess);
+                  break;
+                case LW_NETMESS_CODE_ECHO:
+                  ret_mess = lw_srvchan_handle_echo (data.sock, mess);
+                  break;
+                case LW_NETMESS_CODE_PROGRAM:
+                  ret_mess =
+                    lw_srvchan_handle_program (data.sock, mess, &program);
+                  break;
+                case LW_NETMESS_CODE_VERSION:
+                  ret_mess =
+                    lw_srvchan_handle_version (data.sock, mess, &version);
+                  break;
+                case LW_NETMESS_CODE_PASSWORD:
+                  ret_mess =
+                    lw_srvchan_handle_password (data.sock, mess, &password,
+                                                data.password);
+                  break;
+                case LW_NETMESS_CODE_FREE:
+                  ret_mess =
+                    lw_srvchan_handle_free (data.sock, mess, 0,
+                                            &free_received);
+                  break;
+                case LW_NETMESS_CODE_QUIT:
+                  ret_mess =
+                    lw_srvchan_handle_quit (data.sock, mess, &normal_quit);
+                  break;
+                default:
+                  ret_mess = lw_srvchan_handle_unknown (data.sock, mess);
+                  break;
+                }
 
-	      /*
-	       * lw_netmess_free must *not* be forgetted 
-	       */
-	      lw_netmess_free (mess);
+              /*
+               * lw_netmess_free must *not* be forgetted 
+               */
+              lw_netmess_free (mess);
 
-	      if (!ret_mess)
-		{
-		  log_print_str ("Error processing \"");
-		  log_print_str (message);
-		  log_print_str ("\"");
-		  log_println ();
-		}
-	    }
-	  else
-	    {
-	      log_println_str ("Serious memory problem 8-(");
-	      ret_mess = 0;
-	    }
-	}
+              if (!ret_mess)
+                {
+                  log_print_str ("Error processing \"");
+                  log_print_str (message);
+                  log_print_str ("\"");
+                  log_println ();
+                }
+            }
+          else
+            {
+              log_println_str ("Serious memory problem 8-(");
+              ret_mess = 0;
+            }
+        }
     }
 
   log_print_str ("Refusing \"");

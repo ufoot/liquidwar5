@@ -93,7 +93,7 @@ watchdog_update ()
   if ((n = (WATCHDOG_KEYS_IN_BUFFER - WATCHDOG_MAX_WORD)) > WATCHDOG_MAX_WORD)
     {
       for (i = n; i < WATCHDOG_KEYS_IN_BUFFER; ++i)
-	WATCHDOG_BUFFER[i - n] = WATCHDOG_BUFFER[i];
+        WATCHDOG_BUFFER[i - n] = WATCHDOG_BUFFER[i];
       WATCHDOG_KEYS_IN_BUFFER -= n;
       old_pos -= n;
     }
@@ -134,10 +134,10 @@ watchdog_is_keyword (char *keyword)
     {
       j = 0;
       while (pattern[j] &&
-	     pattern[j] == ((char) WATCHDOG_BUFFER[i + j] & 0xFF))
-	{
-	  j++;
-	}
+             pattern[j] == ((char) WATCHDOG_BUFFER[i + j] & 0xFF))
+        {
+          j++;
+        }
       found = !pattern[j];
     }
 

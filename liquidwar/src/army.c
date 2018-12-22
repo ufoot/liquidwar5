@@ -162,28 +162,28 @@ place_team (int part, int team)
   while (placed < fighters)
     {
       for (x = x_min; x <= x_max && placed < fighters; ++x)
-	placed += add_fighter
-	  (pos + placed * PLAYING_TEAMS, team, x, y_min, health);
+        placed += add_fighter
+          (pos + placed * PLAYING_TEAMS, team, x, y_min, health);
       if (x_max < CURRENT_AREA_W - 2)
-	++x_max;
+        ++x_max;
 
       for (y = y_min; y <= y_max && placed < fighters; ++y)
-	placed += add_fighter
-	  (pos + placed * PLAYING_TEAMS, team, x_max, y, health);
+        placed += add_fighter
+          (pos + placed * PLAYING_TEAMS, team, x_max, y, health);
       if (y_max < CURRENT_AREA_H - 2)
-	++y_max;
+        ++y_max;
 
       for (x = x_max; x >= x_min && placed < fighters; --x)
-	placed += add_fighter
-	  (pos + placed * PLAYING_TEAMS, team, x, y_max, health);
+        placed += add_fighter
+          (pos + placed * PLAYING_TEAMS, team, x, y_max, health);
       if (x_min > 1)
-	--x_min;
+        --x_min;
 
       for (y = y_max; y >= y_min && placed < fighters; --y)
-	placed += add_fighter
-	  (pos + placed * PLAYING_TEAMS, team, x_min, y, health);
+        placed += add_fighter
+          (pos + placed * PLAYING_TEAMS, team, x_min, y, health);
       if (y_min > 1)
-	--y_min;
+        --y_min;
     }
 }
 
@@ -206,32 +206,32 @@ place_all_team (void)
        * or the behavior would not be the same on all the computers.
        */
       for (j = 0; j < NB_TEAMS && n < NB_TEAMS; ++j)
-	{
-	  for (i = 0; i < NB_TEAMS && n < NB_TEAMS; ++i)
-	    {
-	      if (LW_NETWORK_INFO[i].active && LW_NETWORK_INFO[i].part == j)
-		{
-		  place_team (LW_NETWORK_INFO[i].part,
-			      LW_NETWORK_INFO[i].server_id);
-		  auto_cursor (i,
-			       LW_NETWORK_INFO[i].server_id,
-			       LW_NETWORK_INFO[i].name);
-		  n++;
-		}
-	    }
-	}
+        {
+          for (i = 0; i < NB_TEAMS && n < NB_TEAMS; ++i)
+            {
+              if (LW_NETWORK_INFO[i].active && LW_NETWORK_INFO[i].part == j)
+                {
+                  place_team (LW_NETWORK_INFO[i].part,
+                              LW_NETWORK_INFO[i].server_id);
+                  auto_cursor (i,
+                               LW_NETWORK_INFO[i].server_id,
+                               LW_NETWORK_INFO[i].name);
+                  n++;
+                }
+            }
+        }
     }
   else
     {
       for (i = 0; i < NB_TEAMS && n < NB_TEAMS; ++i)
-	{
-	  if (CONFIG_CONTROL_TYPE[i] != CONFIG_CONTROL_TYPE_OFF)
-	    {
-	      place_team (i, n);
-	      auto_cursor (i, n, CONFIG_PLAYER_NAME[i]);
-	      n++;
-	    }
-	}
+        {
+          if (CONFIG_CONTROL_TYPE[i] != CONFIG_CONTROL_TYPE_OFF)
+            {
+              place_team (i, n);
+              auto_cursor (i, n, CONFIG_PLAYER_NAME[i]);
+              n++;
+            }
+        }
     }
 }
 
@@ -252,15 +252,15 @@ test_army (void)
       k = y * CURRENT_AREA_W + x;
       m = CURRENT_AREA[k].mesh;
       if (m)
-	if (m->info[0].state.grad)
-	  {
-	    /*
-	     * test above does nothing, but at least
-	     * it queries memory, should we have an
-	     * ugly bug, at least it would reveal
-	     * it now rather than show up later.
-	     */
-	  }
+        if (m->info[0].state.grad)
+          {
+            /*
+             * test above does nothing, but at least
+             * it queries memory, should we have an
+             * ugly bug, at least it would reveal
+             * it now rather than show up later.
+             */
+          }
     }
 }
 
@@ -277,7 +277,7 @@ create_army (void)
   };
 
   CURRENT_ARMY_SIZE = (get_battle_room () *
-		       fill_table[LW_CONFIG_CURRENT_RULES.fighter_number]) /
+                       fill_table[LW_CONFIG_CURRENT_RULES.fighter_number]) /
     100;
 
   CURRENT_ARMY_SIZE /= PLAYING_TEAMS;
@@ -289,13 +289,13 @@ create_army (void)
        (CURRENT_ARMY_SIZE * sizeof (FIGHTER))) != 0)
     {
       for (i = 0; i < CURRENT_ARMY_SIZE; ++i)
-	{
-	  CURRENT_ARMY[i].health = 0;
-	  CURRENT_ARMY[i].team = -1;
-	  CURRENT_ARMY[i].x = 0;
-	  CURRENT_ARMY[i].y = 0;
-	  CURRENT_ARMY[i].last_dir = 0;
-	}
+        {
+          CURRENT_ARMY[i].health = 0;
+          CURRENT_ARMY[i].team = -1;
+          CURRENT_ARMY[i].x = 0;
+          CURRENT_ARMY[i].y = 0;
+          CURRENT_ARMY[i].last_dir = 0;
+        }
       ret = 0;
     }
   return ret;

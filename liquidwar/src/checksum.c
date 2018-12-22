@@ -96,23 +96,23 @@ lw_checksum_calc (FIGHTER * army, int army_size)
   if (!(GLOBAL_CLOCK % LW_CHECKSUM_PERIOD))
     {
       for (i = 0; i < army_size; ++i)
-	{
-	  f = army + i;
+        {
+          f = army + i;
 
-	  value = (0xFF &
-		   (((unsigned int) f->x) +
-		    ((unsigned int) f->y) +
-		    ((unsigned int) f->health) +
-		    ((unsigned int) f->team) + ((unsigned int) f->last_dir)));
+          value = (0xFF &
+                   (((unsigned int) f->x) +
+                    ((unsigned int) f->y) +
+                    ((unsigned int) f->health) +
+                    ((unsigned int) f->team) + ((unsigned int) f->last_dir)));
 
-	  /*
-	   * Got this algorithm in old notes I had taken long time
-	   * ago when I was at school.
-	   */
-	  cipher = (value ^ (rval >> 8));
-	  rval = (cipher + rval) * cst1 + cst2;
-	  checksum += cipher;
-	}
+          /*
+           * Got this algorithm in old notes I had taken long time
+           * ago when I was at school.
+           */
+          cipher = (value ^ (rval >> 8));
+          rval = (cipher + rval) * cst1 + cst2;
+          checksum += cipher;
+        }
     }
 
   return checksum;

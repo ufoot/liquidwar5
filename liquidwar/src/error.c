@@ -113,7 +113,7 @@ int
 error_not_enough_teams (void)
 {
   return (standard_error (lw_lang_string
-			  (LW_LANG_STRING_ERROR_NOTENOUGHTEAMS)));
+                          (LW_LANG_STRING_ERROR_NOTENOUGHTEAMS)));
 }
 
 /*------------------------------------------------------------------*/
@@ -121,7 +121,7 @@ int
 error_not_enough_big_data (void)
 {
   return (standard_error (lw_lang_string
-			  (LW_LANG_STRING_ERROR_NOTENOUGHBIGDATA)));
+                          (LW_LANG_STRING_ERROR_NOTENOUGHBIGDATA)));
 }
 
 /*------------------------------------------------------------------*/
@@ -129,7 +129,7 @@ int
 error_graphics_init_failed (void)
 {
   return (standard_error (lw_lang_string
-			  (LW_LANG_STRING_ERROR_GRAPHICSINITFAILED)));
+                          (LW_LANG_STRING_ERROR_GRAPHICSINITFAILED)));
 }
 
 /*------------------------------------------------------------------*/
@@ -137,7 +137,7 @@ int
 error_no_network_support (void)
 {
   return (standard_error (lw_lang_string
-			  (LW_LANG_STRING_ERROR_NONETWORKSUPPORT)));
+                          (LW_LANG_STRING_ERROR_NONETWORKSUPPORT)));
 }
 
 /*------------------------------------------------------------------*/
@@ -145,7 +145,7 @@ int
 error_unable_to_connect (void)
 {
   return (standard_error (lw_lang_string
-			  (LW_LANG_STRING_ERROR_UNABLETOCONNECT)));
+                          (LW_LANG_STRING_ERROR_UNABLETOCONNECT)));
 }
 
 /*------------------------------------------------------------------*/
@@ -153,7 +153,7 @@ int
 error_not_a_liquidwar_server (void)
 {
   return (standard_error (lw_lang_string
-			  (LW_LANG_STRING_ERROR_NOTALIQUIDWARSERVER)));
+                          (LW_LANG_STRING_ERROR_NOTALIQUIDWARSERVER)));
 }
 
 /*------------------------------------------------------------------*/
@@ -161,7 +161,7 @@ int
 error_wrong_version (void)
 {
   return (standard_error (lw_lang_string
-			  (LW_LANG_STRING_ERROR_WRONGVERSION)));
+                          (LW_LANG_STRING_ERROR_WRONGVERSION)));
 }
 
 /*------------------------------------------------------------------*/
@@ -169,7 +169,7 @@ int
 error_network_problem (void)
 {
   return (standard_error (lw_lang_string
-			  (LW_LANG_STRING_ERROR_NETWORKPROBLEM)));
+                          (LW_LANG_STRING_ERROR_NETWORKPROBLEM)));
 }
 
 /*------------------------------------------------------------------*/
@@ -184,7 +184,7 @@ int
 error_cant_receive_map (void)
 {
   return (standard_error (lw_lang_string
-			  (LW_LANG_STRING_ERROR_CANTRECEIVEMAP)));
+                          (LW_LANG_STRING_ERROR_CANTRECEIVEMAP)));
 }
 
 /*------------------------------------------------------------------*/
@@ -206,5 +206,5 @@ int
 error_bad_config_range (void)
 {
   return (standard_error (lw_lang_string
-			  (LW_LANG_STRING_ERROR_BADCONFIGRANGE)));
+                          (LW_LANG_STRING_ERROR_BADCONFIGRANGE)));
 }

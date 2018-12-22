@@ -87,17 +87,17 @@ write_fps_setting (DIALOG * d)
   if (DISPLAY_DELAY_MIN[CONFIG_FRAMES_PER_SEC_LIMIT] != 0)
     {
       LW_MACRO_SNPRINTF2 (str,
-			  LW_SPEEDS_FPS_SIZE,
-			  "%d %s",
-			  1000 /
-			  (DISPLAY_DELAY_MIN[CONFIG_FRAMES_PER_SEC_LIMIT]),
-			  lw_lang_string (LW_LANG_STRING_SPEEDS_FPS));
+                          LW_SPEEDS_FPS_SIZE,
+                          "%d %s",
+                          1000 /
+                          (DISPLAY_DELAY_MIN[CONFIG_FRAMES_PER_SEC_LIMIT]),
+                          lw_lang_string (LW_LANG_STRING_SPEEDS_FPS));
     }
   else
     {
       LW_MACRO_SNPRINTF0 (str,
-			  LW_SPEEDS_FPS_SIZE,
-			  lw_lang_string (LW_LANG_STRING_SPEEDS_NOFPSLIMIT));
+                          LW_SPEEDS_FPS_SIZE,
+                          lw_lang_string (LW_LANG_STRING_SPEEDS_NOFPSLIMIT));
     }
 }
 
@@ -131,17 +131,17 @@ write_rps_setting (DIALOG * d)
   if (LOGIC_DELAY_MIN[CONFIG_ROUNDS_PER_SEC_LIMIT] != 0)
     {
       LW_MACRO_SNPRINTF2 (str,
-			  LW_SPEEDS_RPS_SIZE,
-			  "%d %s",
-			  1000 /
-			  (LOGIC_DELAY_MIN[CONFIG_ROUNDS_PER_SEC_LIMIT]),
-			  lw_lang_string (LW_LANG_STRING_SPEEDS_RPS));
+                          LW_SPEEDS_RPS_SIZE,
+                          "%d %s",
+                          1000 /
+                          (LOGIC_DELAY_MIN[CONFIG_ROUNDS_PER_SEC_LIMIT]),
+                          lw_lang_string (LW_LANG_STRING_SPEEDS_RPS));
     }
   else
     {
       LW_MACRO_SNPRINTF0 (str,
-			  LW_SPEEDS_RPS_SIZE,
-			  lw_lang_string (LW_LANG_STRING_SPEEDS_NORPSLIMIT));
+                          LW_SPEEDS_RPS_SIZE,
+                          lw_lang_string (LW_LANG_STRING_SPEEDS_NORPSLIMIT));
     }
 }
 
@@ -216,22 +216,22 @@ speeds_options (void)
     {
       choix = my_do_dialog (d, choix);
       switch (choix)
-	{
-	case -1:
-	case MENU_QUICK_BACK:
-	  retour = 1;
-	  break;
-	case MENU_QUICK_MAIN:
-	  retour = MENU_TOP;
-	  break;
-	case MENU_QUICK_QUIT:
-	  if (confirm_quit ())
-	    retour = MENU_EXIT;
-	  break;
-	case MENU_QUICK_PLAY:
-	  retour = MENU_PLAY;
-	  break;
-	}
+        {
+        case -1:
+        case MENU_QUICK_BACK:
+          retour = 1;
+          break;
+        case MENU_QUICK_MAIN:
+          retour = MENU_TOP;
+          break;
+        case MENU_QUICK_QUIT:
+          if (confirm_quit ())
+            retour = MENU_EXIT;
+          break;
+        case MENU_QUICK_PLAY:
+          retour = MENU_PLAY;
+          break;
+        }
     }
 
   if (retour > 0)

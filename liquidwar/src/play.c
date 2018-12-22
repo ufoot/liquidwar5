@@ -141,11 +141,11 @@ play_sequence_ex (void)
    * the textures the user has chosen
    */
   lw_maptex_set_fg_palette (CONFIG_LEVEL_MAP, CONFIG_LEVEL_FG,
-			    LW_NETWORK_ON, LW_RANDOM_ON,
-			    CONFIG_USE_DEFAULT_TEXTURE);
+                            LW_NETWORK_ON, LW_RANDOM_ON,
+                            CONFIG_USE_DEFAULT_TEXTURE);
   lw_maptex_set_bg_palette (CONFIG_LEVEL_MAP, CONFIG_LEVEL_BG,
-			    LW_NETWORK_ON, LW_RANDOM_ON,
-			    CONFIG_USE_DEFAULT_TEXTURE);
+                            LW_NETWORK_ON, LW_RANDOM_ON,
+                            CONFIG_USE_DEFAULT_TEXTURE);
   /*
    * we calculate how many teams are playing
    */
@@ -171,106 +171,106 @@ play_sequence_ex (void)
        * and if it does it returns a string containing the error message
        */
       if (!(message = init_game ()))
-	{
-	  /*
-	   * we set up the sound of waves a little louder so that the player
-	   * understands he's playing *now*
-	   */
-	  WATER_VOLUME = CONFIG_WATER_VOLUME_GAME;
-	  /*
-	   * fade out cause we're going to switch video modes
-	   */
-	  my_fade_out ();
+        {
+          /*
+           * we set up the sound of waves a little louder so that the player
+           * understands he's playing *now*
+           */
+          WATER_VOLUME = CONFIG_WATER_VOLUME_GAME;
+          /*
+           * fade out cause we're going to switch video modes
+           */
+          my_fade_out ();
 
-	  /*
-	   * we change the resolution, but only if the game resolution is
-	   * actually different from the menu resolution
-	   */
-	  if (need_to_change_mode (CONFIG_GFX_GAME,
-				   CONFIG_GFX_MENU, CONFIG_PAGE_FLIP))
-	    set_resolution (CONFIG_GFX_GAME,
-			    CONFIG_PAGE_FLIP,
-			    CONFIG_FULLSCREEN, &flip_enabled);
+          /*
+           * we change the resolution, but only if the game resolution is
+           * actually different from the menu resolution
+           */
+          if (need_to_change_mode (CONFIG_GFX_GAME,
+                                   CONFIG_GFX_MENU, CONFIG_PAGE_FLIP))
+            set_resolution (CONFIG_GFX_GAME,
+                            CONFIG_PAGE_FLIP,
+                            CONFIG_FULLSCREEN, &flip_enabled);
 
-	  lw_mouse_hide ();
+          lw_mouse_hide ();
 
-	  /*
-	   * the blank round function initializes the double-buffer system
-	   * and the main display target, it might fail because of lacking memory
-	   */
-	  if (!blank_round ())
-	    {
-	      /*
-	       * fiat lux
-	       */
-	      my_fade_in ();
+          /*
+           * the blank round function initializes the double-buffer system
+           * and the main display target, it might fail because of lacking memory
+           */
+          if (!blank_round ())
+            {
+              /*
+               * fiat lux
+               */
+              my_fade_in ();
 
-	      /*
-	       * start playing some music
-	       */
-	      start_music ();
+              /*
+               * start playing some music
+               */
+              start_music ();
 
-	      /*
-	       * OK, here we go, let's enter the main game loop
-	       */
-	      game ();
+              /*
+               * OK, here we go, let's enter the main game loop
+               */
+              game ();
 
-	      /*
-	       * stop the music
-	       */
-	      stop_music ();
-	    }
+              /*
+               * stop the music
+               */
+              stop_music ();
+            }
 
-	  /*
-	   * let's be clean 8-)
-	   */
-	  free_game_memory ();
+          /*
+           * let's be clean 8-)
+           */
+          free_game_memory ();
 
-	  /*
-	   * we close the network socket abruptly
-	   */
-	  lw_sock_close (&LW_KEYEXCH_SOCK);
+          /*
+           * we close the network socket abruptly
+           */
+          lw_sock_close (&LW_KEYEXCH_SOCK);
 
-	  /*
-	   * we turn the volume down
-	   */
-	  WATER_VOLUME = CONFIG_WATER_VOLUME_MENU;
+          /*
+           * we turn the volume down
+           */
+          WATER_VOLUME = CONFIG_WATER_VOLUME_MENU;
 
-	  /*
-	   * fade out before video mode switching
-	   */
-	  my_fade_out ();
-	  /*
-	   * again, we change the video mode only if it is really required
-	   */
-	  if (need_to_change_mode (CONFIG_GFX_GAME,
-				   CONFIG_GFX_MENU,
-				   CONFIG_PAGE_FLIP && flip_enabled))
-	    set_resolution (CONFIG_GFX_MENU, 0, CONFIG_FULLSCREEN, NULL);
+          /*
+           * fade out before video mode switching
+           */
+          my_fade_out ();
+          /*
+           * again, we change the video mode only if it is really required
+           */
+          if (need_to_change_mode (CONFIG_GFX_GAME,
+                                   CONFIG_GFX_MENU,
+                                   CONFIG_PAGE_FLIP && flip_enabled))
+            set_resolution (CONFIG_GFX_MENU, 0, CONFIG_FULLSCREEN, NULL);
 
-	  lw_mouse_show ();
+          lw_mouse_show ();
 
-	  /*
-	   * displays the 3 tubes with the score
-	   */
-	  retour = display_scores ();
-	}
+          /*
+           * displays the 3 tubes with the score
+           */
+          retour = display_scores ();
+        }
       else
-	{
-	  /*
-	   * the main reason why init_game should fail is a lack of big data
-	   * this can be cured by selecting a smaller level or increasing the
-	   * amount of data reserved at startup (command line parameter)
-	   */
-	  free_game_memory ();
+        {
+          /*
+           * the main reason why init_game should fail is a lack of big data
+           * this can be cured by selecting a smaller level or increasing the
+           * amount of data reserved at startup (command line parameter)
+           */
+          free_game_memory ();
 
-	  /*
-	   * we close the network socket abruptly
-	   */
-	  lw_sock_close (&LW_KEYEXCH_SOCK);
+          /*
+           * we close the network socket abruptly
+           */
+          lw_sock_close (&LW_KEYEXCH_SOCK);
 
-	  error_not_enough_big_data ();
-	}
+          error_not_enough_big_data ();
+        }
     }
 
   return retour;

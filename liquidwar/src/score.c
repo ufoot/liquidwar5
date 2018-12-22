@@ -101,25 +101,25 @@ get_cursor (int classement)
   for (i = 0; i < NB_TEAMS; ++i)
     if (CURRENT_CURSOR[i].active && CURRENT_CURSOR[i].loose_time < 0)
       {
-	CURRENT_CURSOR[i].score_order = 1;
+        CURRENT_CURSOR[i].score_order = 1;
 
-	for (j = 0; j < i; ++j)
-	  if (CURRENT_CURSOR[j].active &&
-	      ACTIVE_FIGHTERS[CURRENT_CURSOR[i].team]
-	      <= ACTIVE_FIGHTERS[CURRENT_CURSOR[j].team])
-	    CURRENT_CURSOR[i].score_order++;
-	for (j = i + 1; j < NB_TEAMS; ++j)
-	  if (CURRENT_CURSOR[j].active &&
-	      ACTIVE_FIGHTERS[CURRENT_CURSOR[i].team]
-	      < ACTIVE_FIGHTERS[CURRENT_CURSOR[j].team])
-	    CURRENT_CURSOR[i].score_order++;
+        for (j = 0; j < i; ++j)
+          if (CURRENT_CURSOR[j].active &&
+              ACTIVE_FIGHTERS[CURRENT_CURSOR[i].team]
+              <= ACTIVE_FIGHTERS[CURRENT_CURSOR[j].team])
+            CURRENT_CURSOR[i].score_order++;
+        for (j = i + 1; j < NB_TEAMS; ++j)
+          if (CURRENT_CURSOR[j].active &&
+              ACTIVE_FIGHTERS[CURRENT_CURSOR[i].team]
+              < ACTIVE_FIGHTERS[CURRENT_CURSOR[j].team])
+            CURRENT_CURSOR[i].score_order++;
       }
 
   for (i = 0; i < NB_TEAMS; ++i)
     {
       if (CURRENT_CURSOR[i].score_order == classement
-	  && (CURRENT_CURSOR[i].active || CURRENT_CURSOR[i].loose_time >= 0))
-	indice_curseur = i;
+          && (CURRENT_CURSOR[i].active || CURRENT_CURSOR[i].loose_time >= 0))
+        indice_curseur = i;
     }
 
   return indice_curseur;
@@ -135,54 +135,54 @@ write_score (int indice, char *buffer, int fill_level)
   if (indice >= 0)
     {
       if (fill_level < 0)
-	fill_level = 0;
+        fill_level = 0;
       if (fill_level > 1000)
-	fill_level = 1000;
+        fill_level = 1000;
 
       if (!STARTUP_TOMBOLA)
-	{
-	  if (CURRENT_CURSOR[indice].score_order == 1 && PLAYING_TEAMS == 1)
-	    {
-	      LW_MACRO_STRNCPY (buffer,
-				lw_lang_string (LW_LANG_STRING_SCORE_WINNER),
-				LW_SCORE_DISP_BUFFER_SIZE);
-	    }
-	  else
-	    {
-	      if (CURRENT_CURSOR[indice].loose_time <= 0)
-		{
-		  pourmille =
-		    (ACTIVE_FIGHTERS[CURRENT_CURSOR[indice].team] *
-		     fill_level) / CURRENT_ARMY_SIZE;
-		  pourcent = pourmille / 10;
-		  decimale = pourmille % 10;
-		  LW_MACRO_SNPRINTF2 (buffer,
-				      LW_SCORE_DISP_BUFFER_SIZE,
-				      "%d.%01d%%", pourcent, decimale);
-		}
-	      else
-		{
-		  time =
-		    (CURRENT_CURSOR[indice].loose_time * fill_level) / 1000;
-		  min = time / 60;
-		  sec = time % 60;
-		  LW_MACRO_SNPRINTF2 (buffer,
-				      LW_SCORE_DISP_BUFFER_SIZE,
-				      "%02d:%02d", min, sec);
-		}
-	    }
-	}
+        {
+          if (CURRENT_CURSOR[indice].score_order == 1 && PLAYING_TEAMS == 1)
+            {
+              LW_MACRO_STRNCPY (buffer,
+                                lw_lang_string (LW_LANG_STRING_SCORE_WINNER),
+                                LW_SCORE_DISP_BUFFER_SIZE);
+            }
+          else
+            {
+              if (CURRENT_CURSOR[indice].loose_time <= 0)
+                {
+                  pourmille =
+                    (ACTIVE_FIGHTERS[CURRENT_CURSOR[indice].team] *
+                     fill_level) / CURRENT_ARMY_SIZE;
+                  pourcent = pourmille / 10;
+                  decimale = pourmille % 10;
+                  LW_MACRO_SNPRINTF2 (buffer,
+                                      LW_SCORE_DISP_BUFFER_SIZE,
+                                      "%d.%01d%%", pourcent, decimale);
+                }
+              else
+                {
+                  time =
+                    (CURRENT_CURSOR[indice].loose_time * fill_level) / 1000;
+                  min = time / 60;
+                  sec = time % 60;
+                  LW_MACRO_SNPRINTF2 (buffer,
+                                      LW_SCORE_DISP_BUFFER_SIZE,
+                                      "%02d:%02d", min, sec);
+                }
+            }
+        }
       else
-	{
-	  /*
-	   * OK, we're in "tombola" mode, so we display a random
-	   * number instead of the score.
-	   */
+        {
+          /*
+           * OK, we're in "tombola" mode, so we display a random
+           * number instead of the score.
+           */
 
-	  tombola = (LW_SCORE_TOMBOLA_RESULT[indice] * fill_level) / 1000;
-	  LW_MACRO_SNPRINTF1 (buffer,
-			      LW_SCORE_DISP_BUFFER_SIZE, "%03d", tombola);
-	}
+          tombola = (LW_SCORE_TOMBOLA_RESULT[indice] * fill_level) / 1000;
+          LW_MACRO_SNPRINTF1 (buffer,
+                              LW_SCORE_DISP_BUFFER_SIZE, "%03d", tombola);
+        }
     }
   else
     {
@@ -242,15 +242,15 @@ draw_score_bitmap (BITMAP * bitmap, int cursor, int ellipse_h, int fill_level)
       rectfill (bitmap, 0, 0, w, h, 0);
 
       if (to_be_filled)
-	ellipsefill (bitmap, x_mid, y_rect2, x_mid, ellipse_h / 2, color1);
+        ellipsefill (bitmap, x_mid, y_rect2, x_mid, ellipse_h / 2, color1);
       ellipse (bitmap, x_mid, y_rect2, x_mid, ellipse_h / 2, MENU_FG);
       if (to_be_filled)
-	{
-	  rectfill (bitmap, 1, fill_level, x_mid * 2 - 1, y_rect2 - 1,
-		    color1);
-	  ellipsefill (bitmap, x_mid, fill_level, x_mid - 1,
-		       ellipse_h / 2 - 1, color2);
-	}
+        {
+          rectfill (bitmap, 1, fill_level, x_mid * 2 - 1, y_rect2 - 1,
+                    color1);
+          ellipsefill (bitmap, x_mid, fill_level, x_mid - 1,
+                       ellipse_h / 2 - 1, color2);
+        }
 
       vline (bitmap, 0, y_rect1, y_rect2, MENU_FG);
       vline (bitmap, x_mid * 2, y_rect1, y_rect2, MENU_FG);
@@ -352,91 +352,91 @@ display_scores (void)
   while (retour == 0)
     {
       if (!last_draw_done)
-	{
-	  dp = my_init_dialog (d, choix);
-	  while (my_update_dialog (dp) && !last_draw_done)
-	    {
-	      scare_mouse ();
-	      diff_ticker = get_ticker () - first_ticker;
-	      if (cursor[0] < 0)
-		diff_ticker += 1000;
+        {
+          dp = my_init_dialog (d, choix);
+          while (my_update_dialog (dp) && !last_draw_done)
+            {
+              scare_mouse ();
+              diff_ticker = get_ticker () - first_ticker;
+              if (cursor[0] < 0)
+                diff_ticker += 1000;
 
-	      for (i = 0; i < 3; ++i)
-		{
-		  if (!done[i])
-		    {
-		      fill_level = diff_ticker - time_delay[i];
-		      if (draw_score_bitmap
-			  (eprouvette[i], cursor[i], ellipse_h, fill_level))
-			{
-			  draw_sprite (screen, eprouvette[i], x[i], y - h[i]);
-			  if (fill_level > 0)
-			    {
-			      write_score (cursor[i], buf[i], fill_level);
-			      if (strcmp (buf[i], buf_old[i]) != 0)
-				{
-				  d[4 + i].dp = buf[i];
-				  d[4 + i].proc (MSG_DRAW, d + 4 + i, 0);
-				  LW_MACRO_STRCPY (buf_old[i], buf[i]);
-				}
-			    }
-			}
-		      else
-			{
-			  if (i == 1)
-			    {
-			      last_draw_done = 1;
-			    }
+              for (i = 0; i < 3; ++i)
+                {
+                  if (!done[i])
+                    {
+                      fill_level = diff_ticker - time_delay[i];
+                      if (draw_score_bitmap
+                          (eprouvette[i], cursor[i], ellipse_h, fill_level))
+                        {
+                          draw_sprite (screen, eprouvette[i], x[i], y - h[i]);
+                          if (fill_level > 0)
+                            {
+                              write_score (cursor[i], buf[i], fill_level);
+                              if (strcmp (buf[i], buf_old[i]) != 0)
+                                {
+                                  d[4 + i].dp = buf[i];
+                                  d[4 + i].proc (MSG_DRAW, d + 4 + i, 0);
+                                  LW_MACRO_STRCPY (buf_old[i], buf[i]);
+                                }
+                            }
+                        }
+                      else
+                        {
+                          if (i == 1)
+                            {
+                              last_draw_done = 1;
+                            }
 
-			  d[7 + i].dp = CURRENT_CURSOR[cursor[i]].name;
-			  d[7 + i].flags = 0;
-			  d[7 + i].proc (MSG_DRAW, d + 7 + i, 0);
+                          d[7 + i].dp = CURRENT_CURSOR[cursor[i]].name;
+                          d[7 + i].flags = 0;
+                          d[7 + i].proc (MSG_DRAW, d + 7 + i, 0);
 
-			  done[i] = 1;
-			}
-		    }
-		}
-	      unscare_mouse ();
+                          done[i] = 1;
+                        }
+                    }
+                }
+              unscare_mouse ();
 
-	      rest (10);
-	    }
-	  choix = shutdown_dialog (dp);
-	}
+              rest (10);
+            }
+          choix = shutdown_dialog (dp);
+        }
 
       if (last_draw_done)
-	{
-	  scare_mouse ();
-	  for (i = 0; i < 3; ++i)
-	    draw_sprite (screen, eprouvette[i], x[i], y - h[i]);
-	  unscare_mouse ();
+        {
+          scare_mouse ();
+          for (i = 0; i < 3; ++i)
+            draw_sprite (screen, eprouvette[i], x[i], y - h[i]);
+          unscare_mouse ();
 
-	  d[MENU_QUICK_QUIT].flags = D_EXIT;
-	  d[MENU_QUICK_PLAY].flags = D_EXIT;
-	  choix = my_do_dialog_no_clear (d,
-					 last_draw_done == 1 ? MENU_QUICK_BACK
-					 : choix);
-	  last_draw_done = 2;
-	}
+          d[MENU_QUICK_QUIT].flags = D_EXIT;
+          d[MENU_QUICK_PLAY].flags = D_EXIT;
+          choix = my_do_dialog_no_clear (d,
+                                         last_draw_done == 1 ? MENU_QUICK_BACK
+                                         : choix);
+          last_draw_done = 2;
+        }
 
       switch (choix)
-	{
-	case -1:
-	case MENU_QUICK_BACK:
-	  retour = 1;
-	  break;
-	case MENU_QUICK_MAIN:
-	  retour = MENU_TOP;
-	  break;
-	case MENU_QUICK_QUIT:
-	  if (confirm_quit ())
-	    retour = MENU_EXIT;
-	  else
-	    display_back_image ();
-	  break;
-	case MENU_QUICK_PLAY:
-	  retour = MENU_PLAY;
-	  break;
-	}
+        {
+        case -1:
+        case MENU_QUICK_BACK:
+          retour = 1;
+          break;
+        case MENU_QUICK_MAIN:
+          retour = MENU_TOP;
+          break;
+        case MENU_QUICK_QUIT:
+          if (confirm_quit ())
+            retour = MENU_EXIT;
+          else
+            display_back_image ();
+          break;
+        case MENU_QUICK_PLAY:
+          retour = MENU_PLAY;
+          break;
+        }
     }
 
   for (i = 0; i < 3; ++i)

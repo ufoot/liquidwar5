@@ -112,46 +112,46 @@ create_first_mesher (BITMAP * map)
   if (result != NULL)
     {
       for (i = 0; i < size; ++i)
-	{
-	  result[i].size = 1;
-	  result[i].corres = 3;
-	  for (j = 0; j < NB_DIRS; ++j)
-	    result[i].link[j] = NULL;
-	}
+        {
+          result[i].size = 1;
+          result[i].corres = 3;
+          for (j = 0; j < NB_DIRS; ++j)
+            result[i].link[j] = NULL;
+        }
 
       for (y = 0; y < h; ++y)
-	for (x = 0; x < w; ++x)
-	  result[y * w + x].used = (getpixel (map, x, y) == MESH_FG) ? 0 : 1;
+        for (x = 0; x < w; ++x)
+          result[y * w + x].used = (getpixel (map, x, y) == MESH_FG) ? 0 : 1;
 
       for (y = 1; y < h - 1; ++y)
-	for (x = 1; x < w - 1; ++x)
-	  {
-	    i = y * w + x;
+        for (x = 1; x < w - 1; ++x)
+          {
+            i = y * w + x;
 
-	    if (result[i].used)
-	      {
-		if (result[i - w].used)
-		  result[i].link[DIR_NNW] = result[i].link[DIR_NNE]
-		    = result + i - w;
-		if (result[i - w + 1].used)
-		  result[i].link[DIR_NE] = result + i - w + 1;
-		if (result[i + 1].used)
-		  result[i].link[DIR_ENE] = result[i].link[DIR_ESE]
-		    = result + i + 1;
-		if (result[i + w + 1].used)
-		  result[i].link[DIR_SE] = result + i + w + 1;
-		if (result[i + w].used)
-		  result[i].link[DIR_SSE] = result[i].link[DIR_SSW]
-		    = result + i + w;
-		if (result[i + w - 1].used)
-		  result[i].link[DIR_SW] = result + i + w - 1;
-		if (result[i - 1].used)
-		  result[i].link[DIR_WSW] = result[i].link[DIR_WNW]
-		    = result + i - 1;
-		if (result[i - w - 1].used)
-		  result[i].link[DIR_NW] = result + i - w - 1;
-	      }
-	  }
+            if (result[i].used)
+              {
+                if (result[i - w].used)
+                  result[i].link[DIR_NNW] = result[i].link[DIR_NNE]
+                    = result + i - w;
+                if (result[i - w + 1].used)
+                  result[i].link[DIR_NE] = result + i - w + 1;
+                if (result[i + 1].used)
+                  result[i].link[DIR_ENE] = result[i].link[DIR_ESE]
+                    = result + i + 1;
+                if (result[i + w + 1].used)
+                  result[i].link[DIR_SE] = result + i + w + 1;
+                if (result[i + w].used)
+                  result[i].link[DIR_SSE] = result[i].link[DIR_SSW]
+                    = result + i + w;
+                if (result[i + w - 1].used)
+                  result[i].link[DIR_SW] = result + i + w - 1;
+                if (result[i - 1].used)
+                  result[i].link[DIR_WSW] = result[i].link[DIR_WNW]
+                    = result + i - 1;
+                if (result[i - w - 1].used)
+                  result[i].link[DIR_NW] = result + i - w - 1;
+              }
+          }
     }
 
   return result;
@@ -175,56 +175,56 @@ group_mesher (MESHER * mesher, BITMAP * map, int step)
   for (y = 0; y < h - step; y += step * 2)
     for (x = 0; x < w - step; x += step * 2)
       {
-	i = y * w + x;
-	ne = mesher + i + step;
-	se = mesher + i + (w + 1) * step;
-	sw = mesher + i + w * step;
-	nw = mesher + i;
+        i = y * w + x;
+        ne = mesher + i + step;
+        se = mesher + i + (w + 1) * step;
+        sw = mesher + i + w * step;
+        nw = mesher + i;
 
-	if (ne->used && ne->size == step
-	    && se->used && se->size == step
-	    && sw->used && sw->size == step
-	    && nw->used && nw->size == step
-	    && ne->link[DIR_NNW] == ne->link[DIR_NNE]
-	    && ne->link[DIR_ENE] == ne->link[DIR_ESE]
-	    && se->link[DIR_ENE] == se->link[DIR_ESE]
-	    && se->link[DIR_SSE] == se->link[DIR_SSW]
-	    && sw->link[DIR_SSE] == sw->link[DIR_SSW]
-	    && sw->link[DIR_WSW] == sw->link[DIR_WNW]
-	    && nw->link[DIR_WSW] == nw->link[DIR_WNW]
-	    && nw->link[DIR_NNW] == nw->link[DIR_NNE]
-	    && ne->link[DIR_NE] != NULL
-	    && se->link[DIR_SE] != NULL
-	    && sw->link[DIR_SW] != NULL && nw->link[DIR_NW] != NULL)
-	  {
-	    ne->used = 0;
-	    se->used = 0;
-	    sw->used = 0;
+        if (ne->used && ne->size == step
+            && se->used && se->size == step
+            && sw->used && sw->size == step
+            && nw->used && nw->size == step
+            && ne->link[DIR_NNW] == ne->link[DIR_NNE]
+            && ne->link[DIR_ENE] == ne->link[DIR_ESE]
+            && se->link[DIR_ENE] == se->link[DIR_ESE]
+            && se->link[DIR_SSE] == se->link[DIR_SSW]
+            && sw->link[DIR_SSE] == sw->link[DIR_SSW]
+            && sw->link[DIR_WSW] == sw->link[DIR_WNW]
+            && nw->link[DIR_WSW] == nw->link[DIR_WNW]
+            && nw->link[DIR_NNW] == nw->link[DIR_NNE]
+            && ne->link[DIR_NE] != NULL
+            && se->link[DIR_SE] != NULL
+            && sw->link[DIR_SW] != NULL && nw->link[DIR_NW] != NULL)
+          {
+            ne->used = 0;
+            se->used = 0;
+            sw->used = 0;
 
-	    nw->size = step * 2;
-	    nw->link[DIR_NNE] = ne->link[DIR_NNE];
-	    nw->link[DIR_NE] = ne->link[DIR_NE];
-	    nw->link[DIR_ENE] = ne->link[DIR_ENE];
-	    nw->link[DIR_ESE] = se->link[DIR_ESE];
-	    nw->link[DIR_SE] = se->link[DIR_SE];
-	    nw->link[DIR_SSE] = se->link[DIR_SSE];
-	    nw->link[DIR_SSW] = sw->link[DIR_SSW];
-	    nw->link[DIR_SW] = sw->link[DIR_SW];
-	    nw->link[DIR_WSW] = sw->link[DIR_WSW];
+            nw->size = step * 2;
+            nw->link[DIR_NNE] = ne->link[DIR_NNE];
+            nw->link[DIR_NE] = ne->link[DIR_NE];
+            nw->link[DIR_ENE] = ne->link[DIR_ENE];
+            nw->link[DIR_ESE] = se->link[DIR_ESE];
+            nw->link[DIR_SE] = se->link[DIR_SE];
+            nw->link[DIR_SSE] = se->link[DIR_SSE];
+            nw->link[DIR_SSW] = sw->link[DIR_SSW];
+            nw->link[DIR_SW] = sw->link[DIR_SW];
+            nw->link[DIR_WSW] = sw->link[DIR_WSW];
 
-	    for (j = 0; j < NB_DIRS; ++j)
-	      for (k = 0; k < NB_DIRS; ++k)
-		{
-		  if (nw->link[j])
-		    {
-		      test = ((MESHER *) (nw->link[j]))->link[k];
-		      if (test == ne || test == se || test == sw)
-			((MESHER *) (nw->link[j]))->link[k] = nw;
-		    }
-		}
+            for (j = 0; j < NB_DIRS; ++j)
+              for (k = 0; k < NB_DIRS; ++k)
+                {
+                  if (nw->link[j])
+                    {
+                      test = ((MESHER *) (nw->link[j]))->link[k];
+                      if (test == ne || test == se || test == sw)
+                        ((MESHER *) (nw->link[j]))->link[k] = nw;
+                    }
+                }
 
-	    ++found;
-	  }
+            ++found;
+          }
       }
 
   return found;
@@ -256,25 +256,25 @@ mesher_to_mesh (MESHER * mesher, BITMAP * map, int *size, int *w, int *h)
     {
       j = 0;
       for (i = 0; i < mesher_size; ++i)
-	{
-	  if (mesher[i].used)
-	    {
-	      result[j].x = i % (*w);
-	      result[j].y = i / (*w);
-	      result[j].side.decal_for_dir = 0;
-	      result[j].side.size = mesher[i].size;
-	      for (k = 0; k < NB_DIRS; ++k)
-		result[j].link[k] = mesher[i].link[k];
-	      mesher[i].corres = j;
+        {
+          if (mesher[i].used)
+            {
+              result[j].x = i % (*w);
+              result[j].y = i / (*w);
+              result[j].side.decal_for_dir = 0;
+              result[j].side.size = mesher[i].size;
+              for (k = 0; k < NB_DIRS; ++k)
+                result[j].link[k] = mesher[i].link[k];
+              mesher[i].corres = j;
 
-	      j++;
-	    }
-	}
+              j++;
+            }
+        }
 
       for (j = 0; j < (*size); ++j)
-	for (k = 0; k < NB_DIRS; ++k)
-	  if ((temp = (result[j].link[k])) != NULL)
-	    result[j].link[k] = result + temp->corres;
+        for (k = 0; k < NB_DIRS; ++k)
+          if ((temp = (result[j].link[k])) != NULL)
+            result[j].link[k] = result + temp->corres;
     }
 
   return result;
@@ -293,10 +293,10 @@ reset_mesh (void)
   for (i = 0; i < CURRENT_MESH_SIZE; ++i)
     {
       for (j = 0; j < NB_TEAMS; ++j)
-	{
-	  CURRENT_MESH[i].info[j].state.dir = (i + j) % NB_DIRS;
-	  CURRENT_MESH[i].info[j].update.time = -1;
-	}
+        {
+          CURRENT_MESH[i].info[j].state.dir = (i + j) % NB_DIRS;
+          CURRENT_MESH[i].info[j].update.time = -1;
+        }
     }
 }
 
@@ -334,8 +334,8 @@ test_mesh (void)
     {
       test_one_mesh (CURRENT_MESH + i);
       for (k = 0; k < NB_DIRS; ++k)
-	if (CURRENT_MESH[i].link[k] != NULL)
-	  test_one_mesh (CURRENT_MESH[i].link[k]);
+        if (CURRENT_MESH[i].link[k] != NULL)
+          test_one_mesh (CURRENT_MESH[i].link[k]);
     }
 }
 
@@ -355,29 +355,29 @@ create_mesh (void)
 
   if ((map = lw_map_create_bicolor
        (CONFIG_LEVEL_MAP,
-	MESH_FG,
-	MESH_BG,
-	LW_NETWORK_ON,
-	LW_RANDOM_ON,
-	MIN_MAP_RES_W[LW_CONFIG_CURRENT_RULES.min_map_res],
-	MIN_MAP_RES_H[LW_CONFIG_CURRENT_RULES.min_map_res],
-	&zoom_factor)) != NULL)
+        MESH_FG,
+        MESH_BG,
+        LW_NETWORK_ON,
+        LW_RANDOM_ON,
+        MIN_MAP_RES_W[LW_CONFIG_CURRENT_RULES.min_map_res],
+        MIN_MAP_RES_H[LW_CONFIG_CURRENT_RULES.min_map_res],
+        &zoom_factor)) != NULL)
     {
       mesher = create_first_mesher (map);
       if (mesher != NULL)
-	{
-	  i = 1;
-	  while (i <= MESH_MAX_ELEM_SIZE / 2 && group_mesher (mesher, map, i))
-	    i *= 2;
-	  CURRENT_MESH = mesher_to_mesh (mesher, map,
-					 &CURRENT_MESH_SIZE,
-					 &CURRENT_AREA_W, &CURRENT_AREA_H);
-	  free_last_big_data_top ();
-	}
+        {
+          i = 1;
+          while (i <= MESH_MAX_ELEM_SIZE / 2 && group_mesher (mesher, map, i))
+            i *= 2;
+          CURRENT_MESH = mesher_to_mesh (mesher, map,
+                                         &CURRENT_MESH_SIZE,
+                                         &CURRENT_AREA_W, &CURRENT_AREA_H);
+          free_last_big_data_top ();
+        }
       destroy_bitmap (map);
     }
   if (CURRENT_MESH == NULL)
-    retour = -1;		/* pas assez de memoire */
+    retour = -1;                /* pas assez de memoire */
 
   return retour;
 }
@@ -405,29 +405,29 @@ create_mesh_bitmap (int mode)
   if (result)
     {
       for (i = 0; i < CURRENT_MESH_SIZE; ++i)
-	{
-	  switch (mode)
-	    {
-	    case 0:
-	      color = 0;
-	      j = CURRENT_MESH[i].side.size;
-	      while (j > 1)
-		{
-		  j /= 2;
-		  ++color;
-		}
-	      break;
-	    default:
-	      color = i;
-	    }
+        {
+          switch (mode)
+            {
+            case 0:
+              color = 0;
+              j = CURRENT_MESH[i].side.size;
+              while (j > 1)
+                {
+                  j /= 2;
+                  ++color;
+                }
+              break;
+            default:
+              color = i;
+            }
 
-	  rectfill (result, CURRENT_MESH[i].x,
-		    CURRENT_MESH[i].y,
-		    CURRENT_MESH[i].x +
-		    CURRENT_MESH[i].side.size - 1,
-		    CURRENT_MESH[i].y +
-		    CURRENT_MESH[i].side.size - 1, 96 + color % 32);
-	}
+          rectfill (result, CURRENT_MESH[i].x,
+                    CURRENT_MESH[i].y,
+                    CURRENT_MESH[i].x +
+                    CURRENT_MESH[i].side.size - 1,
+                    CURRENT_MESH[i].y +
+                    CURRENT_MESH[i].side.size - 1, 96 + color % 32);
+        }
     }
 
   return result;

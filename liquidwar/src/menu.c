@@ -126,7 +126,7 @@ main_menu (int fade_in)
   while (retour != MENU_EXIT)
     {
       for (i = 0; i < 6; ++i)
-	standard_button (d + i + 4, 0, i, 1, 6);
+        standard_button (d + i + 4, 0, i, 1, 6);
 
       quick_buttons (d);
       d[MENU_QUICK_BACK].flags = D_HIDDEN;
@@ -141,56 +141,56 @@ main_menu (int fade_in)
 
       choix = my_do_dialog (d, choix);
       switch (choix)
-	{
-	case -1:
-	case MENU_QUICK_QUIT:
-	  if (confirm_quit ())
-	    retour = MENU_EXIT;
-	  break;
-	case MENU_QUICK_PLAY:
-	  retour = MENU_PLAY;
-	  break;
-	case 4:
-	  LW_NETWORK_ON = 0;
-	  retour = play_sequence ();
-	  break;
-	case 5:
+        {
+        case -1:
+        case MENU_QUICK_QUIT:
+          if (confirm_quit ())
+            retour = MENU_EXIT;
+          break;
+        case MENU_QUICK_PLAY:
+          retour = MENU_PLAY;
+          break;
+        case 4:
+          LW_NETWORK_ON = 0;
+          retour = play_sequence ();
+          break;
+        case 5:
 #ifndef DOS
-	  retour = network_game ();
+          retour = network_game ();
 #else
-	  retour = error_no_network_support ();
+          retour = error_no_network_support ();
 #endif
-	  break;
-	case 6:
-	  retour = choose_map ();
-	  break;
-	case 7:
-	  retour = choose_teams ();
-	  break;
-	case 8:
-	  retour = options ();
-	  break;
-	case 9:
-	  retour = lw_about ();
-	  break;
-	}
+          break;
+        case 6:
+          retour = choose_map ();
+          break;
+        case 7:
+          retour = choose_teams ();
+          break;
+        case 8:
+          retour = options ();
+          break;
+        case 9:
+          retour = lw_about ();
+          break;
+        }
       /*
        * We handle the quick top-right "Play" button
        */
       if (retour == MENU_PLAY)
-	{
-	  if (LW_NETWORK_ON)
-	    {
+        {
+          if (LW_NETWORK_ON)
+            {
 #ifndef DOS
-	      retour = netplay_sequence ();
+              retour = netplay_sequence ();
 #else
-	      retour = play_sequence ();
+              retour = play_sequence ();
 #endif
-	    }
-	  else
-	    {
-	      retour = play_sequence ();
-	    }
-	}
+            }
+          else
+            {
+              retour = play_sequence ();
+            }
+        }
     }
 }

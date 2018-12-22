@@ -74,7 +74,7 @@ display_a_back_image (BITMAP * bmp)
 {
   scare_mouse ();
   stretch_blit (bmp, screen, 0, 0, bmp->w, bmp->h,
-		0, PAGE_FLIP_H, SCREEN_W, SCREEN_H);
+                0, PAGE_FLIP_H, SCREEN_W, SCREEN_H);
   unscare_mouse ();
 }
 

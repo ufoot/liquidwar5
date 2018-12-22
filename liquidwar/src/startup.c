@@ -187,9 +187,9 @@ set_bigdata_size (void)
     {
       bigd = get_argument_int (IDENT_MEM);
       if (bigd < 1)
-	bigd = 1;
+        bigd = 1;
       if (bigd > LW_STARTUP_MEM_MAX)
-	bigd = LW_STARTUP_MEM_MAX;
+        bigd = LW_STARTUP_MEM_MAX;
       STARTUP_BIG_DATA = bigd;
     }
 }
@@ -308,9 +308,9 @@ correct_path_dir (char *path)
     {
       c = path[l - 1];
       if (c == '/' || c == '\\')
-	{
-	  path[--l] = 0;
-	}
+        {
+          path[--l] = 0;
+        }
     }
 
   fix_filename_case (path);
@@ -341,20 +341,20 @@ set_path (void)
 #ifdef UNIX
       home_env = getenv ("HOME");
       if (home_env != NULL)
-	{
-	  LW_MACRO_SPRINTF1 (home_path, "%s/", home_env);
-	}
+        {
+          LW_MACRO_SPRINTF1 (home_path, "%s/", home_env);
+        }
       else
-	{
-	  home_env = "";
-	  LW_MACRO_STRCPY (home_path, home_env);
-	}
+        {
+          home_env = "";
+          LW_MACRO_STRCPY (home_path, home_env);
+        }
 #else
       home_env = "";
       LW_MACRO_STRCPY (home_path, home_env);
 #endif
       LW_MACRO_SPRINTF2 (STARTUP_CFG_PATH, "%s%s", home_path,
-			 DEFAULT_CFG_PATH);
+                         DEFAULT_CFG_PATH);
     }
 
   LW_MACRO_STRCPY (STARTUP_LOG_PATH, DEFAULT_LOG_PATH);
@@ -429,7 +429,7 @@ set_metaserver (void)
   if (exist_argument_value (IDENT_METASERVER))
     {
       LW_MACRO_STRCPY (STARTUP_METASERVER,
-		       get_argument_str (IDENT_METASERVER));
+                       get_argument_str (IDENT_METASERVER));
     }
   else
     {

@@ -63,25 +63,25 @@
 /*==================================================================*/
 
 extern void LW_ASM_FUNC boost_gradient_down_2 (MESH * first,
-					       int size, int offset);
+                                               int size, int offset);
 extern void LW_ASM_FUNC boost_gradient_down_3 (MESH * first,
-					       int size, int offset);
+                                               int size, int offset);
 extern void LW_ASM_FUNC boost_gradient_down_4 (MESH * first,
-					       int size, int offset);
+                                               int size, int offset);
 extern void LW_ASM_FUNC boost_gradient_down_5 (MESH * first,
-					       int size, int offset);
+                                               int size, int offset);
 extern void LW_ASM_FUNC boost_gradient_down_6 (MESH * first,
-					       int size, int offset);
+                                               int size, int offset);
 
 extern void LW_ASM_FUNC boost_gradient_up_2 (MESH * first,
-					     int size, int offset);
+                                             int size, int offset);
 extern void LW_ASM_FUNC boost_gradient_up_3 (MESH * first,
-					     int size, int offset);
+                                             int size, int offset);
 extern void LW_ASM_FUNC boost_gradient_up_4 (MESH * first,
-					     int size, int offset);
+                                             int size, int offset);
 extern void LW_ASM_FUNC boost_gradient_up_5 (MESH * first,
-					     int size, int offset);
+                                             int size, int offset);
 extern void LW_ASM_FUNC boost_gradient_up_6 (MESH * first,
-					     int size, int offset);
+                                             int size, int offset);
 
 #endif

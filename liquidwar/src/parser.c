@@ -99,7 +99,7 @@ read_command_line (int argc, char **argv)
   while (*str)
     {
       if ((*str) == '/' || (*str) == '\\')
-	EXECUTABLE_NAME = (str + 1);
+        EXECUTABLE_NAME = (str + 1);
       str++;
     }
 
@@ -107,19 +107,19 @@ read_command_line (int argc, char **argv)
     {
       str = argv[i];
       if (is_arg_marker (str[0]))
-	{
-	  ARGUMENT_NAME[j] = str + 1;
-	  if (i < argc - 1)
-	    {
-	      str = argv[i + 1];
-	      if (!is_arg_marker (str[0]))
-		{
-		  ARGUMENT_VALUE[j] = str;
-		  i++;
-		}
-	    }
-	  j++;
-	}
+        {
+          ARGUMENT_NAME[j] = str + 1;
+          if (i < argc - 1)
+            {
+              str = argv[i + 1];
+              if (!is_arg_marker (str[0]))
+                {
+                  ARGUMENT_VALUE[j] = str;
+                  i++;
+                }
+            }
+          j++;
+        }
     }
 }
 

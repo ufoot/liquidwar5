@@ -94,16 +94,16 @@ lw_exec2_run (char *file, char *commandline)
     startupinfo.cb = sizeof (STARTUPINFO);
     startupinfo.dwFlags = STARTF_USESHOWWINDOW;
     startupinfo.wShowWindow = SW_HIDE;
-    result = CreateProcess (file,	// lpApplicationName
-			    commandline,	// lpCommandLine
-			    NULL,	// lpProcessAttributes
-			    NULL,	// lpThreadAttributes
-			    FALSE,	// bInheritHandles
-			    CREATE_NO_WINDOW,	// dwCreationFlags
-			    NULL,	// lpEnvironment
-			    NULL,	// lpCurrentDirectory
-			    &startupinfo,	// lpStartupInfo
-			    &process_information	// lpProcessInformation
+    result = CreateProcess (file,       // lpApplicationName
+                            commandline,        // lpCommandLine
+                            NULL,       // lpProcessAttributes
+                            NULL,       // lpThreadAttributes
+                            FALSE,      // bInheritHandles
+                            CREATE_NO_WINDOW,   // dwCreationFlags
+                            NULL,       // lpEnvironment
+                            NULL,       // lpCurrentDirectory
+                            &startupinfo,       // lpStartupInfo
+                            &process_information        // lpProcessInformation
       );
   }
 #endif

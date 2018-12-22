@@ -119,50 +119,50 @@ lw_netconf_send (int *sock, LW_NETCONF * config)
     {
       LW_MACRO_SPRINTF1 (buffer, "%d", config->fighter_attack);
       if (lw_sock_send_str (sock, buffer))
-	{
-	  LW_MACRO_SPRINTF1 (buffer, "%d", config->fighter_defense);
-	  if (lw_sock_send_str (sock, buffer))
-	    {
-	      LW_MACRO_SPRINTF1 (buffer, "%d", config->fighter_new_health);
-	      if (lw_sock_send_str (sock, buffer))
-		{
-		  LW_MACRO_SPRINTF1 (buffer, "%d", config->number_influence);
-		  if (lw_sock_send_str (sock, buffer))
-		    {
-		      LW_MACRO_SPRINTF1 (buffer, "%d",
-					 config->fighter_number);
-		      if (lw_sock_send_str (sock, buffer))
-			{
-			  LW_MACRO_SPRINTF1 (buffer, "%d", config->game_time);
-			  if (lw_sock_send_str (sock, buffer))
-			    {
-			      LW_MACRO_SPRINTF1 (buffer, "%d",
-						 config->cpu_advantage);
-			      if (lw_sock_send_str (sock, buffer))
-				{
-				  LW_MACRO_SPRINTF1 (buffer, "%d",
-						     config->cpu_vs_human);
-				  if (lw_sock_send_str (sock, buffer))
-				    {
-				      LW_MACRO_SPRINTF1 (buffer, "%d",
-							 config->asm_algorithm);
-				      if (lw_sock_send_str (sock, buffer))
-					{
-					  LW_MACRO_SPRINTF1 (buffer, "%d",
-							     config->min_map_res);
-					  if (lw_sock_send_str (sock, buffer))
-					    {
-					      result = 1;
-					    }
-					}
-				    }
-				}
-			    }
-			}
-		    }
-		}
-	    }
-	}
+        {
+          LW_MACRO_SPRINTF1 (buffer, "%d", config->fighter_defense);
+          if (lw_sock_send_str (sock, buffer))
+            {
+              LW_MACRO_SPRINTF1 (buffer, "%d", config->fighter_new_health);
+              if (lw_sock_send_str (sock, buffer))
+                {
+                  LW_MACRO_SPRINTF1 (buffer, "%d", config->number_influence);
+                  if (lw_sock_send_str (sock, buffer))
+                    {
+                      LW_MACRO_SPRINTF1 (buffer, "%d",
+                                         config->fighter_number);
+                      if (lw_sock_send_str (sock, buffer))
+                        {
+                          LW_MACRO_SPRINTF1 (buffer, "%d", config->game_time);
+                          if (lw_sock_send_str (sock, buffer))
+                            {
+                              LW_MACRO_SPRINTF1 (buffer, "%d",
+                                                 config->cpu_advantage);
+                              if (lw_sock_send_str (sock, buffer))
+                                {
+                                  LW_MACRO_SPRINTF1 (buffer, "%d",
+                                                     config->cpu_vs_human);
+                                  if (lw_sock_send_str (sock, buffer))
+                                    {
+                                      LW_MACRO_SPRINTF1 (buffer, "%d",
+                                                         config->asm_algorithm);
+                                      if (lw_sock_send_str (sock, buffer))
+                                        {
+                                          LW_MACRO_SPRINTF1 (buffer, "%d",
+                                                             config->min_map_res);
+                                          if (lw_sock_send_str (sock, buffer))
+                                            {
+                                              result = 1;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
   return result;
@@ -184,49 +184,49 @@ lw_netconf_recv (int *sock, LW_NETCONF * config)
     {
       config->cursor_increase_speed = atoi (buffer);
       if (lw_sock_recv_str (sock, buffer))
-	{
-	  config->fighter_attack = atoi (buffer);
-	  if (lw_sock_recv_str (sock, buffer))
-	    {
-	      config->fighter_defense = atoi (buffer);
-	      if (lw_sock_recv_str (sock, buffer))
-		{
-		  config->fighter_new_health = atoi (buffer);
-		  if (lw_sock_recv_str (sock, buffer))
-		    {
-		      config->number_influence = atoi (buffer);
-		      if (lw_sock_recv_str (sock, buffer))
-			{
-			  config->fighter_number = atoi (buffer);
-			  if (lw_sock_recv_str (sock, buffer))
-			    {
-			      config->game_time = atoi (buffer);
-			      if (lw_sock_recv_str (sock, buffer))
-				{
-				  config->cpu_advantage = atoi (buffer);
-				  if (lw_sock_recv_str (sock, buffer))
-				    {
-				      config->cpu_vs_human = atoi (buffer);
-				      if (lw_sock_recv_str (sock, buffer))
-					{
-					  config->asm_algorithm =
-					    atoi (buffer);
-					  if (lw_sock_recv_str (sock, buffer))
-					    {
-					      config->min_map_res =
-						atoi (buffer);
+        {
+          config->fighter_attack = atoi (buffer);
+          if (lw_sock_recv_str (sock, buffer))
+            {
+              config->fighter_defense = atoi (buffer);
+              if (lw_sock_recv_str (sock, buffer))
+                {
+                  config->fighter_new_health = atoi (buffer);
+                  if (lw_sock_recv_str (sock, buffer))
+                    {
+                      config->number_influence = atoi (buffer);
+                      if (lw_sock_recv_str (sock, buffer))
+                        {
+                          config->fighter_number = atoi (buffer);
+                          if (lw_sock_recv_str (sock, buffer))
+                            {
+                              config->game_time = atoi (buffer);
+                              if (lw_sock_recv_str (sock, buffer))
+                                {
+                                  config->cpu_advantage = atoi (buffer);
+                                  if (lw_sock_recv_str (sock, buffer))
+                                    {
+                                      config->cpu_vs_human = atoi (buffer);
+                                      if (lw_sock_recv_str (sock, buffer))
+                                        {
+                                          config->asm_algorithm =
+                                            atoi (buffer);
+                                          if (lw_sock_recv_str (sock, buffer))
+                                            {
+                                              config->min_map_res =
+                                                atoi (buffer);
 
-					      result = 1;
-					    }
-					}
-				    }
-				}
-			    }
-			}
-		    }
-		}
-	    }
-	}
+                                              result = 1;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
   return result;

@@ -95,36 +95,36 @@ lw_netmap_send (int *sock, void *netmap)
   if (lw_sock_send_buffer (sock, ptr, 8))
     {
       if (lw_sock_send_buffer (sock, ptr + 8, LW_MAP_SYSTEM_NAME_SIZE))
-	{
-	  if (lw_sock_send_buffer
-	      (sock, ptr + 8 + LW_MAP_SYSTEM_NAME_SIZE,
-	       LW_MAP_READABLE_NAME_SIZE))
-	    {
-	      lw_serial_get_map_header (netmap, &size, NULL, NULL);
+        {
+          if (lw_sock_send_buffer
+              (sock, ptr + 8 + LW_MAP_SYSTEM_NAME_SIZE,
+               LW_MAP_READABLE_NAME_SIZE))
+            {
+              lw_serial_get_map_header (netmap, &size, NULL, NULL);
 
-	      result = 1;
-	      sent = 0;
-	      while (sent < size && result)
-		{
-		  to_send = size - sent;
-		  if (to_send > LW_NETMAP_CHUNK_SIZE)
-		    {
-		      to_send = LW_NETMAP_CHUNK_SIZE;
-		    }
-		  if (lw_sock_send_buffer
-		      (sock,
-		       ptr + 8 + LW_MAP_SYSTEM_NAME_SIZE +
-		       LW_MAP_READABLE_NAME_SIZE + sent, to_send))
-		    {
-		      sent += to_send;
-		    }
-		  else
-		    {
-		      result = 0;
-		    }
-		}
-	    }
-	}
+              result = 1;
+              sent = 0;
+              while (sent < size && result)
+                {
+                  to_send = size - sent;
+                  if (to_send > LW_NETMAP_CHUNK_SIZE)
+                    {
+                      to_send = LW_NETMAP_CHUNK_SIZE;
+                    }
+                  if (lw_sock_send_buffer
+                      (sock,
+                       ptr + 8 + LW_MAP_SYSTEM_NAME_SIZE +
+                       LW_MAP_READABLE_NAME_SIZE + sent, to_send))
+                    {
+                      sent += to_send;
+                    }
+                  else
+                    {
+                      result = 0;
+                    }
+                }
+            }
+        }
     }
 
   return result;
@@ -155,54 +155,54 @@ lw_netmap_recv (int *sock, void **netmap)
   if (lw_sock_recv_buffer (sock, buffer, 8))
     {
       if (lw_sock_recv_buffer (sock, buffer + 8, LW_MAP_SYSTEM_NAME_SIZE))
-	{
-	  if (lw_sock_recv_buffer
-	      (sock, buffer + 8 + LW_MAP_SYSTEM_NAME_SIZE,
-	       LW_MAP_READABLE_NAME_SIZE))
-	    {
-	      lw_serial_get_map_header ((void *) buffer, &size, &w, &h);
+        {
+          if (lw_sock_recv_buffer
+              (sock, buffer + 8 + LW_MAP_SYSTEM_NAME_SIZE,
+               LW_MAP_READABLE_NAME_SIZE))
+            {
+              lw_serial_get_map_header ((void *) buffer, &size, &w, &h);
 
-	      /*
-	       * A map under 3 bytes is reasonably not a "real" map...
-	       */
-	      if (size >= 10)
-		{
-		  ptr =
-		    malloc (size + 8 + LW_MAP_SYSTEM_NAME_SIZE +
-			    LW_MAP_READABLE_NAME_SIZE);
-		  if (ptr != NULL)
-		    {
-		      memcpy (ptr, buffer,
-			      8 + LW_MAP_SYSTEM_NAME_SIZE +
-			      LW_MAP_READABLE_NAME_SIZE);
+              /*
+               * A map under 3 bytes is reasonably not a "real" map...
+               */
+              if (size >= 10)
+                {
+                  ptr =
+                    malloc (size + 8 + LW_MAP_SYSTEM_NAME_SIZE +
+                            LW_MAP_READABLE_NAME_SIZE);
+                  if (ptr != NULL)
+                    {
+                      memcpy (ptr, buffer,
+                              8 + LW_MAP_SYSTEM_NAME_SIZE +
+                              LW_MAP_READABLE_NAME_SIZE);
 
-		      result = 1;
-		      received = 0;
-		      while (received < size && result)
-			{
-			  to_receive = size - received;
-			  if (to_receive > LW_NETMAP_CHUNK_SIZE)
-			    {
-			      to_receive = LW_NETMAP_CHUNK_SIZE;
-			    }
+                      result = 1;
+                      received = 0;
+                      while (received < size && result)
+                        {
+                          to_receive = size - received;
+                          if (to_receive > LW_NETMAP_CHUNK_SIZE)
+                            {
+                              to_receive = LW_NETMAP_CHUNK_SIZE;
+                            }
 
-			  if (lw_sock_recv_buffer
-			      (sock,
-			       ptr + 8 + LW_MAP_SYSTEM_NAME_SIZE +
-			       LW_MAP_READABLE_NAME_SIZE + received,
-			       to_receive))
-			    {
-			      received += to_receive;
-			    }
-			  else
-			    {
-			      result = 0;
-			    }
-			}
-		    }
-		}
-	    }
-	}
+                          if (lw_sock_recv_buffer
+                              (sock,
+                               ptr + 8 + LW_MAP_SYSTEM_NAME_SIZE +
+                               LW_MAP_READABLE_NAME_SIZE + received,
+                               to_receive))
+                            {
+                              received += to_receive;
+                            }
+                          else
+                            {
+                              result = 0;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
   (*netmap) = (void *) ptr;

@@ -117,9 +117,9 @@ lw_sock_send_str (int *sock, char *str)
   while (limit_ticker > get_ticker () && !result && *sock >= 0)
     {
       if (lw_sock_send_str_ex (sock, str))
-	{
-	  result = 1;
-	}
+        {
+          result = 1;
+        }
     }
 
   return result;
@@ -141,9 +141,9 @@ lw_sock_recv_str (int *sock, char *str)
   while (limit_ticker > get_ticker () && !result && *sock >= 0)
     {
       if (lw_sock_recv_str_ex (sock, str))
-	{
-	  result = 1;
-	}
+        {
+          result = 1;
+        }
     }
 
   return result;
@@ -165,9 +165,9 @@ lw_sock_send_buffer (int *sock, char *buffer, int len)
   while (limit_ticker > get_ticker () && !result && *sock >= 0)
     {
       if (lw_sock_send_buffer_ex (sock, buffer, len))
-	{
-	  result = 1;
-	}
+        {
+          result = 1;
+        }
     }
 
   return result;
@@ -189,12 +189,12 @@ lw_sock_recv_buffer (int *sock, char *buffer, int len)
   while (limit_ticker > get_ticker () && !result && *sock >= 0)
     {
       if (lw_sock_peek_ex (sock, len))
-	{
-	  if (lw_sock_recv_buffer_ex (sock, buffer, len))
-	    {
-	      result = 1;
-	    }
-	}
+        {
+          if (lw_sock_recv_buffer_ex (sock, buffer, len))
+            {
+              result = 1;
+            }
+        }
     }
 
   return result;

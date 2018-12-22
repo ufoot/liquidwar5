@@ -226,35 +226,35 @@ set_resolution (int res, int flip, int fullscreen, int *flip_enabled)
   for (toggle = 0; toggle < 2; ++toggle, fullscreen = !fullscreen)
     {
       for (i = res; i >= 0 && ret; --i)
-	{
-	  if (flip)
-	    {
-	      ret = try_one_mode (i, 1, fullscreen);
-	      if (flip_enabled && !ret)
-		{
-		  *flip_enabled = 1;
-		}
-	    }
-	  if (ret)
-	    {
-	      ret = try_one_mode (i, 0, fullscreen);
-	    }
-	}
+        {
+          if (flip)
+            {
+              ret = try_one_mode (i, 1, fullscreen);
+              if (flip_enabled && !ret)
+                {
+                  *flip_enabled = 1;
+                }
+            }
+          if (ret)
+            {
+              ret = try_one_mode (i, 0, fullscreen);
+            }
+        }
       for (i = res + 1; i < 5 && ret; ++i)
-	{
-	  if (flip)
-	    {
-	      ret = try_one_mode (i, 1, fullscreen);
-	      if (flip_enabled && !ret)
-		{
-		  *flip_enabled = 1;
-		}
-	    }
-	  if (ret)
-	    {
-	      ret = try_one_mode (i, 0, fullscreen);
-	    }
-	}
+        {
+          if (flip)
+            {
+              ret = try_one_mode (i, 1, fullscreen);
+              if (flip_enabled && !ret)
+                {
+                  *flip_enabled = 1;
+                }
+            }
+          if (ret)
+            {
+              ret = try_one_mode (i, 0, fullscreen);
+            }
+        }
     }
 
   if (!ret)
@@ -262,13 +262,13 @@ set_resolution (int res, int flip, int fullscreen, int *flip_enabled)
       set_palette (black_palette);
 
       if (SCREEN_W >= 640)
-	{
-	  font = BIG_FONT;
-	}
+        {
+          font = BIG_FONT;
+        }
       else
-	{
-	  font = SMALL_FONT;
-	}
+        {
+          font = SMALL_FONT;
+        }
 
       lw_mouse_show ();
 

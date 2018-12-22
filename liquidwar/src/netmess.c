@@ -149,9 +149,9 @@ read_word (char **message)
       begin = *message;
 
       while ((**message) != quote_char && (**message) != '\0')
-	{
-	  ++(*message);
-	}
+        {
+          ++(*message);
+        }
 
       len = (*message) - begin;
 
@@ -162,10 +162,10 @@ read_word (char **message)
       begin = *message;
 
       while ((!isspace (**message)) && (**message) != ','
-	     && (**message) != '\0')
-	{
-	  ++(*message);
-	}
+             && (**message) != '\0')
+        {
+          ++(*message);
+        }
 
       len = (*message) - begin;
     }
@@ -174,15 +174,15 @@ read_word (char **message)
     {
       result = (char *) malloc (len + 1);
       if (result != NULL)
-	{
-	  if (len > 0)
-	    {
-	      strncpy (result, begin, len);
-	    }
-	  result[len] = 0;
+        {
+          if (len > 0)
+            {
+              strncpy (result, begin, len);
+            }
+          result[len] = 0;
 
-	  lw_netmess_cleanup_arg (result);
-	}
+          lw_netmess_cleanup_arg (result);
+        }
     }
   eat_space (message);
 
@@ -202,110 +202,110 @@ get_code (char **message)
   if (read_separator (message) == 0)
     {
       if ((command = read_word (message)) != NULL)
-	{
-	  if (strcasecmp (command, LW_NETMESS_TEXT_OK) == 0)
-	    {
-	      result = LW_NETMESS_CODE_OK;
-	    }
-	  else if (strcasecmp (command, LW_NETMESS_TEXT_ERR) == 0)
-	    {
-	      result = LW_NETMESS_CODE_ERR;
-	    }
-	  else if (strcasecmp (command, LW_NETMESS_TEXT_PING) == 0)
-	    {
-	      result = LW_NETMESS_CODE_PING;
-	    }
-	  else if (strcasecmp (command, LW_NETMESS_TEXT_ECHO) == 0)
-	    {
-	      result = LW_NETMESS_CODE_ECHO;
-	    }
-	  else if (strcasecmp (command, LW_NETMESS_TEXT_PROGRAM) == 0)
-	    {
-	      result = LW_NETMESS_CODE_PROGRAM;
-	    }
-	  else if (strcasecmp (command, LW_NETMESS_TEXT_VERSION) == 0)
-	    {
-	      result = LW_NETMESS_CODE_VERSION;
-	    }
-	  else if (strcasecmp (command, LW_NETMESS_TEXT_PASSWORD) == 0)
-	    {
-	      result = LW_NETMESS_CODE_PASSWORD;
-	    }
-	  else if (strcasecmp (command, LW_NETMESS_TEXT_FREE) == 0)
-	    {
-	      result = LW_NETMESS_CODE_FREE;
-	    }
-	  else if (strcasecmp (command, LW_NETMESS_TEXT_TEAM) == 0)
-	    {
-	      result = LW_NETMESS_CODE_TEAM;
-	    }
-	  else if (strcasecmp (command, LW_NETMESS_TEXT_READY) == 0)
-	    {
-	      result = LW_NETMESS_CODE_READY;
-	    }
-	  else if (strcasecmp (command, LW_NETMESS_TEXT_START) == 0)
-	    {
-	      result = LW_NETMESS_CODE_START;
-	    }
-	  else if (strcasecmp (command, LW_NETMESS_TEXT_WAITING) == 0)
-	    {
-	      result = LW_NETMESS_CODE_WAITING;
-	    }
-	  else if (strcasecmp (command, LW_NETMESS_TEXT_NEXT) == 0)
-	    {
-	      result = LW_NETMESS_CODE_NEXT;
-	    }
-	  else if (strcasecmp (command, LW_NETMESS_TEXT_TEAMSTARTINFO) == 0)
-	    {
-	      result = LW_NETMESS_CODE_TEAMSTARTINFO;
-	    }
-	  else if (strcasecmp (command, LW_NETMESS_TEXT_WHO) == 0)
-	    {
-	      result = LW_NETMESS_CODE_WHO;
-	    }
-	  else if (strcasecmp (command, LW_NETMESS_TEXT_LOCAL) == 0)
-	    {
-	      result = LW_NETMESS_CODE_LOCAL;
-	    }
-	  else if (strcasecmp (command, LW_NETMESS_TEXT_NETWORK) == 0)
-	    {
-	      result = LW_NETMESS_CODE_NETWORK;
-	    }
-	  else if (strcasecmp (command, LW_NETMESS_TEXT_NOBODY) == 0)
-	    {
-	      result = LW_NETMESS_CODE_NOBODY;
-	    }
-	  else if (strcasecmp (command, LW_NETMESS_TEXT_SENDMAP) == 0)
-	    {
-	      result = LW_NETMESS_CODE_SENDMAP;
-	    }
-	  else if (strcasecmp (command, LW_NETMESS_TEXT_RECVMAP) == 0)
-	    {
-	      result = LW_NETMESS_CODE_RECVMAP;
-	    }
-	  else if (strcasecmp (command, LW_NETMESS_TEXT_SENDCONFIG) == 0)
-	    {
-	      result = LW_NETMESS_CODE_SENDCONFIG;
-	    }
-	  else if (strcasecmp (command, LW_NETMESS_TEXT_RECVCONFIG) == 0)
-	    {
-	      result = LW_NETMESS_CODE_RECVCONFIG;
-	    }
-	  else if (strcasecmp (command, LW_NETMESS_TEXT_CHATTALK) == 0)
-	    {
-	      result = LW_NETMESS_CODE_CHATTALK;
-	    }
-	  else if (strcasecmp (command, LW_NETMESS_TEXT_CHATLISTEN) == 0)
-	    {
-	      result = LW_NETMESS_CODE_CHATLISTEN;
-	    }
-	  else if (strcasecmp (command, LW_NETMESS_TEXT_QUIT) == 0)
-	    {
-	      result = LW_NETMESS_CODE_QUIT;
-	    }
+        {
+          if (strcasecmp (command, LW_NETMESS_TEXT_OK) == 0)
+            {
+              result = LW_NETMESS_CODE_OK;
+            }
+          else if (strcasecmp (command, LW_NETMESS_TEXT_ERR) == 0)
+            {
+              result = LW_NETMESS_CODE_ERR;
+            }
+          else if (strcasecmp (command, LW_NETMESS_TEXT_PING) == 0)
+            {
+              result = LW_NETMESS_CODE_PING;
+            }
+          else if (strcasecmp (command, LW_NETMESS_TEXT_ECHO) == 0)
+            {
+              result = LW_NETMESS_CODE_ECHO;
+            }
+          else if (strcasecmp (command, LW_NETMESS_TEXT_PROGRAM) == 0)
+            {
+              result = LW_NETMESS_CODE_PROGRAM;
+            }
+          else if (strcasecmp (command, LW_NETMESS_TEXT_VERSION) == 0)
+            {
+              result = LW_NETMESS_CODE_VERSION;
+            }
+          else if (strcasecmp (command, LW_NETMESS_TEXT_PASSWORD) == 0)
+            {
+              result = LW_NETMESS_CODE_PASSWORD;
+            }
+          else if (strcasecmp (command, LW_NETMESS_TEXT_FREE) == 0)
+            {
+              result = LW_NETMESS_CODE_FREE;
+            }
+          else if (strcasecmp (command, LW_NETMESS_TEXT_TEAM) == 0)
+            {
+              result = LW_NETMESS_CODE_TEAM;
+            }
+          else if (strcasecmp (command, LW_NETMESS_TEXT_READY) == 0)
+            {
+              result = LW_NETMESS_CODE_READY;
+            }
+          else if (strcasecmp (command, LW_NETMESS_TEXT_START) == 0)
+            {
+              result = LW_NETMESS_CODE_START;
+            }
+          else if (strcasecmp (command, LW_NETMESS_TEXT_WAITING) == 0)
+            {
+              result = LW_NETMESS_CODE_WAITING;
+            }
+          else if (strcasecmp (command, LW_NETMESS_TEXT_NEXT) == 0)
+            {
+              result = LW_NETMESS_CODE_NEXT;
+            }
+          else if (strcasecmp (command, LW_NETMESS_TEXT_TEAMSTARTINFO) == 0)
+            {
+              result = LW_NETMESS_CODE_TEAMSTARTINFO;
+            }
+          else if (strcasecmp (command, LW_NETMESS_TEXT_WHO) == 0)
+            {
+              result = LW_NETMESS_CODE_WHO;
+            }
+          else if (strcasecmp (command, LW_NETMESS_TEXT_LOCAL) == 0)
+            {
+              result = LW_NETMESS_CODE_LOCAL;
+            }
+          else if (strcasecmp (command, LW_NETMESS_TEXT_NETWORK) == 0)
+            {
+              result = LW_NETMESS_CODE_NETWORK;
+            }
+          else if (strcasecmp (command, LW_NETMESS_TEXT_NOBODY) == 0)
+            {
+              result = LW_NETMESS_CODE_NOBODY;
+            }
+          else if (strcasecmp (command, LW_NETMESS_TEXT_SENDMAP) == 0)
+            {
+              result = LW_NETMESS_CODE_SENDMAP;
+            }
+          else if (strcasecmp (command, LW_NETMESS_TEXT_RECVMAP) == 0)
+            {
+              result = LW_NETMESS_CODE_RECVMAP;
+            }
+          else if (strcasecmp (command, LW_NETMESS_TEXT_SENDCONFIG) == 0)
+            {
+              result = LW_NETMESS_CODE_SENDCONFIG;
+            }
+          else if (strcasecmp (command, LW_NETMESS_TEXT_RECVCONFIG) == 0)
+            {
+              result = LW_NETMESS_CODE_RECVCONFIG;
+            }
+          else if (strcasecmp (command, LW_NETMESS_TEXT_CHATTALK) == 0)
+            {
+              result = LW_NETMESS_CODE_CHATTALK;
+            }
+          else if (strcasecmp (command, LW_NETMESS_TEXT_CHATLISTEN) == 0)
+            {
+              result = LW_NETMESS_CODE_CHATLISTEN;
+            }
+          else if (strcasecmp (command, LW_NETMESS_TEXT_QUIT) == 0)
+            {
+              result = LW_NETMESS_CODE_QUIT;
+            }
 
-	  free (command);
-	}
+          free (command);
+        }
     }
 
   return result;
@@ -327,25 +327,25 @@ get_argc (char *message)
   if (read_separator (&message) == 0)
     {
       if (message[0] == '\0')
-	{
-	  null_arg = 1;
-	}
+        {
+          null_arg = 1;
+        }
 
       word = read_word (&message);
       if (word != NULL)
-	{
-	  free (word);
-	  result = 1;
-	  while (read_separator (&message) == 1)
-	    {
-	      word = read_word (&message);
-	      if (word != NULL)
-		{
-		  free (word);
-		  result++;
-		}
-	    }
-	}
+        {
+          free (word);
+          result = 1;
+          while (read_separator (&message) == 1)
+            {
+              word = read_word (&message);
+              if (word != NULL)
+                {
+                  free (word);
+                  result++;
+                }
+            }
+        }
     }
 
   if (result == 1 && null_arg)
@@ -371,28 +371,28 @@ get_argv (char *message, int argc)
     {
       result = (char **) malloc (argc * sizeof (char *));
       if (result != NULL)
-	{
-	  word = read_word (&message);
-	  if (word != NULL)
-	    {
-	      result[i] = word;
-	      i = 1;
-	      while (i < argc && read_separator (&message) == 1)
-		{
-		  word = read_word (&message);
-		  if (word != NULL)
-		    {
-		      result[i] = word;
-		      i++;
-		    }
-		}
-	    }
-	}
+        {
+          word = read_word (&message);
+          if (word != NULL)
+            {
+              result[i] = word;
+              i = 1;
+              while (i < argc && read_separator (&message) == 1)
+                {
+                  word = read_word (&message);
+                  if (word != NULL)
+                    {
+                      result[i] = word;
+                      i++;
+                    }
+                }
+            }
+        }
       if (i != argc)
-	{
-	  free (result);
-	  result = NULL;
-	}
+        {
+          free (result);
+          result = NULL;
+        }
     }
 
   return result;
@@ -436,16 +436,16 @@ lw_netmess_free (LW_NETMESS * ptr)
   if (ptr != NULL)
     {
       if (ptr->argv != NULL)
-	{
-	  for (i = 0; i < ptr->argc; ++i)
-	    {
-	      free (ptr->argv[i]);
-	    }
-	  if (ptr->argc > 0)
-	    {
-	      free (ptr->argv);
-	    }
-	}
+        {
+          for (i = 0; i < ptr->argc; ++i)
+            {
+              free (ptr->argv[i]);
+            }
+          if (ptr->argc > 0)
+            {
+              free (ptr->argv);
+            }
+        }
     }
 }
 
@@ -464,9 +464,9 @@ lw_netmess_cleanup_arg (char *string)
   while ((c = *pos) != '\0')
     {
       if (c < 32 || c > 127 || strchr ("'\",", c))
-	{
-	  (*pos) = ' ';
-	}
+        {
+          (*pos) = ' ';
+        }
       pos++;
     }
 }

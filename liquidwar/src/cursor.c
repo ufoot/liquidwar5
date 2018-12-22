@@ -160,24 +160,24 @@ apply_all_cursor (void)
   for (i = 0; i < NB_TEAMS; ++i)
     if (CURRENT_CURSOR[i].active)
       {
-	/*
-	 * x and y hold the position of the cursor
-	 */
-	x = CURRENT_CURSOR[i].x;
-	y = CURRENT_CURSOR[i].y;
-	/*
-	 * sanity check, in case the cursor is not on a valid part
-	 * of the map. It should not happen but I hate protection
-	 * faults!
-	 */
-	if ((temp = CURRENT_AREA[y * CURRENT_AREA_W + x].mesh) != NULL)
-	  /*
-	   * we just poke the value of the cursor into its
-	   * corresponding position in the map
-	   * very simple, eh?
-	   */
-	  temp->info[CURRENT_CURSOR[i].team].state.grad
-	    = CURRENT_CURSOR[i].val;
+        /*
+         * x and y hold the position of the cursor
+         */
+        x = CURRENT_CURSOR[i].x;
+        y = CURRENT_CURSOR[i].y;
+        /*
+         * sanity check, in case the cursor is not on a valid part
+         * of the map. It should not happen but I hate protection
+         * faults!
+         */
+        if ((temp = CURRENT_AREA[y * CURRENT_AREA_W + x].mesh) != NULL)
+          /*
+           * we just poke the value of the cursor into its
+           * corresponding position in the map
+           * very simple, eh?
+           */
+          temp->info[CURRENT_CURSOR[i].team].state.grad
+            = CURRENT_CURSOR[i].val;
       }
 }
 
@@ -202,14 +202,14 @@ auto_cursor (int index, int team, char *name)
      */
     if (CURRENT_ARMY[i].team == team)
       {
-	/*
-	 * the following totals will be used to get the center
-	 * of all the fighters belonging to this army
-	 * of course it implies fighters have been placed
-	 */
-	x += CURRENT_ARMY[i].x;
-	y += CURRENT_ARMY[i].y;
-	n++;
+        /*
+         * the following totals will be used to get the center
+         * of all the fighters belonging to this army
+         * of course it implies fighters have been placed
+         */
+        x += CURRENT_ARMY[i].x;
+        y += CURRENT_ARMY[i].y;
+        n++;
       }
 
   /*
@@ -232,65 +232,65 @@ auto_cursor (int index, int team, char *name)
        * try and find a good spot going right
        */
       for (x = x_min; x <= x_max && !ok; ++x)
-	if (CURRENT_AREA[y * CURRENT_AREA_W + x].mesh != NULL)
-	  {
-	    ok = 1;
-	    x0 = x;
-	    y0 = y;
-	  }
+        if (CURRENT_AREA[y * CURRENT_AREA_W + x].mesh != NULL)
+          {
+            ok = 1;
+            x0 = x;
+            y0 = y;
+          }
       /*
        * if we did not touch the right side yet, let's increase the limit
        */
       if (x_max < CURRENT_AREA_W - 1)
-	++x_max;
+        ++x_max;
 
       /* 
        * try and find a good spot going down
        */
       for (y = y_min; y <= y_max && !ok; ++y)
-	if (CURRENT_AREA[y * CURRENT_AREA_W + x].mesh != NULL)
-	  {
-	    ok = 1;
-	    x0 = x;
-	    y0 = y;
-	  }
+        if (CURRENT_AREA[y * CURRENT_AREA_W + x].mesh != NULL)
+          {
+            ok = 1;
+            x0 = x;
+            y0 = y;
+          }
       /*
        * if we did not touch the bottom side yet, let's increase the limit
        */
       if (y_max < CURRENT_AREA_H - 1)
-	++y_max;
+        ++y_max;
 
       /* 
        * try and find a good spot going left
        */
       for (x = x_max; x >= x_min && !ok; --x)
-	if (CURRENT_AREA[y * CURRENT_AREA_W + x].mesh != NULL)
-	  {
-	    ok = 1;
-	    x0 = x;
-	    y0 = y;
-	  }
+        if (CURRENT_AREA[y * CURRENT_AREA_W + x].mesh != NULL)
+          {
+            ok = 1;
+            x0 = x;
+            y0 = y;
+          }
       /*
        * if we did not touch the left side yet, let's decrease the limit
        */
       if (x_min > 0)
-	--x_min;
+        --x_min;
 
       /* 
        * try and find a good spot going up 
        */
       for (y = y_max; y >= y_min && !ok; --y)
-	if (CURRENT_AREA[y * CURRENT_AREA_W + x].mesh != NULL)
-	  {
-	    ok = 1;
-	    x0 = x;
-	    y0 = y;
-	  }
+        if (CURRENT_AREA[y * CURRENT_AREA_W + x].mesh != NULL)
+          {
+            ok = 1;
+            x0 = x;
+            y0 = y;
+          }
       /*
        * if we did not touch the top side yet, let's decrease the limit
        */
       if (y_min > 0)
-	--y_min;
+        --y_min;
     }
 
   init_cursor (index, team, x0, y0, name);

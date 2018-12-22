@@ -97,9 +97,9 @@ send_keys (int *sock, CURSOR * cursors, unsigned int checksum)
        * controlled only.
        */
       if (!cursors[i].from_network)
-	{
-	  netkey.key_states[i] = cursors[i].key_state;
-	}
+        {
+          netkey.key_states[i] = cursors[i].key_state;
+        }
     }
 
   /*
@@ -159,10 +159,10 @@ recv_keys (int *sock, CURSOR * cursors)
        * Now we check for checksum errors
        */
       if (!netkey.checksum)
-	{
-	  log_println_str
-	    ("Error: incorrect checksum, the game is broken, or someone is cheating");
-	}
+        {
+          log_println_str
+            ("Error: incorrect checksum, the game is broken, or someone is cheating");
+        }
     }
 
   return result;

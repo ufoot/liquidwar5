@@ -117,9 +117,9 @@ lw_wwwcli_get_games (LW_WWWCLI_DATA * buffer, int *size)
 
   memset (&buffer_url, 0, sizeof (buffer_url));
   LW_MACRO_SPRINTF3 (buffer_url,
-		     "%s%s?protocol=%s&game=" LW_PROGRAM "&version="
-		     LW_VERSION, STARTUP_METASERVER, LW_WWWCLI_URL_LIST,
-		     LW_SERVER_METASERVER_PROTOCOL);
+                     "%s%s?protocol=%s&game=" LW_PROGRAM "&version="
+                     LW_VERSION, STARTUP_METASERVER, LW_WWWCLI_URL_LIST,
+                     LW_SERVER_METASERVER_PROTOCOL);
 
   if (lw_httputil_get_page
       (buffer_content, buffer_url, sizeof (buffer_content)))
@@ -129,45 +129,45 @@ lw_wwwcli_get_games (LW_WWWCLI_DATA * buffer, int *size)
       while (read_eol (&pos));
 
       while (i < (*size) && strlen (pos) > 0)
-	{
-	  pos_tmp = pos;
-	  if (read_eol_n (&pos_tmp, LW_WWWCLI_MIN_LINE_SIZE))
-	    {
-	      /*
-	       * This was just an empty or too short line...
-	       */
-	      pos = pos_tmp;
-	    }
-	  else
-	    {
-	      /*
-	       * We parse the line only if there's something on it...
-	       */
-	      if (parse_line (buffer + i, &pos))
-		{
-		  if (buffer[i].busy_players < buffer[i].max_players)
-		    {
-		      /*
-		       * we increment i only if there's some room left on the
-		       * server. If it's full of people playing on it, it's
-		       * of absolutely no use to present it as a working
-		       * server... And not incrementing i will make it be
-		       * overwritten by the next server.
-		       */
-		      ++i;
-		      log_print_str ("+");
-		    }
-		  else
-		    {
-		      log_print_str ("=");
-		    }
-		}
-	      else
-		{
-		  log_print_str ("-");
-		}
-	    }
-	}
+        {
+          pos_tmp = pos;
+          if (read_eol_n (&pos_tmp, LW_WWWCLI_MIN_LINE_SIZE))
+            {
+              /*
+               * This was just an empty or too short line...
+               */
+              pos = pos_tmp;
+            }
+          else
+            {
+              /*
+               * We parse the line only if there's something on it...
+               */
+              if (parse_line (buffer + i, &pos))
+                {
+                  if (buffer[i].busy_players < buffer[i].max_players)
+                    {
+                      /*
+                       * we increment i only if there's some room left on the
+                       * server. If it's full of people playing on it, it's
+                       * of absolutely no use to present it as a working
+                       * server... And not incrementing i will make it be
+                       * overwritten by the next server.
+                       */
+                      ++i;
+                      log_print_str ("+");
+                    }
+                  else
+                    {
+                      log_print_str ("=");
+                    }
+                }
+              else
+                {
+                  log_print_str ("-");
+                }
+            }
+        }
 
       result = 1;
     }
@@ -223,9 +223,9 @@ parse_line (LW_WWWCLI_DATA * result, char **str)
       read_string (result->comment, str, sizeof (result->comment)))
     {
       LW_MACRO_SPRINTF3 (result->label,
-			 "%s (%d/%d)",
-			 result->ip,
-			 result->busy_players, result->max_players);
+                         "%s (%d/%d)",
+                         result->ip,
+                         result->busy_players, result->max_players);
 
       result->ping_delay = lw_ping_try_server (result->ip, result->port);
 
@@ -269,31 +269,31 @@ read_string (char *result, char **str, int size)
     {
       ++(*str);
       while ((c = **str) != '\0' && c != '\n' && !done)
-	{
-	  ++(*str);
-	  if (c == '\'')
-	    {
-	      if ((**str) == '\'')
-		{
-		  ++(*str);
-		  if (i < size - 1)
-		    {
-		      result[i++] = '\'';
-		    }
-		}
-	      else
-		{
-		  done = 1;
-		}
-	    }
-	  else
-	    {
-	      if (i < size - 1)
-		{
-		  result[i++] = c;
-		}
-	    }
-	}
+        {
+          ++(*str);
+          if (c == '\'')
+            {
+              if ((**str) == '\'')
+                {
+                  ++(*str);
+                  if (i < size - 1)
+                    {
+                      result[i++] = '\'';
+                    }
+                }
+              else
+                {
+                  done = 1;
+                }
+            }
+          else
+            {
+              if (i < size - 1)
+                {
+                  result[i++] = c;
+                }
+            }
+        }
     }
 
   result[i++] = '\0';
@@ -398,11 +398,11 @@ read_eol_n (char **str, int n)
   if (tmp != NULL)
     {
       if (tmp - (*str) < n)
-	{
-	  ok = 1;
-	  (*str) = tmp + 1;
-	  skip_space (str);
-	}
+        {
+          ok = 1;
+          (*str) = tmp + 1;
+          skip_space (str);
+        }
     }
 
   return ok;

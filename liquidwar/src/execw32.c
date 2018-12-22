@@ -90,16 +90,16 @@ lw_exec_cmd (char *cmd)
 
   startup_info.cb = sizeof (STARTUPINFO);
 
-  create_process_ret = CreateProcess (NULL,	//lpApplicationName
-				      cmd,	//lpCommandLine
-				      NULL,	//lpProcessAttributes
-				      NULL,	//lpThreadAttributes
-				      FALSE,	//bInheritHandles
-				      0,	//dwCreationFlags
-				      NULL,	//lpEnvironment
-				      NULL,	//lpCurrentDirectory
-				      &startup_info,	//lpStartupInfo
-				      &process_info	//lpProcessInformation
+  create_process_ret = CreateProcess (NULL,     //lpApplicationName
+                                      cmd,      //lpCommandLine
+                                      NULL,     //lpProcessAttributes
+                                      NULL,     //lpThreadAttributes
+                                      FALSE,    //bInheritHandles
+                                      0,        //dwCreationFlags
+                                      NULL,     //lpEnvironment
+                                      NULL,     //lpCurrentDirectory
+                                      &startup_info,    //lpStartupInfo
+                                      &process_info     //lpProcessInformation
     );
 
 
@@ -113,37 +113,37 @@ lw_exec_cmd (char *cmd)
 
       error_int = (int) GetLastError ();
 
-      if (FormatMessage (FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, NULL, error_int, MAKELANGID (LANG_NEUTRAL, SUBLANG_DEFAULT),	// Default language
-			 (LPTSTR) & message_buf, 0, NULL))
-	{
-	  LW_MACRO_SPRINTF2 (error_str, "%d: \"%s", error_int,
-			     (char *) message_buf);
-	  LocalFree (message_buf);
+      if (FormatMessage (FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, NULL, error_int, MAKELANGID (LANG_NEUTRAL, SUBLANG_DEFAULT),      // Default language
+                         (LPTSTR) & message_buf, 0, NULL))
+        {
+          LW_MACRO_SPRINTF2 (error_str, "%d: \"%s", error_int,
+                             (char *) message_buf);
+          LocalFree (message_buf);
 
-	  /*
-	   * Now we trim ending CR-LF chars
-	   */
-	  crlf_found = 1;
-	  while (crlf_found)
-	    {
-	      error_len = strlen (error_str);
-	      crlf_found = 0;
-	      if (error_len > 1)
-		{
-		  if (error_str[error_len - 1] == '\n'
-		      || error_str[error_len - 1] == '\r')
-		    {
-		      error_str[error_len - 1] = '\0';
-		      crlf_found = 1;
-		    }
-		}
-	    }
-	  LW_MACRO_STRCAT (error_str, "\"");
-	}
+          /*
+           * Now we trim ending CR-LF chars
+           */
+          crlf_found = 1;
+          while (crlf_found)
+            {
+              error_len = strlen (error_str);
+              crlf_found = 0;
+              if (error_len > 1)
+                {
+                  if (error_str[error_len - 1] == '\n'
+                      || error_str[error_len - 1] == '\r')
+                    {
+                      error_str[error_len - 1] = '\0';
+                      crlf_found = 1;
+                    }
+                }
+            }
+          LW_MACRO_STRCAT (error_str, "\"");
+        }
       else
-	{
-	  LW_MACRO_SPRINTF1 (error_str, "%d", error_int);
-	}
+        {
+          LW_MACRO_SPRINTF1 (error_str, "%d", error_int);
+        }
 
       log_print_str ("Can't execute \"");
       log_print_str (cmd);

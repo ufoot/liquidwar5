@@ -140,17 +140,17 @@ my_initialise_joystick (void)
       int type = JOY_TYPE_AUTODETECT;
 
       switch (CONFIG_JOYSTICK_ON)
-	{
-	case 1:
-	  type = JOY_TYPE0;
-	  break;
-	case 2:
-	  type = JOY_TYPE1;
-	  break;
-	case 3:
-	  type = JOY_TYPE2;
-	  break;
-	}
+        {
+        case 1:
+          type = JOY_TYPE0;
+          break;
+        case 2:
+          type = JOY_TYPE1;
+          break;
+        case 3:
+          type = JOY_TYPE2;
+          break;
+        }
       result = install_joystick (type);
     }
   else
@@ -162,32 +162,32 @@ my_initialise_joystick (void)
   if (num_joysticks >= 1)
     {
       if (joy[0].num_sticks >= 1)
-	{
-	  if (joy[0].stick[0].num_axis >= 2)
-	    {
-	      JOY1_MIN_X = joy[0].stick[0].axis[0].pos;
-	      JOY1_MID_X = joy[0].stick[0].axis[0].pos;
-	      JOY1_MAX_X = joy[0].stick[0].axis[0].pos;
-	      JOY1_MIN_Y = joy[0].stick[0].axis[1].pos;
-	      JOY1_MID_Y = joy[0].stick[0].axis[1].pos;
-	      JOY1_MAX_Y = joy[0].stick[0].axis[1].pos;
-	    }
-	}
+        {
+          if (joy[0].stick[0].num_axis >= 2)
+            {
+              JOY1_MIN_X = joy[0].stick[0].axis[0].pos;
+              JOY1_MID_X = joy[0].stick[0].axis[0].pos;
+              JOY1_MAX_X = joy[0].stick[0].axis[0].pos;
+              JOY1_MIN_Y = joy[0].stick[0].axis[1].pos;
+              JOY1_MID_Y = joy[0].stick[0].axis[1].pos;
+              JOY1_MAX_Y = joy[0].stick[0].axis[1].pos;
+            }
+        }
     }
   if (num_joysticks >= 2)
     {
       if (joy[1].num_sticks >= 1)
-	{
-	  if (joy[1].stick[0].num_axis >= 2)
-	    {
-	      JOY2_MIN_X = joy[1].stick[0].axis[0].pos;
-	      JOY2_MID_X = joy[1].stick[0].axis[0].pos;
-	      JOY2_MAX_X = joy[1].stick[0].axis[0].pos;
-	      JOY2_MIN_Y = joy[1].stick[0].axis[1].pos;
-	      JOY2_MID_Y = joy[1].stick[0].axis[1].pos;
-	      JOY2_MAX_Y = joy[1].stick[0].axis[1].pos;
-	    }
-	}
+        {
+          if (joy[1].stick[0].num_axis >= 2)
+            {
+              JOY2_MIN_X = joy[1].stick[0].axis[0].pos;
+              JOY2_MID_X = joy[1].stick[0].axis[0].pos;
+              JOY2_MAX_X = joy[1].stick[0].axis[0].pos;
+              JOY2_MIN_Y = joy[1].stick[0].axis[1].pos;
+              JOY2_MID_Y = joy[1].stick[0].axis[1].pos;
+              JOY2_MAX_Y = joy[1].stick[0].axis[1].pos;
+            }
+        }
     }
 
   my_poll_joystick ();
@@ -204,75 +204,75 @@ my_poll_joystick (void)
       poll_joystick ();
 
       if (num_joysticks >= 1)
-	{
-	  if (joy[0].num_sticks >= 1)
-	    {
-	      if (joy[0].stick[0].num_axis >= 2)
-		{
-		  JOY1_MIN_X = MIN (joy[0].stick[0].axis[0].pos, JOY1_MIN_X);
-		  JOY1_MAX_X = MAX (joy[0].stick[0].axis[0].pos, JOY1_MAX_X);
-		  JOY1_MID_X = (JOY1_MIN_X + JOY1_MAX_X) / 2;
-		  JOY1_MIN_Y = MIN (joy[0].stick[0].axis[1].pos, JOY1_MIN_Y);
-		  JOY1_MAX_Y = MAX (joy[0].stick[0].axis[1].pos, JOY1_MAX_Y);
-		  JOY1_MID_Y = (JOY1_MIN_Y + JOY1_MAX_Y) / 2;
+        {
+          if (joy[0].num_sticks >= 1)
+            {
+              if (joy[0].stick[0].num_axis >= 2)
+                {
+                  JOY1_MIN_X = MIN (joy[0].stick[0].axis[0].pos, JOY1_MIN_X);
+                  JOY1_MAX_X = MAX (joy[0].stick[0].axis[0].pos, JOY1_MAX_X);
+                  JOY1_MID_X = (JOY1_MIN_X + JOY1_MAX_X) / 2;
+                  JOY1_MIN_Y = MIN (joy[0].stick[0].axis[1].pos, JOY1_MIN_Y);
+                  JOY1_MAX_Y = MAX (joy[0].stick[0].axis[1].pos, JOY1_MAX_Y);
+                  JOY1_MID_Y = (JOY1_MIN_Y + JOY1_MAX_Y) / 2;
 
-		  JOYSTICK_CONTROL_JOY1_UP =
-		    (joy[0].stick[0].axis[1].pos <
-		     (JOY1_MIN_Y + 2 * JOY1_MID_Y) / 3) ? 1 : 0;
-		  JOYSTICK_CONTROL_JOY1_RIGHT =
-		    (joy[0].stick[0].axis[0].pos >
-		     (JOY1_MAX_X + 2 * JOY1_MID_X) / 3) ? 1 : 0;
-		  JOYSTICK_CONTROL_JOY1_DOWN =
-		    (joy[0].stick[0].axis[1].pos >
-		     (JOY1_MAX_Y + 2 * JOY1_MID_Y) / 3) ? 1 : 0;
-		  JOYSTICK_CONTROL_JOY1_LEFT =
-		    (joy[0].stick[0].axis[0].pos <
-		     (JOY1_MIN_X + 2 * JOY1_MID_X) / 3) ? 1 : 0;
-		}
-	    }
-	  if (joy[0].num_buttons >= 2)
-	    {
-	      JOYSTICK_CONTROL_JOY1_B1 = joy[0].button[0].b;
-	      JOYSTICK_CONTROL_JOY1_B2 = joy[0].button[1].b;
-	    }
-	  if (joy[0].num_buttons >= 4)
-	    {
-	      JOYSTICK_CONTROL_JOY1_B3 = joy[0].button[2].b;
-	      JOYSTICK_CONTROL_JOY1_B4 = joy[0].button[3].b;
-	    }
-	}
+                  JOYSTICK_CONTROL_JOY1_UP =
+                    (joy[0].stick[0].axis[1].pos <
+                     (JOY1_MIN_Y + 2 * JOY1_MID_Y) / 3) ? 1 : 0;
+                  JOYSTICK_CONTROL_JOY1_RIGHT =
+                    (joy[0].stick[0].axis[0].pos >
+                     (JOY1_MAX_X + 2 * JOY1_MID_X) / 3) ? 1 : 0;
+                  JOYSTICK_CONTROL_JOY1_DOWN =
+                    (joy[0].stick[0].axis[1].pos >
+                     (JOY1_MAX_Y + 2 * JOY1_MID_Y) / 3) ? 1 : 0;
+                  JOYSTICK_CONTROL_JOY1_LEFT =
+                    (joy[0].stick[0].axis[0].pos <
+                     (JOY1_MIN_X + 2 * JOY1_MID_X) / 3) ? 1 : 0;
+                }
+            }
+          if (joy[0].num_buttons >= 2)
+            {
+              JOYSTICK_CONTROL_JOY1_B1 = joy[0].button[0].b;
+              JOYSTICK_CONTROL_JOY1_B2 = joy[0].button[1].b;
+            }
+          if (joy[0].num_buttons >= 4)
+            {
+              JOYSTICK_CONTROL_JOY1_B3 = joy[0].button[2].b;
+              JOYSTICK_CONTROL_JOY1_B4 = joy[0].button[3].b;
+            }
+        }
       if (num_joysticks >= 2)
-	{
-	  if (joy[1].num_sticks >= 1)
-	    {
-	      if (joy[1].stick[0].num_axis >= 2)
-		{
-		  JOY2_MIN_X = MIN (joy[1].stick[0].axis[0].pos, JOY2_MIN_X);
-		  JOY2_MAX_X = MAX (joy[1].stick[0].axis[0].pos, JOY2_MAX_X);
-		  JOY2_MID_Y = (JOY2_MIN_X + JOY2_MAX_X) / 2;
-		  JOY2_MIN_Y = MIN (joy[1].stick[0].axis[1].pos, JOY2_MIN_Y);
-		  JOY2_MAX_Y = MAX (joy[1].stick[0].axis[1].pos, JOY2_MAX_Y);
-		  JOY2_MID_Y = (JOY2_MIN_Y + JOY2_MAX_Y) / 2;
+        {
+          if (joy[1].num_sticks >= 1)
+            {
+              if (joy[1].stick[0].num_axis >= 2)
+                {
+                  JOY2_MIN_X = MIN (joy[1].stick[0].axis[0].pos, JOY2_MIN_X);
+                  JOY2_MAX_X = MAX (joy[1].stick[0].axis[0].pos, JOY2_MAX_X);
+                  JOY2_MID_Y = (JOY2_MIN_X + JOY2_MAX_X) / 2;
+                  JOY2_MIN_Y = MIN (joy[1].stick[0].axis[1].pos, JOY2_MIN_Y);
+                  JOY2_MAX_Y = MAX (joy[1].stick[0].axis[1].pos, JOY2_MAX_Y);
+                  JOY2_MID_Y = (JOY2_MIN_Y + JOY2_MAX_Y) / 2;
 
-		  JOYSTICK_CONTROL_JOY2_UP =
-		    (joy[1].stick[0].axis[1].pos <
-		     (JOY2_MIN_Y + 2 * JOY2_MID_Y) / 3) ? 1 : 0;
-		  JOYSTICK_CONTROL_JOY2_RIGHT =
-		    (joy[1].stick[0].axis[0].pos >
-		     (JOY2_MAX_X + 2 * JOY2_MID_X) / 3) ? 1 : 0;
-		  JOYSTICK_CONTROL_JOY2_DOWN =
-		    (joy[1].stick[0].axis[1].pos >
-		     (JOY2_MAX_Y + 2 * JOY2_MID_Y) / 3) ? 1 : 0;
-		  JOYSTICK_CONTROL_JOY2_LEFT =
-		    (joy[1].stick[0].axis[0].pos <
-		     (JOY2_MIN_X + 2 * JOY2_MID_X) / 3) ? 1 : 0;
-		}
-	    }
-	  if (joy[0].num_buttons >= 2)
-	    {
-	      JOYSTICK_CONTROL_JOY2_B1 = joy[1].button[0].b;
-	      JOYSTICK_CONTROL_JOY2_B2 = joy[1].button[1].b;
-	    }
-	}
+                  JOYSTICK_CONTROL_JOY2_UP =
+                    (joy[1].stick[0].axis[1].pos <
+                     (JOY2_MIN_Y + 2 * JOY2_MID_Y) / 3) ? 1 : 0;
+                  JOYSTICK_CONTROL_JOY2_RIGHT =
+                    (joy[1].stick[0].axis[0].pos >
+                     (JOY2_MAX_X + 2 * JOY2_MID_X) / 3) ? 1 : 0;
+                  JOYSTICK_CONTROL_JOY2_DOWN =
+                    (joy[1].stick[0].axis[1].pos >
+                     (JOY2_MAX_Y + 2 * JOY2_MID_Y) / 3) ? 1 : 0;
+                  JOYSTICK_CONTROL_JOY2_LEFT =
+                    (joy[1].stick[0].axis[0].pos <
+                     (JOY2_MIN_X + 2 * JOY2_MID_X) / 3) ? 1 : 0;
+                }
+            }
+          if (joy[0].num_buttons >= 2)
+            {
+              JOYSTICK_CONTROL_JOY2_B1 = joy[1].button[0].b;
+              JOYSTICK_CONTROL_JOY2_B2 = joy[1].button[1].b;
+            }
+        }
     }
 }

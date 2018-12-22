@@ -94,19 +94,19 @@ create_game_area (void)
     {
       i = 0;
       for (y = 0; y < CURRENT_AREA_H; ++y)
-	for (x = 0; x < CURRENT_AREA_W; ++x)
-	  {
-	    CURRENT_AREA[i].mesh = NULL;
-	    CURRENT_AREA[i].fighter = NULL;
-	    i++;
-	  }
+        for (x = 0; x < CURRENT_AREA_W; ++x)
+          {
+            CURRENT_AREA[i].mesh = NULL;
+            CURRENT_AREA[i].fighter = NULL;
+            i++;
+          }
       for (i = 0; i < CURRENT_MESH_SIZE; ++i)
-	for (y = 0; y < CURRENT_MESH[i].side.size; ++y)
-	  for (x = 0; x < CURRENT_MESH[i].side.size; ++x)
-	    {
-	      CURRENT_AREA[(CURRENT_MESH[i].y + y) * CURRENT_AREA_W
-			   + CURRENT_MESH[i].x + x].mesh = CURRENT_MESH + i;
-	    }
+        for (y = 0; y < CURRENT_MESH[i].side.size; ++y)
+          for (x = 0; x < CURRENT_MESH[i].side.size; ++x)
+            {
+              CURRENT_AREA[(CURRENT_MESH[i].y + y) * CURRENT_AREA_W
+                           + CURRENT_MESH[i].x + x].mesh = CURRENT_MESH + i;
+            }
     }
 
   return (CURRENT_AREA ? 0 : -1);

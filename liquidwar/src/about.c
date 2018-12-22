@@ -86,7 +86,7 @@ lw_about (void)
   while (retour == 0)
     {
       for (i = 0; i < 4; ++i)
-	standard_button (d + i + 4, 0, i, 1, 4);
+        standard_button (d + i + 4, 0, i, 1, 4);
 
       quick_buttons (d);
       d[4].dp = lw_lang_string (LW_LANG_STRING_ABOUT_CREDITS);
@@ -97,40 +97,40 @@ lw_about (void)
 
       choix = my_do_dialog (d, choix);
       switch (choix)
-	{
-	case -1:
-	case MENU_QUICK_BACK:
-	  retour = 1;
-	  break;
-	case MENU_QUICK_MAIN:
-	  retour = MENU_TOP;
-	  break;
-	case MENU_QUICK_QUIT:
-	  if (confirm_quit ())
-	    retour = MENU_EXIT;
-	  else
-	    display_back_image ();
-	  break;
-	case MENU_QUICK_PLAY:
-	  retour = MENU_PLAY;
-	  break;
-	case 4:
-	  retour =
-	    display_help (lw_lang_string (LW_LANG_STRING_HELP_CREDITS));
-	  break;
-	case 5:
-	  retour =
-	    display_help (lw_lang_string (LW_LANG_STRING_HELP_COPYRIGHT));
-	  break;
-	case 6:
-	  retour =
-	    display_help (lw_lang_string (LW_LANG_STRING_HELP_LICENSE));
-	  break;
-	case 7:
-	  retour =
-	    display_help (lw_lang_string (LW_LANG_STRING_HELP_VERSION));
-	  break;
-	}
+        {
+        case -1:
+        case MENU_QUICK_BACK:
+          retour = 1;
+          break;
+        case MENU_QUICK_MAIN:
+          retour = MENU_TOP;
+          break;
+        case MENU_QUICK_QUIT:
+          if (confirm_quit ())
+            retour = MENU_EXIT;
+          else
+            display_back_image ();
+          break;
+        case MENU_QUICK_PLAY:
+          retour = MENU_PLAY;
+          break;
+        case 4:
+          retour =
+            display_help (lw_lang_string (LW_LANG_STRING_HELP_CREDITS));
+          break;
+        case 5:
+          retour =
+            display_help (lw_lang_string (LW_LANG_STRING_HELP_COPYRIGHT));
+          break;
+        case 6:
+          retour =
+            display_help (lw_lang_string (LW_LANG_STRING_HELP_LICENSE));
+          break;
+        case 7:
+          retour =
+            display_help (lw_lang_string (LW_LANG_STRING_HELP_VERSION));
+          break;
+        }
     }
 
   if (retour > 0)

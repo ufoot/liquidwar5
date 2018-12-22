@@ -107,32 +107,32 @@ language_options (void)
     {
       choix = my_do_dialog (d, choix);
       switch (choix)
-	{
-	case -1:
-	case MENU_QUICK_BACK:
-	  retour = 1;
-	  break;
-	case MENU_QUICK_MAIN:
-	  retour = MENU_TOP;
-	  break;
-	case MENU_QUICK_QUIT:
-	  if (confirm_quit ())
-	    retour = MENU_EXIT;
-	  break;
-	case MENU_QUICK_PLAY:
-	  retour = MENU_PLAY;
-	  break;
-	case 4:
-	  CONFIG_LANGUAGE = LW_LANG_LANGUAGE_AUTO;
-	  update_language (d);
-	  break;
-	default:
-	  if (choix >= 5 && choix < 5 + LW_LANG_NB_LANGUAGES)
-	    {
-	      CONFIG_LANGUAGE = choix - 5;
-	      update_language (d);
-	    }
-	}
+        {
+        case -1:
+        case MENU_QUICK_BACK:
+          retour = 1;
+          break;
+        case MENU_QUICK_MAIN:
+          retour = MENU_TOP;
+          break;
+        case MENU_QUICK_QUIT:
+          if (confirm_quit ())
+            retour = MENU_EXIT;
+          break;
+        case MENU_QUICK_PLAY:
+          retour = MENU_PLAY;
+          break;
+        case 4:
+          CONFIG_LANGUAGE = LW_LANG_LANGUAGE_AUTO;
+          update_language (d);
+          break;
+        default:
+          if (choix >= 5 && choix < 5 + LW_LANG_NB_LANGUAGES)
+            {
+              CONFIG_LANGUAGE = choix - 5;
+              update_language (d);
+            }
+        }
     }
 
   if (retour > 0)

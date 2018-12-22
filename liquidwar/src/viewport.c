@@ -87,8 +87,8 @@ void
 rect_for_viewport (void)
 {
   rect (screen, VIEWPORT_X - 1, VIEWPORT_Y - 1 + PAGE_FLIP_H,
-	VIEWPORT_X + VIEWPORT_W,
-	VIEWPORT_Y + VIEWPORT_H + PAGE_FLIP_H, MENU_FG);
+        VIEWPORT_X + VIEWPORT_W,
+        VIEWPORT_Y + VIEWPORT_H + PAGE_FLIP_H, MENU_FG);
 }
 
 /*------------------------------------------------------------------*/
@@ -112,17 +112,17 @@ init_viewport_size (int x, int y, int w, int h)
   if (CONFIG_VIEWPORT_SIZE > 0 && CONFIG_VIEWPORT_SIZE < 8)
     {
       if (scale_w * CURRENT_AREA_H < scale_h * CURRENT_AREA_W)
-	{
-	  VIEWPORT_W = (scale_w * (viewport_sizes[CONFIG_VIEWPORT_SIZE - 1]))
-	    / viewport_sizes[6];
-	  VIEWPORT_H = (VIEWPORT_W * CURRENT_AREA_H) / CURRENT_AREA_W;
-	}
+        {
+          VIEWPORT_W = (scale_w * (viewport_sizes[CONFIG_VIEWPORT_SIZE - 1]))
+            / viewport_sizes[6];
+          VIEWPORT_H = (VIEWPORT_W * CURRENT_AREA_H) / CURRENT_AREA_W;
+        }
       else
-	{
-	  VIEWPORT_H = (scale_h * (viewport_sizes[CONFIG_VIEWPORT_SIZE - 1]))
-	    / viewport_sizes[6];
-	  VIEWPORT_W = (VIEWPORT_H * CURRENT_AREA_W) / CURRENT_AREA_H;
-	}
+        {
+          VIEWPORT_H = (scale_h * (viewport_sizes[CONFIG_VIEWPORT_SIZE - 1]))
+            / viewport_sizes[6];
+          VIEWPORT_W = (VIEWPORT_H * CURRENT_AREA_W) / CURRENT_AREA_H;
+        }
     }
 
   if (CONFIG_VIEWPORT_SIZE <= 0)
@@ -130,10 +130,10 @@ init_viewport_size (int x, int y, int w, int h)
       VIEWPORT_W = CURRENT_AREA_W;
       VIEWPORT_H = CURRENT_AREA_H;
       while (VIEWPORT_W > w || VIEWPORT_H > h)
-	{
-	  VIEWPORT_W /= 2;
-	  VIEWPORT_H /= 2;
-	}
+        {
+          VIEWPORT_W /= 2;
+          VIEWPORT_H /= 2;
+        }
     }
   else
     {
@@ -158,9 +158,9 @@ page_flip (void)
   if (CONFIG_PAGE_FLIP && VIRTUAL_H >= (2 * SCREEN_H))
     {
       if (NEXT_SCREEN)
-	{
-	  destroy_bitmap (NEXT_SCREEN);
-	}
+        {
+          destroy_bitmap (NEXT_SCREEN);
+        }
 
       lw_info_get_room_for_viewport (&x, &y, &w, &h);
       init_viewport_size (x, y, w, h);
@@ -174,24 +174,24 @@ page_flip (void)
       PAGE_FLIP_H = new_h;
 
       NEXT_SCREEN = create_sub_bitmap (screen, VIEWPORT_X,
-				       VIEWPORT_Y + new_h,
-				       VIEWPORT_W, VIEWPORT_H);
+                                       VIEWPORT_Y + new_h,
+                                       VIEWPORT_W, VIEWPORT_H);
     }
   else
     {
       PAGE_FLIP_H = 0;
       if (VIEWPORT_CHANGE_REGISTERED || !NEXT_SCREEN)
-	{
-	  scroll_screen (0, 0);
-	  set_clip_rect (screen, 0, 0, SCREEN_W - 1, SCREEN_H - 1);
+        {
+          scroll_screen (0, 0);
+          set_clip_rect (screen, 0, 0, SCREEN_W - 1, SCREEN_H - 1);
 
-	  lw_info_get_room_for_viewport (&x, &y, &w, &h);
-	  init_viewport_size (x, y, w, h);
+          lw_info_get_room_for_viewport (&x, &y, &w, &h);
+          init_viewport_size (x, y, w, h);
 
-	  NEXT_SCREEN = create_sub_bitmap (screen, VIEWPORT_X,
-					   VIEWPORT_Y,
-					   VIEWPORT_W, VIEWPORT_H);
-	}
+          NEXT_SCREEN = create_sub_bitmap (screen, VIEWPORT_X,
+                                           VIEWPORT_Y,
+                                           VIEWPORT_W, VIEWPORT_H);
+        }
     }
 
   if (VIEWPORT_CHANGE_REGISTERED > 0)
@@ -211,16 +211,16 @@ last_flip (void)
   if (NEXT_SCREEN)
     {
       if (CONFIG_PAGE_FLIP && VIRTUAL_H >= (2 * SCREEN_H))
-	{
-	  set_clip_rect (screen, 0, 0, SCREEN_W - 1, SCREEN_H - 1);
-	  if (!PAGE_FLIP_H)
-	    {
-	      blit (screen, screen, 0, SCREEN_H, 0, 0, SCREEN_W, SCREEN_H);
-	      scroll_screen (0, 0);
-	    }
-	  else
-	    PAGE_FLIP_H = 0;
-	}
+        {
+          set_clip_rect (screen, 0, 0, SCREEN_W - 1, SCREEN_H - 1);
+          if (!PAGE_FLIP_H)
+            {
+              blit (screen, screen, 0, SCREEN_H, 0, 0, SCREEN_W, SCREEN_H);
+              scroll_screen (0, 0);
+            }
+          else
+            PAGE_FLIP_H = 0;
+        }
 
       destroy_bitmap (NEXT_SCREEN);
       NEXT_SCREEN = NULL;

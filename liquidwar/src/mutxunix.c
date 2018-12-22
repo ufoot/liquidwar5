@@ -137,9 +137,9 @@ lw_mutex_trylock (LW_MUTEX_DATA * mutex)
   if (m)
     {
       if (pthread_mutex_trylock (m) != EBUSY)
-	{
-	  result = 1;
-	}
+        {
+          result = 1;
+        }
     }
 
   return result;

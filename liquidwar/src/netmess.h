@@ -65,9 +65,9 @@
  */
 typedef struct
 {
-  int argc;			/* the number of arguments                          */
-  int code;			/* the code of the command (ex: LW_NETMESS_CODE_OK) */
-  char **argv;			/* the parsed arguments, like in the main() func    */
+  int argc;                     /* the number of arguments                          */
+  int code;                     /* the code of the command (ex: LW_NETMESS_CODE_OK) */
+  char **argv;                  /* the parsed arguments, like in the main() func    */
 }
 LW_NETMESS;
 

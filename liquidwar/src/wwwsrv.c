@@ -89,12 +89,12 @@ static void lw_wwwsrv_callback (void *args);
  */
 void
 lw_wwwsrv_init (LW_WWWSRV_DATA * data,
-		int privacy,
-		int log,
-		char *metaserver,
-		int port,
-		int busy_players,
-		int max_players, char *password, char *comment)
+                int privacy,
+                int log,
+                char *metaserver,
+                int port,
+                int busy_players,
+                int max_players, char *password, char *comment)
 {
   memset (data, 0, sizeof (LW_WWWSRV_DATA));
 
@@ -165,9 +165,9 @@ lw_wwwsrv_callback (void *args)
   memset (&buffer_url, 0, sizeof (buffer_url));
 
   LW_MACRO_SPRINTF3 (buffer_url,
-		     "%s%s?protocol=%s&game=" LW_PROGRAM "&version="
-		     LW_VERSION, data.metaserver, LW_WWWSRV_URL_REGISTER,
-		     LW_SERVER_METASERVER_PROTOCOL);
+                     "%s%s?protocol=%s&game=" LW_PROGRAM "&version="
+                     LW_VERSION, data.metaserver, LW_WWWSRV_URL_REGISTER,
+                     LW_SERVER_METASERVER_PROTOCOL);
 
   LW_MACRO_SPRINTF1 (buffer_num, "%d", data.port);
   LW_MACRO_STRCAT (buffer_url, "&port=");
@@ -193,22 +193,22 @@ lw_wwwsrv_callback (void *args)
 
   LW_MACRO_STRCAT (buffer_url, "&comment=");
   lw_httputil_text_to_urlparam (buffer_comment,
-				data.comment, sizeof (buffer_comment) - 1);
+                                data.comment, sizeof (buffer_comment) - 1);
   LW_MACRO_STRCAT (buffer_url, buffer_comment);
 
   if (lw_httputil_get_page
       (buffer_content, buffer_url, sizeof (buffer_content)))
     {
       if (strstr (buffer_content, LW_WWWSRV_OK))
-	{
-	  ok = 1;
-	}
+        {
+          ok = 1;
+        }
       else
-	{
-	  log_print_str ("Incorrect answer from \"");
-	  log_print_str (data.metaserver);
-	  log_println_str ("\"!");
-	}
+        {
+          log_print_str ("Incorrect answer from \"");
+          log_print_str (data.metaserver);
+          log_println_str ("\"!");
+        }
     }
   else
     {
@@ -218,18 +218,18 @@ lw_wwwsrv_callback (void *args)
   if (data.log)
     {
       if (ok)
-	{
-	  log_print_str ("Successfully registered on \"");
-	  log_print_str (data.metaserver);
-	  log_println_str ("\"");
-	  log_flush ();
-	}
+        {
+          log_print_str ("Successfully registered on \"");
+          log_print_str (data.metaserver);
+          log_println_str ("\"");
+          log_flush ();
+        }
       else
-	{
-	  log_print_str ("Unable to register on \"");
-	  log_print_str (data.metaserver);
-	  log_println_str ("\"");
-	  log_flush ();
-	}
+        {
+          log_print_str ("Unable to register on \"");
+          log_print_str (data.metaserver);
+          log_println_str ("\"");
+          log_flush ();
+        }
     }
 }

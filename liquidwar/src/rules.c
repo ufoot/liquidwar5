@@ -87,10 +87,10 @@ write_cis_setting (DIALOG * d)
 
   str = d->dp;
   LW_MACRO_SNPRINTF2 (str,
-		      LW_RULES_CIS_SIZE,
-		      "%s x%d",
-		      lw_lang_string (LW_LANG_STRING_RULES_CURSOR),
-		      CONFIG_CURSOR_INCREASE_SPEED + 1);
+                      LW_RULES_CIS_SIZE,
+                      "%s x%d",
+                      lw_lang_string (LW_LANG_STRING_RULES_CURSOR),
+                      CONFIG_CURSOR_INCREASE_SPEED + 1);
 }
 
 /*------------------------------------------------------------------*/
@@ -158,11 +158,11 @@ write_mmr_setting (DIALOG * d)
 
   str = d->dp;
   LW_MACRO_SNPRINTF3 (str,
-		      LW_RULES_MMR_SIZE,
-		      "%s%dx%d",
-		      lw_lang_string (LW_LANG_STRING_RULES_MINMAPRES),
-		      MIN_MAP_RES_W[CONFIG_MIN_MAP_RES],
-		      MIN_MAP_RES_H[CONFIG_MIN_MAP_RES]);
+                      LW_RULES_MMR_SIZE,
+                      "%s%dx%d",
+                      lw_lang_string (LW_LANG_STRING_RULES_MINMAPRES),
+                      MIN_MAP_RES_W[CONFIG_MIN_MAP_RES],
+                      MIN_MAP_RES_H[CONFIG_MIN_MAP_RES]);
 }
 
 /*------------------------------------------------------------------*/
@@ -200,7 +200,7 @@ rules_options (void)
   memset (d, 0, sizeof (d));
 
   LW_MACRO_SPRINTF1 (time_str, "%-8s00:00",
-		     lw_lang_string (LW_LANG_STRING_RULES_TIME));
+                     lw_lang_string (LW_LANG_STRING_RULES_TIME));
 
   for (i = 0; i < 4; ++i)
     {
@@ -256,41 +256,41 @@ rules_options (void)
     {
       choix = my_do_dialog (d, choix);
       switch (choix)
-	{
-	case -1:
-	case MENU_QUICK_BACK:
-	  retour = 1;
-	  break;
-	case MENU_QUICK_MAIN:
-	  retour = MENU_TOP;
-	  break;
-	case MENU_QUICK_QUIT:
-	  if (confirm_quit ())
-	    retour = MENU_EXIT;
-	  break;
-	case MENU_QUICK_PLAY:
-	  retour = MENU_PLAY;
-	  break;
-	case 12:
-	  retour = advanced_options ();
-	  break;
-	case 13:
-	  load_default_rules ();
+        {
+        case -1:
+        case MENU_QUICK_BACK:
+          retour = 1;
+          break;
+        case MENU_QUICK_MAIN:
+          retour = MENU_TOP;
+          break;
+        case MENU_QUICK_QUIT:
+          if (confirm_quit ())
+            retour = MENU_EXIT;
+          break;
+        case MENU_QUICK_PLAY:
+          retour = MENU_PLAY;
+          break;
+        case 12:
+          retour = advanced_options ();
+          break;
+        case 13:
+          load_default_rules ();
 
-	  /*
-	   * Needed because the slider function works in a weird way
-	   */
-	  LW_CONFIG_CURRENT_RULES.game_time = CONFIG_GAME_TIME;
+          /*
+           * Needed because the slider function works in a weird way
+           */
+          LW_CONFIG_CURRENT_RULES.game_time = CONFIG_GAME_TIME;
 
-	  d[8].d2 = CONFIG_GAME_TIME;
-	  d[9].d2 = CONFIG_FIGHTER_NUMBER;
-	  d[10].d2 = CONFIG_CURSOR_INCREASE_SPEED;
-	  d[11].d2 = CONFIG_MIN_MAP_RES;
-	  write_time_setting (d + 4);
-	  write_cis_setting (d + 6);
-	  write_mmr_setting (d + 7);
-	  break;
-	}
+          d[8].d2 = CONFIG_GAME_TIME;
+          d[9].d2 = CONFIG_FIGHTER_NUMBER;
+          d[10].d2 = CONFIG_CURSOR_INCREASE_SPEED;
+          d[11].d2 = CONFIG_MIN_MAP_RES;
+          write_time_setting (d + 4);
+          write_cis_setting (d + 6);
+          write_mmr_setting (d + 7);
+          break;
+        }
     }
 
   if (retour > 0)

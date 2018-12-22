@@ -141,13 +141,13 @@ lw_mouse_update_show_hide (void)
   if (MOUSE_ON)
     {
       if (font == BIG_FONT)
-	{
-	  set_mouse_sprite (BIG_MOUSE_CURSOR);
-	}
+        {
+          set_mouse_sprite (BIG_MOUSE_CURSOR);
+        }
       if (font == SMALL_FONT)
-	{
-	  set_mouse_sprite (SMALL_MOUSE_CURSOR);
-	}
+        {
+          set_mouse_sprite (SMALL_MOUSE_CURSOR);
+        }
       show_mouse (screen);
     }
   else

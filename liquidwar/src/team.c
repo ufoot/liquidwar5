@@ -229,9 +229,9 @@ suppress_conflicting_color (int color, int replacement_color)
   for (i = 0; i < NB_TEAMS; ++i)
     {
       if (CONFIG_TEAM_COLOR[i] == color)
-	{
-	  CONFIG_TEAM_COLOR[n = i] = replacement_color;
-	}
+        {
+          CONFIG_TEAM_COLOR[n = i] = replacement_color;
+        }
     }
 
   return n;
@@ -421,67 +421,67 @@ choose_teams (void)
     {
       choix = my_do_dialog_no_clear (d, choix);
       switch (choix)
-	{
-	case -1:
-	case MENU_QUICK_BACK:
-	  retour = 1;
-	  break;
-	case MENU_QUICK_MAIN:
-	  retour = MENU_TOP;
-	  break;
-	case MENU_QUICK_QUIT:
-	  if (confirm_quit ())
-	    retour = MENU_EXIT;
-	  else
-	    display_back_image ();
-	  break;
-	case MENU_QUICK_PLAY:
-	  retour = MENU_PLAY;
-	  break;
-	default:
-	  button_team = (choix - 4) / 20;
-	  button_type = (choix - 4) % 20;
-	  switch (button_type)
-	    {
-	    case 15:
-	      switch (CONFIG_CONTROL_TYPE[button_team])
-		{
-		case CONFIG_CONTROL_TYPE_OFF:
-		  CONFIG_CONTROL_TYPE[button_team] =
-		    CONFIG_CONTROL_TYPE_HUMAN;
-		  break;
-		case CONFIG_CONTROL_TYPE_HUMAN:
-		  CONFIG_CONTROL_TYPE[button_team] = CONFIG_CONTROL_TYPE_CPU;
-		  break;
-		default:
-		  CONFIG_CONTROL_TYPE[button_team] = CONFIG_CONTROL_TYPE_OFF;
-		}
-	      redraw_team_box (d + 4 + 20 * button_team, button_team);
-	      break;
-	    case 16:
-	      change_key (d + choix, &CONFIG_KEY_UP[button_team]);
-	      break;
-	    case 17:
-	      change_key (d + choix, &CONFIG_KEY_LEFT[button_team]);
-	      break;
-	    case 18:
-	      change_key (d + choix, &CONFIG_KEY_RIGHT[button_team]);
-	      break;
-	    case 19:
-	      change_key (d + choix, &CONFIG_KEY_DOWN[button_team]);
-	      break;
-	    default:
-	      if (button_type >= 2 && button_type < 14)
-		{
-		  i = suppress_conflicting_color
-		    (button_type - 2, CONFIG_TEAM_COLOR[button_team]);
-		  if (i >= 0)
-		    redraw_team_box (d + 4 + 20 * i, i);
-		  CONFIG_TEAM_COLOR[button_team] = button_type - 2;
-		  redraw_team_box (d + 4 + 20 * button_team, button_team);
-		}
-	    }
-	}
+        {
+        case -1:
+        case MENU_QUICK_BACK:
+          retour = 1;
+          break;
+        case MENU_QUICK_MAIN:
+          retour = MENU_TOP;
+          break;
+        case MENU_QUICK_QUIT:
+          if (confirm_quit ())
+            retour = MENU_EXIT;
+          else
+            display_back_image ();
+          break;
+        case MENU_QUICK_PLAY:
+          retour = MENU_PLAY;
+          break;
+        default:
+          button_team = (choix - 4) / 20;
+          button_type = (choix - 4) % 20;
+          switch (button_type)
+            {
+            case 15:
+              switch (CONFIG_CONTROL_TYPE[button_team])
+                {
+                case CONFIG_CONTROL_TYPE_OFF:
+                  CONFIG_CONTROL_TYPE[button_team] =
+                    CONFIG_CONTROL_TYPE_HUMAN;
+                  break;
+                case CONFIG_CONTROL_TYPE_HUMAN:
+                  CONFIG_CONTROL_TYPE[button_team] = CONFIG_CONTROL_TYPE_CPU;
+                  break;
+                default:
+                  CONFIG_CONTROL_TYPE[button_team] = CONFIG_CONTROL_TYPE_OFF;
+                }
+              redraw_team_box (d + 4 + 20 * button_team, button_team);
+              break;
+            case 16:
+              change_key (d + choix, &CONFIG_KEY_UP[button_team]);
+              break;
+            case 17:
+              change_key (d + choix, &CONFIG_KEY_LEFT[button_team]);
+              break;
+            case 18:
+              change_key (d + choix, &CONFIG_KEY_RIGHT[button_team]);
+              break;
+            case 19:
+              change_key (d + choix, &CONFIG_KEY_DOWN[button_team]);
+              break;
+            default:
+              if (button_type >= 2 && button_type < 14)
+                {
+                  i = suppress_conflicting_color
+                    (button_type - 2, CONFIG_TEAM_COLOR[button_team]);
+                  if (i >= 0)
+                    redraw_team_box (d + 4 + 20 * i, i);
+                  CONFIG_TEAM_COLOR[button_team] = button_type - 2;
+                  redraw_team_box (d + 4 + 20 * button_team, button_team);
+                }
+            }
+        }
     }
 
   cleanup_player_names ();

@@ -151,12 +151,12 @@ init_disp_cursor (void)
     {
       color_back = 0;
       while (color_back < FG_TEXTURE_FIRST_COLOR
-	     || color_back >= FG_TEXTURE_FIRST_COLOR + 32)
-	{
-	  x = random () % CURRENT_AREA_W;
-	  y = random () % CURRENT_AREA_H;
-	  color_back = getpixel (CURRENT_AREA_BACK, x, y);
-	}
+             || color_back >= FG_TEXTURE_FIRST_COLOR + 32)
+        {
+          x = random () % CURRENT_AREA_W;
+          y = random () % CURRENT_AREA_H;
+          color_back = getpixel (CURRENT_AREA_BACK, x, y);
+        }
       CURSOR_COLOR_BACK[i] = color_back;
     }
 }
@@ -178,18 +178,18 @@ disp_cursor (int number)
       y = y0 + CURSOR_LAYOUT[i].y;
       CURSOR_GRAPHIC_MEMORY[number][i] = getpixel (CURRENT_AREA_DISP, x, y);
       switch (CURSOR_LAYOUT[i].row)
-	{
-	case CL_OUTSIDE:
-	case CL_INSIDE:
-	case CL_MIDDLE:
-	  putpixel (CURRENT_AREA_DISP, x, y,
-		    CURSOR_COLOR_MAP[CURSOR_LAYOUT[i].color] + color_offset);
-	  break;
-	case CL_MIDDLE2:
-	  putpixel (CURRENT_AREA_DISP, x, y,
-		    CURSOR_COLOR_BACK[CURSOR_LAYOUT[i].color]);
-	  break;
-	}
+        {
+        case CL_OUTSIDE:
+        case CL_INSIDE:
+        case CL_MIDDLE:
+          putpixel (CURRENT_AREA_DISP, x, y,
+                    CURSOR_COLOR_MAP[CURSOR_LAYOUT[i].color] + color_offset);
+          break;
+        case CL_MIDDLE2:
+          putpixel (CURRENT_AREA_DISP, x, y,
+                    CURSOR_COLOR_BACK[CURSOR_LAYOUT[i].color]);
+          break;
+        }
     }
 }
 
@@ -205,8 +205,8 @@ undisp_cursor (int number)
   for (i = 0; i < CURSOR_POINT_NUMBER; ++i)
     {
       putpixel (CURRENT_AREA_DISP,
-		x0 + CURSOR_LAYOUT[i].x,
-		y0 + CURSOR_LAYOUT[i].y, CURSOR_GRAPHIC_MEMORY[number][i]);
+                x0 + CURSOR_LAYOUT[i].x,
+                y0 + CURSOR_LAYOUT[i].y, CURSOR_GRAPHIC_MEMORY[number][i]);
     }
 }
 
@@ -224,18 +224,18 @@ disp_all_cursors (void)
   for (i = 0; i < CURSOR_COLOR_NUMBER; ++i)
     {
       if (ip < COLORS_PER_TEAM)
-	CURSOR_COLOR_MAP[i] = ip;
+        CURSOR_COLOR_MAP[i] = ip;
       else
-	CURSOR_COLOR_MAP[i] = 2 * COLORS_PER_TEAM - 1 - ip;
+        CURSOR_COLOR_MAP[i] = 2 * COLORS_PER_TEAM - 1 - ip;
 
       fp += COLORS_PER_TEAM;
       while (fp >= degrad_size)
-	{
-	  fp -= degrad_size;
-	  ip++;
-	}
+        {
+          fp -= degrad_size;
+          ip++;
+        }
       while (ip >= 2 * COLORS_PER_TEAM)
-	ip -= 2 * COLORS_PER_TEAM;
+        ip -= 2 * COLORS_PER_TEAM;
     }
 
   for (i = 0; i < NB_TEAMS; ++i)

@@ -81,8 +81,8 @@ lw_popup_init_fail ()
 
   hwnd = (HWND) win_get_window ();
   MessageBox (hwnd,
-	      lw_lang_string (LW_LANG_STRING_POPUP_INITFAIL),
-	      lw_lang_string (LW_LANG_STRING_APPNAME), LW_POPUP_ERROR_FLAGS);
+              lw_lang_string (LW_LANG_STRING_POPUP_INITFAIL),
+              lw_lang_string (LW_LANG_STRING_APPNAME), LW_POPUP_ERROR_FLAGS);
 }
 
 /*------------------------------------------------------------------*/
@@ -93,8 +93,8 @@ lw_popup_mem_trouble (void)
 
   hwnd = (HWND) win_get_window ();
   MessageBox (hwnd,
-	      lw_lang_string (LW_LANG_STRING_POPUP_MEMTROUBLE),
-	      lw_lang_string (LW_LANG_STRING_APPNAME), LW_POPUP_ERROR_FLAGS);
+              lw_lang_string (LW_LANG_STRING_POPUP_MEMTROUBLE),
+              lw_lang_string (LW_LANG_STRING_APPNAME), LW_POPUP_ERROR_FLAGS);
 }
 
 /*------------------------------------------------------------------*/
@@ -105,8 +105,8 @@ lw_popup_big_data (void)
 
   hwnd = (HWND) win_get_window ();
   MessageBox (hwnd,
-	      lw_lang_string (LW_LANG_STRING_POPUP_BIGDATA),
-	      lw_lang_string (LW_LANG_STRING_APPNAME), LW_POPUP_ERROR_FLAGS);
+              lw_lang_string (LW_LANG_STRING_POPUP_BIGDATA),
+              lw_lang_string (LW_LANG_STRING_APPNAME), LW_POPUP_ERROR_FLAGS);
 }
 
 /*------------------------------------------------------------------*/
@@ -117,8 +117,8 @@ lw_popup_load_fail (void)
 
   hwnd = (HWND) win_get_window ();
   MessageBox (hwnd,
-	      lw_lang_string (LW_LANG_STRING_POPUP_LOADFAIL),
-	      lw_lang_string (LW_LANG_STRING_APPNAME), LW_POPUP_ERROR_FLAGS);
+              lw_lang_string (LW_LANG_STRING_POPUP_LOADFAIL),
+              lw_lang_string (LW_LANG_STRING_APPNAME), LW_POPUP_ERROR_FLAGS);
 }
 
 /*------------------------------------------------------------------*/
@@ -129,8 +129,8 @@ lw_popup_custom_fail (void)
 
   hwnd = (HWND) win_get_window ();
   MessageBox (hwnd,
-	      lw_lang_string (LW_LANG_STRING_POPUP_CUSTOMFAIL),
-	      lw_lang_string (LW_LANG_STRING_APPNAME), LW_POPUP_ERROR_FLAGS);
+              lw_lang_string (LW_LANG_STRING_POPUP_CUSTOMFAIL),
+              lw_lang_string (LW_LANG_STRING_APPNAME), LW_POPUP_ERROR_FLAGS);
 }
 
 /*------------------------------------------------------------------*/
@@ -141,6 +141,6 @@ lw_popup_graphics_fail (void)
 
   hwnd = (HWND) win_get_window ();
   MessageBox (hwnd,
-	      lw_lang_string (LW_LANG_STRING_POPUP_GRAPHICSFAIL),
-	      lw_lang_string (LW_LANG_STRING_APPNAME), LW_POPUP_ERROR_FLAGS);
+              lw_lang_string (LW_LANG_STRING_POPUP_GRAPHICSFAIL),
+              lw_lang_string (LW_LANG_STRING_APPNAME), LW_POPUP_ERROR_FLAGS);
 }

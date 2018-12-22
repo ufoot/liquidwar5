@@ -113,10 +113,10 @@ LW_CONNECT_DATA GLOBAL_CONNECT_DATA;
 
 static void connect_on_server_keepalive (void *args);
 static int update_connect_menu (DIALOG * d,
-				int waited_teams,
-				LW_TEAMSTARTINFO * team_start_info,
-				LW_CHAT_HISTORY * chat_history,
-				int *connected_teams_prev);
+                                int waited_teams,
+                                LW_TEAMSTARTINFO * team_start_info,
+                                LW_CHAT_HISTORY * chat_history,
+                                int *connected_teams_prev);
 static void position_players_list (DIALOG * d);
 static void position_chat_history (DIALOG * d);
 
@@ -187,125 +187,125 @@ lw_connect_menu (int sock)
       d[10].dp = lw_lang_string (LW_LANG_STRING_CONNECT_SENDMESSAGE);
 
       if (hide_start_button)
-	{
-	  /*
-	   * We disactivate these buttons. If we did not do it
-	   * it would lead to network errors if someone would
-	   * press them twice.
-	   */
-	  d[6].proc = my_textbox_proc;
-	  d[6].dp = lw_lang_string (LW_LANG_STRING_CONNECT_WAITING);
-	  d[MENU_QUICK_PLAY].flags = D_HIDDEN;
-	}
+        {
+          /*
+           * We disactivate these buttons. If we did not do it
+           * it would lead to network errors if someone would
+           * press them twice.
+           */
+          d[6].proc = my_textbox_proc;
+          d[6].dp = lw_lang_string (LW_LANG_STRING_CONNECT_WAITING);
+          d[MENU_QUICK_PLAY].flags = D_HIDDEN;
+        }
 
       d[11].proc = 0;
 
       if (first_display)
-	{
-	  display_back_image ();
-	  first_display = 0;
-	}
+        {
+          display_back_image ();
+          first_display = 0;
+        }
       dp = my_init_dialog (d, choix);
       while (my_update_dialog (dp) && !data->finished)
-	{
-	  show_mouse (screen);
-	  if (!data->thread_running && !data->finished)
-	    {
-	      if (!first_getinfo)
-		{
-		  if (data->result == 0)
-		    {
-		      network_error = 1;
-		    }
-		  else
-		    {
-		      update_connect_menu (d,
-					   data->waited_teams,
-					   data->team_start_info,
-					   &(data->chat_history),
-					   &connected_teams_prev);
-		    }
-		}
-	      data->thread_running = 1;
-	      if (lw_thread_start (connect_on_server_keepalive, data))
-		{
-		  first_getinfo = 0;
-		}
-	      else
-		{
-		  data->thread_running = 0;
-		}
-	    }
-	  rest (10);
-	}
+        {
+          show_mouse (screen);
+          if (!data->thread_running && !data->finished)
+            {
+              if (!first_getinfo)
+                {
+                  if (data->result == 0)
+                    {
+                      network_error = 1;
+                    }
+                  else
+                    {
+                      update_connect_menu (d,
+                                           data->waited_teams,
+                                           data->team_start_info,
+                                           &(data->chat_history),
+                                           &connected_teams_prev);
+                    }
+                }
+              data->thread_running = 1;
+              if (lw_thread_start (connect_on_server_keepalive, data))
+                {
+                  first_getinfo = 0;
+                }
+              else
+                {
+                  data->thread_running = 0;
+                }
+            }
+          rest (10);
+        }
       choix = shutdown_dialog (dp);
 
       if (network_error)
-	{
-	  error_network_problem ();
-	  lw_sock_close (&(data->sock));
-	  retour = 1;
-	}
+        {
+          error_network_problem ();
+          lw_sock_close (&(data->sock));
+          retour = 1;
+        }
       else
-	{
-	  /*
-	   * If 0 teams are waited for, then the game must start, so
-	   * we simulate a key press on the "start" button.
-	   */
-	  if (data->waited_teams == 0)
-	    {
-	      retour = MENU_OK;
-	    }
-	  else
-	    {
-	      switch (choix)
-		{
-		case -1:
-		case MENU_QUICK_BACK:
-		  lw_sock_close (&(data->sock));
-		  retour = 1;
-		  break;
-		case MENU_QUICK_MAIN:
-		  lw_sock_close (&(data->sock));
-		  retour = MENU_TOP;
-		  break;
-		case MENU_QUICK_QUIT:
-		  lw_sock_close (&(data->sock));
-		  if (confirm_quit ())
-		    retour = MENU_EXIT;
-		  else
-		    display_back_image ();
-		  break;
-		case MENU_QUICK_PLAY:
-		  /*
-		   * Pressing Play or Start has the same effect here
-		   * so there's no "break;"
-		   */
-		case 6:
-		  if (data->waited_teams > 0)
-		    {
-		      data->force_start = 1;
-		      hide_start_button = 1;
-		      display_back_image ();
-		    }
-		  break;
-		case 9:
-		case 10:
-		  if (strlen (d[9].dp) && !data->chat_send)
-		    {
-		      data->chat_send = 1;
+        {
+          /*
+           * If 0 teams are waited for, then the game must start, so
+           * we simulate a key press on the "start" button.
+           */
+          if (data->waited_teams == 0)
+            {
+              retour = MENU_OK;
+            }
+          else
+            {
+              switch (choix)
+                {
+                case -1:
+                case MENU_QUICK_BACK:
+                  lw_sock_close (&(data->sock));
+                  retour = 1;
+                  break;
+                case MENU_QUICK_MAIN:
+                  lw_sock_close (&(data->sock));
+                  retour = MENU_TOP;
+                  break;
+                case MENU_QUICK_QUIT:
+                  lw_sock_close (&(data->sock));
+                  if (confirm_quit ())
+                    retour = MENU_EXIT;
+                  else
+                    display_back_image ();
+                  break;
+                case MENU_QUICK_PLAY:
+                  /*
+                   * Pressing Play or Start has the same effect here
+                   * so there's no "break;"
+                   */
+                case 6:
+                  if (data->waited_teams > 0)
+                    {
+                      data->force_start = 1;
+                      hide_start_button = 1;
+                      display_back_image ();
+                    }
+                  break;
+                case 9:
+                case 10:
+                  if (strlen (d[9].dp) && !data->chat_send)
+                    {
+                      data->chat_send = 1;
 
-		      strncpy (data->chat_buffer, d[9].dp,
-			       LW_CHAT_MESSAGE_SIZE);
-		      data->chat_buffer[LW_CHAT_MESSAGE_SIZE] = '\0';
-		      ((char *) (d[9].dp))[0] = '\0';
-		      d[9].d2 = 0;
-		      d[9].proc (MSG_DRAW, d + 9, 0);
-		    }
-		  break;
-		}
-	    }
-	}
+                      strncpy (data->chat_buffer, d[9].dp,
+                               LW_CHAT_MESSAGE_SIZE);
+                      data->chat_buffer[LW_CHAT_MESSAGE_SIZE] = '\0';
+                      ((char *) (d[9].dp))[0] = '\0';
+                      d[9].d2 = 0;
+                      d[9].proc (MSG_DRAW, d + 9, 0);
+                    }
+                  break;
+                }
+            }
+        }
     }
 
   while (data->thread_running)
@@ -329,10 +329,10 @@ lw_connect_menu (int sock)
  */
 static int
 update_connect_menu (DIALOG * d,
-		     int waited_teams,
-		     LW_TEAMSTARTINFO * team_start_info,
-		     LW_CHAT_HISTORY * chat_history,
-		     int *connected_teams_prev)
+                     int waited_teams,
+                     LW_TEAMSTARTINFO * team_start_info,
+                     LW_CHAT_HISTORY * chat_history,
+                     int *connected_teams_prev)
 {
   int result = 0;
   int i;
@@ -345,43 +345,43 @@ update_connect_menu (DIALOG * d,
   int connected_teams = 0;
 
   LW_MACRO_SNPRINTF3 ((char *) d[4].dp,
-		      CONNECT_BUF_SIZE,
-		      "%s%d%s",
-		      lw_lang_string (LW_LANG_STRING_CONNECT_WAITINGFOR),
-		      waited_teams,
-		      lw_lang_string (LW_LANG_STRING_CONNECT_TEAMS));
+                      CONNECT_BUF_SIZE,
+                      "%s%d%s",
+                      lw_lang_string (LW_LANG_STRING_CONNECT_WAITINGFOR),
+                      waited_teams,
+                      lw_lang_string (LW_LANG_STRING_CONNECT_TEAMS));
 
   ((char *) (d[5].dp))[0] = '\0';
   for (i = 0; i < NB_TEAMS; ++i)
     {
       if (team_start_info[i].active)
-	{
-	  if (team_start_info[i].start)
-	    {
-	      sep = "*";
-	    }
-	  else
-	    {
-	      sep = "-";
-	    }
+        {
+          if (team_start_info[i].start)
+            {
+              sep = "*";
+            }
+          else
+            {
+              sep = "-";
+            }
 
-	  LW_MACRO_SPRINTF3 (buf, "%d %s %s\n",
-			     i + 1, sep, team_start_info[i].name);
+          LW_MACRO_SPRINTF3 (buf, "%d %s %s\n",
+                             i + 1, sep, team_start_info[i].name);
 
-	  LW_MACRO_STRNCAT ((char *) d[5].dp, buf,
-			    NB_TEAMS * CONNECT_BUF_SIZE);
+          LW_MACRO_STRNCAT ((char *) d[5].dp, buf,
+                            NB_TEAMS * CONNECT_BUF_SIZE);
 
-	  connected_teams++;
-	}
+          connected_teams++;
+        }
     }
 
   ((char *) (d[7].dp))[0] = '\0';
   for (i = 0; lw_chat_get (chat_history, &chat_mess, i); ++i)
     {
       LW_MACRO_SPRINTF2 (buf, "%s: %s\n",
-			 chat_mess.author, chat_mess.content);
+                         chat_mess.author, chat_mess.content);
       LW_MACRO_STRNCAT ((char *) d[7].dp, buf,
-			LW_CHAT_HISTORY_SIZE * CONNECT_BUF_SIZE);
+                        LW_CHAT_HISTORY_SIZE * CONNECT_BUF_SIZE);
     }
   /*
    * Now if the length of the string has changed, we
@@ -419,9 +419,9 @@ update_connect_menu (DIALOG * d,
        * nothing
        */
       if ((*connected_teams_prev) >= 0)
-	{
-	  play_connect ();
-	}
+        {
+          play_connect ();
+        }
       (*connected_teams_prev) = connected_teams;
     }
   else
@@ -431,9 +431,9 @@ update_connect_menu (DIALOG * d,
        * note to overwrite it if it's -1
        */
       if ((*connected_teams_prev) >= 0)
-	{
-	  (*connected_teams_prev) = connected_teams;
-	}
+        {
+          (*connected_teams_prev) = connected_teams;
+        }
     }
 
   return result;
@@ -456,91 +456,91 @@ connect_on_server_keepalive (void *arg)
   if (!data->finished)
     {
       if (result == 1)
-	{
-	  if (!lw_protocol_waiting (&data->sock, &(data->waited_teams)))
-	    {
-	      result = 0;
-	    }
-	}
+        {
+          if (!lw_protocol_waiting (&data->sock, &(data->waited_teams)))
+            {
+              result = 0;
+            }
+        }
 
       if (result == 1)
-	{
-	  if (data->waited_teams > 0)
-	    {
-	      /*
-	       * We are still waiting for teams
-	       */
-	      for (i = 0; i < NB_TEAMS; ++i)
-		{
-		  if (result == 1)
-		    {
-		      if (!lw_protocol_ask_teamstartinfo (&data->sock, i,
-							  &
-							  (data->team_start_info
-							   [i])))
-			{
-			  result = 0;
-			}
-		    }
-		}
+        {
+          if (data->waited_teams > 0)
+            {
+              /*
+               * We are still waiting for teams
+               */
+              for (i = 0; i < NB_TEAMS; ++i)
+                {
+                  if (result == 1)
+                    {
+                      if (!lw_protocol_ask_teamstartinfo (&data->sock, i,
+                                                          &
+                                                          (data->team_start_info
+                                                           [i])))
+                        {
+                          result = 0;
+                        }
+                    }
+                }
 
-	      if (result == 1 && data->chat_send)
-		{
-		  lw_netmess_cleanup_arg (data->chat_buffer);
+              if (result == 1 && data->chat_send)
+                {
+                  lw_netmess_cleanup_arg (data->chat_buffer);
 
-		  if (!lw_protocol_chat_talk (&data->sock, data->chat_buffer))
-		    {
-		      result = 0;
-		    }
+                  if (!lw_protocol_chat_talk (&data->sock, data->chat_buffer))
+                    {
+                      result = 0;
+                    }
 
-		  data->chat_send = 0;
-		}
+                  data->chat_send = 0;
+                }
 
-	      if (result == 1)
-		{
-		  if (!lw_protocol_chat_listen
-		      (&data->sock, &(data->chat_history)))
-		    {
-		      result = 0;
-		    }
-		}
+              if (result == 1)
+                {
+                  if (!lw_protocol_chat_listen
+                      (&data->sock, &(data->chat_history)))
+                    {
+                      result = 0;
+                    }
+                }
 
-	      if (result == 1 && data->force_start)
-		{
-		  if (!lw_protocol_force_start (&data->sock))
-		    {
-		      result = 0;
-		    }
-		  /*
-		   * It's useless to keep on sending the START message, once is
-		   * just enough, let's save bandwidth!
-		   */
-		  data->force_start = 0;
-		}
+              if (result == 1 && data->force_start)
+                {
+                  if (!lw_protocol_force_start (&data->sock))
+                    {
+                      result = 0;
+                    }
+                  /*
+                   * It's useless to keep on sending the START message, once is
+                   * just enough, let's save bandwidth!
+                   */
+                  data->force_start = 0;
+                }
 
-	      if (result == 1)
-		{
-		  if (!lw_protocol_next (&data->sock))
-		    {
-		      result = 0;
-		    }
-		}
-	    }
-	  else
-	    {
-	      /*
-	       * No more teams waited, we say we're ready
-	       */
-	      if (result == 1)
-		{
-		  if (!lw_protocol_i_am_ready (&data->sock))
-		    {
-		      result = 0;
-		    }
-		  data->finished = 1;
-		}
-	    }
-	}
+              if (result == 1)
+                {
+                  if (!lw_protocol_next (&data->sock))
+                    {
+                      result = 0;
+                    }
+                }
+            }
+          else
+            {
+              /*
+               * No more teams waited, we say we're ready
+               */
+              if (result == 1)
+                {
+                  if (!lw_protocol_i_am_ready (&data->sock))
+                    {
+                      result = 0;
+                    }
+                  data->finished = 1;
+                }
+            }
+        }
     }
 
   data->result = result;

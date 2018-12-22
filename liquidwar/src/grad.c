@@ -87,17 +87,17 @@ create_gradient_bitmap (int team)
     {
       i = 0;
       for (y = 0; y < CURRENT_AREA_H; ++y)
-	for (x = 0; x < CURRENT_AREA_W; ++x)
-	  {
-	    if ((temp = CURRENT_AREA[i++].mesh) != NULL)
-	      {
-		color = (temp->info[team].state.grad
-			 + AREA_START_GRADIENT) % COLORS_PER_TEAM;
-		putpixel (result, x, y, color + COLOR_FIRST_ENTRY[team]);
-	      }
-	    else
-	      putpixel (result, x, y, MENU_BG);
-	  }
+        for (x = 0; x < CURRENT_AREA_W; ++x)
+          {
+            if ((temp = CURRENT_AREA[i++].mesh) != NULL)
+              {
+                color = (temp->info[team].state.grad
+                         + AREA_START_GRADIENT) % COLORS_PER_TEAM;
+                putpixel (result, x, y, color + COLOR_FIRST_ENTRY[team]);
+              }
+            else
+              putpixel (result, x, y, MENU_BG);
+          }
     }
 
   return result;
@@ -117,10 +117,10 @@ create_dir_bitmap (int team)
   for (y = 0; y < CURRENT_AREA_H; ++y)
     for (x = 0; x < CURRENT_AREA_W; ++x)
       {
-	if ((temp = CURRENT_AREA[i++].mesh) != NULL)
-	  putpixel (result, x, y, 134
-		    + (temp->info[team].state.dir / 4) * 42
-		    + (temp->info[team].state.dir % 4) * 10);
+        if ((temp = CURRENT_AREA[i++].mesh) != NULL)
+          putpixel (result, x, y, 134
+                    + (temp->info[team].state.dir / 4) * 42
+                    + (temp->info[team].state.dir % 4) * 10);
       }
 
   return result;
@@ -151,41 +151,41 @@ spread_single_gradient (void)
       last = CURRENT_MESH + CURRENT_MESH_SIZE;
 #ifdef ASM
       if (STARTUP_ASM && LW_CONFIG_CURRENT_RULES.asm_algorithm)
-	switch (PLAYING_TEAMS)
-	  {
-	  case 6:
-	    boost_gradient_down_6
-	      (pos, CURRENT_MESH_SIZE - 1, OFFSET_TO_FIRST_LINK + dir * 4);
-	    break;
-	  case 5:
-	    boost_gradient_down_5
-	      (pos, CURRENT_MESH_SIZE - 1, OFFSET_TO_FIRST_LINK + dir * 4);
-	    break;
-	  case 4:
-	    boost_gradient_down_4
-	      (pos, CURRENT_MESH_SIZE - 1, OFFSET_TO_FIRST_LINK + dir * 4);
-	    break;
-	  case 3:
-	    boost_gradient_down_3
-	      (pos, CURRENT_MESH_SIZE - 1, OFFSET_TO_FIRST_LINK + dir * 4);
-	    break;
-	  default:
-	    boost_gradient_down_2
-	      (pos, CURRENT_MESH_SIZE - 1, OFFSET_TO_FIRST_LINK + dir * 4);
-	    break;
-	  }
+        switch (PLAYING_TEAMS)
+          {
+          case 6:
+            boost_gradient_down_6
+              (pos, CURRENT_MESH_SIZE - 1, OFFSET_TO_FIRST_LINK + dir * 4);
+            break;
+          case 5:
+            boost_gradient_down_5
+              (pos, CURRENT_MESH_SIZE - 1, OFFSET_TO_FIRST_LINK + dir * 4);
+            break;
+          case 4:
+            boost_gradient_down_4
+              (pos, CURRENT_MESH_SIZE - 1, OFFSET_TO_FIRST_LINK + dir * 4);
+            break;
+          case 3:
+            boost_gradient_down_3
+              (pos, CURRENT_MESH_SIZE - 1, OFFSET_TO_FIRST_LINK + dir * 4);
+            break;
+          default:
+            boost_gradient_down_2
+              (pos, CURRENT_MESH_SIZE - 1, OFFSET_TO_FIRST_LINK + dir * 4);
+            break;
+          }
       else
 #endif
-	while (pos != last)
-	  {
-	    for (i = 0; i < PLAYING_TEAMS; ++i)
-	      if ((temp = (pos->link[dir]))
-		  && (temp->info[i].state.grad
-		      > (new_grad =
-			 pos->info[i].state.grad + pos->side.size)))
-		temp->info[i].state.grad = new_grad;
-	    pos++;
-	  }
+        while (pos != last)
+          {
+            for (i = 0; i < PLAYING_TEAMS; ++i)
+              if ((temp = (pos->link[dir]))
+                  && (temp->info[i].state.grad
+                      > (new_grad =
+                         pos->info[i].state.grad + pos->side.size)))
+                temp->info[i].state.grad = new_grad;
+            pos++;
+          }
       break;
     case DIR_WSW:
     case DIR_WNW:
@@ -197,41 +197,41 @@ spread_single_gradient (void)
       last = CURRENT_MESH - 1;
 #ifdef ASM
       if (STARTUP_ASM && LW_CONFIG_CURRENT_RULES.asm_algorithm)
-	switch (PLAYING_TEAMS)
-	  {
-	  case 6:
-	    boost_gradient_up_6
-	      (pos, CURRENT_MESH_SIZE - 1, OFFSET_TO_FIRST_LINK + dir * 4);
-	    break;
-	  case 5:
-	    boost_gradient_up_5
-	      (pos, CURRENT_MESH_SIZE - 1, OFFSET_TO_FIRST_LINK + dir * 4);
-	    break;
-	  case 4:
-	    boost_gradient_up_4
-	      (pos, CURRENT_MESH_SIZE - 1, OFFSET_TO_FIRST_LINK + dir * 4);
-	    break;
-	  case 3:
-	    boost_gradient_up_3
-	      (pos, CURRENT_MESH_SIZE - 1, OFFSET_TO_FIRST_LINK + dir * 4);
-	    break;
-	  default:
-	    boost_gradient_up_2
-	      (pos, CURRENT_MESH_SIZE - 1, OFFSET_TO_FIRST_LINK + dir * 4);
-	    break;
-	  }
+        switch (PLAYING_TEAMS)
+          {
+          case 6:
+            boost_gradient_up_6
+              (pos, CURRENT_MESH_SIZE - 1, OFFSET_TO_FIRST_LINK + dir * 4);
+            break;
+          case 5:
+            boost_gradient_up_5
+              (pos, CURRENT_MESH_SIZE - 1, OFFSET_TO_FIRST_LINK + dir * 4);
+            break;
+          case 4:
+            boost_gradient_up_4
+              (pos, CURRENT_MESH_SIZE - 1, OFFSET_TO_FIRST_LINK + dir * 4);
+            break;
+          case 3:
+            boost_gradient_up_3
+              (pos, CURRENT_MESH_SIZE - 1, OFFSET_TO_FIRST_LINK + dir * 4);
+            break;
+          default:
+            boost_gradient_up_2
+              (pos, CURRENT_MESH_SIZE - 1, OFFSET_TO_FIRST_LINK + dir * 4);
+            break;
+          }
       else
 #endif
-	while (pos != last)
-	  {
-	    for (i = 0; i < PLAYING_TEAMS; ++i)
-	      if ((temp = (pos->link[dir]))
-		  && (temp->info[i].state.grad
-		      > (new_grad =
-			 pos->info[i].state.grad + pos->side.size)))
-		temp->info[i].state.grad = new_grad;
-	    pos--;
-	  }
+        while (pos != last)
+          {
+            for (i = 0; i < PLAYING_TEAMS; ++i)
+              if ((temp = (pos->link[dir]))
+                  && (temp->info[i].state.grad
+                      > (new_grad =
+                         pos->info[i].state.grad + pos->side.size)))
+                temp->info[i].state.grad = new_grad;
+            pos--;
+          }
       break;
     }
 }

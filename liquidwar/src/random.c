@@ -119,7 +119,7 @@ generate_bitmap ()
   PALETTE pal;
 
   char filename[LW_STARTUP_MAX_PATH_LENGTH];
-  char command[LW_STARTUP_MAX_PATH_LENGTH+LW_COMMAND_EXTRA_SIZE];
+  char command[LW_STARTUP_MAX_PATH_LENGTH + LW_COMMAND_EXTRA_SIZE];
 
   int size;
   int ok = 0;
@@ -128,8 +128,8 @@ generate_bitmap ()
 
   LW_MACRO_SPRINTF1 (filename, "%s.bmp", tmpnam (NULL));
   LW_MACRO_SPRINTF4 (command,
-		     "%s --out %s --size %d%s",
-		     STARTUP_GEN_PATH, filename, size, LW_RANDOM_COMMAND_END);
+                     "%s --out %s --size %d%s",
+                     STARTUP_GEN_PATH, filename, size, LW_RANDOM_COMMAND_END);
 
   log_print_str ("Generating random map with command: \"");
   log_print_str (command);
@@ -147,7 +147,7 @@ generate_bitmap ()
 
     for (i = 0; i < LW_RANDOM_RUN_RETRIES && !exists (filename); ++i)
       {
-	rest (LW_RANDOM_RUN_DELAY);
+        rest (LW_RANDOM_RUN_DELAY);
       }
   }
 #endif
@@ -174,8 +174,8 @@ generate_bitmap ()
 
     for (i = 0; i < LW_RANDOM_RUN_RETRIES && exists (filename); ++i)
       {
-	rest (LW_RANDOM_RUN_DELAY);
-	delete_file (filename);
+        rest (LW_RANDOM_RUN_DELAY);
+        delete_file (filename);
       }
   }
 #endif
@@ -203,9 +203,9 @@ lw_random_generate_map ()
   if (raw_map)
     {
       if (LW_RANDOM_RAW_MAP)
-	{
-	  free (LW_RANDOM_RAW_MAP);
-	}
+        {
+          free (LW_RANDOM_RAW_MAP);
+        }
       LW_RANDOM_RAW_MAP = raw_map;
       result = 1;
     }

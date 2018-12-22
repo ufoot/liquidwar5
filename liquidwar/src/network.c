@@ -147,30 +147,30 @@ choose_different_color ()
     {
       closeness[i] = 0;
       for (j = 0; j < NB_TEAMS; ++j)
-	{
-	  if (LW_NETWORK_INFO[j].active)
-	    {
-	      dist = distance_between_colors (LW_NETWORK_INFO[j].color, i);
-	      if (dist > 0)
-		{
-		  if (LW_NETWORK_INFO[j].network)
-		    {
-		      /*
-		       * We consider network color conflicts
-		       * to be less important than conflicts with
-		       * local colors, therefore we increase the
-		       * distance for network teams.
-		       */
-		      dist++;
-		    }
-		  closeness[i] += LW_NETWORK_COLOR_DIST_SCALE / (dist * dist);
-		}
-	      else
-		{
-		  closeness[i] = LW_NETWORK_COLOR_DIST_MAXINT;
-		}
-	    }
-	}
+        {
+          if (LW_NETWORK_INFO[j].active)
+            {
+              dist = distance_between_colors (LW_NETWORK_INFO[j].color, i);
+              if (dist > 0)
+                {
+                  if (LW_NETWORK_INFO[j].network)
+                    {
+                      /*
+                       * We consider network color conflicts
+                       * to be less important than conflicts with
+                       * local colors, therefore we increase the
+                       * distance for network teams.
+                       */
+                      dist++;
+                    }
+                  closeness[i] += LW_NETWORK_COLOR_DIST_SCALE / (dist * dist);
+                }
+              else
+                {
+                  closeness[i] = LW_NETWORK_COLOR_DIST_MAXINT;
+                }
+            }
+        }
     }
 
   /*
@@ -182,10 +182,10 @@ choose_different_color ()
   for (i = 0; i < LW_NETWORK_COLOR_NB; ++i)
     {
       if (closeness[i] < closeness_min)
-	{
-	  color = i;
-	  closeness_min = closeness[i];
-	}
+        {
+          color = i;
+          closeness_min = closeness[i];
+        }
     }
 
   return color;
@@ -203,29 +203,29 @@ lw_network_attribute_colors ()
   for (i = 0; i < NB_TEAMS; ++i)
     {
       if (LW_NETWORK_INFO[i].active)
-	{
-	  if (LW_NETWORK_INFO[i].network)
-	    {
-	      /*
-	       * -1 is a temporary value which will be overwritten
-	       * by the _real_ value later
-	       */
-	      LW_NETWORK_INFO[i].color = -1;
-	    }
-	  else
-	    {
-	      LW_NETWORK_INFO[i].color = CONFIG_TEAM_COLOR[i];
-	    }
-	}
+        {
+          if (LW_NETWORK_INFO[i].network)
+            {
+              /*
+               * -1 is a temporary value which will be overwritten
+               * by the _real_ value later
+               */
+              LW_NETWORK_INFO[i].color = -1;
+            }
+          else
+            {
+              LW_NETWORK_INFO[i].color = CONFIG_TEAM_COLOR[i];
+            }
+        }
     }
 
   for (i = 0; i < NB_TEAMS; ++i)
     {
       if (LW_NETWORK_INFO[i].active && LW_NETWORK_INFO[i].network)
-	{
-	  color = choose_different_color ();
-	  LW_NETWORK_INFO[i].color = color;
-	}
+        {
+          color = choose_different_color ();
+          LW_NETWORK_INFO[i].color = color;
+        }
     }
 }
 
@@ -242,8 +242,8 @@ lw_network_attribute_parts ()
   for (i = 0; i < NB_TEAMS; ++i)
     {
       if (LW_NETWORK_INFO[i].active)
-	{
-	  LW_NETWORK_INFO[i].part = order[LW_NETWORK_INFO[i].server_id];
-	}
+        {
+          LW_NETWORK_INFO[i].part = order[LW_NETWORK_INFO[i].server_id];
+        }
     }
 }

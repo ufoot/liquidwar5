@@ -88,15 +88,15 @@ lw_mutex_init (LW_MUTEX_DATA * mutex)
       (*h) = CreateMutex (NULL, TRUE, NULL);
 
       if ((*h) != NULL)
-	{
-	  result = 1;
-	}
+        {
+          result = 1;
+        }
       else
-	{
-	  log_println ("Error: can't create mutex...");
-	  free (mutex->data);
-	  mutex->data = NULL;
-	}
+        {
+          log_println ("Error: can't create mutex...");
+          free (mutex->data);
+          mutex->data = NULL;
+        }
     }
 
   return result;
@@ -122,9 +122,9 @@ lw_mutex_lock (LW_MUTEX_DATA * mutex)
   if (h)
     {
       if (WaitForSingleObject (h, INFINITE) == WAIT_OBJECT_0)
-	{
-	  result = 1;
-	}
+        {
+          result = 1;
+        }
     }
 
   return result;
@@ -151,9 +151,9 @@ lw_mutex_trylock (LW_MUTEX_DATA * mutex)
   if (h)
     {
       if (WaitForSingleObject (h, 0) == WAIT_OBJECT_0)
-	{
-	  result = 1;
-	}
+        {
+          result = 1;
+        }
     }
   return result;
 }

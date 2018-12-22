@@ -121,28 +121,28 @@ change_palette_brightness (PALETTE old_pal, PALETTE new_pal)
   if (brightness != 0)
     for (i = 0; i < 256; ++i)
       {
-	rgb = old_pal + i;
-	r = rgb->r * 4;
-	g = rgb->g * 4;
-	b = rgb->b * 4;
+        rgb = old_pal + i;
+        r = rgb->r * 4;
+        g = rgb->g * 4;
+        b = rgb->b * 4;
 
-	if (brightness > 0)
-	  {
-	    r = (brightness * sqrt255 (r) + (8 - brightness) * r) / 8;
-	    g = (brightness * sqrt255 (g) + (8 - brightness) * g) / 8;
-	    b = (brightness * sqrt255 (b) + (8 - brightness) * b) / 8;
-	  }
-	if (brightness < 0)
-	  {
-	    r = (-brightness * sqr255 (r) + (8 + brightness) * r) / 8;
-	    g = (-brightness * sqr255 (g) + (8 + brightness) * g) / 8;
-	    b = (-brightness * sqr255 (b) + (8 + brightness) * b) / 8;
-	  }
+        if (brightness > 0)
+          {
+            r = (brightness * sqrt255 (r) + (8 - brightness) * r) / 8;
+            g = (brightness * sqrt255 (g) + (8 - brightness) * g) / 8;
+            b = (brightness * sqrt255 (b) + (8 - brightness) * b) / 8;
+          }
+        if (brightness < 0)
+          {
+            r = (-brightness * sqr255 (r) + (8 + brightness) * r) / 8;
+            g = (-brightness * sqr255 (g) + (8 + brightness) * g) / 8;
+            b = (-brightness * sqr255 (b) + (8 + brightness) * b) / 8;
+          }
 
-	rgb = new_pal + i;
-	rgb->r = r / 4;
-	rgb->g = g / 4;
-	rgb->b = b / 4;
+        rgb = new_pal + i;
+        rgb->r = r / 4;
+        rgb->g = g / 4;
+        rgb->b = b / 4;
       }
   else
     for (i = 0; i < 256; ++i)
@@ -241,39 +241,39 @@ set_bg_texture_palette (int num)
   else
     {
       if (num >= CHOOSE_COLOR_NUMBER
-	  && num < CHOOSE_COLOR_NUMBER + RAW_TEXTURE_NUMBER)
-	{
-	  if (LOADED_TEXTURE)
-	    {
-	      set_raw_texture_palette (RAW_TEXTURE
-				       [num - CHOOSE_COLOR_NUMBER],
-				       BG_TEXTURE_FIRST_COLOR);
-	    }
-	  else
-	    {
-	      set_mono_texture_palette (BG_TEXTURE_DEFAULT_COLOR,
-					BG_TEXTURE_FIRST_COLOR);
-	    }
-	}
+          && num < CHOOSE_COLOR_NUMBER + RAW_TEXTURE_NUMBER)
+        {
+          if (LOADED_TEXTURE)
+            {
+              set_raw_texture_palette (RAW_TEXTURE
+                                       [num - CHOOSE_COLOR_NUMBER],
+                                       BG_TEXTURE_FIRST_COLOR);
+            }
+          else
+            {
+              set_mono_texture_palette (BG_TEXTURE_DEFAULT_COLOR,
+                                        BG_TEXTURE_FIRST_COLOR);
+            }
+        }
 
       if (num >= CHOOSE_COLOR_NUMBER + RAW_TEXTURE_NUMBER
-	  && num <
-	  CHOOSE_COLOR_NUMBER + RAW_TEXTURE_NUMBER + RAW_MAPTEX_NUMBER)
-	{
-	  if (LOADED_MAPTEX)
-	    {
-	      set_raw_texture_palette (RAW_MAPTEX
-				       [num -
-					(CHOOSE_COLOR_NUMBER +
-					 RAW_TEXTURE_NUMBER)],
-				       BG_TEXTURE_FIRST_COLOR);
-	    }
-	  else
-	    {
-	      set_mono_texture_palette (BG_TEXTURE_DEFAULT_COLOR,
-					BG_TEXTURE_FIRST_COLOR);
-	    }
-	}
+          && num <
+          CHOOSE_COLOR_NUMBER + RAW_TEXTURE_NUMBER + RAW_MAPTEX_NUMBER)
+        {
+          if (LOADED_MAPTEX)
+            {
+              set_raw_texture_palette (RAW_MAPTEX
+                                       [num -
+                                        (CHOOSE_COLOR_NUMBER +
+                                         RAW_TEXTURE_NUMBER)],
+                                       BG_TEXTURE_FIRST_COLOR);
+            }
+          else
+            {
+              set_mono_texture_palette (BG_TEXTURE_DEFAULT_COLOR,
+                                        BG_TEXTURE_FIRST_COLOR);
+            }
+        }
     }
 }
 
@@ -288,39 +288,39 @@ set_fg_texture_palette (int num)
   else
     {
       if (num >= CHOOSE_COLOR_NUMBER
-	  && num < CHOOSE_COLOR_NUMBER + RAW_TEXTURE_NUMBER)
-	{
-	  if (LOADED_TEXTURE)
-	    {
-	      set_raw_texture_palette (RAW_TEXTURE
-				       [num - CHOOSE_COLOR_NUMBER],
-				       FG_TEXTURE_FIRST_COLOR);
-	    }
-	  else
-	    {
-	      set_mono_texture_palette (FG_TEXTURE_DEFAULT_COLOR,
-					FG_TEXTURE_FIRST_COLOR);
-	    }
-	}
+          && num < CHOOSE_COLOR_NUMBER + RAW_TEXTURE_NUMBER)
+        {
+          if (LOADED_TEXTURE)
+            {
+              set_raw_texture_palette (RAW_TEXTURE
+                                       [num - CHOOSE_COLOR_NUMBER],
+                                       FG_TEXTURE_FIRST_COLOR);
+            }
+          else
+            {
+              set_mono_texture_palette (FG_TEXTURE_DEFAULT_COLOR,
+                                        FG_TEXTURE_FIRST_COLOR);
+            }
+        }
 
       if (num >= CHOOSE_COLOR_NUMBER + RAW_TEXTURE_NUMBER
-	  && num <
-	  CHOOSE_COLOR_NUMBER + RAW_TEXTURE_NUMBER + RAW_MAPTEX_NUMBER)
-	{
-	  if (LOADED_MAPTEX)
-	    {
-	      set_raw_texture_palette (RAW_MAPTEX
-				       [num -
-					(CHOOSE_COLOR_NUMBER +
-					 RAW_TEXTURE_NUMBER)],
-				       FG_TEXTURE_FIRST_COLOR);
-	    }
-	  else
-	    {
-	      set_mono_texture_palette (FG_TEXTURE_DEFAULT_COLOR,
-					FG_TEXTURE_FIRST_COLOR);
-	    }
-	}
+          && num <
+          CHOOSE_COLOR_NUMBER + RAW_TEXTURE_NUMBER + RAW_MAPTEX_NUMBER)
+        {
+          if (LOADED_MAPTEX)
+            {
+              set_raw_texture_palette (RAW_MAPTEX
+                                       [num -
+                                        (CHOOSE_COLOR_NUMBER +
+                                         RAW_TEXTURE_NUMBER)],
+                                       FG_TEXTURE_FIRST_COLOR);
+            }
+          else
+            {
+              set_mono_texture_palette (FG_TEXTURE_DEFAULT_COLOR,
+                                        FG_TEXTURE_FIRST_COLOR);
+            }
+        }
     }
 }
 
@@ -372,32 +372,32 @@ set_playing_teams_palette (void)
       color = 0;
       active = 0;
       if (LW_NETWORK_ON)
-	{
-	  for (j = 0; j < NB_TEAMS; ++j)
-	    {
-	      if (LW_NETWORK_INFO[j].active &&
-		  LW_NETWORK_INFO[j].server_id == i)
-		{
-		  active = 1;
-		  color = LW_NETWORK_INFO[j].color;
-		}
-	    }
-	}
+        {
+          for (j = 0; j < NB_TEAMS; ++j)
+            {
+              if (LW_NETWORK_INFO[j].active &&
+                  LW_NETWORK_INFO[j].server_id == i)
+                {
+                  active = 1;
+                  color = LW_NETWORK_INFO[j].color;
+                }
+            }
+        }
       else
-	{
-	  if (CONFIG_CONTROL_TYPE[i] != CONFIG_CONTROL_TYPE_OFF)
-	    {
-	      active = 1;
-	      color = CONFIG_TEAM_COLOR[i];
-	    }
-	}
+        {
+          if (CONFIG_CONTROL_TYPE[i] != CONFIG_CONTROL_TYPE_OFF)
+            {
+              active = 1;
+              color = CONFIG_TEAM_COLOR[i];
+            }
+        }
 
       if (active)
-	{
-	  COLOR_FIRST_ENTRY[n] = 128 + n * COLORS_PER_TEAM;
-	  set_team_color (color, COLOR_FIRST_ENTRY[n], COLORS_PER_TEAM);
-	  n++;
-	}
+        {
+          COLOR_FIRST_ENTRY[n] = 128 + n * COLORS_PER_TEAM;
+          set_team_color (color, COLOR_FIRST_ENTRY[n], COLORS_PER_TEAM);
+          n++;
+        }
     }
 }
 

@@ -77,7 +77,7 @@
 static void
 handler_sigchld (int sig)
 {
-  sig = sig;			// useless parameter
+  sig = sig;                    // useless parameter
   wait (NULL);
   return;
 }
@@ -116,16 +116,16 @@ lw_exec_cmd (char *cmd)
        * We're in the child
        */
       execl (LW_EXECUNIX_SHELL_CMD,
-	     LW_EXECUNIX_SHELL_CMD, LW_EXECUNIX_SHELL_ARG1, cmd, NULL);
+             LW_EXECUNIX_SHELL_CMD, LW_EXECUNIX_SHELL_ARG1, cmd, NULL);
 
       /*
        * If we get here, it means launching the command failed...
        */
       LW_MACRO_SPRINTF5 (error_str,
-			 "Can't execute \"%s %s %s\", error %d: \"%s\"",
-			 LW_EXECUNIX_SHELL_CMD,
-			 LW_EXECUNIX_SHELL_ARG1,
-			 cmd, errno, strerror (errno));
+                         "Can't execute \"%s %s %s\", error %d: \"%s\"",
+                         LW_EXECUNIX_SHELL_CMD,
+                         LW_EXECUNIX_SHELL_ARG1,
+                         cmd, errno, strerror (errno));
       log_println_str (error_str);
       exit (1);
       break;

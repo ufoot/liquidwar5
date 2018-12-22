@@ -88,13 +88,13 @@ recv_ok (int *sock)
     {
       netmess = lw_netmess_read (message);
       if (netmess != NULL)
-	{
-	  if (netmess->code == LW_NETMESS_CODE_OK && netmess->argc == 0)
-	    {
-	      result = 1;
-	    }
-	  lw_netmess_free (netmess);
-	}
+        {
+          if (netmess->code == LW_NETMESS_CODE_OK && netmess->argc == 0)
+            {
+              result = 1;
+            }
+          lw_netmess_free (netmess);
+        }
     }
 
   return result;
@@ -113,9 +113,9 @@ lw_protocol_do_ping (int *sock)
   if (*sock >= 0 && lw_sock_send_str (sock, LW_NETMESS_TEXT_PING))
     {
       if (recv_ok (sock))
-	{
-	  result = 1;
-	}
+        {
+          result = 1;
+        }
     }
 
   return result;
@@ -137,9 +137,9 @@ lw_protocol_tell_program (int *sock, char *program)
   if (*sock >= 0 && lw_sock_send_str (sock, message))
     {
       if (recv_ok (sock))
-	{
-	  result = 1;
-	}
+        {
+          result = 1;
+        }
     }
 
   return result;
@@ -159,9 +159,9 @@ lw_protocol_tell_version (int *sock, char *version)
   if (*sock >= 0 && lw_sock_send_str (sock, message))
     {
       if (recv_ok (sock))
-	{
-	  result = 1;
-	}
+        {
+          result = 1;
+        }
     }
 
   return result;
@@ -181,9 +181,9 @@ lw_protocol_tell_password (int *sock, char *password)
   if (*sock >= 0 && lw_sock_send_str (sock, message))
     {
       if (recv_ok (sock))
-	{
-	  result = 1;
-	}
+        {
+          result = 1;
+        }
     }
 
   return result;
@@ -206,18 +206,18 @@ lw_protocol_ask_free_teams (int *sock, int *nb)
     {
       while (*sock >= 0 && (ret = lw_sock_recv_str (sock, message)) == 0);
       if (*sock >= 0 && ret > 0)
-	{
-	  netmess = lw_netmess_read (message);
-	  if (netmess != NULL)
-	    {
-	      if (netmess->code == LW_NETMESS_CODE_OK && netmess->argc == 1)
-		{
-		  *nb = atoi (netmess->argv[0]);
-		  result = 1;
-		}
-	      lw_netmess_free (netmess);
-	    }
-	}
+        {
+          netmess = lw_netmess_read (message);
+          if (netmess != NULL)
+            {
+              if (netmess->code == LW_NETMESS_CODE_OK && netmess->argc == 1)
+                {
+                  *nb = atoi (netmess->argv[0]);
+                  result = 1;
+                }
+              lw_netmess_free (netmess);
+            }
+        }
     }
 
   return result;
@@ -234,13 +234,13 @@ lw_protocol_reserve_team (int *sock, int num, int control_type, char *name)
   char message[LW_SOCK_MESSAGE_SIZE];
 
   LW_MACRO_SPRINTF4 (message, "%s %d,%d,'%s'",
-		     LW_NETMESS_TEXT_TEAM, num, control_type, name);
+                     LW_NETMESS_TEXT_TEAM, num, control_type, name);
   if (*sock >= 0 && lw_sock_send_str (sock, message))
     {
       if (recv_ok (sock))
-	{
-	  result = 1;
-	}
+        {
+          result = 1;
+        }
     }
 
   return result;
@@ -268,43 +268,43 @@ lw_protocol_ask_who (int *sock, int num, LW_WHO * who)
     {
       while (*sock >= 0 && (ret = lw_sock_recv_str (sock, message)) == 0);
       if (*sock >= 0 && ret > 0)
-	{
-	  netmess = lw_netmess_read (message);
-	  if (netmess != NULL)
-	    {
-	      switch (netmess->code)
-		{
-		case LW_NETMESS_CODE_NOBODY:
-		  if (netmess->argc == 0)
-		    {
-		      /*
-		       * We leave the server id to the default -1 value
-		       */
-		      result = 1;
-		    }
-		  break;
-		case LW_NETMESS_CODE_NETWORK:
-		  who->network = 1;
-		  /*
-		   * no "break" here since the only difference between
-		   * the LOCAL and NETWORK messages is that the network
-		   * flag is set to 1 in the "NETWORK" case.
-		   */
-		case LW_NETMESS_CODE_LOCAL:
-		  if (netmess->argc == 3)
-		    {
-		      who->active = 1;
-		      who->server_id = atoi (netmess->argv[0]);
-		      who->control_type = atoi (netmess->argv[1]);
-		      strncpy (who->name, netmess->argv[2], NAME_SIZE);
-		      who->name[NAME_SIZE] = '\0';
-		      result = 1;
-		    }
-		  break;
-		}
-	      lw_netmess_free (netmess);
-	    }
-	}
+        {
+          netmess = lw_netmess_read (message);
+          if (netmess != NULL)
+            {
+              switch (netmess->code)
+                {
+                case LW_NETMESS_CODE_NOBODY:
+                  if (netmess->argc == 0)
+                    {
+                      /*
+                       * We leave the server id to the default -1 value
+                       */
+                      result = 1;
+                    }
+                  break;
+                case LW_NETMESS_CODE_NETWORK:
+                  who->network = 1;
+                  /*
+                   * no "break" here since the only difference between
+                   * the LOCAL and NETWORK messages is that the network
+                   * flag is set to 1 in the "NETWORK" case.
+                   */
+                case LW_NETMESS_CODE_LOCAL:
+                  if (netmess->argc == 3)
+                    {
+                      who->active = 1;
+                      who->server_id = atoi (netmess->argv[0]);
+                      who->control_type = atoi (netmess->argv[1]);
+                      strncpy (who->name, netmess->argv[2], NAME_SIZE);
+                      who->name[NAME_SIZE] = '\0';
+                      result = 1;
+                    }
+                  break;
+                }
+              lw_netmess_free (netmess);
+            }
+        }
     }
 
   return result;
@@ -322,12 +322,12 @@ lw_protocol_send_map (int *sock, void *map)
   if (*sock >= 0 && lw_sock_send_str (sock, LW_NETMESS_TEXT_SENDMAP))
     {
       if (lw_netmap_send (sock, map))
-	{
-	  if (recv_ok (sock))
-	    {
-	      result = 1;
-	    }
-	}
+        {
+          if (recv_ok (sock))
+            {
+              result = 1;
+            }
+        }
     }
 
   return result;
@@ -345,12 +345,12 @@ lw_protocol_recv_map (int *sock, void **map)
   if (*sock >= 0 && lw_sock_send_str (sock, LW_NETMESS_TEXT_RECVMAP))
     {
       if (lw_netmap_recv (sock, map))
-	{
-	  if (recv_ok (sock))
-	    {
-	      result = 1;
-	    }
-	}
+        {
+          if (recv_ok (sock))
+            {
+              result = 1;
+            }
+        }
     }
 
   return result;
@@ -372,12 +372,12 @@ lw_protocol_send_config (int *sock)
       memcpy (&config, &LW_CONFIG_CURRENT_RULES, sizeof (LW_NETCONF));
 
       if (lw_netconf_send (sock, &config))
-	{
-	  if (recv_ok (sock))
-	    {
-	      result = 1;
-	    }
-	}
+        {
+          if (recv_ok (sock))
+            {
+              result = 1;
+            }
+        }
     }
 
   return result;
@@ -396,14 +396,14 @@ lw_protocol_recv_config (int *sock)
   if (*sock >= 0 && lw_sock_send_str (sock, LW_NETMESS_TEXT_RECVCONFIG))
     {
       if (lw_netconf_recv (sock, &config))
-	{
-	  if (recv_ok (sock))
-	    {
-	      memcpy (&LW_CONFIG_CURRENT_RULES, &config, sizeof (LW_NETCONF));
+        {
+          if (recv_ok (sock))
+            {
+              memcpy (&LW_CONFIG_CURRENT_RULES, &config, sizeof (LW_NETCONF));
 
-	      result = 1;
-	    }
-	}
+              result = 1;
+            }
+        }
     }
 
   return result;
@@ -421,9 +421,9 @@ lw_protocol_i_am_ready (int *sock)
   if (*sock >= 0 && lw_sock_send_str (sock, LW_NETMESS_TEXT_READY))
     {
       if (recv_ok (sock))
-	{
-	  result = 1;
-	}
+        {
+          result = 1;
+        }
     }
 
   return result;
@@ -458,18 +458,18 @@ lw_protocol_waiting (int *sock, int *waited_teams)
     {
       while (*sock >= 0 && (ret = lw_sock_recv_str (sock, message)) == 0);
       if (*sock >= 0 && ret > 0)
-	{
-	  netmess = lw_netmess_read (message);
-	  if (netmess != NULL)
-	    {
-	      if (netmess->code == LW_NETMESS_CODE_OK && netmess->argc == 1)
-		{
-		  *waited_teams = atoi (netmess->argv[0]);
-		  result = 1;
-		}
-	      lw_netmess_free (netmess);
-	    }
-	}
+        {
+          netmess = lw_netmess_read (message);
+          if (netmess != NULL)
+            {
+              if (netmess->code == LW_NETMESS_CODE_OK && netmess->argc == 1)
+                {
+                  *waited_teams = atoi (netmess->argv[0]);
+                  result = 1;
+                }
+              lw_netmess_free (netmess);
+            }
+        }
     }
 
   return result;
@@ -487,9 +487,9 @@ lw_protocol_force_start (int *sock)
   if (*sock >= 0 && lw_sock_send_str (sock, LW_NETMESS_TEXT_START))
     {
       if (recv_ok (sock))
-	{
-	  result = 1;
-	}
+        {
+          result = 1;
+        }
     }
 
   return result;
@@ -507,9 +507,9 @@ lw_protocol_next (int *sock)
   if (*sock >= 0 && lw_sock_send_str (sock, LW_NETMESS_TEXT_NEXT))
     {
       if (recv_ok (sock))
-	{
-	  result = 1;
-	}
+        {
+          result = 1;
+        }
     }
 
   return result;
@@ -521,7 +521,7 @@ lw_protocol_next (int *sock)
  */
 int
 lw_protocol_ask_teamstartinfo (int *sock, int team,
-			       LW_TEAMSTARTINFO * team_start_info)
+                               LW_TEAMSTARTINFO * team_start_info)
 {
   int result = 0;
   char message[LW_SOCK_MESSAGE_SIZE];
@@ -535,28 +535,28 @@ lw_protocol_ask_teamstartinfo (int *sock, int team,
     {
       while (*sock >= 0 && (ret = lw_sock_recv_str (sock, message)) == 0);
       if (*sock >= 0 && ret > 0)
-	{
-	  netmess = lw_netmess_read (message);
-	  if (netmess != NULL)
-	    {
-	      switch (netmess->code)
-		{
-		case LW_NETMESS_CODE_OK:
-		  if (netmess->argc == 3)
-		    {
-		      team_start_info->active = atoi (netmess->argv[0]);
-		      team_start_info->start = atoi (netmess->argv[1]);
-		      strncpy (team_start_info->name, netmess->argv[2],
-			       NAME_SIZE);
-		      team_start_info->name[NAME_SIZE] = '\0';
+        {
+          netmess = lw_netmess_read (message);
+          if (netmess != NULL)
+            {
+              switch (netmess->code)
+                {
+                case LW_NETMESS_CODE_OK:
+                  if (netmess->argc == 3)
+                    {
+                      team_start_info->active = atoi (netmess->argv[0]);
+                      team_start_info->start = atoi (netmess->argv[1]);
+                      strncpy (team_start_info->name, netmess->argv[2],
+                               NAME_SIZE);
+                      team_start_info->name[NAME_SIZE] = '\0';
 
-		      result = 1;
-		    }
-		  break;
-		}
-	      lw_netmess_free (netmess);
-	    }
-	}
+                      result = 1;
+                    }
+                  break;
+                }
+              lw_netmess_free (netmess);
+            }
+        }
     }
 
   return result;
@@ -577,9 +577,9 @@ lw_protocol_chat_talk (int *sock, char *text)
   if (*sock >= 0 && lw_sock_send_str (sock, message))
     {
       if (recv_ok (sock))
-	{
-	  result = 1;
-	}
+        {
+          result = 1;
+        }
     }
 
   return result;
@@ -601,35 +601,35 @@ lw_protocol_chat_listen (int *sock, LW_CHAT_HISTORY * chat_history)
     {
       while (*sock >= 0 && (ret = lw_sock_recv_str (sock, message)) == 0);
       if (*sock >= 0 && ret > 0)
-	{
-	  netmess = lw_netmess_read (message);
-	  if (netmess != NULL)
-	    {
-	      switch (netmess->code)
-		{
-		case LW_NETMESS_CODE_OK:
-		  switch (netmess->argc)
-		    {
-		    case 0:
-		      /*
-		       * No message, we do nothing
-		       */
-		      result = 1;
-		      break;
-		    case 2:
-		      /*
-		       * Message received, enqueue it
-		       */
-		      lw_chat_push (chat_history,
-				    netmess->argv[0], netmess->argv[1]);
-		      result = 1;
-		      break;
-		    }
-		  break;
-		}
-	      lw_netmess_free (netmess);
-	    }
-	}
+        {
+          netmess = lw_netmess_read (message);
+          if (netmess != NULL)
+            {
+              switch (netmess->code)
+                {
+                case LW_NETMESS_CODE_OK:
+                  switch (netmess->argc)
+                    {
+                    case 0:
+                      /*
+                       * No message, we do nothing
+                       */
+                      result = 1;
+                      break;
+                    case 2:
+                      /*
+                       * Message received, enqueue it
+                       */
+                      lw_chat_push (chat_history,
+                                    netmess->argv[0], netmess->argv[1]);
+                      result = 1;
+                      break;
+                    }
+                  break;
+                }
+              lw_netmess_free (netmess);
+            }
+        }
     }
 
   return result;

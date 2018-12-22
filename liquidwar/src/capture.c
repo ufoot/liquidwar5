@@ -128,9 +128,9 @@ lw_capture_dump_menu ()
        * We do nothing if we're not in capture mode
        */
       if (LW_CAPTURE_MODE)
-	{
-	  lw_capture_dump_game ();
-	}
+        {
+          lw_capture_dump_game ();
+        }
     }
 
   /*
@@ -140,14 +140,14 @@ lw_capture_dump_menu ()
   if (key[KEY_F9])
     {
       while (key[KEY_F9])
-	{
-	  /*
-	   * Force a all to poll_keyboard if needed
-	   */
-	  keypressed ();
+        {
+          /*
+           * Force a all to poll_keyboard if needed
+           */
+          keypressed ();
 
-	  rest (10);
-	}
+          rest (10);
+        }
       LW_CAPTURE_MODE = !LW_CAPTURE_MODE;
     }
 
@@ -175,7 +175,7 @@ lw_capture_dump_game ()
        * Prepare a nice filename
        */
       LW_MACRO_SPRINTF1 (buffer, LW_CAPTURE_FILENAME_FORMAT_STRING,
-			 frame_number++);
+                         frame_number++);
 
       /*
        * Log on the console
@@ -188,20 +188,20 @@ lw_capture_dump_game ()
        * Create a sub-bitmap with the right size
        */
       screenshot =
-	create_sub_bitmap (screen, 0, PAGE_FLIP_H, SCREEN_W, SCREEN_H);
+        create_sub_bitmap (screen, 0, PAGE_FLIP_H, SCREEN_W, SCREEN_H);
 
       if (screenshot)
-	{
-	  /*
-	   * Write to disk
-	   */
-	  result = !save_bitmap (buffer, screenshot, GLOBAL_PALETTE);
-	  destroy_bitmap (screenshot);
-	}
+        {
+          /*
+           * Write to disk
+           */
+          result = !save_bitmap (buffer, screenshot, GLOBAL_PALETTE);
+          destroy_bitmap (screenshot);
+        }
       else
-	{
-	  result = 0;
-	}
+        {
+          result = 0;
+        }
 
       display_success (result);
     }

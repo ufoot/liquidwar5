@@ -86,35 +86,35 @@ wave_options (void)
   for (i = 0; i < 5; ++i)
     for (j = 0; j < 4; ++j)
       if (i > 0 || j > 0)
-	{
-	  k = i * 4 + j + 3;
-	  standard_small_button (d + k, j, i, 4, 5);
-	  if (i > 0 && j > 0)
-	    {
-	      d[k].proc = my_slider_proc;
-	      d[k].dp = NULL;
-	      d[k].dp2 = slider_int;
-	      switch (j)
-		{
-		case 1:
-		  d[k].d1 = 16;
-		  d[k].dp3 = &(CONFIG_WAVE_AMPLI[i - 1]);
-		  break;
-		case 2:
-		  d[k].d1 = 4;
-		  d[k].dp3 = &(CONFIG_WAVE_NUMBER[i - 1]);
-		  break;
-		case 3:
-		  d[k].d1 = 16;
-		  d[k].dp3 = &(CONFIG_WAVE_SPEED[i - 1]);
-		  break;
-		}
-	      temp = d[k].dp3;
-	      d[k].d2 = *temp;
-	    }
-	  else
-	    d[k].proc = my_textbox_proc;
-	}
+        {
+          k = i * 4 + j + 3;
+          standard_small_button (d + k, j, i, 4, 5);
+          if (i > 0 && j > 0)
+            {
+              d[k].proc = my_slider_proc;
+              d[k].dp = NULL;
+              d[k].dp2 = slider_int;
+              switch (j)
+                {
+                case 1:
+                  d[k].d1 = 16;
+                  d[k].dp3 = &(CONFIG_WAVE_AMPLI[i - 1]);
+                  break;
+                case 2:
+                  d[k].d1 = 4;
+                  d[k].dp3 = &(CONFIG_WAVE_NUMBER[i - 1]);
+                  break;
+                case 3:
+                  d[k].d1 = 16;
+                  d[k].dp3 = &(CONFIG_WAVE_SPEED[i - 1]);
+                  break;
+                }
+              temp = d[k].dp3;
+              d[k].d2 = *temp;
+            }
+          else
+            d[k].proc = my_textbox_proc;
+        }
   d[23].proc = NULL;
 
   quick_buttons (d);
@@ -131,28 +131,28 @@ wave_options (void)
     {
       dp = my_init_dialog (d, choix);
       while (my_update_dialog (dp))
-	;
+        ;
       choix = shutdown_dialog (dp);
       //choix=my_do_dialog (d,choix);
       switch (choix)
-	{
-	case -1:
-	case MENU_QUICK_BACK:
-	  retour = 1;
-	  break;
-	case MENU_QUICK_MAIN:
-	  retour = MENU_TOP;
-	  break;
-	case MENU_QUICK_QUIT:
-	  if (confirm_quit ())
-	    retour = MENU_EXIT;
-	  else
-	    display_back_image ();
-	  break;
-	case MENU_QUICK_PLAY:
-	  retour = MENU_PLAY;
-	  break;
-	}
+        {
+        case -1:
+        case MENU_QUICK_BACK:
+          retour = 1;
+          break;
+        case MENU_QUICK_MAIN:
+          retour = MENU_TOP;
+          break;
+        case MENU_QUICK_QUIT:
+          if (confirm_quit ())
+            retour = MENU_EXIT;
+          else
+            display_back_image ();
+          break;
+        case MENU_QUICK_PLAY:
+          retour = MENU_PLAY;
+          break;
+        }
     }
 
   if (retour > 0)

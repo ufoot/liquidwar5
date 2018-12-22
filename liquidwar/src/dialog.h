@@ -107,9 +107,9 @@ void center_one_dialog (DIALOG * d, int x, int y, int w, int h);
 void quick_buttons (DIALOG * d);
 void standard_button (DIALOG * d, int x_pos, int y_pos, int x_num, int y_num);
 void standard_small_button (DIALOG * d, int x_pos, int y_pos,
-			    int x_num, int y_num);
+                            int x_num, int y_num);
 void standard_big_button (DIALOG * d, int x_pos, int y_pos,
-			  int x_num, int y_num);
+                          int x_num, int y_num);
 void main_message (DIALOG * d, char *str);
 void main_info (DIALOG * d, char *str);
 DIALOG_PLAYER *my_init_dialog (DIALOG * d, int f);

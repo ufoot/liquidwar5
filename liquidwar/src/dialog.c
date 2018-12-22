@@ -173,14 +173,14 @@ standard_button (DIALOG * d, int x_pos, int y_pos, int x_num, int y_num)
   d->proc = my_button_proc;
 
   center_one_dialog (d,
-		     find_center (x_pos, x_num,
-				  MENU_W_STANDARD + MENU_W_SPACE,
-				  MENU_VIRTUAL_W), find_center (y_pos, y_num,
-								MENU_H_STANDARD
-								+
-								MENU_H_SPACE,
-								MENU_VIRTUAL_H),
-		     MENU_W_STANDARD, MENU_H_STANDARD);
+                     find_center (x_pos, x_num,
+                                  MENU_W_STANDARD + MENU_W_SPACE,
+                                  MENU_VIRTUAL_W), find_center (y_pos, y_num,
+                                                                MENU_H_STANDARD
+                                                                +
+                                                                MENU_H_SPACE,
+                                                                MENU_VIRTUAL_H),
+                     MENU_W_STANDARD, MENU_H_STANDARD);
   color_one_dialog (d);
   menu_real_coord (d);
   d->key = 0;
@@ -195,14 +195,14 @@ standard_small_button (DIALOG * d, int x_pos, int y_pos, int x_num, int y_num)
   d->proc = my_button_proc;
 
   center_one_dialog (d,
-		     find_center (x_pos, x_num,
-				  MENU_W_STANDARD / 2 + MENU_W_SPACE,
-				  MENU_VIRTUAL_W), find_center (y_pos, y_num,
-								MENU_H_STANDARD
-								+
-								MENU_H_SPACE,
-								MENU_VIRTUAL_H),
-		     MENU_W_STANDARD / 2, MENU_H_STANDARD);
+                     find_center (x_pos, x_num,
+                                  MENU_W_STANDARD / 2 + MENU_W_SPACE,
+                                  MENU_VIRTUAL_W), find_center (y_pos, y_num,
+                                                                MENU_H_STANDARD
+                                                                +
+                                                                MENU_H_SPACE,
+                                                                MENU_VIRTUAL_H),
+                     MENU_W_STANDARD / 2, MENU_H_STANDARD);
   color_one_dialog (d);
   menu_real_coord (d);
   d->key = 0;
@@ -217,14 +217,14 @@ standard_big_button (DIALOG * d, int x_pos, int y_pos, int x_num, int y_num)
   d->proc = my_button_proc;
 
   center_one_dialog (d,
-		     find_center (x_pos, x_num,
-				  MENU_W_STANDARD * 2 + MENU_W_SPACE,
-				  MENU_VIRTUAL_W), find_center (y_pos, y_num,
-								MENU_H_STANDARD
-								+
-								MENU_H_SPACE,
-								MENU_VIRTUAL_H),
-		     MENU_W_STANDARD * 2, MENU_H_STANDARD);
+                     find_center (x_pos, x_num,
+                                  MENU_W_STANDARD * 2 + MENU_W_SPACE,
+                                  MENU_VIRTUAL_W), find_center (y_pos, y_num,
+                                                                MENU_H_STANDARD
+                                                                +
+                                                                MENU_H_SPACE,
+                                                                MENU_VIRTUAL_H),
+                     MENU_W_STANDARD * 2, MENU_H_STANDARD);
   color_one_dialog (d);
   menu_real_coord (d);
   d->key = 0;

@@ -129,23 +129,23 @@ netplay_sequence ()
   lw_config_set_current_rules_to_default ();
 
   if (connect_on_server_start (&sock,
-			       CONFIG_SERVER_ADDRESS, CONFIG_SERVER_PORT))
+                               CONFIG_SERVER_ADDRESS, CONFIG_SERVER_PORT))
     {
       if (connect_on_server_continue (sock))
-	{
-	  result = lw_connect_menu (sock);
+        {
+          result = lw_connect_menu (sock);
 
-	  if (result == MENU_OK)
-	    {
-	      if (connect_on_server_finish (sock))
-		{
-		  LW_NETWORK_ON = 1;
-		  lw_network_attribute_colors ();
-		  lw_network_attribute_parts ();
-		  result = play_sequence_ex ();
-		}
-	    }
-	}
+          if (result == MENU_OK)
+            {
+              if (connect_on_server_finish (sock))
+                {
+                  LW_NETWORK_ON = 1;
+                  lw_network_attribute_colors ();
+                  lw_network_attribute_parts ();
+                  result = play_sequence_ex ();
+                }
+            }
+        }
     }
 
   LW_KEYEXCH_SOCK = -1;
@@ -215,9 +215,9 @@ connect_on_server_start (int *sock, char *address, int port)
   while (connect_data->running && !esc_pressed)
     {
       if (key[KEY_ESC])
-	{
-	  esc_pressed = 1;
-	}
+        {
+          esc_pressed = 1;
+        }
       /*
        * We call keypressed() to force Allegro to call automatically
        * poll_keyboard() if needed
@@ -235,9 +235,9 @@ connect_on_server_start (int *sock, char *address, int port)
     {
       *sock = -1;
       if (!esc_pressed)
-	{
-	  error_unable_to_connect ();
-	}
+        {
+          error_unable_to_connect ();
+        }
     }
 
   /*
@@ -262,8 +262,8 @@ connect_on_server_start_callback (void *arg)
   connect_data = (LW_NETPLAY_CONNECT_DATA *) arg;
 
   connect_data->result = lw_sock_connect (&(connect_data->sock),
-					  connect_data->address,
-					  connect_data->port);
+                                          connect_data->address,
+                                          connect_data->port);
   connect_data->running = 0;
 
   /*
@@ -298,122 +298,122 @@ connect_on_server_continue (int sock)
     {
       display_center_message (lw_lang_string (LW_LANG_STRING_NETPLAY_PING));
       if (!lw_protocol_do_ping (&sock))
-	{
-	  result = 0;
-	  error_not_a_liquidwar_server ();
-	}
+        {
+          result = 0;
+          error_not_a_liquidwar_server ();
+        }
     }
 
   if (result == 1)
     {
       display_center_message (lw_lang_string
-			      (LW_LANG_STRING_NETPLAY_CHECKPROGRAM));
+                              (LW_LANG_STRING_NETPLAY_CHECKPROGRAM));
       if (!lw_protocol_tell_program (&sock, LW_PROGRAM))
-	{
-	  result = 0;
-	  error_not_a_liquidwar_server ();
-	}
+        {
+          result = 0;
+          error_not_a_liquidwar_server ();
+        }
     }
   if (result == 1)
     {
       display_center_message (lw_lang_string
-			      (LW_LANG_STRING_NETPLAY_CHECKVERSION));
+                              (LW_LANG_STRING_NETPLAY_CHECKVERSION));
       if (!lw_protocol_tell_version (&sock, LW_VERSION))
-	{
-	  result = 0;
-	  error_wrong_version ();
-	}
+        {
+          result = 0;
+          error_wrong_version ();
+        }
     }
 
   if (result == 1)
     {
       display_center_message (lw_lang_string
-			      (LW_LANG_STRING_NETPLAY_SENDPASSWORD));
+                              (LW_LANG_STRING_NETPLAY_SENDPASSWORD));
       if (!lw_protocol_tell_password (&sock, CONFIG_PASSWORD))
-	{
-	  result = 0;
-	  error_bad_password ();
-	}
+        {
+          result = 0;
+          error_bad_password ();
+        }
     }
 
   if (result == 1)
     {
       display_center_message (lw_lang_string
-			      (LW_LANG_STRING_NETPLAY_FREETEAMS));
+                              (LW_LANG_STRING_NETPLAY_FREETEAMS));
       if (lw_protocol_ask_free_teams (&sock, &free_teams))
-	{
-	  if (free_teams <= 0)
-	    {
-	      result = 0;
-	      error_server_full ();
-	    }
-	}
+        {
+          if (free_teams <= 0)
+            {
+              result = 0;
+              error_server_full ();
+            }
+        }
       else
-	{
-	  result = 0;
-	  error_network_problem ();
-	}
+        {
+          result = 0;
+          error_network_problem ();
+        }
     }
 
   if (result == 1)
     {
       display_center_message (lw_lang_string
-			      (LW_LANG_STRING_NETPLAY_RESERVETEAMS));
+                              (LW_LANG_STRING_NETPLAY_RESERVETEAMS));
       for (i = 0; i < NB_TEAMS && free_teams > 0 && result == 1; ++i)
-	{
-	  if (CONFIG_CONTROL_TYPE[i] == CONFIG_CONTROL_TYPE_HUMAN ||
-	      ((CONFIG_CONTROL_TYPE[i] == CONFIG_CONTROL_TYPE_CPU) &&
-	       CONFIG_ALLOW_NETWORK_BOTS))
-	    {
-	      if (lw_protocol_reserve_team (&sock, i,
-					    CONFIG_CONTROL_TYPE[i],
-					    CONFIG_PLAYER_NAME[i]))
-		{
-		  free_teams--;
-		}
-	      else
-		{
-		  result = 0;
-		  error_network_problem ();
-		}
-	    }
-	}
+        {
+          if (CONFIG_CONTROL_TYPE[i] == CONFIG_CONTROL_TYPE_HUMAN ||
+              ((CONFIG_CONTROL_TYPE[i] == CONFIG_CONTROL_TYPE_CPU) &&
+               CONFIG_ALLOW_NETWORK_BOTS))
+            {
+              if (lw_protocol_reserve_team (&sock, i,
+                                            CONFIG_CONTROL_TYPE[i],
+                                            CONFIG_PLAYER_NAME[i]))
+                {
+                  free_teams--;
+                }
+              else
+                {
+                  result = 0;
+                  error_network_problem ();
+                }
+            }
+        }
     }
 
   if (result == 1)
     {
       display_center_message (lw_lang_string
-			      (LW_LANG_STRING_NETPLAY_SENDCONFIG));
+                              (LW_LANG_STRING_NETPLAY_SENDCONFIG));
       if (!lw_protocol_send_config (&sock))
-	{
-	  result = 0;
-	  error_network_problem ();
-	}
+        {
+          result = 0;
+          error_network_problem ();
+        }
     }
 
   if (result == 1)
     {
       display_center_message (lw_lang_string
-			      (LW_LANG_STRING_NETPLAY_SENDMAP));
+                              (LW_LANG_STRING_NETPLAY_SENDMAP));
       if (!lw_protocol_send_map
-	  (&sock,
-	   LW_RANDOM_ON ? LW_RANDOM_RAW_MAP :
-	   RAW_MAP_ORDERED[CONFIG_LEVEL_MAP]))
-	{
-	  result = 0;
-	  error_cant_send_map ();
-	}
+          (&sock,
+           LW_RANDOM_ON ? LW_RANDOM_RAW_MAP :
+           RAW_MAP_ORDERED[CONFIG_LEVEL_MAP]))
+        {
+          result = 0;
+          error_cant_send_map ();
+        }
     }
 
   if (result == 1)
     {
       display_center_message (lw_lang_string
-			      (LW_LANG_STRING_NETPLAY_WAITING));
+                              (LW_LANG_STRING_NETPLAY_WAITING));
       if (!lw_protocol_i_am_ready (&sock))
-	{
-	  result = 0;
-	  error_network_problem ();
-	}
+        {
+          result = 0;
+          error_network_problem ();
+        }
     }
 
   /*
@@ -447,57 +447,57 @@ connect_on_server_finish (int sock)
   if (result == 1)
     {
       display_center_message (lw_lang_string
-			      (LW_LANG_STRING_NETPLAY_WHOPLAYS));
+                              (LW_LANG_STRING_NETPLAY_WHOPLAYS));
       for (i = 0; i < NB_TEAMS && result == 1; ++i)
-	{
-	  if (!lw_protocol_ask_who (&sock, i, &(LW_NETWORK_INFO[i])))
-	    {
-	      result = 0;
-	      error_network_problem ();
-	    }
-	}
+        {
+          if (!lw_protocol_ask_who (&sock, i, &(LW_NETWORK_INFO[i])))
+            {
+              result = 0;
+              error_network_problem ();
+            }
+        }
     }
 
   if (result == 1)
     {
       display_center_message (lw_lang_string
-			      (LW_LANG_STRING_NETPLAY_RECVCONFIG));
+                              (LW_LANG_STRING_NETPLAY_RECVCONFIG));
       if (!lw_protocol_recv_config (&sock))
-	{
-	  result = 0;
-	  error_network_problem ();
-	}
+        {
+          result = 0;
+          error_network_problem ();
+        }
     }
 
   if (result == 1)
     {
       if (!lw_netconf_check (&LW_CONFIG_CURRENT_RULES))
-	{
-	  result = 0;
-	  error_bad_config_range ();
-	}
+        {
+          result = 0;
+          error_bad_config_range ();
+        }
     }
 
   if (result == 1)
     {
       display_center_message (lw_lang_string
-			      (LW_LANG_STRING_NETPLAY_RECVMAP));
+                              (LW_LANG_STRING_NETPLAY_RECVMAP));
       if (!lw_protocol_recv_map (&sock, &LW_NETWORK_RAW_MAP))
-	{
-	  result = 0;
-	  error_cant_receive_map ();
-	}
+        {
+          result = 0;
+          error_cant_receive_map ();
+        }
     }
 
   if (result == 1)
     {
       display_center_message (lw_lang_string
-			      (LW_LANG_STRING_NETPLAY_WAITING));
+                              (LW_LANG_STRING_NETPLAY_WAITING));
       if (!lw_protocol_i_am_ready (&sock))
-	{
-	  result = 0;
-	  error_network_problem ();
-	}
+        {
+          result = 0;
+          error_network_problem ();
+        }
     }
 
   /*

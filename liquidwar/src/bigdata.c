@@ -119,7 +119,7 @@ malloc_big_data (void)
   STARTUP_BIG_DATA++;
 
   while (STARTUP_BIG_DATA >= 2 &&
-	 BIG_DATA_PTR == NULL && (STARTUP_AUTO || nb_try == 0))
+         BIG_DATA_PTR == NULL && (STARTUP_AUTO || nb_try == 0))
     {
       nb_try++;
       STARTUP_BIG_DATA--;

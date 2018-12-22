@@ -109,20 +109,20 @@ controls_options (void)
       d[4].dp = lw_lang_string (LW_LANG_STRING_CONTROLS_JOYSTICK);
 
       switch (CONFIG_JOYSTICK_ON)
-	{
-	case 1:
-	  d[5].dp = lw_lang_string (LW_LANG_STRING_CONTROLS_2JOYSTICKS);
-	  break;
-	case 2:
-	  d[5].dp = lw_lang_string (LW_LANG_STRING_CONTROLS_4BUTTONS);
-	  break;
-	case 3:
-	  d[5].dp = lw_lang_string (LW_LANG_STRING_CONTROLS_STANDARD);
-	  break;
-	default:
-	  d[5].dp = lw_lang_string (LW_LANG_STRING_CONTROLS_OFF);
-	  break;
-	}
+        {
+        case 1:
+          d[5].dp = lw_lang_string (LW_LANG_STRING_CONTROLS_2JOYSTICKS);
+          break;
+        case 2:
+          d[5].dp = lw_lang_string (LW_LANG_STRING_CONTROLS_4BUTTONS);
+          break;
+        case 3:
+          d[5].dp = lw_lang_string (LW_LANG_STRING_CONTROLS_STANDARD);
+          break;
+        default:
+          d[5].dp = lw_lang_string (LW_LANG_STRING_CONTROLS_OFF);
+          break;
+        }
 
       d[6].proc = my_textbox_proc;
       d[6].dp = lw_lang_string (LW_LANG_STRING_CONTROLS_MOUSESENSIB);
@@ -138,30 +138,30 @@ controls_options (void)
 
       choix = my_do_dialog (d, choix);
       switch (choix)
-	{
-	case -1:
-	case MENU_QUICK_BACK:
-	  retour = 1;
-	  break;
-	case MENU_QUICK_MAIN:
-	  retour = MENU_TOP;
-	  break;
-	case MENU_QUICK_QUIT:
-	  if (confirm_quit ())
-	    retour = MENU_EXIT;
-	  else
-	    display_back_image ();
-	  break;
-	case MENU_QUICK_PLAY:
-	  retour = MENU_PLAY;
-	  break;
-	case 5:
-	  CONFIG_JOYSTICK_ON++;
-	  if (CONFIG_JOYSTICK_ON > 3)
-	    CONFIG_JOYSTICK_ON = 0;
-	  my_initialise_joystick ();
-	  break;
-	}
+        {
+        case -1:
+        case MENU_QUICK_BACK:
+          retour = 1;
+          break;
+        case MENU_QUICK_MAIN:
+          retour = MENU_TOP;
+          break;
+        case MENU_QUICK_QUIT:
+          if (confirm_quit ())
+            retour = MENU_EXIT;
+          else
+            display_back_image ();
+          break;
+        case MENU_QUICK_PLAY:
+          retour = MENU_PLAY;
+          break;
+        case 5:
+          CONFIG_JOYSTICK_ON++;
+          if (CONFIG_JOYSTICK_ON > 3)
+            CONFIG_JOYSTICK_ON = 0;
+          my_initialise_joystick ();
+          break;
+        }
     }
 
   if (retour > 0)

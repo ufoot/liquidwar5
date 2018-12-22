@@ -112,9 +112,9 @@ sort_light_and_dark (BITMAP * bmp, PALETTE pal)
   for (i = 0; i < 256; ++i)
     {
       if (6 * pal[i].r + 3 * pal[i].g + pal[i].b > LIGHT_OR_DARK_TRESHOLD)
-	table[i] = CONSIDERED_AS_LIGHT;
+        table[i] = CONSIDERED_AS_LIGHT;
       else
-	table[i] = CONSIDERED_AS_DARK;
+        table[i] = CONSIDERED_AS_DARK;
     }
 
   for (y = 0; y < bmp->h; ++y)
@@ -137,16 +137,16 @@ extract_significant_part (BITMAP * src)
   for (y = 0; y < src->h; ++y)
     for (x = 0; x < src->w; ++x)
       if (getpixel (src, x, y) == CONSIDERED_AS_DARK)
-	{
-	  if (min_x > x)
-	    min_x = x;
-	  if (min_y > y)
-	    min_y = y;
-	  if (max_x < x)
-	    max_x = x;
-	  if (max_y < y)
-	    max_y = y;
-	}
+        {
+          if (min_x > x)
+            min_x = x;
+          if (min_y > y)
+            min_y = y;
+          if (max_x < x)
+            max_x = x;
+          if (max_y < y)
+            max_y = y;
+        }
   dst_x = min_x;
   dst_y = min_y;
   dst_w = max_x - min_x + 1;
@@ -158,7 +158,7 @@ extract_significant_part (BITMAP * src)
     {
       result = my_create_bitmap (dst_w, dst_h);
       if (result)
-	blit (src, result, dst_x, dst_y, 0, 0, dst_w, dst_h);
+        blit (src, result, dst_x, dst_y, 0, 0, dst_w, dst_h);
     }
 
   return result;
@@ -173,41 +173,41 @@ spread_color_down (BITMAP * bmp, int color1, int color2)
   for (y = 0; y < bmp->h; ++y)
     for (x = 0; x < bmp->w; ++x)
       if (getpixel (bmp, x, y) == color2)
-	{
-	  x1 = x - 1;
-	  if (x1 < 0)
-	    x1 = 0;
-	  x2 = x + 1;
-	  if (x2 > bmp->w - 1)
-	    x2 = bmp->w - 1;
-	  y1 = y - 1;
-	  if (y1 < 0)
-	    y1 = 0;
-	  y2 = y + 1;
-	  if (y2 > bmp->h - 1)
-	    y2 = bmp->h - 1;
+        {
+          x1 = x - 1;
+          if (x1 < 0)
+            x1 = 0;
+          x2 = x + 1;
+          if (x2 > bmp->w - 1)
+            x2 = bmp->w - 1;
+          y1 = y - 1;
+          if (y1 < 0)
+            y1 = 0;
+          y2 = y + 1;
+          if (y2 > bmp->h - 1)
+            y2 = bmp->h - 1;
 
-	  if (getpixel (bmp, x2, y) == color1)
-	    {
-	      putpixel (bmp, x2, y, color2);
-	      found++;
-	    }
-	  if (getpixel (bmp, x2, y2) == color1)
-	    {
-	      putpixel (bmp, x2, y2, color2);
-	      found++;
-	    }
-	  if (getpixel (bmp, x, y2) == color1)
-	    {
-	      putpixel (bmp, x, y2, color2);
-	      found++;
-	    }
-	  if (getpixel (bmp, x1, y2) == color1)
-	    {
-	      putpixel (bmp, x1, y2, color2);
-	      found++;
-	    }
-	}
+          if (getpixel (bmp, x2, y) == color1)
+            {
+              putpixel (bmp, x2, y, color2);
+              found++;
+            }
+          if (getpixel (bmp, x2, y2) == color1)
+            {
+              putpixel (bmp, x2, y2, color2);
+              found++;
+            }
+          if (getpixel (bmp, x, y2) == color1)
+            {
+              putpixel (bmp, x, y2, color2);
+              found++;
+            }
+          if (getpixel (bmp, x1, y2) == color1)
+            {
+              putpixel (bmp, x1, y2, color2);
+              found++;
+            }
+        }
 
   return found;
 }
@@ -221,41 +221,41 @@ spread_color_up (BITMAP * bmp, int color1, int color2)
   for (y = bmp->h - 1; y >= 0; --y)
     for (x = bmp->w - 1; x >= 0; --x)
       if (getpixel (bmp, x, y) == color2)
-	{
-	  x1 = x - 1;
-	  if (x1 < 0)
-	    x1 = 0;
-	  x2 = x + 1;
-	  if (x2 > bmp->w - 1)
-	    x2 = bmp->w - 1;
-	  y1 = y - 1;
-	  if (y1 < 0)
-	    y1 = 0;
-	  y2 = y + 1;
-	  if (y2 > bmp->h - 1)
-	    y2 = bmp->h - 1;
+        {
+          x1 = x - 1;
+          if (x1 < 0)
+            x1 = 0;
+          x2 = x + 1;
+          if (x2 > bmp->w - 1)
+            x2 = bmp->w - 1;
+          y1 = y - 1;
+          if (y1 < 0)
+            y1 = 0;
+          y2 = y + 1;
+          if (y2 > bmp->h - 1)
+            y2 = bmp->h - 1;
 
-	  if (getpixel (bmp, x1, y) == color1)
-	    {
-	      putpixel (bmp, x1, y, color2);
-	      found++;
-	    }
-	  if (getpixel (bmp, x1, y1) == color1)
-	    {
-	      putpixel (bmp, x1, y1, color2);
-	      found++;
-	    }
-	  if (getpixel (bmp, x, y1) == color1)
-	    {
-	      putpixel (bmp, x, y1, color2);
-	      found++;
-	    }
-	  if (getpixel (bmp, x2, y1) == color1)
-	    {
-	      putpixel (bmp, x2, y1, color2);
-	      found++;
-	    }
-	}
+          if (getpixel (bmp, x1, y) == color1)
+            {
+              putpixel (bmp, x1, y, color2);
+              found++;
+            }
+          if (getpixel (bmp, x1, y1) == color1)
+            {
+              putpixel (bmp, x1, y1, color2);
+              found++;
+            }
+          if (getpixel (bmp, x, y1) == color1)
+            {
+              putpixel (bmp, x, y1, color2);
+              found++;
+            }
+          if (getpixel (bmp, x2, y1) == color1)
+            {
+              putpixel (bmp, x2, y1, color2);
+              found++;
+            }
+        }
 
   return found;
 }
@@ -282,17 +282,17 @@ check_if_playable (BITMAP * bmp)
   for (y = 0; y < bmp->h && y0 < 0; ++y)
     for (x = 0; x < bmp->w && x0 < 0; ++x)
       if (getpixel (bmp, x, y) == CONSIDERED_AS_LIGHT)
-	{
-	  x0 = x;
-	  y0 = y;
-	}
+        {
+          x0 = x;
+          y0 = y;
+        }
 
   if (x0 > 0 && y0 > 0)
     {
       putpixel (bmp, x, y, PLAYABLE_AREA);
       while (spread_color_down (bmp, CONSIDERED_AS_LIGHT,
-				PLAYABLE_AREA)
-	     + spread_color_up (bmp, CONSIDERED_AS_LIGHT, PLAYABLE_AREA));
+                                PLAYABLE_AREA)
+             + spread_color_up (bmp, CONSIDERED_AS_LIGHT, PLAYABLE_AREA));
     }
   else
     unplayable |= 1;
@@ -300,7 +300,7 @@ check_if_playable (BITMAP * bmp)
   for (y = 0; y < bmp->h; ++y)
     for (x = 0; x < bmp->w; ++x)
       if (getpixel (bmp, x, y) == PLAYABLE_AREA)
-	++playable_place;
+        ++playable_place;
 
   unplayable |= (playable_place < MINI_PLAYABLE_AREA);
 
@@ -320,10 +320,10 @@ fill_with_fg_and_bg (BITMAP * bmp, int fg, int bg)
   for (y = 0; y < bmp->h; ++y)
     {
       for (x = 0; x < bmp->w; ++x)
-	{
-	  putpixel (bmp, x, y,
-		    getpixel (bmp, x, y) == PLAYABLE_AREA ? bg : fg);
-	}
+        {
+          putpixel (bmp, x, y,
+                    getpixel (bmp, x, y) == PLAYABLE_AREA ? bg : fg);
+        }
     }
 }
 
@@ -344,24 +344,24 @@ convert_to_buffer (BITMAP * bmp, char *buffer, int *size, int *bg_size)
     {
       l = 0;
       if (data[pos_src] != PLAYABLE_AREA)
-	{
-	  while (pos_src < wh && (data[pos_src] != PLAYABLE_AREA) && l < 127)
-	    {
-	      l++;
-	      pos_src++;
-	    }
-	  buffer[(*size)++] = l;
-	}
+        {
+          while (pos_src < wh && (data[pos_src] != PLAYABLE_AREA) && l < 127)
+            {
+              l++;
+              pos_src++;
+            }
+          buffer[(*size)++] = l;
+        }
       else
-	{
-	  while (pos_src < wh && (data[pos_src] == PLAYABLE_AREA) && l < 127)
-	    {
-	      l++;
-	      pos_src++;
-	    }
-	  buffer[(*size)++] = -l;
-	  (*bg_size) += l;
-	}
+        {
+          while (pos_src < wh && (data[pos_src] == PLAYABLE_AREA) && l < 127)
+            {
+              l++;
+              pos_src++;
+            }
+          buffer[(*size)++] = -l;
+          (*bg_size) += l;
+        }
     }
   buffer[(*size)++] = 0;
 }
@@ -383,66 +383,66 @@ lw_map_archive_raw_bmp (BITMAP * bmp, PALETTE pal, const char *filename)
       sort_light_and_dark (bmp, pal);
       sub_bmp = extract_significant_part (bmp);
       if (sub_bmp)
-	{
-	  w = sub_bmp->w;
-	  h = sub_bmp->h;
-	  if (check_if_playable (sub_bmp))
-	    {
-	      temp = malloc_in_big_data_bottom (w * h + 1);
-	      if (temp)
-		convert_to_buffer (sub_bmp, temp, &size, &bg_size);
-	    }
-	  destroy_bitmap (sub_bmp);
-	}
+        {
+          w = sub_bmp->w;
+          h = sub_bmp->h;
+          if (check_if_playable (sub_bmp))
+            {
+              temp = malloc_in_big_data_bottom (w * h + 1);
+              if (temp)
+                convert_to_buffer (sub_bmp, temp, &size, &bg_size);
+            }
+          destroy_bitmap (sub_bmp);
+        }
       destroy_bitmap (bmp);
     }
 
   if (temp)
     {
       result =
-	malloc (size + 8 + LW_MAP_SYSTEM_NAME_SIZE +
-		LW_MAP_READABLE_NAME_SIZE);
+        malloc (size + 8 + LW_MAP_SYSTEM_NAME_SIZE +
+                LW_MAP_READABLE_NAME_SIZE);
       if (result)
-	{
-	  /*
-	   * Write the header (size + geometry)
-	   */
-	  lw_serial_set_map_header ((void *) result, size, (short) w,
-				    (short) h);
+        {
+          /*
+           * Write the header (size + geometry)
+           */
+          lw_serial_set_map_header ((void *) result, size, (short) w,
+                                    (short) h);
 
-	  /*
-	   * Then we store its system name
-	   */
-	  memset (system_name_buffer, 0, sizeof (system_name_buffer));
-	  LW_MACRO_STRCPY (system_name_buffer,
-			   lw_path_get_system_name (filename));
-	  memcpy (result + 8, system_name_buffer, LW_MAP_SYSTEM_NAME_SIZE);
+          /*
+           * Then we store its system name
+           */
+          memset (system_name_buffer, 0, sizeof (system_name_buffer));
+          LW_MACRO_STRCPY (system_name_buffer,
+                           lw_path_get_system_name (filename));
+          memcpy (result + 8, system_name_buffer, LW_MAP_SYSTEM_NAME_SIZE);
 
-	  /*
-	   * Then we store its readable name
-	   */
-	  memset (readable_name_buffer, 0, sizeof (readable_name_buffer));
-	  if (strcmp (filename, "lwmapgen") == 0)
-	    {
-	      /* 
-	       * This is a map generated by lwmapgen, we label it as such.
-	       */
-	      LW_MACRO_SPRINTF0 (readable_name_buffer, "Random map");
-	    }
-	  else
-	    {
-	      LW_MACRO_SPRINTF1 (readable_name_buffer, "Custom map %d",
-				 index++);
-	    }
-	  memcpy (result + 8 + LW_MAP_SYSTEM_NAME_SIZE, readable_name_buffer,
-		  LW_MAP_READABLE_NAME_SIZE);
+          /*
+           * Then we store its readable name
+           */
+          memset (readable_name_buffer, 0, sizeof (readable_name_buffer));
+          if (strcmp (filename, "lwmapgen") == 0)
+            {
+              /* 
+               * This is a map generated by lwmapgen, we label it as such.
+               */
+              LW_MACRO_SPRINTF0 (readable_name_buffer, "Random map");
+            }
+          else
+            {
+              LW_MACRO_SPRINTF1 (readable_name_buffer, "Custom map %d",
+                                 index++);
+            }
+          memcpy (result + 8 + LW_MAP_SYSTEM_NAME_SIZE, readable_name_buffer,
+                  LW_MAP_READABLE_NAME_SIZE);
 
-	  /*
-	   * And at last we write the map itself
-	   */
-	  memcpy (result + 8 + LW_MAP_SYSTEM_NAME_SIZE +
-		  LW_MAP_READABLE_NAME_SIZE, temp, size);
-	}
+          /*
+           * And at last we write the map itself
+           */
+          memcpy (result + 8 + LW_MAP_SYSTEM_NAME_SIZE +
+                  LW_MAP_READABLE_NAME_SIZE, temp, size);
+        }
       free_last_big_data_bottom ();
     }
 
@@ -485,13 +485,13 @@ lw_map_get_safe (int num, int network, int random)
   else
     {
       if (random && LW_RANDOM_RAW_MAP != NULL)
-	{
-	  raw_map = LW_RANDOM_RAW_MAP;
-	}
+        {
+          raw_map = LW_RANDOM_RAW_MAP;
+        }
       else
-	{
-	  raw_map = RAW_MAP_ORDERED[num];
-	}
+        {
+          raw_map = RAW_MAP_ORDERED[num];
+        }
     }
 
   return raw_map;
@@ -500,8 +500,8 @@ lw_map_get_safe (int num, int network, int random)
 /*------------------------------------------------------------------*/
 BITMAP *
 lw_map_create_bicolor (int num, int fg, int bg,
-		       int network, int random, int min_w, int min_h,
-		       int *zoom_factor)
+                       int network, int random, int min_w, int min_h,
+                       int *zoom_factor)
 {
   int pos_dst, pos_src, i, j, l, color;
   short w, h;
@@ -532,52 +532,52 @@ lw_map_create_bicolor (int num, int fg, int bg,
     {
       data_dst = temp->dat;
       while (pos_src < size && (l = data_src[pos_src++]) != 0)
-	{
-	  if (l > 0)
-	    color = CONSIDERED_AS_DARK;
-	  else
-	    {
-	      l = -l;
-	      color = CONSIDERED_AS_LIGHT;
-	    }
-	  for (i = 0; i < l && pos_dst < surface; ++i)
-	    data_dst[pos_dst++] = color;
-	}
+        {
+          if (l > 0)
+            color = CONSIDERED_AS_DARK;
+          else
+            {
+              l = -l;
+              color = CONSIDERED_AS_LIGHT;
+            }
+          for (i = 0; i < l && pos_dst < surface; ++i)
+            data_dst[pos_dst++] = color;
+        }
 
       /*
        * We check if the map is "playable". Normally unplayable maps
        * should never make it there but...
        */
       if (check_if_playable (temp))
-	{
-	  fill_with_fg_and_bg (temp, fg, bg);
+        {
+          fill_with_fg_and_bg (temp, fg, bg);
 
-	  result = my_create_bitmap (w * (*zoom_factor), h * (*zoom_factor));
+          result = my_create_bitmap (w * (*zoom_factor), h * (*zoom_factor));
 
-	  if (result)
-	    {
-	      /*
-	       * Not we magnify the map if needed, so that very small
-	       * maps are interesting to play on fast fancy computers
-	       */
-	      for (y = 0; y < h; ++y)
-		for (x = 0; x < w; ++x)
-		  {
-		    color = getpixel (temp, x, y);
-		    for (i = 0; i < *zoom_factor; ++i)
-		      for (j = 0; j < *zoom_factor; ++j)
-			{
-			  putpixel (result,
-				    x * *zoom_factor + j,
-				    y * *zoom_factor + i, color);
-			}
-		  }
-	    }
-	}
+          if (result)
+            {
+              /*
+               * Not we magnify the map if needed, so that very small
+               * maps are interesting to play on fast fancy computers
+               */
+              for (y = 0; y < h; ++y)
+                for (x = 0; x < w; ++x)
+                  {
+                    color = getpixel (temp, x, y);
+                    for (i = 0; i < *zoom_factor; ++i)
+                      for (j = 0; j < *zoom_factor; ++j)
+                        {
+                          putpixel (result,
+                                    x * *zoom_factor + j,
+                                    y * *zoom_factor + i, color);
+                        }
+                  }
+            }
+        }
       else
-	{
-	  log_println_str ("Error: unplayable map!");
-	}
+        {
+          log_println_str ("Error: unplayable map!");
+        }
 
       destroy_bitmap (temp);
     }
@@ -588,7 +588,7 @@ lw_map_create_bicolor (int num, int fg, int bg,
 /*------------------------------------------------------------------*/
 BITMAP *
 lw_map_create_textured (int num, int fg, int bg,
-			int network, int random, int min_w, int min_h)
+                        int network, int random, int min_w, int min_h)
 {
   int x, y, w, h, color;
   BITMAP *result = NULL, *bg_tex, *fg_tex;
@@ -607,39 +607,39 @@ lw_map_create_textured (int num, int fg, int bg,
       fg_h = fg_tex->h;
 
       result =
-	lw_map_create_bicolor (num, 1, 0, network, random,
-			       min_w, min_h, &zoom_factor);
+        lw_map_create_bicolor (num, 1, 0, network, random,
+                               min_w, min_h, &zoom_factor);
       if (result)
-	{
-	  w = result->w;
-	  h = result->h;
-	  zoom_factor_fg = zoom_factor_bg = zoom_factor;
-	  if (w != zoom_factor * fg_tex->w || h != zoom_factor * fg_tex->h)
-	    {
-	      zoom_factor_fg = 1;
-	    }
-	  if (w != zoom_factor * bg_tex->w || h != zoom_factor * bg_tex->h)
-	    {
-	      zoom_factor_bg = 1;
-	    }
-	  for (y = 0; y < h; ++y)
-	    for (x = 0; x < w; ++x)
-	      {
-		if (getpixel (result, x, y))
-		  {
-		    color =
-		      getpixel (fg_tex, (x / zoom_factor_fg) % fg_w,
-				(y / zoom_factor_bg) % fg_h);
-		  }
-		else
-		  {
-		    color =
-		      getpixel (bg_tex, (x / zoom_factor_bg) % bg_w,
-				(y / zoom_factor_bg) % bg_h);
-		  }
-		putpixel (result, x, y, color);
-	      }
-	}
+        {
+          w = result->w;
+          h = result->h;
+          zoom_factor_fg = zoom_factor_bg = zoom_factor;
+          if (w != zoom_factor * fg_tex->w || h != zoom_factor * fg_tex->h)
+            {
+              zoom_factor_fg = 1;
+            }
+          if (w != zoom_factor * bg_tex->w || h != zoom_factor * bg_tex->h)
+            {
+              zoom_factor_bg = 1;
+            }
+          for (y = 0; y < h; ++y)
+            for (x = 0; x < w; ++x)
+              {
+                if (getpixel (result, x, y))
+                  {
+                    color =
+                      getpixel (fg_tex, (x / zoom_factor_fg) % fg_w,
+                                (y / zoom_factor_bg) % fg_h);
+                  }
+                else
+                  {
+                    color =
+                      getpixel (bg_tex, (x / zoom_factor_bg) % bg_w,
+                                (y / zoom_factor_bg) % bg_h);
+                  }
+                putpixel (result, x, y, color);
+              }
+        }
     }
 
   if (bg_tex)
@@ -682,7 +682,7 @@ lw_map_get_readable_name (int num, int network, int random)
 
   LW_MACRO_MEMSET0 (result);
   memcpy (result, char_ptr + 8 + LW_MAP_SYSTEM_NAME_SIZE,
-	  LW_MAP_READABLE_NAME_SIZE);
+          LW_MAP_READABLE_NAME_SIZE);
   result[sizeof (result) - 1] = '\0';
 
   return result;
@@ -691,7 +691,7 @@ lw_map_get_readable_name (int num, int network, int random)
 /*------------------------------------------------------------------*/
 void
 lw_map_get_res (int num, int *w, int *h, int network, int random, int min_w,
-		int min_h)
+                int min_h)
 {
   void *raw_map;
   short res_w, res_h;

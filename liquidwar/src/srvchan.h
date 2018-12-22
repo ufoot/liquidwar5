@@ -94,11 +94,11 @@ LW_SRVCHAN;
 /*==================================================================*/
 
 int lw_srvchan_wait_teams (LW_SRVCHAN * chan, int *free_teams,
-			   int sock, void **map, LW_NETCONF * config,
-			   char *password);
+                           int sock, void **map, LW_NETCONF * config,
+                           char *password);
 int lw_srvchan_keepalive (LW_SRVCHAN * chan, int waited_teams,
-			  LW_TEAMSTARTINFO * team_start_info,
-			  LW_CHAT_HISTORY * chat);
+                          LW_TEAMSTARTINFO * team_start_info,
+                          LW_CHAT_HISTORY * chat);
 int lw_srvchan_tell_who (LW_SRVCHAN * chan, void *map, LW_NETCONF * config);
 int lw_srvchan_final_ok (LW_SRVCHAN * chan);
 int lw_srvchan_find_team_by_server_id (LW_SRVCHAN * chan, int server_id);
@@ -112,9 +112,9 @@ int lw_srvchan_handle_echo (int sock, LW_NETMESS * mess);
 int lw_srvchan_handle_program (int sock, LW_NETMESS * mess, int *ok);
 int lw_srvchan_handle_version (int sock, LW_NETMESS * mess, int *ok);
 int lw_srvchan_handle_password (int sock, LW_NETMESS * mess,
-				int *ok, char *password);
+                                int *ok, char *password);
 int lw_srvchan_handle_free (int sock, LW_NETMESS * mess,
-			    int free_teams, int *ok);
+                            int free_teams, int *ok);
 int lw_srvchan_handle_unknown (int sock, LW_NETMESS * mess);
 int lw_srvchan_handle_quit (int sock, LW_NETMESS * mess, int *normal_quit);
 

@@ -94,11 +94,11 @@ display_date_and_time ()
       time_stamp = time (NULL);
       time_struct = localtime (&time_stamp);
       LW_MACRO_SPRINTF6 (time_str, "%04d-%02d-%02d %02d:%02d:%02d: ",
-			 time_struct->tm_year + 1900,
-			 time_struct->tm_mon + 1,
-			 time_struct->tm_mday,
-			 time_struct->tm_hour,
-			 time_struct->tm_min, time_struct->tm_sec);
+                         time_struct->tm_year + 1900,
+                         time_struct->tm_mon + 1,
+                         time_struct->tm_mday,
+                         time_struct->tm_hour,
+                         time_struct->tm_min, time_struct->tm_sec);
 
       fprintf (LW_LOG_FILE, time_str);
     }

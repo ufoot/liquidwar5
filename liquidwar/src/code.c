@@ -95,18 +95,18 @@ display_special_info (void)
     {
       global = get_profile (GLOBAL_PROFILE);
       if (global <=0)
-	global = 1;
+        global = 1;
       message_str_int (lw_lang_string (LW_LANG_STRING_CODE_FPS),
-		       1000 / global);
+                       1000 / global);
     }
 
   if (WATCHDOG_SCANCODE[KEY_F6])
     {
       global = get_logic_rate ();
       if (global <=0)
-	global = 1;
+        global = 1;
       message_str_int (lw_lang_string (LW_LANG_STRING_CODE_RPS),
-		       1000 / global);
+                       1000 / global);
     }
 
   if (WATCHDOG_SCANCODE[KEY_F7])
@@ -115,9 +115,9 @@ display_special_info (void)
       spread = get_profile (SPREAD_PROFILE);
       move = get_profile (MOVE_PROFILE);
       if (global <=0)
-	global = 1;
+        global = 1;
       message_str_int (lw_lang_string (LW_LANG_STRING_CODE_PERCENTCALC),
-		       (100 * (spread + move)) / global);
+                       (100 * (spread + move)) / global);
     }
 
   if (WATCHDOG_SCANCODE[KEY_F8])
@@ -126,9 +126,9 @@ display_special_info (void)
       disp = get_profile (DISP_PROFILE);
       flip = get_profile (FLIP_PROFILE);
       if (global <=0)
-	global = 1;
+        global = 1;
       message_str_int (lw_lang_string (LW_LANG_STRING_CODE_PERCENTDISPLAY),
-		       (100 * (disp + flip)) / global);
+                       (100 * (disp + flip)) / global);
     }
 
   if (watchdog_is_keyword (LW_CODE_KEYWORD_SPEED))
@@ -140,16 +140,16 @@ display_special_info (void)
       flip = get_profile (FLIP_PROFILE);
 
       message_str_int (lw_lang_string (LW_LANG_STRING_CODE_SPREADGRADTIME),
-		       spread);
+                       spread);
       message_str_int (lw_lang_string (LW_LANG_STRING_CODE_MOVEARMYTIME),
-		       move);
+                       move);
       message_str_int (lw_lang_string (LW_LANG_STRING_CODE_DISPLAYTIME),
-		       disp);
+                       disp);
       message_str_int (lw_lang_string (LW_LANG_STRING_CODE_FLIPTIME), flip);
       message_str_int (lw_lang_string (LW_LANG_STRING_CODE_OTHERCALCTIME),
-		       global -spread - move - disp - flip);
+                       global -spread - move - disp - flip);
       message_str_int (lw_lang_string (LW_LANG_STRING_CODE_GLOBALTIME),
-		       global);
+                       global);
     }
 }
 
@@ -166,7 +166,7 @@ check_grad_to_disp (void)
     {
       grad_codes[4] = '0' + i;
       if (watchdog_is_keyword (grad_codes))
-	GRAD_TO_DISP = i;
+        GRAD_TO_DISP = i;
     }
   if (GRAD_TO_DISP > 0 && GRAD_TO_DISP <= 6 && GRAD_TO_DISP > PLAYING_TEAMS)
     GRAD_TO_DISP = 0;
@@ -175,32 +175,32 @@ check_grad_to_disp (void)
     switch (GRAD_TO_DISP)
       {
       case 0:
-	message_str (lw_lang_string (LW_LANG_STRING_CODE_STANDARDDISPLAY));
-	break;
+        message_str (lw_lang_string (LW_LANG_STRING_CODE_STANDARDDISPLAY));
+        break;
       case 1:
-	message_str (lw_lang_string (LW_LANG_STRING_CODE_GRADIENT1));
-	break;
+        message_str (lw_lang_string (LW_LANG_STRING_CODE_GRADIENT1));
+        break;
       case 2:
-	message_str (lw_lang_string (LW_LANG_STRING_CODE_GRADIENT2));
-	break;
+        message_str (lw_lang_string (LW_LANG_STRING_CODE_GRADIENT2));
+        break;
       case 3:
-	message_str (lw_lang_string (LW_LANG_STRING_CODE_GRADIENT3));
-	break;
+        message_str (lw_lang_string (LW_LANG_STRING_CODE_GRADIENT3));
+        break;
       case 4:
-	message_str (lw_lang_string (LW_LANG_STRING_CODE_GRADIENT4));
-	break;
+        message_str (lw_lang_string (LW_LANG_STRING_CODE_GRADIENT4));
+        break;
       case 5:
-	message_str (lw_lang_string (LW_LANG_STRING_CODE_GRADIENT5));
-	break;
+        message_str (lw_lang_string (LW_LANG_STRING_CODE_GRADIENT5));
+        break;
       case 6:
-	message_str (lw_lang_string (LW_LANG_STRING_CODE_GRADIENT6));
-	break;
+        message_str (lw_lang_string (LW_LANG_STRING_CODE_GRADIENT6));
+        break;
       case 7:
-	message_str (lw_lang_string (LW_LANG_STRING_CODE_MESHSIZE));
-	break;
+        message_str (lw_lang_string (LW_LANG_STRING_CODE_MESHSIZE));
+        break;
       case 8:
-	message_str (lw_lang_string (LW_LANG_STRING_CODE_MESHSTRUCTURE));
-	break;
+        message_str (lw_lang_string (LW_LANG_STRING_CODE_MESHSTRUCTURE));
+        break;
       }
 }
 
@@ -214,41 +214,41 @@ check_boolean_codes (void)
   if (WATCHDOG_SCANCODE[KEY_F3] && !LW_NETWORK_ON)
     {
       if (PAUSE_ON)
-	{
-	  PAUSE_ON = 0;
-	  message_str (lw_lang_string (LW_LANG_STRING_CODE_PAUSEOFF));
-	}
+        {
+          PAUSE_ON = 0;
+          message_str (lw_lang_string (LW_LANG_STRING_CODE_PAUSEOFF));
+        }
       else
-	{
-	  PAUSE_ON = 1;
-	  message_str (lw_lang_string (LW_LANG_STRING_CODE_PAUSEON));
-	}
+        {
+          PAUSE_ON = 1;
+          message_str (lw_lang_string (LW_LANG_STRING_CODE_PAUSEON));
+        }
     }
   if (WATCHDOG_SCANCODE[KEY_F4])
     {
       if (CONFIG_WAVE_ON)
-	{
-	  CONFIG_WAVE_ON = 0;
-	  message_str (lw_lang_string (LW_LANG_STRING_CODE_WAVEEFFECTSOFF));
-	}
+        {
+          CONFIG_WAVE_ON = 0;
+          message_str (lw_lang_string (LW_LANG_STRING_CODE_WAVEEFFECTSOFF));
+        }
       else
-	{
-	  CONFIG_WAVE_ON = 1;
-	  message_str (lw_lang_string (LW_LANG_STRING_CODE_WAVEEFFECTSON));
-	}
+        {
+          CONFIG_WAVE_ON = 1;
+          message_str (lw_lang_string (LW_LANG_STRING_CODE_WAVEEFFECTSON));
+        }
     }
   if (WATCHDOG_SCANCODE[KEY_F9])
     {
       if (lw_capture_get_mode ())
-	{
-	  lw_capture_set_mode (0);
-	  message_str (lw_lang_string (LW_LANG_STRING_CODE_CAPTUREOFF));
-	}
+        {
+          lw_capture_set_mode (0);
+          message_str (lw_lang_string (LW_LANG_STRING_CODE_CAPTUREOFF));
+        }
       else
-	{
-	  lw_capture_set_mode (1);
-	  message_str (lw_lang_string (LW_LANG_STRING_CODE_CAPTUREON));
-	}
+        {
+          lw_capture_set_mode (1);
+          message_str (lw_lang_string (LW_LANG_STRING_CODE_CAPTUREON));
+        }
     }
 }
 

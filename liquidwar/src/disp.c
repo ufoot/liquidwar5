@@ -73,8 +73,8 @@ static void
 disp_stretch_area (void)
 {
   stretch_blit (CURRENT_AREA_DISP, NEXT_SCREEN, 0, 0,
-		CURRENT_AREA_W, CURRENT_AREA_H,
-		0, 0, NEXT_SCREEN->w, NEXT_SCREEN->h);
+                CURRENT_AREA_W, CURRENT_AREA_H,
+                0, 0, NEXT_SCREEN->w, NEXT_SCREEN->h);
 }
 
 /*------------------------------------------------------------------*/
@@ -99,7 +99,7 @@ display_gradient (int i)
   if (bmp)
     {
       stretch_blit (bmp, NEXT_SCREEN, 0, 0, bmp->w, bmp->h,
-		    0, 0, NEXT_SCREEN->w, NEXT_SCREEN->h);
+                    0, 0, NEXT_SCREEN->w, NEXT_SCREEN->h);
       destroy_bitmap (bmp);
     }
 }
@@ -114,7 +114,7 @@ display_mesh (int i)
   if (bmp)
     {
       stretch_blit (bmp, NEXT_SCREEN, 0, 0, bmp->w, bmp->h,
-		    0, 0, NEXT_SCREEN->w, NEXT_SCREEN->h);
+                    0, 0, NEXT_SCREEN->w, NEXT_SCREEN->h);
       destroy_bitmap (bmp);
     }
 }

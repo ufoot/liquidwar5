@@ -109,7 +109,7 @@ exit_all (void)
 
       log_println ();
       log_println_str
-	("Leaving Allegro (http://www.talula.demon.co.uk/allegro)");
+        ("Leaving Allegro (http://www.talula.demon.co.uk/allegro)");
       save_config_options ();
       stop_water ();
       stop_ticker ();
@@ -298,26 +298,26 @@ my_exit (int code)
       log_println ();
       log_flush ();
       switch (code)
-	{
-	case EXIT_CODE_INIT_FAIL:
-	  disp_init_fail_message ();
-	  break;
-	case EXIT_CODE_MEM_TROUBLE:
-	  disp_mem_trouble_message ();
-	  break;
-	case EXIT_CODE_BIG_DATA:
-	  disp_big_data_message ();
-	  break;
-	case EXIT_CODE_LOAD_FAIL:
-	  disp_load_fail_message ();
-	  break;
-	case EXIT_CODE_CUSTOM_FAIL:
-	  disp_custom_fail_message ();
-	  break;
-	case EXIT_CODE_GRAPHICS_FAIL:
-	  disp_graphics_fail_message ();
-	  break;
-	}
+        {
+        case EXIT_CODE_INIT_FAIL:
+          disp_init_fail_message ();
+          break;
+        case EXIT_CODE_MEM_TROUBLE:
+          disp_mem_trouble_message ();
+          break;
+        case EXIT_CODE_BIG_DATA:
+          disp_big_data_message ();
+          break;
+        case EXIT_CODE_LOAD_FAIL:
+          disp_load_fail_message ();
+          break;
+        case EXIT_CODE_CUSTOM_FAIL:
+          disp_custom_fail_message ();
+          break;
+        case EXIT_CODE_GRAPHICS_FAIL:
+          disp_graphics_fail_message ();
+          break;
+        }
 #ifdef DOS
       getch ();
 #endif

@@ -119,14 +119,14 @@ lw_asm_check_struct_align (void)
     offset_bitmap_line = ((char *) &(bmp->line)) - ((char *) bmp);
     if (offset_bitmap_line != LW_ASM_OFFSET_BITMAP_LINE)
       {
-	result = 0;
+        result = 0;
 
-	log_print_str ("Error: offset for BITMAP->line is ");
-	log_print_int (offset_bitmap_line);
-	log_print_str (" and should be ");
-	log_println_int (LW_ASM_OFFSET_BITMAP_LINE);
+        log_print_str ("Error: offset for BITMAP->line is ");
+        log_print_int (offset_bitmap_line);
+        log_print_str (" and should be ");
+        log_println_int (LW_ASM_OFFSET_BITMAP_LINE);
 
-	STARTUP_ASM = 0;
+        STARTUP_ASM = 0;
       }
   }
 #endif
@@ -135,7 +135,7 @@ lw_asm_check_struct_align (void)
     {
       log_println_str ("WARNING!!!");
       log_println_str
-	("Liquid War might crash unexpectedly... Please read previous error messages.");
+        ("Liquid War might crash unexpectedly... Please read previous error messages.");
       log_println ();
     }
 

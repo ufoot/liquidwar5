@@ -116,9 +116,9 @@ get_nb_teams ()
     {
       LW_MACRO_SPRINTF1 (str_i, "%d", i);
       if (exist_argument (str_i))
-	{
-	  result = i;
-	}
+        {
+          result = i;
+        }
     }
 
   if (result < 2 || result > NB_TEAMS)
@@ -128,13 +128,13 @@ get_nb_teams ()
       while ((c = getchar ()) == '\n');
 
       if (c >= '2' && c <= '0' + NB_TEAMS)
-	{
-	  result = c - '0';
+        {
+          result = c - '0';
 
-	  log_print_str ("Use \"-");
-	  log_print_int (result);
-	  log_println_str ("\" to get rid of this question.");
-	}
+          log_print_str ("Use \"-");
+          log_print_int (result);
+          log_println_str ("\" to get rid of this question.");
+        }
     }
 
   return result;
@@ -157,9 +157,9 @@ get_lag ()
     {
       result = get_argument_int (LW_SERVER_IDENT_LAG);
       if (result < 0)
-	{
-	  result = 0;
-	}
+        {
+          result = 0;
+        }
     }
 
   return result;
@@ -178,9 +178,9 @@ get_port ()
     {
       result = get_argument_int (LW_SERVER_IDENT_PORT);
       if (result <= 0)
-	{
-	  result = LW_SERVER_DEFAULT_PORT;
-	}
+        {
+          result = LW_SERVER_DEFAULT_PORT;
+        }
     }
 
   return result;
@@ -230,18 +230,18 @@ get_privacy (char *metaserver)
       while ((c = getchar ()) == '\n');
 
       if (c == 'y' || c == 'Y')
-	{
-	  result = 1;
-	}
+        {
+          result = 1;
+        }
 
       if (result)
-	{
-	  log_println_str ("Use \"-public\" to get rid of this question.");
-	}
+        {
+          log_println_str ("Use \"-public\" to get rid of this question.");
+        }
       else
-	{
-	  log_println_str ("Use \"-private\" to get rid of this question.");
-	}
+        {
+          log_println_str ("Use \"-private\" to get rid of this question.");
+        }
     }
 
   return result;
@@ -367,52 +367,52 @@ main (int argc, char **argv)
       nb_teams = get_nb_teams ();
 
       if (nb_teams >= 2 && nb_teams <= NB_TEAMS)
-	{
-	  port = get_port ();
-	  metaserver = get_metaserver ();
-	  /* 
-	   * we initialize the www_data struct which will contain
-	   * all the informations to be transmitted to the metaserver
-	   */
-	  lw_wwwsrv_init (&www_data,
-			  get_privacy (metaserver),
-			  0,
-			  metaserver,
-			  port, 0, 0, get_password (), get_comment ());
+        {
+          port = get_port ();
+          metaserver = get_metaserver ();
+          /* 
+           * we initialize the www_data struct which will contain
+           * all the informations to be transmitted to the metaserver
+           */
+          lw_wwwsrv_init (&www_data,
+                          get_privacy (metaserver),
+                          0,
+                          metaserver,
+                          port, 0, 0, get_password (), get_comment ());
 
-	  log_flush ();
-	  log_set_server_mode (1);
+          log_flush ();
+          log_set_server_mode (1);
 
-	  /*
-	   * a good old infinite loop, the server has to be stopped
-	   * with CTRL-C
-	   */
-	  while (1)
-	    {
-	      if (lw_srvcont_wait_teams (&cont,
-					 &www_data,
-					 nb_teams,
-					 port,
-					 get_password (), get_callback ()))
-		{
-		  if (lw_srvcont_tell_who (&cont))
-		    {
-		      if (lw_srvcont_final_ok (&cont))
-			{
-			  lw_srvcont_replicate_keys
-			    (&cont, &www_data, get_lag (), get_password ());
-			}
-		    }
-		}
-	      lw_srvcont_close (&cont);
+          /*
+           * a good old infinite loop, the server has to be stopped
+           * with CTRL-C
+           */
+          while (1)
+            {
+              if (lw_srvcont_wait_teams (&cont,
+                                         &www_data,
+                                         nb_teams,
+                                         port,
+                                         get_password (), get_callback ()))
+                {
+                  if (lw_srvcont_tell_who (&cont))
+                    {
+                      if (lw_srvcont_final_ok (&cont))
+                        {
+                          lw_srvcont_replicate_keys
+                            (&cont, &www_data, get_lag (), get_password ());
+                        }
+                    }
+                }
+              lw_srvcont_close (&cont);
 
-	      log_flush ();
-	    }
-	}
+              log_flush ();
+            }
+        }
       else
-	{
-	  log_println_str ("Not enough or too many teams!");
-	}
+        {
+          log_println_str ("Not enough or too many teams!");
+        }
     }
   else
     {

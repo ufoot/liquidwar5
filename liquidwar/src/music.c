@@ -95,27 +95,27 @@ start_music (void)
        * the last music played
        */
       if (MIDI_MUSIC_NUMBER >= 2)
-	{
-	  do
-	    {
-	      i = random () % MIDI_MUSIC_NUMBER;
-	    }
-	  while (i == last_file);
-	}
+        {
+          do
+            {
+              i = random () % MIDI_MUSIC_NUMBER;
+            }
+          while (i == last_file);
+        }
       else
-	{
-	  /*
-	   * we have only 1 midi file loaded...
-	   */
-	  i = 0;
-	}
+        {
+          /*
+           * we have only 1 midi file loaded...
+           */
+          i = 0;
+        }
       last_file = i;
 
       if (CONFIG_MUSIC_VOLUME != last_volume)
-	{
-	  set_volume (-1, MUSIC_VOLUME_VALUES[CONFIG_MUSIC_VOLUME]);
-	  last_volume = CONFIG_MUSIC_VOLUME;
-	}
+        {
+          set_volume (-1, MUSIC_VOLUME_VALUES[CONFIG_MUSIC_VOLUME]);
+          last_volume = CONFIG_MUSIC_VOLUME;
+        }
 
       result = play_midi (MIDI_MUSIC[i], TRUE);
     }

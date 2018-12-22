@@ -78,12 +78,12 @@ LW_WWWSRV_DATA;
 /*==================================================================*/
 
 void lw_wwwsrv_init (LW_WWWSRV_DATA * data,
-		     int privacy,
-		     int log,
-		     char *metaserver,
-		     int port,
-		     int busy_players,
-		     int max_players, char *password, char *comment);
+                     int privacy,
+                     int log,
+                     char *metaserver,
+                     int port,
+                     int busy_players,
+                     int max_players, char *password, char *comment);
 int lw_wwwsrv_register (LW_WWWSRV_DATA * data);
 
 #endif

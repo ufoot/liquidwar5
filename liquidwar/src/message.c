@@ -95,19 +95,19 @@ display_message (void)
   for (i = 0; i < MESSAGE_NB; ++i)
     if (!MESSAGE_DISPLAYED[i])
       {
-	MESSAGE_DISPLAYED[i] = 1;
-	MESSAGE_TICKER[i] = new_ticker + MESSAGE_DELAY * (i + 1);
+        MESSAGE_DISPLAYED[i] = 1;
+        MESSAGE_TICKER[i] = new_ticker + MESSAGE_DELAY * (i + 1);
       }
 
   while (MESSAGE_NB > 0
-	 && MESSAGE_DISPLAYED[0] && new_ticker > MESSAGE_TICKER[0])
+         && MESSAGE_DISPLAYED[0] && new_ticker > MESSAGE_TICKER[0])
     {
       for (i = 0; i < MESSAGE_NB - 1; ++i)
-	for (j = 0; j < MESSAGE_SIZE + 1; ++j)
-	  {
-	    MESSAGE[i][j] = MESSAGE[i + 1][j];
-	    MESSAGE_TICKER[i] = MESSAGE_TICKER[i + 1];
-	  }
+        for (j = 0; j < MESSAGE_SIZE + 1; ++j)
+          {
+            MESSAGE[i][j] = MESSAGE[i + 1][j];
+            MESSAGE_TICKER[i] = MESSAGE_TICKER[i + 1];
+          }
       MESSAGE_NB--;
     }
 
@@ -115,8 +115,8 @@ display_message (void)
   //text_mode (-1); deprecated
   for (i = 0; i < MESSAGE_NB; ++i)
     textout_ex (NEXT_SCREEN, font, MESSAGE[i],
-		NEXT_SCREEN->w - text_length (font, MESSAGE[i]),
-		NEXT_SCREEN->h - (MESSAGE_NB - i) * h, -1, -1);
+                NEXT_SCREEN->w - text_length (font, MESSAGE[i]),
+                NEXT_SCREEN->h - (MESSAGE_NB - i) * h, -1, -1);
 }
 
 /*------------------------------------------------------------------*/
@@ -128,10 +128,10 @@ message_str (char *str)
   while (MESSAGE_NB >= MESSAGE_MAX)
     {
       for (i = 0; i < MESSAGE_NB - 1; ++i)
-	{
-	  LW_MACRO_STRCPY (MESSAGE[i], MESSAGE[i + 1]);
-	  MESSAGE_TICKER[i] = MESSAGE_TICKER[i + 1] - MESSAGE_DELAY;
-	}
+        {
+          LW_MACRO_STRCPY (MESSAGE[i], MESSAGE[i + 1]);
+          MESSAGE_TICKER[i] = MESSAGE_TICKER[i + 1] - MESSAGE_DELAY;
+        }
       MESSAGE_NB--;
     }
 

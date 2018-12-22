@@ -94,7 +94,7 @@ lw_basicopt_process (char *name)
       lw_basicopt_legal_info (name);
       log_println ();
       log_println_str
-	("Documentation is available in HTML, ascii text, PostScript, PDF... Read it 8-)");
+        ("Documentation is available in HTML, ascii text, PostScript, PDF... Read it 8-)");
     }
 
   /*

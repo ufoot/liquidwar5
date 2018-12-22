@@ -74,8 +74,8 @@
 /*-----------------------------------------------------------------*/
 static int
 calc_real_texture_number (int num,
-			  int texture, int network, int random,
-			  int use_default_texture, int *found)
+                          int texture, int network, int random,
+                          int use_default_texture, int *found)
 {
   int i;
   char *map_name;
@@ -93,15 +93,15 @@ calc_real_texture_number (int num,
 
       map_name = lw_map_get_system_name (num, network, random);
       for (i = CHOOSE_COLOR_NUMBER;
-	   i < CHOOSE_COLOR_NUMBER + RAW_TEXTURE_NUMBER + RAW_MAPTEX_NUMBER
-	   && !(*found); ++i)
-	{
-	  if (strcmp (map_name, lw_texture_get_system_name (i)) == 0)
-	    {
-	      *found = 1;
-	      real_texture = i;
-	    }
-	}
+           i < CHOOSE_COLOR_NUMBER + RAW_TEXTURE_NUMBER + RAW_MAPTEX_NUMBER
+           && !(*found); ++i)
+        {
+          if (strcmp (map_name, lw_texture_get_system_name (i)) == 0)
+            {
+              *found = 1;
+              real_texture = i;
+            }
+        }
     }
 
   return real_texture;
@@ -110,14 +110,14 @@ calc_real_texture_number (int num,
 /*-----------------------------------------------------------------*/
 int
 lw_maptex_is_custom_texture_used (int num,
-				  int texture,
-				  int network, int random,
-				  int use_default_texture)
+                                  int texture,
+                                  int network, int random,
+                                  int use_default_texture)
 {
   int result = 0;
 
   calc_real_texture_number (num, texture, network, random,
-			    use_default_texture, &result);
+                            use_default_texture, &result);
 
   return result;
 }
@@ -125,22 +125,22 @@ lw_maptex_is_custom_texture_used (int num,
 /*-----------------------------------------------------------------*/
 BITMAP *
 lw_maptex_create_map (int num, int fg, int bg,
-		      int network, int random, int min_w, int min_h,
-		      int use_default_texture)
+                      int network, int random, int min_w, int min_h,
+                      int use_default_texture)
 {
   BITMAP *result;
   int found;
 
   result = lw_map_create_textured (num,
-				   calc_real_texture_number (num, fg,
-							     network, random,
-							     use_default_texture,
-							     &found),
-				   calc_real_texture_number (num, bg,
-							     network, random,
-							     use_default_texture,
-							     &found),
-				   network, random, min_w, min_h);
+                                   calc_real_texture_number (num, fg,
+                                                             network, random,
+                                                             use_default_texture,
+                                                             &found),
+                                   calc_real_texture_number (num, bg,
+                                                             network, random,
+                                                             use_default_texture,
+                                                             &found),
+                                   network, random, min_w, min_h);
 
   return result;
 }
@@ -148,15 +148,15 @@ lw_maptex_create_map (int num, int fg, int bg,
 /*-----------------------------------------------------------------*/
 BITMAP *
 lw_maptex_create_fg (int num, int fg, int network, int random,
-		     int use_default_texture)
+                     int use_default_texture)
 {
   BITMAP *result;
   int found;
 
   result =
     lw_texture_create_fg (calc_real_texture_number
-			  (num, fg, network, random, use_default_texture,
-			   &found));
+                          (num, fg, network, random, use_default_texture,
+                           &found));
 
   return result;
 }
@@ -164,15 +164,15 @@ lw_maptex_create_fg (int num, int fg, int network, int random,
 /*-----------------------------------------------------------------*/
 BITMAP *
 lw_maptex_create_bg (int num, int bg, int network, int random,
-		     int use_default_texture)
+                     int use_default_texture)
 {
   BITMAP *result;
   int found;
 
   result =
     lw_texture_create_bg (calc_real_texture_number
-			  (num, bg, network, random, use_default_texture,
-			   &found));
+                          (num, bg, network, random, use_default_texture,
+                           &found));
 
   return result;
 }
@@ -180,25 +180,25 @@ lw_maptex_create_bg (int num, int bg, int network, int random,
 /*-----------------------------------------------------------------*/
 void
 lw_maptex_set_fg_palette (int num,
-			  int fg, int network, int random,
-			  int use_default_texture)
+                          int fg, int network, int random,
+                          int use_default_texture)
 {
   int found;
 
   set_fg_texture_palette (calc_real_texture_number
-			  (num, fg, network, random, use_default_texture,
-			   &found));
+                          (num, fg, network, random, use_default_texture,
+                           &found));
 }
 
 /*-----------------------------------------------------------------*/
 void
 lw_maptex_set_bg_palette (int num,
-			  int bg, int network, int random,
-			  int use_default_texture)
+                          int bg, int network, int random,
+                          int use_default_texture)
 {
   int found;
 
   set_bg_texture_palette (calc_real_texture_number
-			  (num, bg, network, random, use_default_texture,
-			   &found));
+                          (num, bg, network, random, use_default_texture,
+                           &found));
 }

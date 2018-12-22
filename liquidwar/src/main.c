@@ -115,30 +115,30 @@ main (int argc, char **argv)
       init_success = init_all ();
 
       if (init_success)
-	{
-	  big_data_success = (malloc_big_data () != NULL);
-	  log_println ();
-	  load_dat_success = load_dat ();
-	  log_println ();
-	  load_custom_success = load_custom ();
-	  log_println ();
+        {
+          big_data_success = (malloc_big_data () != NULL);
+          log_println ();
+          load_dat_success = load_dat ();
+          log_println ();
+          load_custom_success = load_custom ();
+          log_println ();
 
 #ifdef DOS
-	  if (STARTUP_STOP)
-	    readkey ();
-	  else
-	    delay (500);
+          if (STARTUP_STOP)
+            readkey ();
+          else
+            delay (500);
 #endif
-	}
+        }
 
       if (!init_success)
-	my_exit (EXIT_CODE_INIT_FAIL);
+        my_exit (EXIT_CODE_INIT_FAIL);
       if (!big_data_success)
-	my_exit (EXIT_CODE_BIG_DATA);
+        my_exit (EXIT_CODE_BIG_DATA);
       if (!load_dat_success)
-	my_exit (EXIT_CODE_LOAD_FAIL);
+        my_exit (EXIT_CODE_LOAD_FAIL);
       if (!load_custom_success)
-	my_exit (EXIT_CODE_CUSTOM_FAIL);
+        my_exit (EXIT_CODE_CUSTOM_FAIL);
 
       order_map ();
       check_config_range ();
@@ -148,14 +148,14 @@ main (int argc, char **argv)
       start_graphic ();
       start_water ();
       if (CONFIG_LW6_ADVERTISING_DONE)
-	{
-	  main_menu (1);
-	}
+        {
+          main_menu (1);
+        }
       else
-	{
-	  CONFIG_LW6_ADVERTISING_DONE = lw6_advertise_menu (1);
-	  main_menu (0);
-	}
+        {
+          CONFIG_LW6_ADVERTISING_DONE = lw6_advertise_menu (1);
+          main_menu (0);
+        }
 
       my_exit (EXIT_CODE_OK);
     }

@@ -167,75 +167,75 @@ init_all ()
       log_print_str ("Installing timer");
       timer = !install_timer ();
       if (timer)
-	{
-	  display_success_driver ((char *) timer_driver->ascii_name);
-	}
+        {
+          display_success_driver ((char *) timer_driver->ascii_name);
+        }
       else
-	{
-	  display_success (0);
-	}
+        {
+          display_success (0);
+        }
 
       start_ticker ();
 
       log_print_str ("Installing keyboard");
       keyboard = !install_keyboard ();
       if (keyboard)
-	{
-	  display_success_driver ((char *) keyboard_driver->ascii_name);
-	}
+        {
+          display_success_driver ((char *) keyboard_driver->ascii_name);
+        }
       else
-	{
-	  display_success (0);
-	}
+        {
+          display_success (0);
+        }
 
       log_print_str ("Installing mouse");
       mouse = install_mouse () != -1;
       if (mouse)
-	{
-	  display_success_driver ((char *) mouse_driver->ascii_name);
-	}
+        {
+          display_success_driver ((char *) mouse_driver->ascii_name);
+        }
       else
-	{
-	  display_success (0);
-	}
+        {
+          display_success (0);
+        }
 
       if (STARTUP_DIGI_CARD != DIGI_NONE || STARTUP_MIDI_CARD != MIDI_NONE)
-	{
-	  log_print_str ("Installing sound");
-	  sound = !install_sound (STARTUP_DIGI_CARD, STARTUP_MIDI_CARD, "");
-	  if (!sound)
-	    {
-	      /*
-	       * OK, first init failed, now we try without the MIDI card, which
-	       * is where problems usually come from, especially under Linux
-	       */
-	      sound = !install_sound (STARTUP_DIGI_CARD, MIDI_NONE, "");
-	    }
-	  if (sound)
-	    {
-	      log_print_str (" (digi=\"");
-	      log_print_str ((char *) digi_driver->ascii_name);
-	      log_print_str ("\", midi=\"");
-	      log_print_str ((char *) midi_driver->ascii_name);
-	      log_print_str ("\")");
-	    }
-	  display_success (sound);
-	}
+        {
+          log_print_str ("Installing sound");
+          sound = !install_sound (STARTUP_DIGI_CARD, STARTUP_MIDI_CARD, "");
+          if (!sound)
+            {
+              /*
+               * OK, first init failed, now we try without the MIDI card, which
+               * is where problems usually come from, especially under Linux
+               */
+              sound = !install_sound (STARTUP_DIGI_CARD, MIDI_NONE, "");
+            }
+          if (sound)
+            {
+              log_print_str (" (digi=\"");
+              log_print_str ((char *) digi_driver->ascii_name);
+              log_print_str ("\", midi=\"");
+              log_print_str ((char *) midi_driver->ascii_name);
+              log_print_str ("\")");
+            }
+          display_success (sound);
+        }
 
       if (STARTUP_JOYSTICK_ON)
-	{
-	  log_print_str ("Installing joystick");
-	  if (STARTUP_JOYSTICK_ON)
-	    joystick = !my_initialise_joystick ();
-	  if (joystick)
-	    {
-	      display_success_driver ((char *) joystick_driver->ascii_name);
-	    }
-	  else
-	    {
-	      display_success (0);
-	    }
-	}
+        {
+          log_print_str ("Installing joystick");
+          if (STARTUP_JOYSTICK_ON)
+            joystick = !my_initialise_joystick ();
+          if (joystick)
+            {
+              display_success_driver ((char *) joystick_driver->ascii_name);
+            }
+          else
+            {
+              display_success (0);
+            }
+        }
 
       log_print_str ("Setting up network");
       display_success (network = lw_sock_init ());

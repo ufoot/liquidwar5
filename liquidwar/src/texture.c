@@ -115,9 +115,9 @@ recalculate_number_of_colors (int max_number, BITMAP * bmp, PALETTE pal)
   for (y = 0; y < bmp->h && n < max_number; ++y)
     for (x = 0; x < bmp->w && n < max_number; ++x)
       {
-	color = pal[getpixel (bmp, x, y)];
-	if (!exist_color (pal2, color))
-	  pal2[n++] = color;
+        color = pal[getpixel (bmp, x, y)];
+        if (!exist_color (pal2, color))
+          pal2[n++] = color;
       }
   return n;
 }
@@ -125,8 +125,8 @@ recalculate_number_of_colors (int max_number, BITMAP * bmp, PALETTE pal)
 /*-----------------------------------------------------------------*/
 static void
 create_new_palette (PALETTE dst,
-		    PALETTE src,
-		    BITMAP * bmp, int first_color, int number_of_colors)
+                    PALETTE src,
+                    BITMAP * bmp, int first_color, int number_of_colors)
 {
   int i, x, y, index;
   int nb_retries = 0;
@@ -146,15 +146,15 @@ create_new_palette (PALETTE dst,
       index = getpixel (bmp, x, y);
       color = src[index];
       if ((!exist_color (dst, color)) ||
-	  (nb_retries > LW_TEXTURE_RANDOM_MAX_RETRIES))
-	{
-	  dst[first_color + (i++)] = color;
-	  nb_retries = 0;
-	}
+          (nb_retries > LW_TEXTURE_RANDOM_MAX_RETRIES))
+        {
+          dst[first_color + (i++)] = color;
+          nb_retries = 0;
+        }
       else
-	{
-	  nb_retries++;
-	}
+        {
+          nb_retries++;
+        }
     }
 }
 
@@ -181,8 +181,8 @@ correct_palette (PALETTE pal, int first_color, int number_of_colors)
 /*-----------------------------------------------------------------*/
 static void
 create_converted_bitmap (BITMAP * bmp,
-			 PALETTE dst,
-			 PALETTE src, int first_color, int number_of_colors)
+                         PALETTE dst,
+                         PALETTE src, int first_color, int number_of_colors)
 {
   char corres[256];
   int i, x, y, index;
@@ -192,11 +192,11 @@ create_converted_bitmap (BITMAP * bmp,
   for (y = 0; y < bmp->h; ++y)
     for (x = 0; x < bmp->w; ++x)
       {
-	index = corres[getpixel (bmp, x, y)];
-	index = (index < first_color ||
-		 index >= first_color + number_of_colors) ?
-	  first_color : index;
-	putpixel (bmp, x, y, index);
+        index = corres[getpixel (bmp, x, y)];
+        index = (index < first_color ||
+                 index >= first_color + number_of_colors) ?
+          first_color : index;
+        putpixel (bmp, x, y, index);
       }
 }
 
@@ -220,7 +220,7 @@ red8col (BITMAP * bmp, PALETTE pal, int first_color, int number_of_colors)
 /*------------------------------------------------------------------*/
 static void
 texture_8to5 (BITMAP * bmp, PALETTE pal, void *result,
-	      int first_color, int number_of_colors, char *filename)
+              int first_color, int number_of_colors, char *filename)
 {
   char *buffer;
   int pos = 0, pos8 = 0, x, y, i;
@@ -253,25 +253,25 @@ texture_8to5 (BITMAP * bmp, PALETTE pal, void *result,
   for (y = 0; y < bmp->h; ++y)
     for (x = 0; x < bmp->w; ++x)
       {
-	coul = getpixel (bmp, x, y) - first_color;
-	toadd = 1 << pos8;
-	octet[0] |= (coul & 1) ? toadd : 0;
-	octet[1] |= (coul & 2) ? toadd : 0;
-	octet[2] |= (coul & 4) ? toadd : 0;
-	octet[3] |= (coul & 8) ? toadd : 0;
-	octet[4] |= (coul & 16) ? toadd : 0;
+        coul = getpixel (bmp, x, y) - first_color;
+        toadd = 1 << pos8;
+        octet[0] |= (coul & 1) ? toadd : 0;
+        octet[1] |= (coul & 2) ? toadd : 0;
+        octet[2] |= (coul & 4) ? toadd : 0;
+        octet[3] |= (coul & 8) ? toadd : 0;
+        octet[4] |= (coul & 16) ? toadd : 0;
 
-	if (pos8 == 7 || (y == bmp->h - 1 && x == bmp->w - 1))
-	  {
-	    for (i = 0; i < 5; ++i)
-	      {
-		buffer[pos++] = octet[i];
-		octet[i] = 0;
-	      }
-	    pos8 = 0;
-	  }
-	else
-	  pos8++;
+        if (pos8 == 7 || (y == bmp->h - 1 && x == bmp->w - 1))
+          {
+            for (i = 0; i < 5; ++i)
+              {
+                buffer[pos++] = octet[i];
+                octet[i] = 0;
+              }
+            pos8 = 0;
+          }
+        else
+          pos8++;
       }
 }
 
@@ -291,29 +291,29 @@ lw_texture_archive_raw (const char *filename)
       w = bmp->w;
       h = bmp->h;
       if (w > 0 && h > 0)
-	{
-	  temp = malloc (size =
-			 2 * sizeof (short)
-			 + LW_TEXTURE_SYSTEM_NAME_SIZE
-			 + 3 * TEXTURE_COLOR_NUMBER + ((w * h + 7) / 8) * 5);
-	  if (temp)
-	    {
-	      red8col (bmp, pal, 0, TEXTURE_COLOR_NUMBER);
-	      texture_8to5 (bmp, pal, temp, 0, TEXTURE_COLOR_NUMBER, f);
-	    }
-	}
+        {
+          temp = malloc (size =
+                         2 * sizeof (short)
+                         + LW_TEXTURE_SYSTEM_NAME_SIZE
+                         + 3 * TEXTURE_COLOR_NUMBER + ((w * h + 7) / 8) * 5);
+          if (temp)
+            {
+              red8col (bmp, pal, 0, TEXTURE_COLOR_NUMBER);
+              texture_8to5 (bmp, pal, temp, 0, TEXTURE_COLOR_NUMBER, f);
+            }
+        }
       destroy_bitmap (bmp);
     }
   if (temp)
     {
       result = malloc (size);
       if (result)
-	{
-	  for (i = 0; i < size; ++i)
-	    {
-	      result[i] = temp[i];
-	    }
-	}
+        {
+          for (i = 0; i < size; ++i)
+            {
+              result[i] = temp[i];
+            }
+        }
       free (temp);
     }
 
@@ -337,21 +337,21 @@ create_raw_texture (void *ptr, int first)
   if (result)
     for (y = 0; y < h; ++y)
       for (x = 0; x < w; ++x)
-	{
-	  totest = 1 << pos8;
-	  color = first + ((data[0] & totest) ? 1 : 0)
-	    + ((data[1] & totest) ? 2 : 0)
-	    + ((data[2] & totest) ? 4 : 0)
-	    + ((data[3] & totest) ? 8 : 0) + ((data[4] & totest) ? 16 : 0);
-	  putpixel (result, x, y, color);
-	  if (pos8 == 7)
-	    {
-	      data += 5;
-	      pos8 = 0;
-	    }
-	  else
-	    pos8++;
-	}
+        {
+          totest = 1 << pos8;
+          color = first + ((data[0] & totest) ? 1 : 0)
+            + ((data[1] & totest) ? 2 : 0)
+            + ((data[2] & totest) ? 4 : 0)
+            + ((data[3] & totest) ? 8 : 0) + ((data[4] & totest) ? 16 : 0);
+          putpixel (result, x, y, color);
+          if (pos8 == 7)
+            {
+              data += 5;
+              pos8 = 0;
+            }
+          else
+            pos8++;
+        }
   return result;
 }
 

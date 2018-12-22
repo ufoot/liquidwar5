@@ -150,10 +150,10 @@ internet_find (void)
       standard_button (d + 10, 1, 6, 2, 10);
 
       for (i = 0; i < 6; ++i)
-	{
-	  d[5 + i].w =
-	    menu_real_x ((MENU_W_INTERNET_LIST + MENU_W_STANDARD) / 2);
-	}
+        {
+          d[5 + i].w =
+            menu_real_x ((MENU_W_INTERNET_LIST + MENU_W_STANDARD) / 2);
+        }
 
       position_comment (d + 11);
 
@@ -173,7 +173,7 @@ internet_find (void)
       d[10].dp = buffer_uptime;
       d[11].dp = buffer_comment;
       d[7].proc = d[8].proc = d[9].proc = d[10].proc = d[11].proc =
-	my_textbox_proc;
+        my_textbox_proc;
       d[12].proc = 0;
 
       dialog_list = d + 4;
@@ -197,46 +197,46 @@ internet_find (void)
        */
       cur = d[4].d1;
       if (choix == MENU_QUICK_PLAY || choix == 4 || choix == 6)
-	{
-	  if (cur >= 0 && cur < size)
-	    {
-	      strncpy (CONFIG_SERVER_ADDRESS, data[cur].ip,
-		       SERVER_ADDRESS_SIZE);
-	      CONFIG_SERVER_ADDRESS[SERVER_ADDRESS_SIZE] = '\0';
-	      CONFIG_SERVER_PORT = data[cur].port;
-	    }
-	}
+        {
+          if (cur >= 0 && cur < size)
+            {
+              strncpy (CONFIG_SERVER_ADDRESS, data[cur].ip,
+                       SERVER_ADDRESS_SIZE);
+              CONFIG_SERVER_ADDRESS[SERVER_ADDRESS_SIZE] = '\0';
+              CONFIG_SERVER_PORT = data[cur].port;
+            }
+        }
 
       switch (choix)
-	{
-	case -1:
-	case MENU_QUICK_BACK:
-	  retour = 1;
-	  break;
-	case MENU_QUICK_MAIN:
-	  retour = MENU_TOP;
-	  break;
-	case MENU_QUICK_QUIT:
-	  if (confirm_quit ())
-	    retour = MENU_EXIT;
-	  else
-	    display_back_image ();
-	  break;
-	case MENU_QUICK_PLAY:
-	  retour = netplay_sequence ();
-	  break;
-	case 5:
-	  size = LW_INTERNET_LIST_SIZE;
-	  lw_wwwcli_get_games (data, &size);
-	  break;
-	case 4:
-	case 6:
-	  if (cur >= 0 && cur < size)
-	    {
-	      retour = netplay_sequence ();
-	    }
-	  break;
-	}
+        {
+        case -1:
+        case MENU_QUICK_BACK:
+          retour = 1;
+          break;
+        case MENU_QUICK_MAIN:
+          retour = MENU_TOP;
+          break;
+        case MENU_QUICK_QUIT:
+          if (confirm_quit ())
+            retour = MENU_EXIT;
+          else
+            display_back_image ();
+          break;
+        case MENU_QUICK_PLAY:
+          retour = netplay_sequence ();
+          break;
+        case 5:
+          size = LW_INTERNET_LIST_SIZE;
+          lw_wwwcli_get_games (data, &size);
+          break;
+        case 4:
+        case 6:
+          if (cur >= 0 && cur < size)
+            {
+              retour = netplay_sequence ();
+            }
+          break;
+        }
     }
 
   if (retour > 0)
@@ -290,42 +290,42 @@ list_callback (int index, int *size)
   if (index >= 0)
     {
       if (index < *list_size)
-	{
-	  result = list_data[index].label;
+        {
+          result = list_data[index].label;
 
-	  /*
-	   * Now this _is_ a hack: I wanted the port
-	   * password, uptime and comment fields to
-	   * be updated automatically when selecting
-	   * a line in the list, without even double-clicking
-	   * it. So what I did is that when the list engine
-	   * asks for the label of the current line, I
-	   * automatically recalculate and redraw these fields.
-	   * Since the list engine has to hilight the current
-	   * label, I assume it asks for the current label
-	   * everytime the selection is changed.
-	   */
-	  if (index == dialog_list->d1)
-	    {
-	      update_text_ping (dialog_list->d1);
-	      update_text_port (dialog_list->d1);
-	      update_text_password (dialog_list->d1);
-	      update_text_uptime (dialog_list->d1);
-	      update_text_comment (dialog_list->d1);
+          /*
+           * Now this _is_ a hack: I wanted the port
+           * password, uptime and comment fields to
+           * be updated automatically when selecting
+           * a line in the list, without even double-clicking
+           * it. So what I did is that when the list engine
+           * asks for the label of the current line, I
+           * automatically recalculate and redraw these fields.
+           * Since the list engine has to hilight the current
+           * label, I assume it asks for the current label
+           * everytime the selection is changed.
+           */
+          if (index == dialog_list->d1)
+            {
+              update_text_ping (dialog_list->d1);
+              update_text_port (dialog_list->d1);
+              update_text_password (dialog_list->d1);
+              update_text_uptime (dialog_list->d1);
+              update_text_comment (dialog_list->d1);
 
-	      scare_mouse ();
-	      my_textbox_proc (MSG_DRAW, dialog_ping, 0);
-	      my_textbox_proc (MSG_DRAW, dialog_port, 0);
-	      my_textbox_proc (MSG_DRAW, dialog_password, 0);
-	      my_textbox_proc (MSG_DRAW, dialog_uptime, 0);
-	      my_textbox_proc (MSG_DRAW, dialog_comment, 0);
-	      unscare_mouse ();
-	    }
-	}
+              scare_mouse ();
+              my_textbox_proc (MSG_DRAW, dialog_ping, 0);
+              my_textbox_proc (MSG_DRAW, dialog_port, 0);
+              my_textbox_proc (MSG_DRAW, dialog_password, 0);
+              my_textbox_proc (MSG_DRAW, dialog_uptime, 0);
+              my_textbox_proc (MSG_DRAW, dialog_comment, 0);
+              unscare_mouse ();
+            }
+        }
       else
-	{
-	  result = "";
-	}
+        {
+          result = "";
+        }
     }
   else
     {
@@ -342,29 +342,29 @@ update_text_ping (int i)
   if (i >= 0)
     {
       if (i < *list_size)
-	{
-	  if (list_data[i].ping_delay >= 0)
-	    {
-	      LW_MACRO_SPRINTF3 (buffer_ping, "%s: %d %s",
-				 lw_lang_string
-				 (LW_LANG_STRING_INTERNET_PING),
-				 list_data[i].ping_delay,
-				 lw_lang_string
-				 (LW_LANG_STRING_INTERNET_MSEC));
-	    }
-	  else
-	    {
-	      LW_MACRO_STRCPY (buffer_ping,
-			       lw_lang_string
-			       (LW_LANG_STRING_INTERNET_UNREACHABLE));
-	    }
-	}
+        {
+          if (list_data[i].ping_delay >= 0)
+            {
+              LW_MACRO_SPRINTF3 (buffer_ping, "%s: %d %s",
+                                 lw_lang_string
+                                 (LW_LANG_STRING_INTERNET_PING),
+                                 list_data[i].ping_delay,
+                                 lw_lang_string
+                                 (LW_LANG_STRING_INTERNET_MSEC));
+            }
+          else
+            {
+              LW_MACRO_STRCPY (buffer_ping,
+                               lw_lang_string
+                               (LW_LANG_STRING_INTERNET_UNREACHABLE));
+            }
+        }
       else
-	{
-	  LW_MACRO_SPRINTF1 (buffer_ping,
-			     "%s:",
-			     lw_lang_string (LW_LANG_STRING_INTERNET_PING));
-	}
+        {
+          LW_MACRO_SPRINTF1 (buffer_ping,
+                             "%s:",
+                             lw_lang_string (LW_LANG_STRING_INTERNET_PING));
+        }
     }
 }
 
@@ -375,19 +375,19 @@ update_text_port (int i)
   if (i >= 0)
     {
       if (i < *list_size)
-	{
-	  LW_MACRO_SPRINTF2 (buffer_port,
-			     "%s: %d",
-			     lw_lang_string
-			     (LW_LANG_STRING_INTERNET_PORT),
-			     list_data[i].port);
-	}
+        {
+          LW_MACRO_SPRINTF2 (buffer_port,
+                             "%s: %d",
+                             lw_lang_string
+                             (LW_LANG_STRING_INTERNET_PORT),
+                             list_data[i].port);
+        }
       else
-	{
-	  LW_MACRO_SPRINTF1 (buffer_port,
-			     "%s:",
-			     lw_lang_string (LW_LANG_STRING_INTERNET_PORT));
-	}
+        {
+          LW_MACRO_SPRINTF1 (buffer_port,
+                             "%s:",
+                             lw_lang_string (LW_LANG_STRING_INTERNET_PORT));
+        }
     }
 }
 
@@ -398,32 +398,32 @@ update_text_password (int i)
   if (i >= 0)
     {
       if (i < *list_size)
-	{
-	  if (list_data[i].password)
-	    {
-	      LW_MACRO_SPRINTF2 (buffer_password,
-				 "%s: %s",
-				 lw_lang_string
-				 (LW_LANG_STRING_INTERNET_PASSWORD),
-				 lw_lang_string
-				 (LW_LANG_STRING_INTERNET_YES));
-	    }
-	  else
-	    {
-	      LW_MACRO_SPRINTF2 (buffer_password,
-				 "%s: %s",
-				 lw_lang_string
-				 (LW_LANG_STRING_INTERNET_PASSWORD),
-				 lw_lang_string (LW_LANG_STRING_INTERNET_NO));
-	    }
-	}
+        {
+          if (list_data[i].password)
+            {
+              LW_MACRO_SPRINTF2 (buffer_password,
+                                 "%s: %s",
+                                 lw_lang_string
+                                 (LW_LANG_STRING_INTERNET_PASSWORD),
+                                 lw_lang_string
+                                 (LW_LANG_STRING_INTERNET_YES));
+            }
+          else
+            {
+              LW_MACRO_SPRINTF2 (buffer_password,
+                                 "%s: %s",
+                                 lw_lang_string
+                                 (LW_LANG_STRING_INTERNET_PASSWORD),
+                                 lw_lang_string (LW_LANG_STRING_INTERNET_NO));
+            }
+        }
       else
-	{
-	  LW_MACRO_SPRINTF1 (buffer_password,
-			     "%s:",
-			     lw_lang_string
-			     (LW_LANG_STRING_INTERNET_PASSWORD));
-	}
+        {
+          LW_MACRO_SPRINTF1 (buffer_password,
+                             "%s:",
+                             lw_lang_string
+                             (LW_LANG_STRING_INTERNET_PASSWORD));
+        }
     }
 }
 
@@ -435,70 +435,70 @@ update_text_uptime (int i)
   if (i >= 0)
     {
       if (i < *list_size)
-	{
-	  seconds = list_data[i].uptime % 60;
-	  minutes = (list_data[i].uptime / 60) % 60;
-	  hours = (list_data[i].uptime / 3600) % 24;
-	  days = (list_data[i].uptime / (24 * 3600));
-	  if (days > 0)
-	    {
-	      if (days > 1)
-		{
-		  LW_MACRO_SPRINTF3 (buffer_uptime,
-				     "%s: %d %s",
-				     lw_lang_string
-				     (LW_LANG_STRING_INTERNET_UPTIME),
-				     days,
-				     lw_lang_string
-				     (LW_LANG_STRING_INTERNET_DAYS));
-		}
-	      else
-		{
-		  LW_MACRO_SPRINTF2 (buffer_uptime,
-				     "%s: 1 %s",
-				     lw_lang_string
-				     (LW_LANG_STRING_INTERNET_UPTIME),
-				     lw_lang_string
-				     (LW_LANG_STRING_INTERNET_DAY));
-		}
-	    }
-	  else if (hours > 0)
-	    {
-	      LW_MACRO_SPRINTF3 (buffer_uptime,
-				 "%s: %d %s",
-				 lw_lang_string
-				 (LW_LANG_STRING_INTERNET_UPTIME),
-				 hours,
-				 lw_lang_string
-				 (LW_LANG_STRING_INTERNET_HOURS));
-	    }
-	  else if (minutes > 0)
-	    {
-	      LW_MACRO_SPRINTF3 (buffer_uptime,
-				 "%s: %d %s",
-				 lw_lang_string
-				 (LW_LANG_STRING_INTERNET_UPTIME),
-				 minutes,
-				 lw_lang_string
-				 (LW_LANG_STRING_INTERNET_MINUTES));
-	    }
-	  else
-	    {
-	      LW_MACRO_SPRINTF3 (buffer_uptime,
-				 "%s: %d %s",
-				 lw_lang_string
-				 (LW_LANG_STRING_INTERNET_UPTIME),
-				 seconds,
-				 lw_lang_string
-				 (LW_LANG_STRING_INTERNET_SECONDS));
-	    }
-	}
+        {
+          seconds = list_data[i].uptime % 60;
+          minutes = (list_data[i].uptime / 60) % 60;
+          hours = (list_data[i].uptime / 3600) % 24;
+          days = (list_data[i].uptime / (24 * 3600));
+          if (days > 0)
+            {
+              if (days > 1)
+                {
+                  LW_MACRO_SPRINTF3 (buffer_uptime,
+                                     "%s: %d %s",
+                                     lw_lang_string
+                                     (LW_LANG_STRING_INTERNET_UPTIME),
+                                     days,
+                                     lw_lang_string
+                                     (LW_LANG_STRING_INTERNET_DAYS));
+                }
+              else
+                {
+                  LW_MACRO_SPRINTF2 (buffer_uptime,
+                                     "%s: 1 %s",
+                                     lw_lang_string
+                                     (LW_LANG_STRING_INTERNET_UPTIME),
+                                     lw_lang_string
+                                     (LW_LANG_STRING_INTERNET_DAY));
+                }
+            }
+          else if (hours > 0)
+            {
+              LW_MACRO_SPRINTF3 (buffer_uptime,
+                                 "%s: %d %s",
+                                 lw_lang_string
+                                 (LW_LANG_STRING_INTERNET_UPTIME),
+                                 hours,
+                                 lw_lang_string
+                                 (LW_LANG_STRING_INTERNET_HOURS));
+            }
+          else if (minutes > 0)
+            {
+              LW_MACRO_SPRINTF3 (buffer_uptime,
+                                 "%s: %d %s",
+                                 lw_lang_string
+                                 (LW_LANG_STRING_INTERNET_UPTIME),
+                                 minutes,
+                                 lw_lang_string
+                                 (LW_LANG_STRING_INTERNET_MINUTES));
+            }
+          else
+            {
+              LW_MACRO_SPRINTF3 (buffer_uptime,
+                                 "%s: %d %s",
+                                 lw_lang_string
+                                 (LW_LANG_STRING_INTERNET_UPTIME),
+                                 seconds,
+                                 lw_lang_string
+                                 (LW_LANG_STRING_INTERNET_SECONDS));
+            }
+        }
       else
-	{
-	  LW_MACRO_SPRINTF1 (buffer_uptime,
-			     "%s:",
-			     lw_lang_string (LW_LANG_STRING_INTERNET_UPTIME));
-	}
+        {
+          LW_MACRO_SPRINTF1 (buffer_uptime,
+                             "%s:",
+                             lw_lang_string (LW_LANG_STRING_INTERNET_UPTIME));
+        }
     }
 }
 
@@ -509,12 +509,12 @@ update_text_comment (int i)
   if (i >= 0)
     {
       if (i < *list_size)
-	{
-	  LW_MACRO_SPRINTF1 (buffer_comment, "%s", list_data[i].comment);
-	}
+        {
+          LW_MACRO_SPRINTF1 (buffer_comment, "%s", list_data[i].comment);
+        }
       else
-	{
-	  LW_MACRO_SPRINTF0 (buffer_comment, "");
-	}
+        {
+          LW_MACRO_SPRINTF0 (buffer_comment, "");
+        }
     }
 }

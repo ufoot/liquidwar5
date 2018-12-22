@@ -114,84 +114,84 @@ move_if_free (int *x, int *y, int dir)
        */
     case 1:
       if (CURRENT_AREA[((*y) - 1) * CURRENT_AREA_W + (*x)].mesh)
-	{
-	  (*y)--;
-	  moved = 1;
-	}
+        {
+          (*y)--;
+          moved = 1;
+        }
       break;
       /*
        * trying to go NORTH EAST
        */
     case 2:
       if (CURRENT_AREA[((*y) - 1) * CURRENT_AREA_W + (*x) + 1].mesh)
-	{
-	  (*y)--;
-	  (*x)++;
-	  moved = 1;
-	}
+        {
+          (*y)--;
+          (*x)++;
+          moved = 1;
+        }
       break;
       /*
        * trying to go EAST
        */
     case 3:
       if (CURRENT_AREA[(*y) * CURRENT_AREA_W + (*x) + 1].mesh)
-	{
-	  (*x)++;
-	  moved = 1;
-	}
+        {
+          (*x)++;
+          moved = 1;
+        }
       break;
       /*
        * trying to go SOUTH EAST
        */
     case 4:
       if (CURRENT_AREA[((*y) + 1) * CURRENT_AREA_W + (*x) + 1].mesh)
-	{
-	  (*x)++;
-	  (*y)++;
-	  moved = 1;
-	}
+        {
+          (*x)++;
+          (*y)++;
+          moved = 1;
+        }
       break;
       /*
        * trying to go SOUTH
        */
     case 5:
       if (CURRENT_AREA[((*y) + 1) * CURRENT_AREA_W + (*x)].mesh)
-	{
-	  (*y)++;
-	  moved = 1;
-	}
+        {
+          (*y)++;
+          moved = 1;
+        }
       break;
       /*
        * trying to go SOUTH WEST
        */
     case 6:
       if (CURRENT_AREA[((*y) + 1) * CURRENT_AREA_W + (*x) - 1].mesh)
-	{
-	  (*y)++;
-	  (*x)--;
-	  moved = 1;
-	}
+        {
+          (*y)++;
+          (*x)--;
+          moved = 1;
+        }
       break;
       /*
        * trying to go WEST
        */
     case 7:
       if (CURRENT_AREA[(*y) * CURRENT_AREA_W + (*x) - 1].mesh)
-	{
-	  (*x)--;
-	  moved = 1;
-	}
+        {
+          (*x)--;
+          moved = 1;
+        }
       break;
       /*
        * trying to go NORTH WEST
        */
     case 8:
       if (CURRENT_AREA[((*y) - 1) * CURRENT_AREA_W + (*x) - 1].mesh)
-	{
-	  (*x)--;
-	  (*y)--;
-	  moved = 1;
-	}
+        {
+          (*x)--;
+          (*y)--;
+          moved = 1;
+        }
     }
   return moved;
 }
@@ -217,7 +217,7 @@ move_cursor (int indice)
    * we get the mesh item associated to the current position of the cursor
    */
   mesh = CURRENT_AREA[CURRENT_CURSOR[indice].y * CURRENT_AREA_W
-		      + CURRENT_CURSOR[indice].x].mesh;
+                      + CURRENT_CURSOR[indice].x].mesh;
   /*
    * we tell the mesh that the info won't be up to date anymore concerning
    * this position
@@ -324,71 +324,71 @@ move_cursor (int indice)
        * we first try to move in the direction we have calculated
        */
       moved = move_if_free (&(CURRENT_CURSOR[indice].x),
-			    &(CURRENT_CURSOR[indice].y), dir);
+                            &(CURRENT_CURSOR[indice].y), dir);
       /*
        * if it did not work, we try another direction
        * for instance if the direction was NORTH WEST we try WEST
        */
       if (!moved)
-	moved = move_if_free (&(CURRENT_CURSOR[indice].x),
-			      &(CURRENT_CURSOR[indice].y), dir - 1);
+        moved = move_if_free (&(CURRENT_CURSOR[indice].x),
+                              &(CURRENT_CURSOR[indice].y), dir - 1);
       /*
        * if it did not work, we try another direction
        * for instance if the direction was NORTH WEST we try NORTH
        */
       if (!moved)
-	moved = move_if_free (&(CURRENT_CURSOR[indice].x),
-			      &(CURRENT_CURSOR[indice].y), dir + 1);
+        moved = move_if_free (&(CURRENT_CURSOR[indice].x),
+                              &(CURRENT_CURSOR[indice].y), dir + 1);
       /*
        * The following code allows the cursor to really "slip" on walls.
        * Not very elegant, but it works 8-)
        */
       if (!moved)
-	{
-	  int xa1, ya1;
-	  int xb1, yb1;
-	  int xa2, ya2;
-	  int xb2, yb2;
-	  int i = 0;
+        {
+          int xa1, ya1;
+          int xb1, yb1;
+          int xa2, ya2;
+          int xb2, yb2;
+          int i = 0;
 
-	  xa1 = xb1 = CURRENT_CURSOR[indice].x;
-	  ya1 = yb1 = CURRENT_CURSOR[indice].y;
+          xa1 = xb1 = CURRENT_CURSOR[indice].x;
+          ya1 = yb1 = CURRENT_CURSOR[indice].y;
 
-	  while (!moved && i < LW_MOVE_SIDE_LIMIT)
-	    {
-	      if (move_if_free (&xa1, &ya1, dir - 2))
-		{
-		  xa2 = xa1;
-		  ya2 = ya1;
-		  if (move_if_free (&xa2, &ya2, dir - 1))
-		    {
-		      /*
-		       * Normally moved should be true after this
-		       */
-		      moved = move_if_free (&(CURRENT_CURSOR[indice].x),
-					    &(CURRENT_CURSOR[indice].y),
-					    dir - 2);
-		    }
-		}
+          while (!moved && i < LW_MOVE_SIDE_LIMIT)
+            {
+              if (move_if_free (&xa1, &ya1, dir - 2))
+                {
+                  xa2 = xa1;
+                  ya2 = ya1;
+                  if (move_if_free (&xa2, &ya2, dir - 1))
+                    {
+                      /*
+                       * Normally moved should be true after this
+                       */
+                      moved = move_if_free (&(CURRENT_CURSOR[indice].x),
+                                            &(CURRENT_CURSOR[indice].y),
+                                            dir - 2);
+                    }
+                }
 
-	      if (move_if_free (&xb1, &yb1, dir + 2))
-		{
-		  xb2 = xb1;
-		  yb2 = yb1;
-		  if (move_if_free (&xb2, &yb2, dir + 1))
-		    {
-		      /*
-		       * Normally moved should be true after this
-		       */
-		      moved = move_if_free (&(CURRENT_CURSOR[indice].x),
-					    &(CURRENT_CURSOR[indice].y),
-					    dir + 2);
-		    }
-		}
+              if (move_if_free (&xb1, &yb1, dir + 2))
+                {
+                  xb2 = xb1;
+                  yb2 = yb1;
+                  if (move_if_free (&xb2, &yb2, dir + 1))
+                    {
+                      /*
+                       * Normally moved should be true after this
+                       */
+                      moved = move_if_free (&(CURRENT_CURSOR[indice].x),
+                                            &(CURRENT_CURSOR[indice].y),
+                                            dir + 2);
+                    }
+                }
 
-	      i++;
-	    }
-	}
+              i++;
+            }
+        }
     }
   /*
    * now this is quite a subtle line
@@ -410,7 +410,7 @@ move_cursor (int indice)
    * we retrieve the new mesh item associated to the new position
    */
   mesh = CURRENT_AREA[CURRENT_CURSOR[indice].y * CURRENT_AREA_W
-		      + CURRENT_CURSOR[indice].x].mesh;
+                      + CURRENT_CURSOR[indice].x].mesh;
   /*
    * we tell the mesh where the cursor is
    * this information is redundant but it avoids complex things such as 
@@ -487,55 +487,55 @@ move_all_cursors (void)
        * loop for all the teams, the cursor of which is active
        */
       for (i = 0; i < NB_TEAMS; ++i)
-	{
-	  if (CURRENT_CURSOR[i].active)
-	    {
-	      /*
-	       * If the cursor is network controlled, we do nothing yet
-	       */
-	      if (!CURRENT_CURSOR[i].from_network)
-		{
-		  if (CURRENT_CURSOR[i].control_type ==
-		      CONFIG_CONTROL_TYPE_CPU)
-		    {
-		      /*
-		       * the cursor is controlled by the computer
-		       */
-		      update_key_cpu_cursor (i);
-		    }
-		  else
-		    {
-		      /*
-		       * the cursor is controlled by a human local player
-		       */
-		      update_key_local_cursor (i);
-		    }
-		}
-	    }
-	}
+        {
+          if (CURRENT_CURSOR[i].active)
+            {
+              /*
+               * If the cursor is network controlled, we do nothing yet
+               */
+              if (!CURRENT_CURSOR[i].from_network)
+                {
+                  if (CURRENT_CURSOR[i].control_type ==
+                      CONFIG_CONTROL_TYPE_CPU)
+                    {
+                      /*
+                       * the cursor is controlled by the computer
+                       */
+                      update_key_cpu_cursor (i);
+                    }
+                  else
+                    {
+                      /*
+                       * the cursor is controlled by a human local player
+                       */
+                      update_key_local_cursor (i);
+                    }
+                }
+            }
+        }
       /*
        * we flush network informations if needed.
        */
       if (LW_NETWORK_ON)
-	{
-	  checksum = lw_checksum_calc (CURRENT_ARMY, CURRENT_ARMY_SIZE);
+        {
+          checksum = lw_checksum_calc (CURRENT_ARMY, CURRENT_ARMY_SIZE);
 
-	  /*
-	   * This call will automatically overwrite the key states
-	   * with those received from the network
-	   */
-	  if (!lw_keyexch_flush (CURRENT_CURSOR, checksum))
-	    {
-	      LW_NETWORK_ERROR_DETECTED = 1;
-	    }
-	}
+          /*
+           * This call will automatically overwrite the key states
+           * with those received from the network
+           */
+          if (!lw_keyexch_flush (CURRENT_CURSOR, checksum))
+            {
+              LW_NETWORK_ERROR_DETECTED = 1;
+            }
+        }
 
       for (i = 0; i < NB_TEAMS; ++i)
-	{
-	  if (CURRENT_CURSOR[i].active)
-	    {
-	      move_cursor (i);
-	    }
-	}
+        {
+          if (CURRENT_CURSOR[i].active)
+            {
+              move_cursor (i);
+            }
+        }
     }
 }

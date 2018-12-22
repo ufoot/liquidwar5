@@ -178,45 +178,45 @@ lw_lang_auto ()
 
     if (env_lang != NULL)
       {
-	/*
-	 * We try and check if LANG is set to "DE..." to enable German
-	 * support.
-	 */
-	if (strncmp (env_lang, "DE", 2) == 0 ||
-	    strncmp (env_lang, "de", 2) == 0)
-	  {
-	    language = LW_LANG_LANGUAGE_DEUTSCH;
-	  }
+        /*
+         * We try and check if LANG is set to "DE..." to enable German
+         * support.
+         */
+        if (strncmp (env_lang, "DE", 2) == 0 ||
+            strncmp (env_lang, "de", 2) == 0)
+          {
+            language = LW_LANG_LANGUAGE_DEUTSCH;
+          }
 
-	/*
-	 * We try and check if LANG is set to "DK..." to enable Danish
-	 * support.
-	 */
-	if (strncmp (env_lang, "DK", 2) == 0 ||
-	    strncmp (env_lang, "dk", 2) == 0)
-	  {
-	    language = LW_LANG_LANGUAGE_DANSK;
-	  }
+        /*
+         * We try and check if LANG is set to "DK..." to enable Danish
+         * support.
+         */
+        if (strncmp (env_lang, "DK", 2) == 0 ||
+            strncmp (env_lang, "dk", 2) == 0)
+          {
+            language = LW_LANG_LANGUAGE_DANSK;
+          }
 
-	/*
-	 * We try and check if LANG is set to "FR..." to enable French
-	 * support.
-	 */
-	if (strncmp (env_lang, "FR", 2) == 0 ||
-	    strncmp (env_lang, "fr", 2) == 0)
-	  {
-	    language = LW_LANG_LANGUAGE_FRANCAIS;
-	  }
+        /*
+         * We try and check if LANG is set to "FR..." to enable French
+         * support.
+         */
+        if (strncmp (env_lang, "FR", 2) == 0 ||
+            strncmp (env_lang, "fr", 2) == 0)
+          {
+            language = LW_LANG_LANGUAGE_FRANCAIS;
+          }
 
-	/*
-	 * We try and check if LANG is set to "PL..." to enable Polish
-	 * support.
-	 */
-	if (strncmp (env_lang, "PL", 2) == 0 ||
-	    strncmp (env_lang, "pl", 2) == 0)
-	  {
-	    language = LW_LANG_LANGUAGE_POLSKI;
-	  }
+        /*
+         * We try and check if LANG is set to "PL..." to enable Polish
+         * support.
+         */
+        if (strncmp (env_lang, "PL", 2) == 0 ||
+            strncmp (env_lang, "pl", 2) == 0)
+          {
+            language = LW_LANG_LANGUAGE_POLSKI;
+          }
       }
   }
 #endif
@@ -261,12 +261,12 @@ lw_lang_auto ()
       case 0x0c07:
       case 0x1007:
       case 0x1407:
-	language = LW_LANG_LANGUAGE_DEUTSCH;
-	break;
+        language = LW_LANG_LANGUAGE_DEUTSCH;
+        break;
       case 0x0006:
       case 0x0406:
-	language = LW_LANG_LANGUAGE_DANSK;
-	break;
+        language = LW_LANG_LANGUAGE_DANSK;
+        break;
       case 0x000c:
       case 0x040c:
       case 0x080c:
@@ -274,12 +274,12 @@ lw_lang_auto ()
       case 0x100c:
       case 0x140c:
       case 0x180c:
-	language = LW_LANG_LANGUAGE_FRANCAIS;
-	break;
+        language = LW_LANG_LANGUAGE_FRANCAIS;
+        break;
       case 0x0015:
       case 0x0415:
-	language = LW_LANG_LANGUAGE_POLSKI;
-	break;
+        language = LW_LANG_LANGUAGE_POLSKI;
+        break;
       }
   }
 #endif

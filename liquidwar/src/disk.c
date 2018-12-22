@@ -250,7 +250,7 @@ read_back_dat (DATAFILE * df)
   for (x = 0; x < BACK_IMAGE->w; ++x)
     for (y = 0; y < BACK_IMAGE->w; ++y)
       {
-	putpixel (BACK_IMAGE, x, y, getpixel (BACK_IMAGE, x, y) + 18);
+        putpixel (BACK_IMAGE, x, y, getpixel (BACK_IMAGE, x, y) + 18);
       }
 }
 
@@ -327,7 +327,7 @@ load_dat (void)
       log_flush ();
       df = load_datafile_object (STARTUP_DAT_PATH, "font_dat");
       if (result &= (df != NULL))
-	read_font_dat (df[0].dat);
+        read_font_dat (df[0].dat);
       display_success (df != NULL);
     }
   if (loadable)
@@ -336,7 +336,7 @@ load_dat (void)
       log_flush ();
       df = load_datafile_object (STARTUP_DAT_PATH, "map_dat");
       if (result &= (df != NULL))
-	read_map_dat (df[0].dat);
+        read_map_dat (df[0].dat);
       display_success (df != NULL);
     }
 
@@ -346,15 +346,15 @@ load_dat (void)
       log_flush ();
       df = load_datafile_object (STARTUP_DAT_PATH, "back_dat");
       if (df != NULL)
-	{
-	  read_back_dat (df[0].dat);
-	  LOADED_BACK = 1;
-	}
+        {
+          read_back_dat (df[0].dat);
+          LOADED_BACK = 1;
+        }
       else
-	{
-	  create_default_back ();
-	  result &= !STARTUP_CHECK;
-	}
+        {
+          create_default_back ();
+          result &= !STARTUP_CHECK;
+        }
       display_success (df != NULL);
     }
   else
@@ -365,12 +365,12 @@ load_dat (void)
       log_flush ();
       df = load_datafile_object (STARTUP_DAT_PATH, "sfx_dat");
       if (df != NULL)
-	{
-	  read_sfx_dat (df[0].dat);
-	  LOADED_SFX = 1;
-	}
+        {
+          read_sfx_dat (df[0].dat);
+          LOADED_SFX = 1;
+        }
       else
-	result &= !STARTUP_CHECK;
+        result &= !STARTUP_CHECK;
       display_success (df != NULL);
     }
   if (loadable && STARTUP_TEXTURE_STATE)
@@ -379,24 +379,24 @@ load_dat (void)
       log_flush ();
       df = load_datafile_object (STARTUP_DAT_PATH, "texture_dat");
       if (df != NULL)
-	{
-	  read_texture_dat (df[0].dat);
-	  LOADED_TEXTURE = 1;
-	}
+        {
+          read_texture_dat (df[0].dat);
+          LOADED_TEXTURE = 1;
+        }
       else
-	result &= !STARTUP_CHECK;
+        result &= !STARTUP_CHECK;
       display_success (df != NULL);
 
       log_print_str ("Loading map textures");
       log_flush ();
       df = load_datafile_object (STARTUP_DAT_PATH, "maptex_dat");
       if (df != NULL)
-	{
-	  read_maptex_dat (df[0].dat);
-	  LOADED_MAPTEX = 1;
-	}
+        {
+          read_maptex_dat (df[0].dat);
+          LOADED_MAPTEX = 1;
+        }
       else
-	result &= !STARTUP_CHECK;
+        result &= !STARTUP_CHECK;
       display_success (df != NULL);
     }
 
@@ -406,12 +406,12 @@ load_dat (void)
       log_flush ();
       df = load_datafile_object (STARTUP_DAT_PATH, "water_dat");
       if (df != NULL)
-	{
-	  read_water_dat (df[0].dat);
-	  LOADED_WATER = 1;
-	}
+        {
+          read_water_dat (df[0].dat);
+          LOADED_WATER = 1;
+        }
       else
-	result &= !STARTUP_CHECK;
+        result &= !STARTUP_CHECK;
       display_success (df != NULL);
     }
 
@@ -421,12 +421,12 @@ load_dat (void)
       log_flush ();
       df = load_datafile_object (STARTUP_DAT_PATH, "music_dat");
       if (df != NULL)
-	{
-	  read_music_dat (df[0].dat);
-	  LOADED_MUSIC = 1;
-	}
+        {
+          read_music_dat (df[0].dat);
+          LOADED_MUSIC = 1;
+        }
       else
-	result &= !STARTUP_CHECK;
+        result &= !STARTUP_CHECK;
       display_success (df != NULL);
     }
 
@@ -575,7 +575,7 @@ load_custom (void)
       log_flush ();
       success = load_custom_texture ();
       if (!success)
-	result &= !STARTUP_CHECK;
+        result &= !STARTUP_CHECK;
       display_success (success);
     }
 
@@ -587,7 +587,7 @@ load_custom (void)
       log_flush ();
       success = load_custom_map ();
       if (!success)
-	result &= !STARTUP_CHECK;
+        result &= !STARTUP_CHECK;
       display_success (success);
     }
 
@@ -599,7 +599,7 @@ load_custom (void)
       log_flush ();
       success = load_custom_music ();
       if (!success)
-	result &= !STARTUP_CHECK;
+        result &= !STARTUP_CHECK;
       display_success (success);
     }
 
@@ -628,17 +628,17 @@ order_map (void)
       incorrect_order = 0;
 
       for (i = 0; i < RAW_MAP_NUMBER - 1; ++i)
-	{
-	  LW_MACRO_STRCPY (name1, lw_map_get_readable_name (i, 0, 0));
-	  LW_MACRO_STRCPY (name2, lw_map_get_readable_name (i + 1, 0, 0));
-	  if (strcmp (name1, name2) > 0)
-	    {
-	      incorrect_order = 1;
+        {
+          LW_MACRO_STRCPY (name1, lw_map_get_readable_name (i, 0, 0));
+          LW_MACRO_STRCPY (name2, lw_map_get_readable_name (i + 1, 0, 0));
+          if (strcmp (name1, name2) > 0)
+            {
+              incorrect_order = 1;
 
-	      temp = RAW_MAP_ORDERED[i];
-	      RAW_MAP_ORDERED[i] = RAW_MAP_ORDERED[i + 1];
-	      RAW_MAP_ORDERED[i + 1] = temp;
-	    }
-	}
+              temp = RAW_MAP_ORDERED[i];
+              RAW_MAP_ORDERED[i] = RAW_MAP_ORDERED[i + 1];
+              RAW_MAP_ORDERED[i + 1] = temp;
+            }
+        }
     }
 }

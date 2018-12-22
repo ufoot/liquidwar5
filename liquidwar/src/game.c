@@ -129,25 +129,25 @@ calc_playing_teams (void)
   for (i = 0; i < NB_TEAMS; ++i)
     {
       if (LW_NETWORK_ON)
-	{
-	  /*
-	   * We're in a network game
-	   */
-	  if (LW_NETWORK_INFO[i].active)
-	    {
-	      PLAYING_TEAMS++;
-	    }
-	}
+        {
+          /*
+           * We're in a network game
+           */
+          if (LW_NETWORK_INFO[i].active)
+            {
+              PLAYING_TEAMS++;
+            }
+        }
       else
-	{
-	  /*
-	   * Not a network game, we only check the local config
-	   */
-	  if (CONFIG_CONTROL_TYPE[i] != CONFIG_CONTROL_TYPE_OFF)
-	    {
-	      PLAYING_TEAMS++;
-	    }
-	}
+        {
+          /*
+           * Not a network game, we only check the local config
+           */
+          if (CONFIG_CONTROL_TYPE[i] != CONFIG_CONTROL_TYPE_OFF)
+            {
+              PLAYING_TEAMS++;
+            }
+        }
     }
 }
 
@@ -172,18 +172,18 @@ init_cursor_control_method (void)
   for (i = 0; i < NB_TEAMS; ++i)
     {
       if (LW_NETWORK_ON)
-	{
-	  CURRENT_CURSOR[i].from_network = LW_NETWORK_INFO[i].network;
-	  CURRENT_CURSOR[i].control_type = LW_NETWORK_INFO[i].control_type;
-	}
+        {
+          CURRENT_CURSOR[i].from_network = LW_NETWORK_INFO[i].network;
+          CURRENT_CURSOR[i].control_type = LW_NETWORK_INFO[i].control_type;
+        }
       else
-	{
-	  /*
-	   * local teams
-	   */
-	  CURRENT_CURSOR[i].from_network = 0;
-	  CURRENT_CURSOR[i].control_type = CONFIG_CONTROL_TYPE[i];
-	}
+        {
+          /*
+           * local teams
+           */
+          CURRENT_CURSOR[i].from_network = 0;
+          CURRENT_CURSOR[i].control_type = CONFIG_CONTROL_TYPE[i];
+        }
     }
 }
 
@@ -213,15 +213,15 @@ check_loose_team (void)
        * if there are no fighters left, then the game is lost
        */
       if (ACTIVE_FIGHTERS[i] == 0)
-	{
-	  /*
-	   * nothing will be calculated for this team anymore
-	   */
-	  eliminate_team (i);
-	  lost = 1;
-	}
+        {
+          /*
+           * nothing will be calculated for this team anymore
+           */
+          eliminate_team (i);
+          lost = 1;
+        }
       else
-	++i;
+        ++i;
     }
   /*
    * now we check if the previous loop has given some results
@@ -276,13 +276,13 @@ init_game (void)
   if (!message &&
       (CURRENT_AREA_BACK = lw_maptex_create_map
        (CONFIG_LEVEL_MAP,
-	CONFIG_LEVEL_FG,
-	CONFIG_LEVEL_BG,
-	LW_NETWORK_ON,
-	LW_RANDOM_ON,
-	MIN_MAP_RES_W[LW_CONFIG_CURRENT_RULES.min_map_res],
-	MIN_MAP_RES_H[LW_CONFIG_CURRENT_RULES.min_map_res],
-	CONFIG_USE_DEFAULT_TEXTURE)) == NULL)
+        CONFIG_LEVEL_FG,
+        CONFIG_LEVEL_BG,
+        LW_NETWORK_ON,
+        LW_RANDOM_ON,
+        MIN_MAP_RES_W[LW_CONFIG_CURRENT_RULES.min_map_res],
+        MIN_MAP_RES_H[LW_CONFIG_CURRENT_RULES.min_map_res],
+        CONFIG_USE_DEFAULT_TEXTURE)) == NULL)
     message = lw_lang_string (LW_LANG_STRING_GAME_BACKMEMFAIL);
 
   /*
@@ -293,92 +293,92 @@ init_game (void)
   if (!message &&
       (CURRENT_AREA_DISP = lw_maptex_create_map
        (CONFIG_LEVEL_MAP,
-	CONFIG_LEVEL_FG,
-	CONFIG_LEVEL_BG,
-	LW_NETWORK_ON,
-	LW_RANDOM_ON,
-	MIN_MAP_RES_W[LW_CONFIG_CURRENT_RULES.min_map_res],
-	MIN_MAP_RES_H[LW_CONFIG_CURRENT_RULES.min_map_res],
-	CONFIG_USE_DEFAULT_TEXTURE)) == NULL)
+        CONFIG_LEVEL_FG,
+        CONFIG_LEVEL_BG,
+        LW_NETWORK_ON,
+        LW_RANDOM_ON,
+        MIN_MAP_RES_W[LW_CONFIG_CURRENT_RULES.min_map_res],
+        MIN_MAP_RES_H[LW_CONFIG_CURRENT_RULES.min_map_res],
+        CONFIG_USE_DEFAULT_TEXTURE)) == NULL)
     message = lw_lang_string (LW_LANG_STRING_GAME_DISPMEMFAIL);
 
   if (!message)
     {
       for (i = 0; !max_mem_reached && !ok; ++i)
-	{
-	  message = NULL;
-	  reset_big_data ();
+        {
+          message = NULL;
+          reset_big_data ();
 
-	  /*
-	   * creation of the mesh, see mesh.c for details
-	   */
-	  if (!message && create_mesh ())
-	    message = lw_lang_string (LW_LANG_STRING_GAME_MESHMEMFAIL);
+          /*
+           * creation of the mesh, see mesh.c for details
+           */
+          if (!message && create_mesh ())
+            message = lw_lang_string (LW_LANG_STRING_GAME_MESHMEMFAIL);
 
-	  /*
-	   * creation of the game area, see area.c for details
-	   */
-	  if (!message && create_game_area ())
-	    message = lw_lang_string (LW_LANG_STRING_GAME_AREAMEMFAIL);
+          /*
+           * creation of the game area, see area.c for details
+           */
+          if (!message && create_game_area ())
+            message = lw_lang_string (LW_LANG_STRING_GAME_AREAMEMFAIL);
 
-	  /*
-	   * creation of the armies, see army.c for details
-	   */
-	  if (!message && create_army ())
-	    message = lw_lang_string (LW_LANG_STRING_GAME_ARMYMEMFAIL);
+          /*
+           * creation of the armies, see army.c for details
+           */
+          if (!message && create_army ())
+            message = lw_lang_string (LW_LANG_STRING_GAME_ARMYMEMFAIL);
 
-	  if (message)
-	    {
-	      /*
-	       * There's an error.
-	       */
-	      if (last_try)
-		{
-		  /*
-		   * OK, last time we allocated memory, we couldn't
-		   * allocate all we wanted to, and this is not
-		   * enough -> we give up...
-		   */
-		  max_mem_reached = 0;
-		}
-	      else
-		{
-		  /*
-		   * We increase the amount of allocated memory
-		   */
-		  STARTUP_BIG_DATA += LW_STARTUP_MEM_STEP;
-		  if (STARTUP_BIG_DATA > LW_STARTUP_MEM_MAX)
-		    {
-		      last_try = 1;
-		      STARTUP_BIG_DATA = LW_STARTUP_MEM_MAX;
-		    }
-		  big_data = STARTUP_BIG_DATA;
-		  if (malloc_big_data ())
-		    {
-		      if (STARTUP_BIG_DATA != big_data)
-			{
-			  /*
-			   * not all the memory could be
-			   * allocated, we consider this is
-			   * the last try.
-			   */
-			  last_try = 1;
-			}
-		    }
-		  else
-		    {
-		      /*
-		       * memory allocation failed...
-		       */
-		      max_mem_reached = 1;
-		    }
-		}
-	    }
-	  else
-	    {
-	      ok = 1;
-	    }
-	}
+          if (message)
+            {
+              /*
+               * There's an error.
+               */
+              if (last_try)
+                {
+                  /*
+                   * OK, last time we allocated memory, we couldn't
+                   * allocate all we wanted to, and this is not
+                   * enough -> we give up...
+                   */
+                  max_mem_reached = 0;
+                }
+              else
+                {
+                  /*
+                   * We increase the amount of allocated memory
+                   */
+                  STARTUP_BIG_DATA += LW_STARTUP_MEM_STEP;
+                  if (STARTUP_BIG_DATA > LW_STARTUP_MEM_MAX)
+                    {
+                      last_try = 1;
+                      STARTUP_BIG_DATA = LW_STARTUP_MEM_MAX;
+                    }
+                  big_data = STARTUP_BIG_DATA;
+                  if (malloc_big_data ())
+                    {
+                      if (STARTUP_BIG_DATA != big_data)
+                        {
+                          /*
+                           * not all the memory could be
+                           * allocated, we consider this is
+                           * the last try.
+                           */
+                          last_try = 1;
+                        }
+                    }
+                  else
+                    {
+                      /*
+                       * memory allocation failed...
+                       */
+                      max_mem_reached = 1;
+                    }
+                }
+            }
+          else
+            {
+              ok = 1;
+            }
+        }
     }
 
   /*
@@ -761,90 +761,90 @@ game (void)
        * - the game time is elapsed
        */
       while ((!WATCHDOG_SCANCODE[KEY_ESC])
-	     && (PLAYING_TEAMS >= 2)
-	     && (TIME_LEFT > 0) && (!LW_NETWORK_ERROR_DETECTED))
-	{
-	  /*
-	   * global time checking
-	   */
-	  start_profile (GLOBAL_PROFILE);
+             && (PLAYING_TEAMS >= 2)
+             && (TIME_LEFT > 0) && (!LW_NETWORK_ERROR_DETECTED))
+        {
+          /*
+           * global time checking
+           */
+          start_profile (GLOBAL_PROFILE);
 
-	  /*
-	   * will contain how mush called to logic have been performed
-	   */
-	  lr = 0;
-	  do
-	    {
-	      /*
-	       * we call logic, calculates stuff, move players etc...
-	       */
-	      logic ();
+          /*
+           * will contain how mush called to logic have been performed
+           */
+          lr = 0;
+          do
+            {
+              /*
+               * we call logic, calculates stuff, move players etc...
+               */
+              logic ();
 
-	      /*
-	       * Now we decide to go idel if it happens that the computer
-	       * is calculating this "too fast". This will enable people
-	       * too play Liquid War even on a very very fast machine
-	       */
-	      while (get_ticker () < last_logic_time
-		     + LOGIC_DELAY_MIN[CONFIG_ROUNDS_PER_SEC_LIMIT])
-		{
+              /*
+               * Now we decide to go idel if it happens that the computer
+               * is calculating this "too fast". This will enable people
+               * too play Liquid War even on a very very fast machine
+               */
+              while (get_ticker () < last_logic_time
+                     + LOGIC_DELAY_MIN[CONFIG_ROUNDS_PER_SEC_LIMIT])
+                {
 #ifdef UNIX
-		  /*
-		   * The usleep calls prevents the game from eating 100% of the
-		   * CPU time on UNIX platforms.
-		   */
-		  usleep (1000);
+                  /*
+                   * The usleep calls prevents the game from eating 100% of the
+                   * CPU time on UNIX platforms.
+                   */
+                  usleep (1000);
 #else
-		  /*
-		   * Rest does not seem to spare CPU time, but at least it
-		   * slows the game down
-		   */
-		  rest (1);
+                  /*
+                   * Rest does not seem to spare CPU time, but at least it
+                   * slows the game down
+                   */
+                  rest (1);
 #endif
-		  //yield_timeslice (); deprecated
-		}
-	      last_logic_time = get_ticker ();
+                  //yield_timeslice (); deprecated
+                }
+              last_logic_time = get_ticker ();
 
-	      lr++;
-	    }
-	  while
-	    /*
-	     * if CONFIG_FPS_LIMIT is 0 we stop right away, ie
-	     * there will be one logic() operation for each display()
-	     * if it is 1, we keep going until we exceed the
-	     * CONFIG_FPS_LIMIT value. this way we avoid drawing 
-	     * 300 frames / second, which is useless
-	     * this method speeds the game on powerfull machines
-	     * for one can limit the display to 20 frames / seconds
-	     * and keep the rest of the CPU for calls to logic()
-	     */
-	    (CONFIG_FRAMES_PER_SEC_LIMIT
-	     && (get_ticker () < last_display_time
-		 + DISPLAY_DELAY_MIN[CONFIG_FRAMES_PER_SEC_LIMIT]));
-	  /*
-	   * tells the profile module about how much logic operations
-	   * have been done for this display
-	   */
-	  update_logic_rate (lr);
+              lr++;
+            }
+          while
+            /*
+             * if CONFIG_FPS_LIMIT is 0 we stop right away, ie
+             * there will be one logic() operation for each display()
+             * if it is 1, we keep going until we exceed the
+             * CONFIG_FPS_LIMIT value. this way we avoid drawing 
+             * 300 frames / second, which is useless
+             * this method speeds the game on powerfull machines
+             * for one can limit the display to 20 frames / seconds
+             * and keep the rest of the CPU for calls to logic()
+             */
+            (CONFIG_FRAMES_PER_SEC_LIMIT
+             && (get_ticker () < last_display_time
+                 + DISPLAY_DELAY_MIN[CONFIG_FRAMES_PER_SEC_LIMIT]));
+          /*
+           * tells the profile module about how much logic operations
+           * have been done for this display
+           */
+          update_logic_rate (lr);
 
-	  /*
-	   * we get the information "when has the last call to display() 
-	   * been done"
-	   */
-	  last_display_time = get_ticker ();
+          /*
+           * we get the information "when has the last call to display() 
+           * been done"
+           */
+          last_display_time = get_ticker ();
 
-	  /*
-	   * now we really display stuff, (takes time...)
-	   */
-	  display ();
+          /*
+           * now we really display stuff, (takes time...)
+           */
+          display ();
 
-	  /*
-	   * Now we check if the "Close" button has been clicked
-	   */
-	  my_exit_poll ();
+          /*
+           * Now we check if the "Close" button has been clicked
+           */
+          my_exit_poll ();
 
-	  stop_profile (GLOBAL_PROFILE);
-	}
+          stop_profile (GLOBAL_PROFILE);
+        }
     }
   /*
    * cleans up the double buffer system

@@ -178,43 +178,43 @@ advanced_options (void)
     {
       choix = my_do_dialog (d, choix);
       switch (choix)
-	{
-	case -1:
-	case MENU_QUICK_BACK:
-	  retour = 1;
-	  break;
-	case MENU_QUICK_MAIN:
-	  retour = MENU_TOP;
-	  break;
-	case MENU_QUICK_QUIT:
-	  if (confirm_quit ())
-	    retour = MENU_EXIT;
-	  break;
-	case MENU_QUICK_PLAY:
-	  retour = MENU_PLAY;
-	  break;
-	case 17:
-	  CONFIG_CPU_VS_HUMAN = (CONFIG_CPU_VS_HUMAN + 1) % 3;
-	  d[17].dp = get_cpu_vs_human_str ();
-	  scare_mouse ();
-	  my_button_proc (MSG_DRAW, d + 17, 0);
-	  unscare_mouse ();
-	  break;
-	case 18:
-	  CONFIG_ALLOW_NETWORK_BOTS = CONFIG_ALLOW_NETWORK_BOTS ? 0 : 1;
-	  d[18].dp = get_allow_network_bots_str ();
-	  scare_mouse ();
-	  my_button_proc (MSG_DRAW, d + 18, 0);
-	  unscare_mouse ();
-	  break;
-	case 19:
-	  CONFIG_ASM_ALGORITHM = CONFIG_ASM_ALGORITHM ? 0 : 1;
-	  d[19].dp = get_asm_algorithm_str ();
-	  scare_mouse ();
-	  my_button_proc (MSG_DRAW, d + 19, 0);
-	  unscare_mouse ();
-	  break;
-	}
+        {
+        case -1:
+        case MENU_QUICK_BACK:
+          retour = 1;
+          break;
+        case MENU_QUICK_MAIN:
+          retour = MENU_TOP;
+          break;
+        case MENU_QUICK_QUIT:
+          if (confirm_quit ())
+            retour = MENU_EXIT;
+          break;
+        case MENU_QUICK_PLAY:
+          retour = MENU_PLAY;
+          break;
+        case 17:
+          CONFIG_CPU_VS_HUMAN = (CONFIG_CPU_VS_HUMAN + 1) % 3;
+          d[17].dp = get_cpu_vs_human_str ();
+          scare_mouse ();
+          my_button_proc (MSG_DRAW, d + 17, 0);
+          unscare_mouse ();
+          break;
+        case 18:
+          CONFIG_ALLOW_NETWORK_BOTS = CONFIG_ALLOW_NETWORK_BOTS ? 0 : 1;
+          d[18].dp = get_allow_network_bots_str ();
+          scare_mouse ();
+          my_button_proc (MSG_DRAW, d + 18, 0);
+          unscare_mouse ();
+          break;
+        case 19:
+          CONFIG_ASM_ALGORITHM = CONFIG_ASM_ALGORITHM ? 0 : 1;
+          d[19].dp = get_asm_algorithm_str ();
+          scare_mouse ();
+          my_button_proc (MSG_DRAW, d + 19, 0);
+          unscare_mouse ();
+          break;
+        }
     }
 
   if (retour > 0)
