@@ -46,7 +46,7 @@ endif
 ifeq ($(EFENCE),yes)
 	EFENCE_LIBRARY = -lefence
 else
-	EFENCE_LIBRARY = 
+	EFENCE_LIBRARY =
 endif
 
 ifeq ($(GP2X),yes)
@@ -62,7 +62,7 @@ ifeq ($(SNPRINTF),yes)
 else
 	SNPRINTF_NAMES = ../utils/snprintf/snprintf
 	SNPRINTF_OPTIONS = -DSNPRINTF
-	SNPRINTF_MODE = "using Mark Martinec's implementation" 
+	SNPRINTF_MODE = "using Mark Martinec's implementation"
 endif
 
 ifeq ($(ASM),yes)
@@ -220,7 +220,7 @@ OBJ_NAMES_MAPGEN = \
 	../utils/lwmapgen/rand_poly \
 	../utils/lwmapgen/rand_poly_cut \
 	../utils/lwmapgen/street \
-	../utils/lwmapgen/worms 
+	../utils/lwmapgen/worms
 
 OBJ_FILES = $(addsuffix .o, $(OBJ_NAMES))
 OBJ_FILES_SRV = $(addsuffix .o, $(OBJ_NAMES_SRV))
@@ -232,7 +232,7 @@ ifeq ($(STATIC),yes)
     LINK_OPTIONS = --static
     EXTERN_LIBS = `allegro-config --static $(ALLEGRO_LIBRARY)` $(EFENCE_LIBRARY)
 else
-    LINK_OPTIONS = 
+    LINK_OPTIONS =
     EXTERN_LIBS = `allegro-config --libs $(ALLEGRO_LIBRARY)` $(EFENCE_LIBRARY)
 endif
 
@@ -252,7 +252,7 @@ all: $(EXE_FILES)
 
 liquidwar: $(OBJ_FILES)
 	@echo "Linking $@ (host=$(HOST), debug=$(DEBUG), static=$(STATIC), asm=$(ASM))"
-	@$(CC) $(LDFLAGS) $(LINK_OPTIONS) -o $@ $(OBJ_FILES) $(PTHREAD) $(EXTERN_LIBS) 
+	@$(CC) $(LDFLAGS) $(LINK_OPTIONS) -o $@ $(OBJ_FILES) $(PTHREAD) $(EXTERN_LIBS)
 
 liquidwar-server: $(OBJ_FILES_SRV)
 	@echo "Linking $@ (host=$(HOST), debug=$(DEBUG), static=$(STATIC))"
@@ -260,7 +260,7 @@ liquidwar-server: $(OBJ_FILES_SRV)
 
 liquidwar-mapgen: $(OBJ_FILES_MAPGEN)
 	@echo "Linking $@ (host=$(HOST), debug=$(DEBUG), static=$(STATIC))"
-	@$(CC) $(LDFLAGS) $(LINK_OPTIONS) -o $@ $(OBJ_FILES_MAPGEN) -lm $(PTHREAD) $(EXTERN_LIBS) 
+	@$(CC) $(LDFLAGS) $(LINK_OPTIONS) -o $@ $(OBJ_FILES_MAPGEN) -lm $(PTHREAD) $(EXTERN_LIBS)
 
 dep:
 	@find . \
@@ -270,7 +270,7 @@ dep:
 	xargs $(CMD_CC) -M | \
 	sed "s/\(.*\.o:\)/\1/g;" > Makefile.dep
 
-clean: 
+clean:
 	@rm -f *.o *.obj
 	@rm -f $(OBJ_FILES) $(OBJ_FILES_SRV) $(OBJ_FILES_MAPGEN)
 	@rm -f $(EXE_FILES)
@@ -290,7 +290,7 @@ config: print_config print_cmd_cc print_cmd_as print_cmd_ld
 	@true
 
 check:
-	@find . -name "*.[c|h]" -a ! -path "*32*" -exec indent {} \;
+	@find . -name "*.[c|h]" -a ! -path "*32*" -exec indent -nut {} \;
 	@find . -name "*.[c|h]" -a ! -path "*32*" -exec splint {} \;
 
 print_config:
@@ -311,7 +311,6 @@ print_cmd_as:
 
 print_cmd_ld:
 	@echo "The command line to link binaries in this directory is:"
-	@echo $(CC) $(LDFLAGS) $(LINK_OPTIONS) $(PTHREAD) $(EXTERN_LIBS) 
+	@echo $(CC) $(LDFLAGS) $(LINK_OPTIONS) $(PTHREAD) $(EXTERN_LIBS)
 
 include Makefile.dep
-
