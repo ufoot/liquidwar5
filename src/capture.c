@@ -54,7 +54,7 @@
 #include <string.h>
 #include <stdio.h>
 
-#include <allegro.h>
+#include <allegro5/allegro.h>
 
 #include "capture.h"
 #include "viewport.h"
@@ -137,9 +137,9 @@ lw_capture_dump_menu ()
    * Now we check manually for F9 for there's no way
    * to do it easily within the generic menu code.
    */
-  if (key[KEY_F9])
+  if (key[ALLEGRO_KEY_F9])
     {
-      while (key[KEY_F9])
+      while (key[ALLEGRO_KEY_F9])
         {
           /*
            * Force a all to poll_keyboard if needed
@@ -164,7 +164,7 @@ lw_capture_dump_game ()
   int result = 1;
   char buffer[LW_CAPTURE_FILENAME_BUFFER_SIZE];
   static int frame_number = 0;
-  BITMAP *screenshot;
+  ALLEGRO_BITMAP *screenshot;
 
   /*
    * We do nothing if we're not in capture mode
@@ -188,15 +188,15 @@ lw_capture_dump_game ()
        * Create a sub-bitmap with the right size
        */
       screenshot =
-        create_sub_bitmap (screen, 0, PAGE_FLIP_H, SCREEN_W, SCREEN_H);
+        al_create_sub_bitmap (screen, 0, PAGE_FLIP_H, SCREEN_W, SCREEN_H);
 
       if (screenshot)
         {
           /*
            * Write to disk
            */
-          result = !save_bitmap (buffer, screenshot, GLOBAL_PALETTE);
-          destroy_bitmap (screenshot);
+          result = !al_save_bitmap (buffer, screenshot);
+          al_destroy_bitmap (screenshot);
         }
       else
         {

@@ -53,7 +53,7 @@
 /*==================================================================*/
 
 #include "base.h"
-#include "alleg2.h"
+#include "backport.h"
 #include "bigdata.h"
 #include "texture.h"
 #include "disk.h"
@@ -101,7 +101,8 @@ exist_color (PALETTE pal, RGB rgb)
 
 /*-----------------------------------------------------------------*/
 static int
-recalculate_number_of_colors (int max_number, BITMAP * bmp, PALETTE pal)
+recalculate_number_of_colors (int max_number, ALLEGRO_BITMAP * bmp,
+                              PALETTE pal)
 {
   int i, x, y, n = 1;
   RGB color;
@@ -112,8 +113,8 @@ recalculate_number_of_colors (int max_number, BITMAP * bmp, PALETTE pal)
   for (i = 0; i < 256; ++i)
     pal2[i] = color;
 
-  for (y = 0; y < bmp->h && n < max_number; ++y)
-    for (x = 0; x < bmp->w && n < max_number; ++x)
+  for (y = 0; y < al_get_bitmap_height(bmp) && n < max_number; ++y)
+    for (x = 0; x < al_get_bitmap_width(bmp) && n < max_number; ++x)
       {
         color = pal[getpixel (bmp, x, y)];
         if (!exist_color (pal2, color))
@@ -126,14 +127,15 @@ recalculate_number_of_colors (int max_number, BITMAP * bmp, PALETTE pal)
 static void
 create_new_palette (PALETTE dst,
                     PALETTE src,
-                    BITMAP * bmp, int first_color, int number_of_colors)
+                    ALLEGRO_BITMAP * bmp, int first_color,
+                    int number_of_colors)
 {
   int i, x, y, index;
   int nb_retries = 0;
   RGB color;
 
-  x = random () % bmp->w;
-  y = random () % bmp->h;
+  x = random () % al_get_bitmap_width(bmp);
+  y = random () % al_get_bitmap_height(bmp);
   color = src[getpixel (bmp, x, y)];
 
   for (i = 0; i < 256; ++i)
@@ -141,8 +143,8 @@ create_new_palette (PALETTE dst,
 
   for (i = 1; i < number_of_colors;)
     {
-      x = random () % bmp->w;
-      y = random () % bmp->h;
+      x = random () % al_get_bitmap_width(bmp);
+      y = random () % al_get_bitmap_height(bmp);
       index = getpixel (bmp, x, y);
       color = src[index];
       if ((!exist_color (dst, color)) ||
@@ -180,7 +182,7 @@ correct_palette (PALETTE pal, int first_color, int number_of_colors)
 
 /*-----------------------------------------------------------------*/
 static void
-create_converted_bitmap (BITMAP * bmp,
+create_converted_bitmap (ALLEGRO_BITMAP * bmp,
                          PALETTE dst,
                          PALETTE src, int first_color, int number_of_colors)
 {
@@ -189,20 +191,22 @@ create_converted_bitmap (BITMAP * bmp,
 
   for (i = 0; i < 256; ++i)
     corres[i] = bestfit_color (dst, src[i].r, src[i].g, src[i].b);
-  for (y = 0; y < bmp->h; ++y)
-    for (x = 0; x < bmp->w; ++x)
+  al_set_target_bitmap (bmp);
+  for (y = 0; y < al_get_bitmap_height(bmp); ++y)
+    for (x = 0; x < al_get_bitmap_width(bmp); ++x)
       {
         index = corres[getpixel (bmp, x, y)];
         index = (index < first_color ||
                  index >= first_color + number_of_colors) ?
           first_color : index;
-        putpixel (bmp, x, y, index);
+        putpixel_fast (x, y, index);
       }
 }
 
 /*------------------------------------------------------------------*/
 static void
-red8col (BITMAP * bmp, PALETTE pal, int first_color, int number_of_colors)
+red8col (ALLEGRO_BITMAP * bmp, PALETTE pal, int first_color,
+         int number_of_colors)
 {
   PALETTE pal2;
   int i;
@@ -219,7 +223,7 @@ red8col (BITMAP * bmp, PALETTE pal, int first_color, int number_of_colors)
 
 /*------------------------------------------------------------------*/
 static void
-texture_8to5 (BITMAP * bmp, PALETTE pal, void *result,
+texture_8to5 (ALLEGRO_BITMAP * bmp, PALETTE pal, void *result,
               int first_color, int number_of_colors, char *filename)
 {
   char *buffer;
@@ -228,7 +232,7 @@ texture_8to5 (BITMAP * bmp, PALETTE pal, void *result,
   int coul;
   char system_name_buffer[LW_TEXTURE_SYSTEM_NAME_SIZE + 1];
 
-  lw_serial_set_texture_header (result, (short) bmp->w, (short) bmp->h);
+  lw_serial_set_texture_header (result, (short) al_get_bitmap_width(bmp), (short) al_get_bitmap_height(bmp));
 
   buffer = ((char *) result) + 2 * sizeof (short);
 
@@ -250,8 +254,8 @@ texture_8to5 (BITMAP * bmp, PALETTE pal, void *result,
   for (i = 0; i < 5; ++i)
     octet[i] = 0;
 
-  for (y = 0; y < bmp->h; ++y)
-    for (x = 0; x < bmp->w; ++x)
+  for (y = 0; y < al_get_bitmap_height(bmp); ++y)
+    for (x = 0; x < al_get_bitmap_width(bmp); ++x)
       {
         coul = getpixel (bmp, x, y) - first_color;
         toadd = 1 << pos8;
@@ -261,7 +265,7 @@ texture_8to5 (BITMAP * bmp, PALETTE pal, void *result,
         octet[3] |= (coul & 8) ? toadd : 0;
         octet[4] |= (coul & 16) ? toadd : 0;
 
-        if (pos8 == 7 || (y == bmp->h - 1 && x == bmp->w - 1))
+        if (pos8 == 7 || (y == al_get_bitmap_height(bmp) - 1 && x == al_get_bitmap_width(bmp) - 1))
           {
             for (i = 0; i < 5; ++i)
               {
@@ -280,7 +284,7 @@ void *
 lw_texture_archive_raw (const char *filename)
 {
   int i, w, h, size = 0;
-  BITMAP *bmp;
+  ALLEGRO_BITMAP *bmp;
   PALETTE pal;
   char *result = NULL, *temp = NULL;
   char *f = (char *) filename;
@@ -288,8 +292,8 @@ lw_texture_archive_raw (const char *filename)
   bmp = load_bitmap (filename, pal);
   if (bmp)
     {
-      w = bmp->w;
-      h = bmp->h;
+      w = al_get_bitmap_width(bmp);
+      h = al_get_bitmap_height(bmp);
       if (w > 0 && h > 0)
         {
           temp = malloc (size =
@@ -302,7 +306,7 @@ lw_texture_archive_raw (const char *filename)
               texture_8to5 (bmp, pal, temp, 0, TEXTURE_COLOR_NUMBER, f);
             }
         }
-      destroy_bitmap (bmp);
+      al_destroy_bitmap (bmp);
     }
   if (temp)
     {
@@ -321,37 +325,40 @@ lw_texture_archive_raw (const char *filename)
 }
 
 /*------------------------------------------------------------------*/
-static BITMAP *
+static ALLEGRO_BITMAP *
 create_raw_texture (void *ptr, int first)
 {
   int x, y, pos8 = 0, color;
   char totest, *data;
-  BITMAP *result;
+  ALLEGRO_BITMAP *result;
   short w, h;
 
   data = ptr;
   lw_serial_get_texture_header (data, &w, &h);
   data += 2 * sizeof (short) + LW_TEXTURE_SYSTEM_NAME_SIZE + 3 * 32;
 
-  result = my_create_bitmap (w, h);
+  result = my_create_memory_bitmap (w, h);
   if (result)
-    for (y = 0; y < h; ++y)
-      for (x = 0; x < w; ++x)
-        {
-          totest = 1 << pos8;
-          color = first + ((data[0] & totest) ? 1 : 0)
-            + ((data[1] & totest) ? 2 : 0)
-            + ((data[2] & totest) ? 4 : 0)
-            + ((data[3] & totest) ? 8 : 0) + ((data[4] & totest) ? 16 : 0);
-          putpixel (result, x, y, color);
-          if (pos8 == 7)
-            {
-              data += 5;
-              pos8 = 0;
-            }
-          else
-            pos8++;
-        }
+    {
+      al_set_target_bitmap (result);
+      for (y = 0; y < h; ++y)
+        for (x = 0; x < w; ++x)
+          {
+            totest = 1 << pos8;
+            color = first + ((data[0] & totest) ? 1 : 0)
+              + ((data[1] & totest) ? 2 : 0)
+              + ((data[2] & totest) ? 4 : 0)
+              + ((data[3] & totest) ? 8 : 0) + ((data[4] & totest) ? 16 : 0);
+            putpixel_fast (x, y, color);
+            if (pos8 == 7)
+              {
+                data += 5;
+                pos8 = 0;
+              }
+            else
+              pos8++;
+          }
+    }
   return result;
 }
 
@@ -381,21 +388,21 @@ get_raw_texture (int num)
 }
 
 /*------------------------------------------------------------------*/
-static BITMAP *
+static ALLEGRO_BITMAP *
 create_mono_texture (int first)
 {
-  BITMAP *result;
+  ALLEGRO_BITMAP *result;
 
-  result = my_create_bitmap (1, 1);
+  result = my_create_memory_bitmap (1, 1);
   putpixel (result, 0, 0, first);
   return result;
 }
 
 /*------------------------------------------------------------------*/
-static BITMAP *
+static ALLEGRO_BITMAP *
 create_texture (int num, int first)
 {
-  BITMAP *result;
+  ALLEGRO_BITMAP *result;
   void *texture;
 
   texture = get_raw_texture (num);
@@ -413,14 +420,14 @@ create_texture (int num, int first)
 }
 
 /*------------------------------------------------------------------*/
-BITMAP *
+ALLEGRO_BITMAP *
 lw_texture_create_bg (int num)
 {
   return create_texture (num, BG_TEXTURE_FIRST_COLOR);
 }
 
 /*------------------------------------------------------------------*/
-BITMAP *
+ALLEGRO_BITMAP *
 lw_texture_create_fg (int num)
 {
   return create_texture (num, FG_TEXTURE_FIRST_COLOR);

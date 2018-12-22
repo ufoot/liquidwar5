@@ -23,27 +23,6 @@ void do_args (int argc, char **argv);
 void print_help ();
 void print_version ();
 
-#ifdef DOS
-/*
- * These macros reduce the size of the DOS executable
- */
-BEGIN_GFX_DRIVER_LIST
-  END_GFX_DRIVER_LIST
-  BEGIN_COLOR_DEPTH_LIST
-  COLOR_DEPTH_8
-  END_COLOR_DEPTH_LIST
-  BEGIN_DIGI_DRIVER_LIST
-  END_DIGI_DRIVER_LIST
-  BEGIN_MIDI_DRIVER_LIST
-  END_MIDI_DRIVER_LIST BEGIN_JOYSTICK_DRIVER_LIST END_JOYSTICK_DRIVER_LIST
-#endif
-#ifdef WIN32
-/*
- * Under Win32 we want a console executable so we don't use
- * the "END_OF_MAIN" stuff, and this implies to undef "main".
- */
-#undef main
-#endif
   int
 main (int argc, char **argv)
 {
@@ -51,13 +30,13 @@ main (int argc, char **argv)
   int i;
 
   /* init allegro and init palette */
-  install_allegro (SYSTEM_NONE, &errno, atexit);
+  allegro_init ();
   set_color_depth (8);
   set_color_conversion (COLORCONV_REDUCE_TO_256);
   for (i = 0; i < 256; i++)
     {
-      /* divided by 4 because the colour value ranges from 0-63 */
-      pal[i].r = pal[i].g = pal[i].b = i / 4;
+      /* Use 8-bit color values (0-255) instead of VGA (0-63) */
+      pal[i].r = pal[i].g = pal[i].b = i;
     }
 
   srand (time (NULL));
@@ -74,10 +53,6 @@ main (int argc, char **argv)
 
   return EXIT_SUCCESS;
 }
-
-#ifndef WIN32
-END_OF_MAIN ();
-#endif
 
 /*****************************************************************************/
 

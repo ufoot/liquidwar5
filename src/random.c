@@ -54,8 +54,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <allegro.h>
+#include <allegro5/allegro.h>
 
+#include "backport.h"
 #include "random.h"
 #include "base.h"
 #include "alleg2.h"
@@ -114,10 +115,10 @@ generate_bw_palette (PALETTE pal)
 }
 
 /*------------------------------------------------------------------*/
-static BITMAP *
+static ALLEGRO_BITMAP *
 generate_bitmap ()
 {
-  BITMAP *bmp;
+  ALLEGRO_BITMAP *bmp;
   PALETTE pal;
 
   char filename[LW_STARTUP_MAX_PATH_LENGTH];
@@ -125,10 +126,25 @@ generate_bitmap ()
 
   int size;
   int ok = 0;
+  int temp_fd;
 
   size = random () % 6;
 
-  LW_MACRO_SPRINTF1 (filename, "%s.bmp", tmpnam (NULL));
+  // Create secure temporary file using mkstemp
+  // First create template without .bmp extension for mkstemp
+  char temp_name[] = "/tmp/lwmapgen_XXXXXX";
+  temp_fd = mkstemp(temp_name);
+  if (temp_fd == -1) {
+    log_println_str("Error: Could not create temporary file");
+    return NULL;
+  }
+  close(temp_fd); // Close the file descriptor, we just need the name
+
+  // Remove the temporary file created by mkstemp (we just wanted the unique name)
+  delete_file(temp_name);
+
+  // Add .bmp extension to the filename
+  LW_MACRO_SPRINTF1(filename, "%s.bmp", temp_name);
   LW_MACRO_SPRINTF4 (command,
                      "%s --out %s --size %d%s",
                      STARTUP_GEN_PATH, filename, size, LW_RANDOM_COMMAND_END);
@@ -189,7 +205,7 @@ generate_bitmap ()
 int
 lw_random_generate_map ()
 {
-  BITMAP *bmp;
+  ALLEGRO_BITMAP *bmp;
   PALETTE pal;
   void *raw_map = NULL;
   int result = 0;

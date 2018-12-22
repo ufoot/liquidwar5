@@ -51,10 +51,22 @@
 /* includes                                                         */
 /*==================================================================*/
 
+#include <stdlib.h>
+
 #include "path.h"
 #include "startup.h"
 #include "macro.h"
 #include "log.h"
+
+/*==================================================================*/
+/* defines                                                          */
+/*==================================================================*/
+
+#ifdef UNIX
+#define _SEP '/'
+#else
+#define _SEP '\\'
+#endif
 
 /*==================================================================*/
 /* types                                                            */
@@ -98,17 +110,6 @@ lw_path_get_system_name (const char *filename)
   LW_MACRO_STRCPY (buf2, start);
 
   search = strchr (buf2, '.');
-  /*
-     if (search != NULL)
-     {
-     end = search;
-     }
-     else
-     {
-     end = buf2 + strlen (buf2);
-     }
-   */
-
   if (search == NULL)
     {
       search = buf2 + strlen (buf2);
@@ -117,4 +118,50 @@ lw_path_get_system_name (const char *filename)
   memset (search, 0, sizeof (buf2) - (search - buf2));
 
   return buf2;
+}
+
+/*------------------------------------------------------------------*/
+/*
+ * Fonction used to build complete paths from different parts.
+ */
+char *
+lw_path_join2(const char *begin, const char *end) {
+  while (*end==_SEP) {
+    end++;
+  }
+  int begin_len = strlen(begin);
+  int end_len = strlen(end);
+  int joined_len = begin_len + end_len;
+  char *joined = malloc(joined_len+2);
+  memset(joined, 0, joined_len+2);
+  memcpy(joined, begin, begin_len);
+  joined[begin_len] = _SEP;
+  memcpy(joined+begin_len+1, end, end_len);
+  return joined;
+}
+
+/*------------------------------------------------------------------*/
+/*
+ * Fonction used to build complete paths from different parts.
+ */
+char *
+lw_path_join3(const char *begin, const char *middle, const char *end) {
+  while (*middle==_SEP) {
+    middle++;
+  }
+  while (*end==_SEP) {
+    end++;
+  }
+  int begin_len = strlen(begin);
+  int middle_len = strlen(middle);
+  int end_len = strlen(end);
+  int joined_len = begin_len + middle_len + end_len;
+  char *joined = malloc(joined_len+3);
+  memset(joined, 0, joined_len+3);
+  memcpy(joined, begin, begin_len);
+  joined[begin_len] = _SEP;
+  memcpy(joined+begin_len+1, middle, middle_len);
+  joined[begin_len+middle_len+1] = _SEP;
+  memcpy(joined+begin_len+middle_len+2, end, end_len);
+  return joined;
 }

@@ -55,8 +55,10 @@
 /* includes                                                         */
 /*==================================================================*/
 
-#include <allegro.h>
+#include <allegro5/allegro.h>
 
+#include "backport.h"
+#include "backportgui.h"
 #include "alleg2.h"
 #include "palette.h"
 

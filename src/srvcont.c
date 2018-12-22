@@ -131,7 +131,6 @@ distribute_teams (LW_SRVCONT * cont)
   int result = 1;
   int i, j, k;
   int i_orig, j_orig;
-  int asm_algorithm;
 
   /*
    * The first step is to attribute a unique number to each
@@ -225,20 +224,6 @@ distribute_teams (LW_SRVCONT * cont)
         }
     }
 
-  /*
-   * Last step, we check if the "asm_algorithm" parameter should be
-   * enabled. Indeed, it must be enabled on _all_ computers or on
-   * none of them...
-   */
-  asm_algorithm = 1;
-  for (i = 0; i < cont->nb_chans; ++i)
-    {
-      asm_algorithm = (cont->chan[i].config.asm_algorithm && asm_algorithm);
-    }
-  for (i = 0; i < cont->nb_chans; ++i)
-    {
-      cont->chan[i].config.asm_algorithm = asm_algorithm;
-    }
 
   return result;
 }

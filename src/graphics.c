@@ -63,6 +63,7 @@
 #include "graphics.h"
 #include "help.h"
 #include "menu.h"
+#include "mouse.h"
 #include "sound.h"
 #include "wave.h"
 #include "lang.h"
@@ -251,16 +252,7 @@ graphic_options (void)
 
       d[11].proc = my_button_proc;
       d[11].dp = get_fullscreen_str ();
-#ifdef DOS
-      /*
-       * Under DOS, fullscreen or windowed makes no sense, so we simply
-       * remove the button to avoid confusion.
-       */
-      d[4].flags |= D_HIDDEN;
-      d[11].flags = D_EXIT | D_HIDDEN;
-#else
       d[11].flags = D_EXIT;
-#endif
 
       d[16].proc = my_button_proc;
       d[16].dp = get_page_flip_str ();
@@ -284,7 +276,7 @@ graphic_options (void)
       else
         dp = my_init_dialog (d, choix);
 
-      show_mouse (screen);
+      lw_mouse_show ();
       while ((menu_res_changed == 0) &&
              (game_res_changed == 0) && my_update_dialog (dp))
         ;

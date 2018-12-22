@@ -55,7 +55,7 @@
 /* includes                                                         */
 /*==================================================================*/
 
-#include <allegro.h>
+#include <allegro5/allegro.h>
 
 /*==================================================================*/
 /* variables globales                                               */
@@ -65,7 +65,7 @@
 /* fonctions globales                                               */
 /*==================================================================*/
 
-void display_a_back_image (BITMAP * bmp);
+void display_a_back_image (ALLEGRO_BITMAP * bmp);
 void display_back_image (void);
 
 #endif

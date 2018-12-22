@@ -52,12 +52,11 @@
 /* includes                                                         */
 /*==================================================================*/
 
-#include <allegro.h>
+#include <allegro5/allegro.h>
 #include <stdlib.h>
-#ifdef DOS
-#include <dos.h>
-#endif
+#include <time.h>
 
+#include "backport.h"
 #include "base.h"
 #include "initrand.h"
 #include "config.h"
@@ -70,7 +69,6 @@
 #include "ticker.h"
 #include "sockgen.h"
 #include "lang.h"
-#include "asm.h"
 #include "capture.h"
 
 /*==================================================================*/
@@ -113,7 +111,7 @@ int
 init_all ()
 {
   int result = 0;
-  int graphics = 1, assembly = 1, config = 1, timer = 1, keyboard = 1,
+  int graphics = 1, config = 1, timer = 1, keyboard = 1,
     mouse = 1, sound = 1, joystick = 1, network = 1;
 
   /*
@@ -126,7 +124,7 @@ init_all ()
   lw_lang_init ();
   set_uformat (U_ASCII);
 
-  log_print_str ("Starting Allegro (http://www.talula.demon.co.uk/allegro)");
+  log_print_str ("Starting Allegro (https://liballeg.org/)");
   display_success (graphics = !allegro_init ());
   log_println ();
 
@@ -134,20 +132,12 @@ init_all ()
     {
       LW_INIT_ALLEGRO_OK = 1;
 
-#ifdef DOS
-      set_gfx_mode (GFX_TEXT, 0, 0, 0, 0);
-#endif
       log_print_str ("Allegro ID : ");
       log_println_str (allegro_id);
       log_println ();
 
       set_color_depth (8);
       set_color_conversion (COLORCONV_REDUCE_TO_256);
-
-      /*
-       * We check for potential struct size errors
-       */
-      assembly = lw_asm_check_struct_align ();
 
       log_print_str ("Loading config options from \"");
       log_print_str (STARTUP_CFG_PATH);
@@ -246,7 +236,6 @@ init_all ()
     }
 
   result = graphics
-    && (assembly || !STARTUP_CHECK)
     && timer
     && keyboard
     && mouse && (sound || !STARTUP_CHECK) && (joystick || !STARTUP_CHECK);

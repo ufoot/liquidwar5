@@ -52,16 +52,17 @@
 /* includes                                                         */
 /*==================================================================*/
 
-#include <allegro.h>
+#include <allegro5/allegro.h>
+#include <math.h>
 
 #include "army.h"
+#include "backport.h"
 #include "config.h"
 #include "cursor.h"
 #include "decal.h"
 #include "grad.h"
 #include "mesh.h"
 #include "fighter.h"
-#include "monster.h"
 #include "palette.h"
 #include "startup.h"
 #include "lwtime.h"
@@ -306,9 +307,6 @@ move_fighters (void)
   int *move_offset, *move_x, *move_y;
   int sens, start, table;
   int cpu_influence[NB_TEAMS] = { 0, 0, 0, 0, 0, 0 };
-#ifdef ASM
-  int temp = 0;
-#endif
 
   sens = 0;
 
@@ -337,30 +335,30 @@ move_fighters (void)
       coef += 256;
 
       attack[i] = (coef *
-                   fixsqrt (fixsqrt
-                            (1 <<
+                   (int)(sqrt (sqrt
+                            ((double)(1 <<
                              (LW_CONFIG_CURRENT_RULES.fighter_attack +
-                              cpu_influence[i])))) / (256 * 8);
+                              cpu_influence[i])))))) / (256 * 8);
       if (attack[i] >= MAX_FIGHTER_HEALTH)
         attack[i] = MAX_FIGHTER_HEALTH - 1;
       if (attack[i] < 1)
         attack[i] = 1;
 
       defense[i] = (coef *
-                    fixsqrt (fixsqrt
-                             (1 <<
+                    (int)(sqrt (sqrt
+                             ((double)(1 <<
                               (LW_CONFIG_CURRENT_RULES.fighter_defense +
-                               cpu_influence[i])))) / (256 * 256);
+                               cpu_influence[i])))))) / (256 * 256);
       if (defense[i] >= MAX_FIGHTER_HEALTH)
         defense[i] = MAX_FIGHTER_HEALTH - 1;
       if (defense[i] < 1)
         defense[i] = 1;
 
       new_health[i] = (coef *
-                       fixsqrt (fixsqrt
-                                (1 <<
+                       (int)(sqrt (sqrt
+                                ((double)(1 <<
                                  (LW_CONFIG_CURRENT_RULES.fighter_new_health +
-                                  cpu_influence[i])))) / (256 * 4);
+                                  cpu_influence[i])))))) / (256 * 4);
       if (new_health[i] >= MAX_FIGHTER_HEALTH)
         new_health[i] = MAX_FIGHTER_HEALTH - 1;
       if (new_health[i] < 1)
@@ -372,30 +370,6 @@ move_fighters (void)
   table = (GLOBAL_CLOCK / 3) % 2;
   f = CURRENT_ARMY;
 
-#ifdef ASM
-  if (STARTUP_ASM && LW_CONFIG_CURRENT_RULES.asm_algorithm)
-    boost_move_fighters (CURRENT_ARMY,
-                         CURRENT_ARMY_SIZE,
-                         CURRENT_AREA,
-                         CURRENT_AREA_W,
-                         ACTIVE_FIGHTERS,
-                         attack,
-                         defense,
-                         new_health,
-                         MAX_FIGHTER_HEALTH - 1,
-                         sens,
-                         start,
-                         -GLOBAL_CLOCK,
-                         FIGHTER_MOVE_XY_ASM[table],
-                         FIGHTER_MOVE_OFFSET_ASM[table],
-                         CURRENT_AREA_BACK->dat,
-                         CURRENT_AREA_DISP->dat,
-                         COLOR_FIRST_ENTRY,
-                         COLORS_PER_TEAM,
-                         LOCAL_DIR,
-                         temp, temp, temp, temp, temp, temp, temp, temp);
-  else
-#endif
     for (i = 0; i < CURRENT_ARMY_SIZE; ++i)
       {
         team = f->team;

@@ -56,6 +56,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "backport.h"
 #include "army.h"
 #include "back.h"
 #include "base.h"
@@ -204,17 +205,18 @@ init_tombola ()
 
 /*------------------------------------------------------------------*/
 static int
-draw_score_bitmap (BITMAP * bitmap, int cursor, int ellipse_h, int fill_level)
+draw_score_bitmap (ALLEGRO_BITMAP * bitmap, int cursor, int ellipse_h,
+                   int fill_level)
 {
   int w, h;
   int color1 = 0, color2 = 0;
   int y_rect1, y_rect2, x_mid;
   int to_be_filled, to_be_drawn;
 
-  w = bitmap->w;
+  w = al_get_bitmap_width(bitmap);
   if (!(w & 1))
     w -= 1;
-  h = bitmap->h;
+  h = al_get_bitmap_height(bitmap);
   y_rect1 = ellipse_h / 2;
   y_rect2 = h - y_rect1 - 1;
   x_mid = w / 2;
@@ -277,7 +279,7 @@ display_scores (void)
   int ellipse_h;
   int i;
   int cursor[3];
-  BITMAP *eprouvette[3];
+  ALLEGRO_BITMAP *eprouvette[3];
   int time_delay[3] = { 500, 2500, 1500 };
   int fill_level;
   int done[3];
@@ -333,7 +335,7 @@ display_scores (void)
       done[i] = 0;
       write_score (cursor[i], buf[i], 0);
       buf_old[i][0] = '\0';
-      eprouvette[i] = my_create_bitmap (w, h[i]);
+      eprouvette[i] = my_create_memory_bitmap (w, h[i]);
     }
 
   d[MENU_QUICK_QUIT].flags = D_HIDDEN;
@@ -440,7 +442,7 @@ display_scores (void)
     }
 
   for (i = 0; i < 3; ++i)
-    destroy_bitmap (eprouvette[i]);
+    al_destroy_bitmap (eprouvette[i]);
   if (retour > 0)
     retour--;
 

@@ -75,11 +75,6 @@ PACKAGE_DOCKER_TABLES_SQL = $(DOCKER_DIR)/tables.sql
 PACKAGE_BINARY_TAR = liquidwar-$(VERSION).$(HOST).tar
 PACKAGE_BINARY_TGZ = liquidwar-$(VERSION).$(HOST).tgz
 
-PACKAGE_DOS_DIR = LW5
-PACKAGE_DOS_EXE = lwdos.exe lwdosmap.exe
-PACKAGE_DOS_ZIP = lw$(VERSION_COMPACT)d.zip
-PACKAGE_DOS_CWSDPMI = cwsdpmi.exe
-
 PACKAGE_WIN32_DIR = LW5
 PACKAGE_WIN32_EXE = lwwin.exe lwwinsrv.exe lwwinmap.exe
 PACKAGE_WIN32_ZIP = lw$(VERSION_COMPACT)w.zip
@@ -97,8 +92,6 @@ PACKAGE_MACOSX_TAR = liquidwar-$(VERSION)-macosx.tar
 PACKAGE_MACOSX_TGZ = liquidwar-$(VERSION)-macosx.tgz
 PACKAGE_MACOSX_DMG = liquidwar-$(VERSION).dmg
 
-PACKAGE_GP2X_DIR = liquidwar-$(VERSION)-gp2x
-PACKAGE_GP2X_ZIP = liquidwar-$(VERSION)-gp2x.zip
 
 PACKAGE_TMP = /tmp/liquidwar-$(VERSION).tmp
 
@@ -107,7 +100,7 @@ all: build_bin build_data build_doc
 	@echo "Build complete."
 	@echo "Type \"$(GMAKE) install\" to install Liquid War $(VERSION)."
 
-world: clean world_clean all package_source package_win32 package_dos package_binary package_source_rpm package_binary_rpm package_gp2x
+world: clean world_clean all package_source package_win32 package_binary package_source_rpm package_binary_rpm
 
 build_bin:
 	@$(GMAKE) -C $(MAKE_BIN_DIR)
@@ -243,12 +236,10 @@ world_clean:
 	@rm -f $(PACKAGE_BINARY_TGZ)
 	@rm -f $(PACKAGE_SOURCE_RPM)
 	@rm -f $(PACKAGE_BINARY_RPM)
-	@rm -f $(PACKAGE_DOS_ZIP)
 	@rm -f $(PACKAGE_WIN32_ZIP)
 	@rm -f $(PACKAGE_NSIS_EXE)
 	@rm -f $(PACKAGE_MACOSX_TGZ)
 	@rm -f $(PACKAGE_MACOSX_DMG)
-	@rm -f $(PACKAGE_GP2X_ZIP)
 
 # used when preparing packages
 packageclean: clean world_clean
@@ -315,6 +306,7 @@ $(PACKAGE_SOURCE_TARGZ):
 	@echo "Deleting temporary directory."
 	@rm -rf $(PACKAGE_TMP)
 
+<<<<<<< HEAD
 package_dos: $(PACKAGE_DOS_ZIP)
 
 $(PACKAGE_DOS_ZIP): $(PACKAGE_DOS_EXE) $(PACKAGE_DOS_CWSDPMI)
@@ -354,6 +346,8 @@ $(PACKAGE_DOS_ZIP): $(PACKAGE_DOS_EXE) $(PACKAGE_DOS_CWSDPMI)
 	@mv $(PACKAGE_TMP)/$(PACKAGE_DOS_ZIP) .
 	@echo "Deleting temporary directory."
 	@rm -rf $(PACKAGE_TMP)
+=======
+>>>>>>> 0836880 ([dos] removed support)
 
 package_win32: $(PACKAGE_WIN32_ZIP)
 
@@ -526,6 +520,7 @@ $(PACKAGE_MACOSX_DMG): $(PACKAGE_MACOSX_TGZ)
 	@echo "Deleting temporary directory."
 	@rm -rf $(PACKAGE_TMP)
 
+<<<<<<< HEAD
 package_gp2x: $(PACKAGE_GP2X_ZIP)
 
 $(PACKAGE_GP2X_ZIP): $(PACKAGE_SOURCE_TARGZ)
@@ -556,6 +551,8 @@ $(PACKAGE_GP2X_ZIP): $(PACKAGE_SOURCE_TARGZ)
 	@cp $(PACKAGE_TMP)/$(PACKAGE_GP2X_ZIP) .
 	@rm -rf $(PACKAGE_TMP)
 
+=======
+>>>>>>> fc68ac4 ([backport] removed GP2X support)
 $(PACKAGE_DOCKER_SOURCE_TARGZ): $(PACKAGE_SOURCE_TARGZ)
 	@cp $< $@
 

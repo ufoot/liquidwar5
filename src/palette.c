@@ -122,9 +122,9 @@ change_palette_brightness (PALETTE old_pal, PALETTE new_pal)
     for (i = 0; i < 256; ++i)
       {
         rgb = old_pal + i;
-        r = rgb->r * 4;
-        g = rgb->g * 4;
-        b = rgb->b * 4;
+        r = rgb->r;
+        g = rgb->g;
+        b = rgb->b;
 
         if (brightness > 0)
           {
@@ -140,9 +140,9 @@ change_palette_brightness (PALETTE old_pal, PALETTE new_pal)
           }
 
         rgb = new_pal + i;
-        rgb->r = r / 4;
-        rgb->g = g / 4;
-        rgb->b = b / 4;
+        rgb->r = r;
+        rgb->g = g;
+        rgb->b = b;
       }
   else
     for (i = 0; i < 256; ++i)
@@ -216,9 +216,9 @@ get_mono_texture_color (RGB * rgb, int num)
 
   hsv_to_rgb (h2, s2, v2, &r, &g, &b);
 
-  rgb->r = r / 4;
-  rgb->g = g / 4;
-  rgb->b = b / 4;
+  rgb->r = r;
+  rgb->g = g;
+  rgb->b = b;
   /* *rgb=CHOOSE_PALETTE [32+num]; */
 }
 

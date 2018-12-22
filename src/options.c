@@ -54,6 +54,7 @@
 
 #include <string.h>
 
+#include "backport.h"
 #include "back.h"
 #include "base.h"
 #include "config.h"
@@ -72,6 +73,7 @@
 #include "controls.h"
 #include "lang.h"
 #include "gfxmode.h"
+#include "mouse.h"
 
 /*==================================================================*/
 /* variables globales                                               */
@@ -126,7 +128,7 @@ options (void)
           dp = my_init_dialog (d, choix);
         }
 
-      show_mouse (screen);
+      lw_mouse_show ();
       while (my_update_dialog (dp))
         ;
       choix = shutdown_dialog (dp);

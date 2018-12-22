@@ -1,0 +1,43 @@
+# Liquid War is a multiplayer wargame
+# Copyright (C) 1998-2025 Christian Mauduit
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+#
+# Liquid War homepage : https://ufoot.org/liquidwar/v5
+# Contact author      : ufoot@ufoot.org
+
+language: c
+
+addons:
+  apt:
+    packages:
+      - liballegro5-dev
+      - liballegro-audio5-dev
+      - liballegro-image5-dev
+      - libxml2-utils
+
+install: autoconf
+
+script: ./configure && make && make check && make package_source
+
+deploy:
+  provider: releases
+  api_key: $GITHUB_OAUTH_TOKEN
+  file_glob: true
+  file: liquidwar-*.tar.gz
+  skip_cleanup: true
+  overwrite: true
+  on:
+    tags: true

@@ -143,10 +143,7 @@ volume \
 watchdog \
 wave \
 wwwcli \
-glouglou \
-monster \
-spread \
-lwwin 
+lwwin
 
 OBJ_NAMES_SRV=\
 basicopt \
@@ -192,8 +189,8 @@ OBJ_NAMES_MAPGEN=\
 ../utils/lwmapgen/rand_poly \
 ../utils/lwmapgen/rand_poly_cut \
 ../utils/lwmapgen/street \
-../utils/lwmapgen/worms 
-       
+../utils/lwmapgen/worms
+
 OBJ_FILES=$(addprefix $(OBJ_PATH),$(addsuffix $(OBJ_EXT),$(OBJ_NAMES)))
 
 OBJ_FILES_SRV=$(addprefix $(OBJ_PATH),$(addsuffix $(OBJ_EXT),$(OBJ_NAMES_SRV)))
@@ -225,6 +222,3 @@ lwwinsrv.exe: $(OBJ_FILES_SRV)
 
 lwwinmap.exe: $(OBJ_FILES_MAPGEN)
 	gcc -Wl,--subsystem,console -o $@ $(OBJ_FILES_MAPGEN) -lalleg44
-
-
-

@@ -52,8 +52,9 @@
 /* includes                                                         */
 /*==================================================================*/
 
-#include <allegro.h>
+#include <allegro5/allegro.h>
 
+#include "backport.h"
 #include "alleg2.h"
 #include "army.h"
 #include "back.h"
@@ -77,8 +78,8 @@
 #define INFO_BAR_W 50
 #define INFO_BAR_H 15
 
-static BITMAP *INFO_BAR_BACK = NULL;
-static BITMAP *INFO_BAR = NULL;
+static ALLEGRO_BITMAP *INFO_BAR_BACK = NULL;
+static ALLEGRO_BITMAP *INFO_BAR = NULL;
 static int INFO_BAR_POS_X[NB_TEAMS];
 static int INFO_BAR_POS_Y[NB_TEAMS];
 static int INFO_BAR_POS_W;
@@ -97,12 +98,12 @@ int
 init_info_bar (int w, int h, int epaisseur)
 {
   int i, x, y;
-  BITMAP *front, *back;
+  ALLEGRO_BITMAP *front, *back;
 
   if (INFO_BAR)
-    destroy_bitmap (INFO_BAR);
-  INFO_BAR = my_create_bitmap (w, h);
-  INFO_BAR_BACK = my_create_bitmap (w, h);
+    al_destroy_bitmap (INFO_BAR);
+  INFO_BAR = my_create_memory_bitmap (w, h);
+  INFO_BAR_BACK = my_create_memory_bitmap (w, h);
 
   if (INFO_BAR && INFO_BAR_BACK)
     {
@@ -120,12 +121,13 @@ init_info_bar (int w, int h, int epaisseur)
                                  LW_NETWORK_ON, LW_RANDOM_ON,
                                  CONFIG_USE_DEFAULT_TEXTURE);
 
-          for (y = 0; y < h; y += front->h)
-            for (x = epaisseur + 1; x < w; x += front->w)
+          for (y = 0; y < h; y += al_get_bitmap_height(front))
+            for (x = epaisseur + 1; x < w; x += al_get_bitmap_width(front))
               draw_sprite (INFO_BAR, front, x, y);
 
           INFO_BAR_POS_W = w - epaisseur - 5;
           INFO_BAR_POS_H = (h - 1) / PLAYING_TEAMS - 1;
+          al_set_target_bitmap (INFO_BAR);
           for (i = 0; i < PLAYING_TEAMS; ++i)
             {
               INFO_BAR_POS_X[i] = epaisseur + 3;
@@ -137,14 +139,14 @@ init_info_bar (int w, int h, int epaisseur)
                    y < INFO_BAR_POS_Y[i] + INFO_BAR_POS_H; y++)
                 for (x = INFO_BAR_POS_X[i];
                      x < INFO_BAR_POS_X[i] + INFO_BAR_POS_W; x++)
-                  putpixel (INFO_BAR, x, y,
+                  putpixel_fast (x, y,
                             getpixel (back,
-                                      (x - epaisseur - 1) % back->w,
-                                      y % back->h));
+                                      (x - epaisseur - 1) % al_get_bitmap_width(back),
+                                      y % al_get_bitmap_height(back)));
             }
 
-          destroy_bitmap (back);
-          destroy_bitmap (front);
+          al_destroy_bitmap (back);
+          al_destroy_bitmap (front);
         }
       else
         {
@@ -160,12 +162,13 @@ init_info_bar (int w, int h, int epaisseur)
                                  LW_NETWORK_ON, LW_RANDOM_ON,
                                  CONFIG_USE_DEFAULT_TEXTURE);
 
-          for (y = epaisseur + 1; y < h; y += front->h)
-            for (x = 0; x < w; x += front->w)
+          for (y = epaisseur + 1; y < h; y += al_get_bitmap_height(front))
+            for (x = 0; x < w; x += al_get_bitmap_width(front))
               draw_sprite (INFO_BAR, front, x, y);
 
           INFO_BAR_POS_W = (w - 1) / PLAYING_TEAMS - 1;
           INFO_BAR_POS_H = h - epaisseur - 5;
+          al_set_target_bitmap (INFO_BAR);
           for (i = 0; i < PLAYING_TEAMS; ++i)
             {
               INFO_BAR_POS_X[i] = (w + 1 - PLAYING_TEAMS
@@ -177,14 +180,14 @@ init_info_bar (int w, int h, int epaisseur)
                    y < INFO_BAR_POS_Y[i] + INFO_BAR_POS_H; y++)
                 for (x = INFO_BAR_POS_X[i];
                      x < INFO_BAR_POS_X[i] + INFO_BAR_POS_W; x++)
-                  putpixel (INFO_BAR, x, y,
+                  putpixel_fast (x, y,
                             getpixel (back,
-                                      x % back->w,
-                                      (y - epaisseur - 1) % back->h));
+                                      x % al_get_bitmap_width(back),
+                                      (y - epaisseur - 1) % al_get_bitmap_height(back)));
             }
 
-          destroy_bitmap (back);
-          destroy_bitmap (front);
+          al_destroy_bitmap (back);
+          al_destroy_bitmap (front);
         }
       draw_sprite (INFO_BAR_BACK, INFO_BAR, 0, 0);
     }
@@ -197,12 +200,12 @@ free_info_bar (void)
 {
   if (INFO_BAR)
     {
-      destroy_bitmap (INFO_BAR);
+      al_destroy_bitmap (INFO_BAR);
       INFO_BAR = NULL;
     }
   if (INFO_BAR_BACK)
     {
-      destroy_bitmap (INFO_BAR_BACK);
+      al_destroy_bitmap (INFO_BAR_BACK);
       INFO_BAR_BACK = NULL;
     }
 }
@@ -423,7 +426,7 @@ check_info_state (void)
 {
   static int changed;
 
-  if (WATCHDOG_SCANCODE[KEY_F1])
+  if (WATCHDOG_SCANCODE[ALLEGRO_KEY_F1])
     {
       if (CONFIG_INFO_BAR >= 4)
         CONFIG_INFO_BAR -= 4;
@@ -433,7 +436,7 @@ check_info_state (void)
       changed = CONFIG_PAGE_FLIP ? 2 : 1;
       lw_viewport_register_change (changed);
     }
-  if (WATCHDOG_SCANCODE[KEY_F2] && CONFIG_INFO_BAR < 4)
+  if (WATCHDOG_SCANCODE[ALLEGRO_KEY_F2] && CONFIG_INFO_BAR < 4)
     {
       CONFIG_INFO_BAR++;
       if (CONFIG_INFO_BAR == 4)

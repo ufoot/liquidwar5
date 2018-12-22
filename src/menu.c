@@ -87,9 +87,6 @@ confirm_quit (void)
   standard_button (d, 0, 0, 2, 1);
   standard_button (d + 1, 1, 0, 2, 1);
   d[0].dp = lw_lang_string (LW_LANG_STRING_MENU_EXIT);
-#ifdef DOS
-  d[0].dp = lw_lang_string (LW_LANG_STRING_MENU_EXITDOS);
-#endif
 #ifdef WIN32
   d[0].dp = lw_lang_string (LW_LANG_STRING_MENU_EXITWINDOWS);
 #endif
@@ -155,11 +152,7 @@ main_menu (int fade_in)
           retour = play_sequence ();
           break;
         case 5:
-#ifndef DOS
           retour = network_game ();
-#else
-          retour = error_no_network_support ();
-#endif
           break;
         case 6:
           retour = choose_map ();
@@ -181,11 +174,7 @@ main_menu (int fade_in)
         {
           if (LW_NETWORK_ON)
             {
-#ifndef DOS
               retour = netplay_sequence ();
-#else
-              retour = play_sequence ();
-#endif
             }
           else
             {

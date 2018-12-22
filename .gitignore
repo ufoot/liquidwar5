@@ -24,6 +24,8 @@ liquidwarcol
 liquidwarmap
 liquidwartex
 *.dat
+.#*
+*.bak
 /misc/docker/tables.sql
 doc/tex/*.aux
 doc/tex/*.dvi
@@ -33,3 +35,12 @@ doc/tex/*.toc
 doc/texi/*.texi
 doc/txt/*.txt
 __pycache__
+doc/html/*.html
+doc/man/*.man
+doc/man/*.6
+doc/man/*.6.gz
+allegro-4*
+allegro-5*
+__pycache__
+*.pyc
+src/liquidwar.dSYM

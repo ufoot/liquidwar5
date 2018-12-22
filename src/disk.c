@@ -52,18 +52,23 @@
 /* includes                                                         */
 /*==================================================================*/
 
+#include <stdlib.h>
 #include <string.h>
-#include <allegro.h>
+#include <allegro5/allegro.h>
+#include <allegro5/allegro_image.h>
+#include <allegro5/allegro_primitives.h>
+#include <allegro5/allegro_font.h>
 
 #include "alleg2.h"
 #include "init.h"
 #include "disk.h"
 #include "log.h"
 #include "map.h"
-#include "palette.h"
 #include "startup.h"
 #include "texture.h"
 #include "macro.h"
+#include "path.h"
+#include "thrdgen.h"
 
 /*==================================================================*/
 /* defines                                                          */
@@ -81,6 +86,8 @@ int RAW_MAPTEX_NUMBER = 0;
 int RAW_MAP_NUMBER = 0;
 int MIDI_MUSIC_NUMBER = 0;
 
+int LOADED_FONT = 0;
+int LOADED_MAP = 0;
 int LOADED_BACK = 0;
 int LOADED_TEXTURE = 0;
 int LOADED_MAPTEX = 0;
@@ -88,30 +95,30 @@ int LOADED_SFX = 0;
 int LOADED_WATER = 0;
 int LOADED_MUSIC = 0;
 
-SAMPLE *SAMPLE_SFX_TIME = NULL;
-SAMPLE *SAMPLE_SFX_WIN = NULL;
-SAMPLE *SAMPLE_SFX_GO = NULL;
-SAMPLE *SAMPLE_SFX_CLICK = NULL;
-SAMPLE *SAMPLE_SFX_LOOSE = NULL;
-SAMPLE *SAMPLE_SFX_CONNECT = NULL;
+ALLEGRO_SAMPLE *SAMPLE_SFX_TIME = NULL;
+ALLEGRO_SAMPLE *SAMPLE_SFX_WIN = NULL;
+ALLEGRO_SAMPLE *SAMPLE_SFX_GO = NULL;
+ALLEGRO_SAMPLE *SAMPLE_SFX_CLICK = NULL;
+ALLEGRO_SAMPLE *SAMPLE_SFX_LOOSE = NULL;
+ALLEGRO_SAMPLE *SAMPLE_SFX_CONNECT = NULL;
 
-SAMPLE *SAMPLE_WATER[SAMPLE_WATER_MAX_NUMBER];
+ALLEGRO_SAMPLE *SAMPLE_WATER[SAMPLE_WATER_MAX_NUMBER];
 void *RAW_MAP[RAW_MAP_MAX_NUMBER];
 void *RAW_MAP_ORDERED[RAW_MAP_MAX_NUMBER];
 void *RAW_TEXTURE[RAW_TEXTURE_MAX_NUMBER];
 void *RAW_MAPTEX[RAW_TEXTURE_MAX_NUMBER];
-MIDI *MIDI_MUSIC[MIDI_MUSIC_MAX_NUMBER];
+ALLEGRO_SAMPLE *MIDI_MUSIC[MIDI_MUSIC_MAX_NUMBER];
 
-BITMAP *BACK_IMAGE = NULL;
+ALLEGRO_BITMAP *BACK_IMAGE = NULL;
 
-FONT *BIG_FONT = NULL;
-FONT *SMALL_FONT = NULL;
-BITMAP *BIG_MOUSE_CURSOR = NULL;
-BITMAP *SMALL_MOUSE_CURSOR = NULL;
-BITMAP *INVISIBLE_MOUSE_CURSOR = NULL;
+ALLEGRO_FONT *BIG_FONT = NULL;
+ALLEGRO_FONT *SMALL_FONT = NULL;
+ALLEGRO_BITMAP *BIG_MOUSE_CURSOR = NULL;
+ALLEGRO_BITMAP *SMALL_MOUSE_CURSOR = NULL;
+ALLEGRO_BITMAP *INVISIBLE_MOUSE_CURSOR = NULL;
 
-static RGB *FONT_PALETTE = NULL;
-static RGB *BACK_PALETTE = NULL;
+//static RGB *FONT_PALETTE = NULL;
+//static RGB *BACK_PALETTE = NULL;
 
 static int CUSTOM_TEXTURE_OK = 0;
 static int CUSTOM_MAP_OK = 0;
@@ -123,7 +130,7 @@ static int CUSTOM_MUSIC_OK = 0;
 
 /*------------------------------------------------------------------*/
 static void
-lock_sound (SAMPLE * smp)
+lock_sound (ALLEGRO_SAMPLE * smp)
 {
   LOCK_VARIABLE (*smp);
 #ifdef DOS
@@ -134,52 +141,66 @@ lock_sound (SAMPLE * smp)
 }
 
 /*------------------------------------------------------------------*/
-static void
-read_sfx_dat (DATAFILE * df)
-{
-  SAMPLE *list[SAMPLE_SFX_NUMBER];
-  int i;
+static ALLEGRO_SAMPLE *read_sfx(const char *filename) {
+  ALLEGRO_SAMPLE *ret = NULL;
 
-  /*
-   * First, we associate the _first_ sound of the sub datafile
-   * to all sounds. This will operate as default value which
-   * will prevent the game from segfaulting if we use it with
-   * an outdated or too recent datafile
-   */
-  for (i = 0; i < SAMPLE_SFX_NUMBER && df[i].type != DAT_END; ++i)
-    {
-      list[i] = df[0].dat;
-    }
-
-  /*
-   * Now we associate the real sounds, provided that they exist...
-   */
-  for (i = 0; i < 6 && df[i].type != DAT_END; ++i)
-    {
-      list[i] = df[i].dat;
-      lock_sound (list[i]);
-    }
-
-  SAMPLE_SFX_TIME = list[0];
-  SAMPLE_SFX_WIN = list[1];
-  SAMPLE_SFX_CONNECT = list[2];
-  SAMPLE_SFX_GO = list[3];
-  SAMPLE_SFX_CLICK = list[4];
-  SAMPLE_SFX_LOOSE = list[5];
+  char * path = lw_path_join3(STARTUP_DAT_PATH, "sfx", filename);
+  if (path == NULL) {
+    return NULL;
+  }
+  log_print_str(".");
+  ret = al_load_sample(path);
+  free(path);
+  return ret;
 }
 
 /*------------------------------------------------------------------*/
-static void
-read_water_dat (DATAFILE * df)
+static bool
+read_sfx_dat ()
 {
+  SAMPLE_SFX_TIME = read_sfx("clock1.wav");
+  SAMPLE_SFX_WIN = read_sfx("crowd1.wav");
+  SAMPLE_SFX_CONNECT = read_sfx("cuckoo.wav");
+  SAMPLE_SFX_GO = read_sfx("foghorn.wav");
+  SAMPLE_SFX_CLICK = read_sfx("spash1.wav");
+  SAMPLE_SFX_LOOSE = read_sfx("war.wav");
+
+  return SAMPLE_SFX_TIME != NULL &&
+    SAMPLE_SFX_WIN != NULL &&
+    SAMPLE_SFX_CONNECT != NULL &&
+    SAMPLE_SFX_GO != NULL &&
+    SAMPLE_SFX_CLICK != NULL &&
+    SAMPLE_SFX_LOOSE != NULL;
+}
+
+/*------------------------------------------------------------------*/
+static bool
+read_water_dat ()
+{
+  char water_files[][16] = {
+    "amb3.wav", "amb4.wav", "bath1.wav", "bath2.wav",
+    "bubble.wav", "flush.wav", "forest1.wav", "kitch4.wav",
+    "lavaflow.wav", "niagara.wav", "shower1.wav", "sodapor.wav",
+    "thundr2.wav", "thundr3.wav", "tidal.wav", "water.wav"
+  };
+  int num_files = sizeof(water_files) / sizeof(water_files[0]);
   int i;
 
-  for (i = 0; i < SAMPLE_WATER_DAT_NUMBER && df[i].type != DAT_END; ++i)
+  SAMPLE_WATER_NUMBER = 0;
+  for (i = 0; i < num_files && i < SAMPLE_WATER_MAX_NUMBER; ++i)
     {
-      SAMPLE_WATER[i] = df[i].dat;
-      lock_sound (SAMPLE_WATER[i]);
-      SAMPLE_WATER_NUMBER++;
+      char * path = lw_path_join3(STARTUP_DAT_PATH, "water", water_files[i]);
+      if (path != NULL) {
+      log_print_str(".");
+        SAMPLE_WATER[i] = al_load_sample(path);
+        if (SAMPLE_WATER[i] != NULL) {
+          lock_sound (SAMPLE_WATER[i]);
+          SAMPLE_WATER_NUMBER++;
+        }
+        free(path);
+      }
     }
+  return SAMPLE_WATER_NUMBER > 0;
 }
 
 /*------------------------------------------------------------------*/
@@ -187,118 +208,404 @@ read_water_dat (DATAFILE * df)
 /*------------------------------------------------------------------*/
 
 /*------------------------------------------------------------------*/
-static void
-read_texture_dat (DATAFILE * df)
+static bool
+read_texture_dat ()
 {
+  char texture_files[][32] = {
+    "amethyst.bmp", "bricks.bmp", "crash1.bmp",
+    "electricblue.bmp", "granite2.bmp", "greenmess.bmp",
+    "lumps.bmp", "marble3.bmp", "pebbles.bmp",
+    "pine.bmp", "poolbottom.bmp", "qbert.bmp",
+    "redcubes.bmp", "smallsquares.bmp", "terra.bmp",
+    "wood2.bmp"
+  };
+  int num_files = sizeof(texture_files) / sizeof(texture_files[0]);
   int i;
 
   RAW_TEXTURE_NUMBER = 0;
-  for (i = 0; i < RAW_TEXTURE_DAT_NUMBER && df[i].type != DAT_END; ++i)
+  for (i = 0; i < num_files && i < RAW_TEXTURE_MAX_NUMBER; ++i)
     {
-      RAW_TEXTURE[i] = df[i].dat;
-      RAW_TEXTURE_NUMBER++;
+    log_print_str(".");
+      char * path = lw_path_join3(STARTUP_DAT_PATH, "texture", texture_files[i]);
+      if (path != NULL) {
+        void *texture = lw_texture_archive_raw(path);
+        if (texture != NULL) {
+          RAW_TEXTURE[i] = texture;
+          RAW_TEXTURE_NUMBER++;
+        }
+        free(path);
+      }
     }
+  return RAW_TEXTURE_NUMBER > 0;
 }
 
 /*------------------------------------------------------------------*/
-static void
-read_maptex_dat (DATAFILE * df)
+static bool
+read_maptex_dat ()
 {
-  int i;
-
   RAW_MAPTEX_NUMBER = 0;
-  for (i = 0; i < RAW_TEXTURE_DAT_NUMBER && df[i].type != DAT_END; ++i)
-    {
-      RAW_MAPTEX[i] = df[i].dat;
-      RAW_MAPTEX_NUMBER++;
+
+  char * maptex_path = lw_path_join2(STARTUP_DAT_PATH, "maptex");
+  if (maptex_path == NULL) {
+    return false;
+  }
+
+  ALLEGRO_FS_ENTRY *dir = al_create_fs_entry(maptex_path);
+  free(maptex_path);
+
+  if (!dir || !al_open_directory(dir)) {
+    if (dir) al_destroy_fs_entry(dir);
+    return false;
+  }
+
+  ALLEGRO_FS_ENTRY *entry;
+  while ((entry = al_read_directory(dir)) != NULL && RAW_MAPTEX_NUMBER < RAW_TEXTURE_MAX_NUMBER) {
+    log_print_str(".");
+    if (al_get_fs_entry_mode(entry) & ALLEGRO_FILEMODE_ISFILE) {
+      const char *filename = al_get_fs_entry_name(entry);
+      void *maptex = lw_texture_archive_raw(filename);
+      if (maptex != NULL) {
+        RAW_MAPTEX[RAW_MAPTEX_NUMBER] = maptex;
+        RAW_MAPTEX_NUMBER++;
+      }
     }
+    al_destroy_fs_entry(entry);
+  }
+
+  al_close_directory(dir);
+  al_destroy_fs_entry(dir);
+  return RAW_MAPTEX_NUMBER > 0;
 }
 
 /*------------------------------------------------------------------*/
-static void
-read_map_dat (DATAFILE * df)
-{
-  int i;
+/* Structure to hold map file info for load balancing */
+typedef struct {
+  char *filename;
+  off_t size;
+  int index;
+} map_file_info;
 
+/*------------------------------------------------------------------*/
+/* Structure for worker's job list */
+typedef struct {
+  map_file_info **files;  /* Array of pointers to files to process */
+  int file_count;         /* Number of files assigned to this worker */
+  off_t total_size;       /* Total bytes to process */
+} worker_job;
+
+/*------------------------------------------------------------------*/
+/* Worker thread function to load multiple maps */
+static void
+map_load_worker(void *arg)
+{
+  worker_job *job = (worker_job *)arg;
+
+  if (job && job->files) {
+    for (int i = 0; i < job->file_count; i++) {
+      map_file_info *file = job->files[i];
+      if (file && file->filename) {
+        log_print_str(".");
+        void *map = lw_map_archive_raw(file->filename);
+        if (map != NULL) {
+          RAW_MAP[file->index] = map;
+        }
+      }
+    }
+    free(job->files);
+  }
+  /* Note: job itself is part of jobs[] array, freed by main thread */
+}
+
+/*------------------------------------------------------------------*/
+/* Comparison function for qsort - sort by size descending */
+static int
+compare_map_size(const void *a, const void *b)
+{
+  const map_file_info *fa = (const map_file_info *)a;
+  const map_file_info *fb = (const map_file_info *)b;
+
+  /* Sort descending (largest first) */
+  if (fa->size > fb->size) return -1;
+  if (fa->size < fb->size) return 1;
+  return 0;
+}
+
+/*------------------------------------------------------------------*/
+/* Simple integer square root for worker count calculation */
+static int
+isqrt(int n)
+{
+  int x = n;
+  int y = (x + 1) / 2;
+  while (y < x) {
+    x = y;
+    y = (x + n / x) / 2;
+  }
+  return x;
+}
+
+/*------------------------------------------------------------------*/
+static bool
+read_map_dat ()
+{
   RAW_MAP_NUMBER = 0;
-  for (i = 0; i < RAW_MAP_DAT_NUMBER && df[i].type != DAT_END; ++i)
-    {
-      RAW_MAP[i] = df[i].dat;
+
+  char * map_path = lw_path_join2(STARTUP_DAT_PATH, "map");
+  if (map_path == NULL) {
+    return false;
+  }
+
+  ALLEGRO_FS_ENTRY *dir = al_create_fs_entry(map_path);
+  free(map_path);
+
+  if (!dir || !al_open_directory(dir)) {
+    if (dir) al_destroy_fs_entry(dir);
+    return false;
+  }
+
+  /* First pass: collect all filenames and their sizes */
+  map_file_info files[RAW_MAP_MAX_NUMBER];
+  int file_count = 0;
+
+  ALLEGRO_FS_ENTRY *entry;
+  while ((entry = al_read_directory(dir)) != NULL && file_count < RAW_MAP_MAX_NUMBER) {
+    if (al_get_fs_entry_mode(entry) & ALLEGRO_FILEMODE_ISFILE) {
+      const char *filename = al_get_fs_entry_name(entry);
+      const char *ext = strrchr(filename, '.');
+      if (ext && (strcmp(ext, ".bmp") == 0)) {
+        files[file_count].filename = strdup(filename);
+        if (files[file_count].filename) {
+          files[file_count].size = al_get_fs_entry_size(entry);
+          files[file_count].index = file_count;
+          file_count++;
+        }
+      }
+    }
+    al_destroy_fs_entry(entry);
+  }
+
+  al_close_directory(dir);
+  al_destroy_fs_entry(dir);
+
+  if (file_count == 0) {
+    return false;
+  }
+
+  /* Sort files by size (largest first) for better load balancing */
+  qsort(files, file_count, sizeof(map_file_info), compare_map_size);
+
+  /* Calculate optimal worker count: sqrt(file_count), min 1, max file_count */
+  int worker_count = isqrt(file_count);
+  if (worker_count < 1) worker_count = 1;
+  if (worker_count > file_count) worker_count = file_count;
+
+  /* Allocate worker job structures */
+  worker_job *jobs = calloc(worker_count, sizeof(worker_job));
+  if (!jobs) {
+    /* Cleanup filenames */
+    for (int i = 0; i < file_count; i++) {
+      free(files[i].filename);
+    }
+    return false;
+  }
+
+  /* Allocate file lists for each worker */
+  for (int i = 0; i < worker_count; i++) {
+    jobs[i].files = malloc(sizeof(map_file_info *) * file_count);
+    if (!jobs[i].files) {
+      /* Cleanup on allocation failure */
+      for (int j = 0; j < i; j++) {
+        free(jobs[j].files);
+      }
+      free(jobs);
+      for (int j = 0; j < file_count; j++) {
+        free(files[j].filename);
+      }
+      return false;
+    }
+    jobs[i].file_count = 0;
+    jobs[i].total_size = 0;
+  }
+
+  /* Greedy bin-packing: assign each file to worker with smallest current load */
+  for (int i = 0; i < file_count; i++) {
+    /* Find worker with minimum load */
+    int min_worker = 0;
+    off_t min_size = jobs[0].total_size;
+    for (int w = 1; w < worker_count; w++) {
+      if (jobs[w].total_size < min_size) {
+        min_size = jobs[w].total_size;
+        min_worker = w;
+      }
+    }
+
+    /* Assign this file to the least loaded worker */
+    jobs[min_worker].files[jobs[min_worker].file_count] = &files[i];
+    jobs[min_worker].file_count++;
+    jobs[min_worker].total_size += files[i].size;
+  }
+
+  /* Launch worker threads */
+  LW_THREAD_HANDLE *threads = malloc(sizeof(LW_THREAD_HANDLE) * worker_count);
+  if (!threads) {
+    /* Cleanup */
+    for (int i = 0; i < worker_count; i++) {
+      free(jobs[i].files);
+    }
+    free(jobs);
+    for (int i = 0; i < file_count; i++) {
+      free(files[i].filename);
+    }
+    return false;
+  }
+
+  int threads_created = 0;
+  for (int i = 0; i < worker_count; i++) {
+    if (lw_thread_create(&threads[threads_created], map_load_worker, &jobs[i])) {
+      threads_created++;
+    } else {
+      /* Thread creation failed, fall back to synchronous processing */
+      map_load_worker(&jobs[i]);
+    }
+  }
+
+  /* Wait for all threads to complete */
+  for (int i = 0; i < threads_created; i++) {
+    lw_thread_join(&threads[i]);
+  }
+
+  free(threads);
+
+  /* Workers free their own job->files, but free jobs array */
+  free(jobs);
+
+  /* Free filenames */
+  for (int i = 0; i < file_count; i++) {
+    free(files[i].filename);
+  }
+
+  /* Count successfully loaded maps */
+  RAW_MAP_NUMBER = 0;
+  for (int i = 0; i < file_count; i++) {
+    if (RAW_MAP[i] != NULL) {
       RAW_MAP_NUMBER++;
     }
+  }
+
+  return RAW_MAP_NUMBER > 0;
 }
 
 /*------------------------------------------------------------------*/
-static void
-read_back_dat (DATAFILE * df)
+static bool
+read_back_dat ()
 {
-  int i, x, y;
+  int errno;
 
-  BACK_PALETTE = df[1].dat;
-  BACK_IMAGE = df[0].dat;
+  char * path = lw_path_join3(STARTUP_DAT_PATH, "back", "lw5back.bmp");
+  if (path == NULL) {
+    return false;
+  }
+  if (!exists(path)) {
+    return false;
+  }
 
-  /*
-   * strange, with Allegro 4.0, the liquidwarcol utility
-   * and the datafile compiler do not work so well together,
-   * and so the palette stored in the datafile always
-   * start at color 0, which explains the "18 shift"
-   */
+    log_print_str(".");
+  BACK_IMAGE = al_load_bitmap(path);
+  free(path);
+  if (BACK_IMAGE == NULL) {
+    return false;
+  }
 
-  for (i = 0; i <= 45; ++i)
-    GLOBAL_PALETTE[i + 18] = BACK_PALETTE[i];
-
-  for (x = 0; x < BACK_IMAGE->w; ++x)
-    for (y = 0; y < BACK_IMAGE->w; ++y)
-      {
-        putpixel (BACK_IMAGE, x, y, getpixel (BACK_IMAGE, x, y) + 18);
-      }
+  return true;
 }
 
 /*------------------------------------------------------------------*/
-static void
-create_default_back (void)
+static bool
+read_font_dat ()
 {
-  static RGB back_coul;
+  char * small_font_path = lw_path_join3(STARTUP_DAT_PATH, "font", "degrad10.bmp");
+  char * big_font_path = lw_path_join3(STARTUP_DAT_PATH, "font", "degrad20.bmp");
+  char * small_cursor_path = lw_path_join3(STARTUP_DAT_PATH, "font", "mouse20.bmp");
+  char * big_cursor_path = lw_path_join3(STARTUP_DAT_PATH, "font", "mouse40.bmp");
+  char * void_cursor_path = lw_path_join3(STARTUP_DAT_PATH, "font", "void1.bmp");
 
-  memset (&back_coul, 0, sizeof (RGB));
-  back_coul.r = 1;
-  back_coul.g = 1;
-  back_coul.b = 8;
+  bool success = true;
 
-  BACK_IMAGE = my_create_bitmap (1, 1);
-  putpixel (BACK_IMAGE, 0, 0, 18);
-  GLOBAL_PALETTE[18] = back_coul;
+  if (small_font_path) {
+    log_print_str(".");
+    SMALL_FONT = al_load_bitmap_font(small_font_path);
+    free(small_font_path);
+    if (!SMALL_FONT) success = false;
+  } else {
+    success = false;
+  }
+
+  if (big_font_path) {
+    log_print_str(".");
+    BIG_FONT = al_load_bitmap_font(big_font_path);
+    free(big_font_path);
+    if (!BIG_FONT) success = false;
+  } else {
+    success = false;
+  }
+
+  if (small_cursor_path) {
+    log_print_str(".");
+    SMALL_MOUSE_CURSOR = al_load_bitmap(small_cursor_path);
+    free(small_cursor_path);
+    if (!SMALL_MOUSE_CURSOR) success = false;
+  } else {
+    success = false;
+  }
+
+  if (big_cursor_path) {
+    log_print_str(".");
+    BIG_MOUSE_CURSOR = al_load_bitmap(big_cursor_path);
+    free(big_cursor_path);
+    if (!BIG_MOUSE_CURSOR) success = false;
+  } else {
+    success = false;
+  }
+
+  if (void_cursor_path) {
+    log_print_str(".");
+    INVISIBLE_MOUSE_CURSOR = al_load_bitmap(void_cursor_path);
+    free(void_cursor_path);
+    if (!INVISIBLE_MOUSE_CURSOR) success = false;
+  } else {
+    success = false;
+  }
+
+  return success;
 }
 
 /*------------------------------------------------------------------*/
-static void
-read_font_dat (DATAFILE * df)
+static bool
+read_music_dat ()
 {
-  int i;
-
-  FONT_PALETTE = df[4].dat;
-  SMALL_FONT = df[0].dat;
-  BIG_FONT = df[1].dat;
-  SMALL_MOUSE_CURSOR = df[2].dat;
-  BIG_MOUSE_CURSOR = df[3].dat;
-  INVISIBLE_MOUSE_CURSOR = df[5].dat;
-
-  for (i = 1; i <= 17; ++i)
-    GLOBAL_PALETTE[i] = FONT_PALETTE[i];
-}
-
-/*------------------------------------------------------------------*/
-static void
-read_music_dat (DATAFILE * df)
-{
-  int i;
-
+  /* Music loading disabled for now */
   MIDI_MUSIC_NUMBER = 0;
-  for (i = 0; i < MIDI_MUSIC_DAT_NUMBER && df[i].type != DAT_END; ++i)
-    {
-      MIDI_MUSIC[i] = df[i].dat;
-      MIDI_MUSIC_NUMBER++;
-    }
+  return true;
+}
+
+
+/*------------------------------------------------------------------*/
+static int check_loadable() {
+  int loadable = 0;
+
+  loadable = exists (STARTUP_DAT_PATH);
+
+  // Checking for the existence of this file, to quickly spot whether
+  // this is a genuine data folder. If that text file is not there, we
+  // can just leave and assume this is an unkown random place.
+  char * path = lw_path_join2(STARTUP_DAT_PATH, "liquidwar-data.txt");
+  if (path == NULL) {
+    return 0;
+  }
+  loadable = exists(path);
+  free(path);
+
+  return loadable;
 }
 
 /*------------------------------------------------------------------*/
@@ -306,128 +613,100 @@ int
 load_dat (void)
 {
   int result = 1;
-  int loadable;
-  DATAFILE *df;
+  int loadable = 0;
 
-  log_print_str ("Loading data from \"");
+  log_print_str ("Searching for data in \"");
   log_print_str (STARTUP_DAT_PATH);
   log_print_str ("\"");
+  log_flush ();
 
-#ifdef DOS
-  loadable = 1;
-#else
-  loadable = exists (STARTUP_DAT_PATH);
-#endif
-
+  loadable = check_loadable();
   display_success (loadable);
-
-  if (loadable)
-    {
-      log_print_str ("Loading fonts");
-      log_flush ();
-      df = load_datafile_object (STARTUP_DAT_PATH, "font_dat");
-      if (result &= (df != NULL))
-        read_font_dat (df[0].dat);
-      display_success (df != NULL);
-    }
-  if (loadable)
-    {
-      log_print_str ("Loading maps");
-      log_flush ();
-      df = load_datafile_object (STARTUP_DAT_PATH, "map_dat");
-      if (result &= (df != NULL))
-        read_map_dat (df[0].dat);
-      display_success (df != NULL);
-    }
 
   if (loadable && STARTUP_BACK_STATE)
     {
       log_print_str ("Loading background bitmap");
       log_flush ();
-      df = load_datafile_object (STARTUP_DAT_PATH, "back_dat");
-      if (df != NULL)
-        {
-          read_back_dat (df[0].dat);
-          LOADED_BACK = 1;
-        }
-      else
-        {
-          create_default_back ();
-          result &= !STARTUP_CHECK;
-        }
-      display_success (df != NULL);
+      LOADED_BACK = read_back_dat();
+      display_success(LOADED_BACK);
+      result &= LOADED_BACK;
     }
-  else
-    create_default_back ();
+  if (loadable)
+    {
+      log_print_str ("Loading fonts");
+      log_flush ();
+      LOADED_FONT = read_font_dat ();
+      display_success (LOADED_FONT);
+      result &= LOADED_FONT;
+    }
+  if (loadable)
+    {
+      log_print_str ("Loading maps");
+      log_flush ();
+      LOADED_MAP = read_map_dat ();
+      display_success (LOADED_MAP);
+      result &= LOADED_MAP;
+    }
+
   if (loadable && STARTUP_SFX_STATE)
     {
       log_print_str ("Loading sound fx");
       log_flush ();
-      df = load_datafile_object (STARTUP_DAT_PATH, "sfx_dat");
-      if (df != NULL)
+      if (read_sfx_dat())
         {
-          read_sfx_dat (df[0].dat);
           LOADED_SFX = 1;
+          display_success(1);
         }
       else
-        result &= !STARTUP_CHECK;
-      display_success (df != NULL);
+        {
+          result &= !STARTUP_CHECK;
+          display_success(0);
+        }
     }
   if (loadable && STARTUP_TEXTURE_STATE)
     {
       log_print_str ("Loading textures");
       log_flush ();
-      df = load_datafile_object (STARTUP_DAT_PATH, "texture_dat");
-      if (df != NULL)
-        {
-          read_texture_dat (df[0].dat);
-          LOADED_TEXTURE = 1;
-        }
-      else
+      LOADED_TEXTURE = read_texture_dat();
+      display_success(LOADED_TEXTURE);
+      if (!LOADED_TEXTURE) {
         result &= !STARTUP_CHECK;
-      display_success (df != NULL);
+      }
 
       log_print_str ("Loading map textures");
       log_flush ();
-      df = load_datafile_object (STARTUP_DAT_PATH, "maptex_dat");
-      if (df != NULL)
-        {
-          read_maptex_dat (df[0].dat);
-          LOADED_MAPTEX = 1;
-        }
-      else
+      LOADED_MAPTEX = read_maptex_dat();
+      display_success(LOADED_MAPTEX);
+      if (!LOADED_MAPTEX) {
         result &= !STARTUP_CHECK;
-      display_success (df != NULL);
+      }
     }
 
   if (loadable && STARTUP_WATER_STATE)
     {
       log_print_str ("Loading water sounds");
       log_flush ();
-      df = load_datafile_object (STARTUP_DAT_PATH, "water_dat");
-      if (df != NULL)
-        {
-          read_water_dat (df[0].dat);
-          LOADED_WATER = 1;
-        }
-      else
+      LOADED_WATER = read_water_dat();
+      display_success(LOADED_WATER);
+      if (!LOADED_WATER) {
         result &= !STARTUP_CHECK;
-      display_success (df != NULL);
+      }
     }
 
   if (loadable && STARTUP_MUSIC_STATE)
     {
       log_print_str ("Loading midi music");
       log_flush ();
-      df = load_datafile_object (STARTUP_DAT_PATH, "music_dat");
-      if (df != NULL)
+      if (read_music_dat())
         {
-          read_music_dat (df[0].dat);
           LOADED_MUSIC = 1;
+          display_success(1);
         }
       else
-        result &= !STARTUP_CHECK;
-      display_success (df != NULL);
+        {
+          result &= !STARTUP_CHECK;
+          display_success(0);
+        }
     }
 
   return loadable && result;
@@ -461,19 +740,26 @@ load_custom_texture_callback (const char *file, int mode, void *unused)
 static int
 load_custom_texture (void)
 {
-  int result = 1;
-  char buf[512];
-
-  LW_MACRO_SPRINTF1 (buf, "%s\\*.*", STARTUP_TEX_PATH);
-
-  fix_filename_case (buf);
-  fix_filename_slashes (buf);
-
   CUSTOM_TEXTURE_OK = 0;
-  for_each_file_ex (buf, 0, FA_DIREC, load_custom_texture_callback, NULL);
-  result = CUSTOM_TEXTURE_OK;
 
-  return result;
+  ALLEGRO_FS_ENTRY *dir = al_create_fs_entry(STARTUP_TEX_PATH);
+  if (!dir || !al_open_directory(dir)) {
+    if (dir) al_destroy_fs_entry(dir);
+    return 0;
+  }
+
+  ALLEGRO_FS_ENTRY *entry;
+  while ((entry = al_read_directory(dir)) != NULL && RAW_TEXTURE_NUMBER < RAW_TEXTURE_MAX_NUMBER) {
+    if (al_get_fs_entry_mode(entry) & ALLEGRO_FILEMODE_ISFILE) {
+      const char *filename = al_get_fs_entry_name(entry);
+      load_custom_texture_callback(filename, 0, NULL);
+    }
+    al_destroy_fs_entry(entry);
+  }
+
+  al_close_directory(dir);
+  al_destroy_fs_entry(dir);
+  return CUSTOM_TEXTURE_OK;
 }
 
 /*------------------------------------------------------------------*/
@@ -503,40 +789,38 @@ load_custom_map_callback (const char *file, int mode, void *unused)
 static int
 load_custom_map (void)
 {
-  int result = 1;
-  char buf[512];
-
-  LW_MACRO_SPRINTF1 (buf, "%s\\*.*", STARTUP_MAP_PATH);
-
-  fix_filename_case (buf);
-  fix_filename_slashes (buf);
-
   CUSTOM_MAP_OK = 0;
-  for_each_file_ex (buf, 0, FA_DIREC, load_custom_map_callback, NULL);
-  result = CUSTOM_MAP_OK;
 
-  return result;
+  ALLEGRO_FS_ENTRY *dir = al_create_fs_entry(STARTUP_MAP_PATH);
+  if (!dir || !al_open_directory(dir)) {
+    if (dir) al_destroy_fs_entry(dir);
+    return 0;
+  }
+
+  ALLEGRO_FS_ENTRY *entry;
+  while ((entry = al_read_directory(dir)) != NULL && RAW_MAP_NUMBER < RAW_MAP_MAX_NUMBER) {
+    if (al_get_fs_entry_mode(entry) & ALLEGRO_FILEMODE_ISFILE) {
+      const char *filename = al_get_fs_entry_name(entry);
+      load_custom_map_callback(filename, 0, NULL);
+    }
+    al_destroy_fs_entry(entry);
+  }
+
+  al_close_directory(dir);
+  al_destroy_fs_entry(dir);
+  return CUSTOM_MAP_OK;
 }
 
 /*------------------------------------------------------------------*/
 static int
 load_custom_music_callback (const char *file, int mode, void *unused)
 {
-  void *pointeur;
-
   LW_MACRO_NOP (mode);
   LW_MACRO_NOP (unused);
+  LW_MACRO_NOP (file);
 
-  if ((pointeur = load_midi (file)) != NULL)
-    {
-      MIDI_MUSIC[MIDI_MUSIC_NUMBER++] = pointeur;
-      log_print_str ("+");
-      CUSTOM_MUSIC_OK = 1;
-    }
-  else
-    {
-      log_print_str ("-");
-    }
+  /* Music loading disabled for now */
+  log_print_str ("-");
   log_flush ();
 
   return 0;
@@ -546,19 +830,26 @@ load_custom_music_callback (const char *file, int mode, void *unused)
 static int
 load_custom_music (void)
 {
-  int result = 1;
-  char buf[512];
-
-  LW_MACRO_SPRINTF1 (buf, "%s\\*.*", STARTUP_MID_PATH);
-
-  fix_filename_case (buf);
-  fix_filename_slashes (buf);
-
   CUSTOM_MUSIC_OK = 0;
-  for_each_file_ex (buf, 0, FA_DIREC, load_custom_music_callback, NULL);
-  result = CUSTOM_MUSIC_OK;
 
-  return result;
+  ALLEGRO_FS_ENTRY *dir = al_create_fs_entry(STARTUP_MID_PATH);
+  if (!dir || !al_open_directory(dir)) {
+    if (dir) al_destroy_fs_entry(dir);
+    return 0;
+  }
+
+  ALLEGRO_FS_ENTRY *entry;
+  while ((entry = al_read_directory(dir)) != NULL && MIDI_MUSIC_NUMBER < MIDI_MUSIC_MAX_NUMBER) {
+    if (al_get_fs_entry_mode(entry) & ALLEGRO_FILEMODE_ISFILE) {
+      const char *filename = al_get_fs_entry_name(entry);
+      load_custom_music_callback(filename, 0, NULL);
+    }
+    al_destroy_fs_entry(entry);
+  }
+
+  al_close_directory(dir);
+  al_destroy_fs_entry(dir);
+  return CUSTOM_MUSIC_OK;
 }
 
 /*------------------------------------------------------------------*/

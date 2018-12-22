@@ -52,7 +52,7 @@
 /* includes                                                         */
 /*==================================================================*/
 
-#include <allegro.h>
+#include <allegro5/allegro.h>
 
 #ifdef WIN32
 #include "popupgen.h"
@@ -62,6 +62,7 @@
 #include <conio.h>
 #endif
 
+#include "backport.h"
 #include "basicopt.h"
 #include "config.h"
 #include "exit.h"
@@ -102,23 +103,19 @@ exit_all (void)
        * This is an attempt to get rid of a hideous bug under X-Win,
        * which said that there was a "bad file descriptor"
        */
-      rest (10);
+      al_rest (0.01);
       last_flip ();
-      set_gfx_mode (GFX_TEXT, 0, 0, 0, 0);
-      rest (10);
+      al_rest (0.01);
 
       log_println ();
       log_println_str
-        ("Leaving Allegro (http://www.talula.demon.co.uk/allegro)");
+        ("Leaving Allegro (https://liballeg.org/)");
       save_config_options ();
       stop_water ();
       stop_ticker ();
-      remove_sound ();
-      remove_mouse ();
       clear_keybuf ();
-      remove_keyboard ();
       remove_timer ();
-      allegro_exit ();
+      al_uninstall_system ();
       lw_sock_exit ();
     }
 }
@@ -276,7 +273,7 @@ my_exit_poll ()
    * We exit if the close button has been clicked or
    * F10 has been pressed
    */
-  if (LW_EXIT_FORCE_SHUTDOWN || key[KEY_F10])
+  if (LW_EXIT_FORCE_SHUTDOWN || key[ALLEGRO_KEY_F10])
     {
       my_exit (EXIT_CODE_OK);
     }

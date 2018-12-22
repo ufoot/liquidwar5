@@ -52,10 +52,8 @@
 /* includes                                                         */
 /*==================================================================*/
 
-#include <allegro.h>
-
 #include "area.h"
-#include "alleg2.h"
+#include "backport.h"
 #include "config.h"
 #include "gfxmode.h"
 #include "palette.h"
@@ -69,7 +67,7 @@
 /*==================================================================*/
 
 int PAGE_FLIP_H = 0;
-BITMAP *NEXT_SCREEN = NULL;
+ALLEGRO_BITMAP *NEXT_SCREEN = NULL;
 
 static int VIEWPORT_X = 0;
 static int VIEWPORT_Y = 0;
@@ -149,7 +147,7 @@ init_viewport_size (int x, int y, int w, int h)
 }
 
 /*------------------------------------------------------------------*/
-BITMAP *
+ALLEGRO_BITMAP *
 page_flip (void)
 {
   int old_h, new_h;
@@ -159,7 +157,7 @@ page_flip (void)
     {
       if (NEXT_SCREEN)
         {
-          destroy_bitmap (NEXT_SCREEN);
+          al_destroy_bitmap (NEXT_SCREEN);
         }
 
       lw_info_get_room_for_viewport (&x, &y, &w, &h);
@@ -222,7 +220,7 @@ last_flip (void)
             PAGE_FLIP_H = 0;
         }
 
-      destroy_bitmap (NEXT_SCREEN);
+      al_destroy_bitmap (NEXT_SCREEN);
       NEXT_SCREEN = NULL;
     }
 }
