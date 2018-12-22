@@ -34,7 +34,7 @@ dnl Checking for allegro-5.
 echo -n "checking for Allegro 5... "
 
 PKG_PROG_PKG_CONFIG([0.25])
-PKG_CHECK_MODULES([ALLEGRO], [allegro-5])
+PKG_CHECK_MODULES([ALLEGRO], [allegro-5,allegro_audio-5,allegro_font-5])
 
 ALCFLAGS=$(pkg-config --cflags)
 ALLIBS=$(pkg-config --libs allegro-5)

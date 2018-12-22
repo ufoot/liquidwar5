@@ -630,7 +630,7 @@ my_text_proc (int msg, DIALOG * d, int c)
   if (msg == MSG_DRAW)
     {
       //int fg = (d->flags & D_DISABLED) ? gui_mg_color : d->fg; // ufoot
-      FONT *oldfont = font;
+      ALLEGRO_FONT *oldfont = font;
 
       if (d->dp2)
         font = d->dp2;
@@ -657,7 +657,7 @@ my_ctext_proc (int msg, DIALOG * d, int c)
   if (msg == MSG_DRAW)
     {
       // int fg = (d->flags & D_DISABLED) ? gui_mg_color : d->fg; // ufoot
-      FONT *oldfont = font;
+      ALLEGRO_FONT *oldfont = font;
 
       if (d->dp2)
         font = d->dp2;

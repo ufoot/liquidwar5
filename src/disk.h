@@ -56,6 +56,8 @@
 /*==================================================================*/
 
 #include <allegro5/allegro.h>
+#include <allegro5/allegro_audio.h>
+#include <allegro5/allegro_font.h>
 
 /*==================================================================*/
 /* constantes                                                       */
@@ -89,14 +91,14 @@ extern int LOADED_MAPTEX;
 extern int LOADED_SFX;
 extern int LOADED_WATER;
 
-extern SAMPLE *SAMPLE_SFX_TIME;
-extern SAMPLE *SAMPLE_SFX_WIN;
-extern SAMPLE *SAMPLE_SFX_GO;
-extern SAMPLE *SAMPLE_SFX_CLICK;
-extern SAMPLE *SAMPLE_SFX_LOOSE;
-extern SAMPLE *SAMPLE_SFX_CONNECT;
+extern ALLEGRO_SAMPLE *SAMPLE_SFX_TIME;
+extern ALLEGRO_SAMPLE *SAMPLE_SFX_WIN;
+extern ALLEGRO_SAMPLE *SAMPLE_SFX_GO;
+extern ALLEGRO_SAMPLE *SAMPLE_SFX_CLICK;
+extern ALLEGRO_SAMPLE *SAMPLE_SFX_LOOSE;
+extern ALLEGRO_SAMPLE *SAMPLE_SFX_CONNECT;
 
-extern SAMPLE *SAMPLE_WATER[SAMPLE_WATER_MAX_NUMBER];
+extern ALLEGRO_SAMPLE *SAMPLE_WATER[SAMPLE_WATER_MAX_NUMBER];
 extern void *RAW_MAP[RAW_MAP_MAX_NUMBER];
 extern void *RAW_MAP_ORDERED[RAW_MAP_MAX_NUMBER];
 extern void *RAW_TEXTURE[RAW_TEXTURE_MAX_NUMBER];
@@ -105,8 +107,8 @@ extern MIDI *MIDI_MUSIC[MIDI_MUSIC_MAX_NUMBER];
 
 extern ALLEGRO_BITMAP *BACK_IMAGE;
 
-extern FONT *BIG_FONT;
-extern FONT *SMALL_FONT;
+extern ALLEGRO_FONT *BIG_FONT;
+extern ALLEGRO_FONT *SMALL_FONT;
 extern ALLEGRO_BITMAP *BIG_MOUSE_CURSOR;
 extern ALLEGRO_BITMAP *SMALL_MOUSE_CURSOR;
 extern ALLEGRO_BITMAP *INVISIBLE_MOUSE_CURSOR;

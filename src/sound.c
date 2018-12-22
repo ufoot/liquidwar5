@@ -150,7 +150,7 @@ stop_water (void)
 
 /*------------------------------------------------------------------*/
 static void
-my_play_sample (SAMPLE * s, int vol)
+my_play_sample (ALLEGRO_SAMPLE * s, int vol)
 {
   if (vol > 0)
     play_sample (s, SOUND_VOLUME_VALUES[vol - 1], 128, 1000, 0);
