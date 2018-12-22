@@ -104,7 +104,7 @@ calc_zoom_factor (int w, int h, int min_w, int min_h)
 
 /*------------------------------------------------------------------*/
 static void
-sort_light_and_dark (BITMAP * bmp, PALETTE pal)
+sort_light_and_dark (ALLEGRO_BITMAP * bmp, PALETTE pal)
 {
   char table[256];
   int i, x, y;
@@ -123,8 +123,8 @@ sort_light_and_dark (BITMAP * bmp, PALETTE pal)
 }
 
 /*------------------------------------------------------------------*/
-static BITMAP *
-extract_significant_part (BITMAP * src)
+static ALLEGRO_BITMAP *
+extract_significant_part (ALLEGRO_BITMAP * src)
 {
   int min_x = src->w;
   int min_y = src->h;
@@ -132,7 +132,7 @@ extract_significant_part (BITMAP * src)
   int max_y = -1;
   int dst_x, dst_y, dst_w, dst_h;
   int x, y;
-  BITMAP *result;
+  ALLEGRO_BITMAP *result;
 
   for (y = 0; y < src->h; ++y)
     for (x = 0; x < src->w; ++x)
@@ -166,7 +166,7 @@ extract_significant_part (BITMAP * src)
 
 /*-----------------------------------------------------------------*/
 static int
-spread_color_down (BITMAP * bmp, int color1, int color2)
+spread_color_down (ALLEGRO_BITMAP * bmp, int color1, int color2)
 {
   int x, y, x1, y1, x2, y2, found = 0;
 
@@ -214,7 +214,7 @@ spread_color_down (BITMAP * bmp, int color1, int color2)
 
 /*-----------------------------------------------------------------*/
 static int
-spread_color_up (BITMAP * bmp, int color1, int color2)
+spread_color_up (ALLEGRO_BITMAP * bmp, int color1, int color2)
 {
   int x, y, x1, y1, x2, y2, found = 0;
 
@@ -263,7 +263,7 @@ spread_color_up (BITMAP * bmp, int color1, int color2)
 
 /*-----------------------------------------------------------------*/
 static int
-check_if_playable (BITMAP * bmp)
+check_if_playable (ALLEGRO_BITMAP * bmp)
 {
   int x = 0, y = 0, x0, y0;
   int unplayable = 0;
@@ -309,7 +309,7 @@ check_if_playable (BITMAP * bmp)
 
 /*-----------------------------------------------------------------*/
 static void
-fill_with_fg_and_bg (BITMAP * bmp, int fg, int bg)
+fill_with_fg_and_bg (ALLEGRO_BITMAP * bmp, int fg, int bg)
 {
   int x, y;
 
@@ -329,7 +329,7 @@ fill_with_fg_and_bg (BITMAP * bmp, int fg, int bg)
 
 /*-----------------------------------------------------------------*/
 static void
-convert_to_buffer (BITMAP * bmp, char *buffer, int *size, int *bg_size)
+convert_to_buffer (ALLEGRO_BITMAP * bmp, char *buffer, int *size, int *bg_size)
 {
   int pos_src, l, wh;
   char *data;
@@ -368,10 +368,10 @@ convert_to_buffer (BITMAP * bmp, char *buffer, int *size, int *bg_size)
 
 /*------------------------------------------------------------------*/
 void *
-lw_map_archive_raw_bmp (BITMAP * bmp, PALETTE pal, const char *filename)
+lw_map_archive_raw_bmp (ALLEGRO_BITMAP * bmp, PALETTE pal, const char *filename)
 {
   int w = 0, h = 0, size = 0, bg_size = 0;
-  BITMAP *sub_bmp;
+  ALLEGRO_BITMAP *sub_bmp;
   char *temp = NULL;
   char *result = NULL;
   static int index = 1;
@@ -453,7 +453,7 @@ lw_map_archive_raw_bmp (BITMAP * bmp, PALETTE pal, const char *filename)
 void *
 lw_map_archive_raw (const char *filename)
 {
-  BITMAP *bmp;
+  ALLEGRO_BITMAP *bmp;
   PALETTE pal;
   void *result = NULL;
 
@@ -498,7 +498,7 @@ lw_map_get_safe (int num, int network, int random)
 }
 
 /*------------------------------------------------------------------*/
-BITMAP *
+ALLEGRO_BITMAP *
 lw_map_create_bicolor (int num, int fg, int bg,
                        int network, int random, int min_w, int min_h,
                        int *zoom_factor)
@@ -506,8 +506,8 @@ lw_map_create_bicolor (int num, int fg, int bg,
   int pos_dst, pos_src, i, j, l, color;
   short w, h;
   signed char *data_dst, *data_src;
-  BITMAP *result = NULL;
-  BITMAP *temp;
+  ALLEGRO_BITMAP *result = NULL;
+  ALLEGRO_BITMAP *temp;
   void *raw_map;
   int size, surface;
   int x, y;
@@ -586,12 +586,12 @@ lw_map_create_bicolor (int num, int fg, int bg,
 }
 
 /*------------------------------------------------------------------*/
-BITMAP *
+ALLEGRO_BITMAP *
 lw_map_create_textured (int num, int fg, int bg,
                         int network, int random, int min_w, int min_h)
 {
   int x, y, w, h, color;
-  BITMAP *result = NULL, *bg_tex, *fg_tex;
+  ALLEGRO_BITMAP *result = NULL, *bg_tex, *fg_tex;
   int fg_w, fg_h;
   int bg_w, bg_h;
   int zoom_factor, zoom_factor_fg, zoom_factor_bg;

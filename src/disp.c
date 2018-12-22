@@ -93,7 +93,7 @@ display_area (void)
 void
 display_gradient (int i)
 {
-  BITMAP *bmp;
+  ALLEGRO_BITMAP *bmp;
 
   bmp = create_gradient_bitmap (i);
   if (bmp)
@@ -108,7 +108,7 @@ display_gradient (int i)
 void
 display_mesh (int i)
 {
-  BITMAP *bmp;
+  ALLEGRO_BITMAP *bmp;
 
   bmp = create_mesh_bitmap (i);
   if (bmp)

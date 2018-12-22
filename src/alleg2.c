@@ -94,7 +94,7 @@ static void my_handle_listbox_click (DIALOG * d);
 static void
 my_dotted_rect (int x1, int y1, int x2, int y2, int fg, int bg)
 {
-  BITMAP *gui_bmp = gui_get_screen ();
+  ALLEGRO_BITMAP *gui_bmp = gui_get_screen ();
   int x = ((x1 + y1) & 1) ? 1 : 0;
   int c;
 
@@ -119,7 +119,7 @@ my_draw_textbox (char *thetext, int *listsize, int draw, int offset,
                  int wword, int tabsize, int x, int y, int w, int h,
                  int disabled, int fore, int deselect, int disable)
 {
-  BITMAP *gui_bmp = gui_get_screen ();
+  ALLEGRO_BITMAP *gui_bmp = gui_get_screen ();
   int fg = fore;
   int y1 = y + 4;
   int x1;
@@ -509,7 +509,7 @@ my_textbox_proc (int msg, DIALOG * d, int c)
 int
 my_button_proc (int msg, DIALOG * d, int c)
 {
-  BITMAP *gui_bmp;
+  ALLEGRO_BITMAP *gui_bmp;
   int state1, state2;
   int black;
   int swap;
@@ -688,8 +688,8 @@ my_ctext_proc (int msg, DIALOG * d, int c)
 int
 my_slider_proc (int msg, DIALOG * d, int c)
 {
-  BITMAP *gui_bmp = gui_get_screen ();
-  BITMAP *slhan = NULL;
+  ALLEGRO_BITMAP *gui_bmp = gui_get_screen ();
+  ALLEGRO_BITMAP *slhan = NULL;
   int oldpos, newpos;
   int sfg;                      /* slider foreground color */
   int vert = TRUE;              /* flag: is slider vertical? */
@@ -717,7 +717,7 @@ my_slider_proc (int msg, DIALOG * d, int c)
   /* set up the metrics for the control */
   if (d->dp != NULL)
     {
-      slhan = (BITMAP *) d->dp;
+      slhan = (ALLEGRO_BITMAP *) d->dp;
       if (vert)
         hh = slhan->h;
       else
@@ -964,7 +964,7 @@ int
 my_edit_proc (int msg, DIALOG * d, int c)
 {
   static int ignore_next_uchar = FALSE;
-  BITMAP *gui_bmp;
+  ALLEGRO_BITMAP *gui_bmp;
   int last_was_space, new_pos, i, k;
   int f, l, p, w, x, b, scroll;
   int fg;
@@ -1394,7 +1394,7 @@ my_handle_listbox_click (DIALOG * d)
 static void
 my_draw_listbox (DIALOG * d)
 {
-  BITMAP *gui_bmp = gui_get_screen ();
+  ALLEGRO_BITMAP *gui_bmp = gui_get_screen ();
   int height, listsize, i, len, bar, x, y, w;
   int fg_color, bg;
   int fg;
@@ -1669,10 +1669,10 @@ my_list_proc (int msg, DIALOG * d, int c)
 }
 
 /*------------------------------------------------------------------*/
-BITMAP *
+ALLEGRO_BITMAP *
 my_create_bitmap (int w, int h)
 {
-  BITMAP *bmp;
+  ALLEGRO_BITMAP *bmp;
 
   bmp = create_bitmap (w, h);
   if (bmp == NULL)

@@ -66,14 +66,14 @@
 
 extern int PAGE_FLIP_H;
 extern int MODEX_SCALE;
-extern BITMAP *NEXT_SCREEN;
+extern ALLEGRO_BITMAP *NEXT_SCREEN;
 
 /*==================================================================*/
 /* fonctions globales                                               */
 /*==================================================================*/
 
 void rect_for_viewport (void);
-BITMAP *page_flip (void);
+ALLEGRO_BITMAP *page_flip (void);
 void last_flip (void);
 void lw_viewport_register_change (int count);
 

@@ -167,7 +167,7 @@ display_chosen_level (void)
   int y1, y2, y3, y4, y5, y6, y7, y8;
   int sample_x, sample_y, sample_w, sample_h;
   int max_w, max_h, bmp_w, bmp_h;
-  BITMAP *pour_voir;
+  ALLEGRO_BITMAP *pour_voir;
   retrieve_choose_level_xy (&x1, &x2, &x3, &x4, &x5, &x6, &x7, &x8,
                             &y1, &y2, &y3, &y4, &y5, &y6, &y7, &y8);
   rectfill (screen, menu_real_x (x4), menu_real_y (y1),

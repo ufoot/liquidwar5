@@ -204,7 +204,7 @@ init_tombola ()
 
 /*------------------------------------------------------------------*/
 static int
-draw_score_bitmap (BITMAP * bitmap, int cursor, int ellipse_h, int fill_level)
+draw_score_bitmap (ALLEGRO_BITMAP * bitmap, int cursor, int ellipse_h, int fill_level)
 {
   int w, h;
   int color1 = 0, color2 = 0;
@@ -277,7 +277,7 @@ display_scores (void)
   int ellipse_h;
   int i;
   int cursor[3];
-  BITMAP *eprouvette[3];
+  ALLEGRO_BITMAP *eprouvette[3];
   int time_delay[3] = { 500, 2500, 1500 };
   int fill_level;
   int done[3];

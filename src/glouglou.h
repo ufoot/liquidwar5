@@ -62,7 +62,7 @@
 /* types                                                            */
 /*==================================================================*/
 
-extern void LW_ASM_FUNC draw_distor_line (BITMAP * distorsion_target,
+extern void LW_ASM_FUNC draw_distor_line (ALLEGRO_BITMAP * distorsion_target,
                                           int current_area_w,
                                           int w,
                                           int u,

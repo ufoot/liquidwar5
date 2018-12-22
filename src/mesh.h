@@ -122,8 +122,8 @@ extern MESH *CURRENT_MESH;
 extern int CURRENT_MESH_SIZE;
 extern int CURRENT_AREA_W;
 extern int CURRENT_AREA_H;
-extern BITMAP *CURRENT_AREA_DISP;
-extern BITMAP *CURRENT_AREA_BACK;
+extern ALLEGRO_BITMAP *CURRENT_AREA_DISP;
+extern ALLEGRO_BITMAP *CURRENT_AREA_BACK;
 
 /*==================================================================*/
 /* fonctions globales                                               */
@@ -132,6 +132,6 @@ extern BITMAP *CURRENT_AREA_BACK;
 void reset_mesh (void);
 void test_mesh (void);
 int create_mesh (void);
-BITMAP *create_mesh_bitmap (int mode);
+ALLEGRO_BITMAP *create_mesh_bitmap (int mode);
 
 #endif

@@ -77,8 +77,8 @@
 #define INFO_BAR_W 50
 #define INFO_BAR_H 15
 
-static BITMAP *INFO_BAR_BACK = NULL;
-static BITMAP *INFO_BAR = NULL;
+static ALLEGRO_BITMAP *INFO_BAR_BACK = NULL;
+static ALLEGRO_BITMAP *INFO_BAR = NULL;
 static int INFO_BAR_POS_X[NB_TEAMS];
 static int INFO_BAR_POS_Y[NB_TEAMS];
 static int INFO_BAR_POS_W;
@@ -97,7 +97,7 @@ int
 init_info_bar (int w, int h, int epaisseur)
 {
   int i, x, y;
-  BITMAP *front, *back;
+  ALLEGRO_BITMAP *front, *back;
 
   if (INFO_BAR)
     destroy_bitmap (INFO_BAR);

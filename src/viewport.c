@@ -69,7 +69,7 @@
 /*==================================================================*/
 
 int PAGE_FLIP_H = 0;
-BITMAP *NEXT_SCREEN = NULL;
+ALLEGRO_BITMAP *NEXT_SCREEN = NULL;
 
 static int VIEWPORT_X = 0;
 static int VIEWPORT_Y = 0;
@@ -149,7 +149,7 @@ init_viewport_size (int x, int y, int w, int h)
 }
 
 /*------------------------------------------------------------------*/
-BITMAP *
+ALLEGRO_BITMAP *
 page_flip (void)
 {
   int old_h, new_h;

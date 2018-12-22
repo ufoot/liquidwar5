@@ -164,7 +164,7 @@ lw_capture_dump_game ()
   int result = 1;
   char buffer[LW_CAPTURE_FILENAME_BUFFER_SIZE];
   static int frame_number = 0;
-  BITMAP *screenshot;
+  ALLEGRO_BITMAP *screenshot;
 
   /*
    * We do nothing if we're not in capture mode

@@ -68,8 +68,8 @@
 /* fonctions globales                                               */
 /*==================================================================*/
 
-BITMAP *create_gradient_bitmap (int team);
-BITMAP *create_dir_bitmap (int team);
+ALLEGRO_BITMAP *create_gradient_bitmap (int team);
+ALLEGRO_BITMAP *create_dir_bitmap (int team);
 void spread_single_gradient (void);
 
 #endif

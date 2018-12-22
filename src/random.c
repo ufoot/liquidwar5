@@ -112,10 +112,10 @@ generate_bw_palette (PALETTE pal)
 }
 
 /*------------------------------------------------------------------*/
-static BITMAP *
+static ALLEGRO_BITMAP *
 generate_bitmap ()
 {
-  BITMAP *bmp;
+  ALLEGRO_BITMAP *bmp;
   PALETTE pal;
 
   char filename[LW_STARTUP_MAX_PATH_LENGTH];
@@ -187,7 +187,7 @@ generate_bitmap ()
 int
 lw_random_generate_map ()
 {
-  BITMAP *bmp;
+  ALLEGRO_BITMAP *bmp;
   PALETTE pal;
   void *raw_map = NULL;
   int result = 0;

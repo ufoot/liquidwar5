@@ -87,8 +87,8 @@ MESH *CURRENT_MESH = NULL;
 int CURRENT_MESH_SIZE = 0;
 int CURRENT_AREA_W = 0;
 int CURRENT_AREA_H = 0;
-BITMAP *CURRENT_AREA_DISP = NULL;
-BITMAP *CURRENT_AREA_BACK = NULL;
+ALLEGRO_BITMAP *CURRENT_AREA_DISP = NULL;
+ALLEGRO_BITMAP *CURRENT_AREA_BACK = NULL;
 
 /*==================================================================*/
 /* fonctions                                                        */
@@ -100,7 +100,7 @@ BITMAP *CURRENT_AREA_BACK = NULL;
 
 /*------------------------------------------------------------------*/
 static MESHER *
-create_first_mesher (BITMAP * map)
+create_first_mesher (ALLEGRO_BITMAP * map)
 {
   MESHER *result;
   int x, y, h, w, size, i, j;
@@ -163,7 +163,7 @@ create_first_mesher (BITMAP * map)
 
 /*------------------------------------------------------------------*/
 static int
-group_mesher (MESHER * mesher, BITMAP * map, int step)
+group_mesher (MESHER * mesher, ALLEGRO_BITMAP * map, int step)
 {
   int found = 0;
   int x, y, w, h, i, j, k;
@@ -236,7 +236,7 @@ group_mesher (MESHER * mesher, BITMAP * map, int step)
 
 /*------------------------------------------------------------------*/
 static MESH *
-mesher_to_mesh (MESHER * mesher, BITMAP * map, int *size, int *w, int *h)
+mesher_to_mesh (MESHER * mesher, ALLEGRO_BITMAP * map, int *size, int *w, int *h)
 {
   MESH *result;
   MESHER *temp;
@@ -344,7 +344,7 @@ int
 create_mesh (void)
 {
   int retour = 0, i;
-  BITMAP *map;
+  ALLEGRO_BITMAP *map;
   MESHER *mesher;
   int zoom_factor = 1;
 
@@ -387,10 +387,10 @@ create_mesh (void)
 /*------------------------------------------------------------------*/
 
 /*------------------------------------------------------------------*/
-BITMAP *
+ALLEGRO_BITMAP *
 create_mesh_bitmap (int mode)
 {
-  BITMAP *result;
+  ALLEGRO_BITMAP *result;
   int i, j, color;
 
   result = lw_maptex_create_map

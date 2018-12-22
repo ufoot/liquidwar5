@@ -74,10 +74,10 @@
 /*==================================================================*/
 
 /*------------------------------------------------------------------*/
-BITMAP *
+ALLEGRO_BITMAP *
 create_gradient_bitmap (int team)
 {
-  BITMAP *result;
+  ALLEGRO_BITMAP *result;
   int x, y, i, color;
   MESH *temp;
 
@@ -104,10 +104,10 @@ create_gradient_bitmap (int team)
 }
 
 /*------------------------------------------------------------------*/
-BITMAP *
+ALLEGRO_BITMAP *
 create_dir_bitmap (int team)
 {
-  BITMAP *result;
+  ALLEGRO_BITMAP *result;
   int x, y, i;
   MESH *temp;
 

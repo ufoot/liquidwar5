@@ -103,13 +103,13 @@ extern void *RAW_TEXTURE[RAW_TEXTURE_MAX_NUMBER];
 extern void *RAW_MAPTEX[RAW_TEXTURE_MAX_NUMBER];
 extern MIDI *MIDI_MUSIC[MIDI_MUSIC_MAX_NUMBER];
 
-extern BITMAP *BACK_IMAGE;
+extern ALLEGRO_BITMAP *BACK_IMAGE;
 
 extern FONT *BIG_FONT;
 extern FONT *SMALL_FONT;
-extern BITMAP *BIG_MOUSE_CURSOR;
-extern BITMAP *SMALL_MOUSE_CURSOR;
-extern BITMAP *INVISIBLE_MOUSE_CURSOR;
+extern ALLEGRO_BITMAP *BIG_MOUSE_CURSOR;
+extern ALLEGRO_BITMAP *SMALL_MOUSE_CURSOR;
+extern ALLEGRO_BITMAP *INVISIBLE_MOUSE_CURSOR;
 
 /*==================================================================*/
 /* fonctions globales                                               */

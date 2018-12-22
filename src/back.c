@@ -70,7 +70,7 @@
 
 /*------------------------------------------------------------------*/
 void
-display_a_back_image (BITMAP * bmp)
+display_a_back_image (ALLEGRO_BITMAP * bmp)
 {
   scare_mouse ();
   stretch_blit (bmp, screen, 0, 0, bmp->w, bmp->h,

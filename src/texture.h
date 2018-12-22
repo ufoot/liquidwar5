@@ -69,8 +69,8 @@
 /*==================================================================*/
 
 void *lw_texture_archive_raw (const char *filename);
-BITMAP *lw_texture_create_bg (int num);
-BITMAP *lw_texture_create_fg (int num);
+ALLEGRO_BITMAP *lw_texture_create_bg (int num);
+ALLEGRO_BITMAP *lw_texture_create_fg (int num);
 char *lw_texture_get_system_name (int num);
 
 #endif

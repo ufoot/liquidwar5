@@ -221,7 +221,7 @@ free_last_big_data_top (void)
 int
 check_free_memory (void)
 {
-  BITMAP *result;
+  ALLEGRO_BITMAP *result;
 
   result = my_create_bitmap (MEMORY_TO_LEAVE / 2, 1024);
   if (result)
