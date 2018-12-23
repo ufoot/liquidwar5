@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-<!DOCTYPE file SYSTEM "file:xml/file.dtd">
+<!DOCTYPE file SYSTEM "./file.dtd">
 <file title="User levels">
 
-  <chap title="A piece of advice"> 
+  <chap title="A piece of advice">
     <text>
       You can use your own levels whith Liquid War 5.
       The only thing you have to do is to put your own 256-colors vbitmap files
@@ -24,10 +24,10 @@
   </chap>
 
   <chap title="Maps">
-    <text> 
+    <text>
       Liquid War 5 does many checks on user levels
       and is much safer than Liquid War 3.
-      Still, try and help the program not to crash, if possible. 
+      Still, try and help the program not to crash, if possible.
     </text>
     <text>
       Liquid War considers that dark colors are walls
@@ -59,9 +59,9 @@
   </chap>
 
   <chap title="Textures">
-    <text> 
+    <text>
       All you have to do is put a bitmap in the default directory
-      which is "custom\texture\" on windows, and 
+      which is "custom\texture\" on windows, and
       "/usr/local/share/games/liquidwar/texture" on GNU/Linux.
     </text>
   </chap>
@@ -107,7 +107,7 @@
     </text>
     <text>
       Still, to be included in Liquid War's mainstream distribution,
-      your maps will need to be placed under the terms of the 
+      your maps will need to be placed under the terms of the
       GNU General Public License, or at least a compatible license.
       You should have received a copy of this license with Liquid War
       anyway. Read it 8-)

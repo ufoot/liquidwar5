@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-<!DOCTYPE file SYSTEM "file:xml/file.dtd">
+<!DOCTYPE file SYSTEM "./file.dtd">
 <file title="Command line parameters">
-  
-  <chap title="Introduction"> 
+
+  <chap title="Introduction">
     <text>
       When you launch Liquid War 5, you can use command line options.
       If you have no problems launching Liquid War,
@@ -94,7 +94,7 @@
       <elem>
 	"-vga" :
 	This option forces Liquid War to use your video card
-	as if it was only a basic VGA card. 
+	as if it was only a basic VGA card.
 	This option is required if you play Liquid War from Windows NT.
       </elem>
       <elem>
@@ -158,7 +158,7 @@
       <elem>
 	"-auto" :
 	If you set this option, Liquid War won't generate
-	any error while allocating memory or loading data.     
+	any error while allocating memory or loading data.
       </elem>
       <elem>
 	"-safe" :
@@ -193,7 +193,7 @@
       </elem>
     </list>
   </chap>
-  
+
   <chap title="Debug options">
     <text>
       These options are usefull if you want to debug the game and
@@ -208,7 +208,7 @@
       </elem>
     </list>
   </chap>
-  
+
   <chap title="Server options">
     <text>
       The server command line options are described in the section
@@ -242,12 +242,12 @@
       </elem>
       <elem>
 	"-tombola" :
-	Activates a special mode where scores are not displayed 
+	Activates a special mode where scores are not displayed
 	normally. Instead, the game displays 3 random numbers between 1 - 500.
       </elem>
     </list>
   </chap>
-  
+
   <chap title="lwmapgen options">
     <text>
       The external lwmapgen program by David Redick accepts a

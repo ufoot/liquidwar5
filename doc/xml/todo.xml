@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-<!DOCTYPE file SYSTEM "file:xml/file.dtd">
+<!DOCTYPE file SYSTEM "./file.dtd">
 <file title="To do">
 
   <chap title="Bug-fixing">
     <text>
-      In its latest releases Liquid War is quite stable IMHO. 
+      In its latest releases Liquid War is quite stable IMHO.
       However there are still some issues with network under Windows
       for instance. I'm aware of these bugs and I'm trying to fix them
       but this does really take time.
@@ -36,7 +36,7 @@
   <chap title="Liquid War 6">
     <text>
       Since summer 2005, Liquid War 6, a complete rewrite of Liquid War,
-      is on its way. See 
+      is on its way. See
       "http://www.gnu.org/software/liquidwar6/" or
       "https://ufoot.org/liquidwar/v6"
       for more informations.

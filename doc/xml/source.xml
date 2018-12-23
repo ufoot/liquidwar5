@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-<!DOCTYPE file SYSTEM "file:xml/file.dtd">
+<!DOCTYPE file SYSTEM "./file.dtd">
 <file title="Source code">
 
   <chap title="General remarks">
@@ -22,7 +22,7 @@
       </text>
       <list>
 	<elem>
-	  use the GNUish-style indentation - the default Emacs mode in fact	  
+	  use the GNUish-style indentation - the default Emacs mode in fact
 	</elem>
 	<elem>
 	  prefix global functions / variables / constants / types with
@@ -61,15 +61,15 @@
       </text>
       <list>
 	<elem>
-	  base.h: 
+	  base.h:
 	  contains global constants used in many different files.
 	</elem>
 	<elem>
-	  game.c / game.h: 
+	  game.c / game.h:
 	  contains the main game loop.
 	</elem>
 	<elem>
-	  main.c / main.h: 
+	  main.c / main.h:
 	  the file where the main C function is declared.
 	  Doesn't contain much except calling init functions and
 	  running the GUI.
@@ -92,78 +92,78 @@
       </text>
       <list>
 	<elem>
-	  about.c / about.h: 
+	  about.c / about.h:
 	  contains the code for the about menu.
 	</elem>
 	<elem>
-	  advanced.c / advanced.h: 
-	  contains the GUI advanced options menu. 
+	  advanced.c / advanced.h:
+	  contains the GUI advanced options menu.
 	</elem>
 	<elem>
-	  connect.c / connect.h: 
+	  connect.c / connect.h:
 	  contains code for the "connect" menu which displays which players
 	  are connected to the server, before the game actually starts.
 	</elem>
 	<elem>
-	  controls.c / controls.h: 
+	  controls.c / controls.h:
 	  contains the code for the controls menu.
 	</elem>
 	<elem>
-	  graphics.c / graphics.h: 
+	  graphics.c / graphics.h:
 	  code for the graphic options menu.
 	</elem>
 	<elem>
-	  internet.c / internet.h: 
+	  internet.c / internet.h:
 	  contains the code for the "Search for Internet games" menu, where one
 	  can pick up a running server automatically with the help of the meta-server.
 	</elem>
 	<elem>
-	  language.c / language.h: 
+	  language.c / language.h:
 	  contains the code for the "Language" menu.
 	</elem>
 	<elem>
-	  level.c / level.h: 
+	  level.c / level.h:
 	  contains code for the menu where the player
 	  can select a level and its options (texture or color).
 	</elem>
 	<elem>
-	  menu.c / menu.h: 
+	  menu.c / menu.h:
 	  contains the code for the main menu.
 	</elem>
 	<elem>
-	  netgame.c / netgame.h: 
+	  netgame.c / netgame.h:
 	  contains the code for the net game menu.
 	</elem>
 	<elem>
-	  options.c / options.h: 
+	  options.c / options.h:
 	  contains the code for the options menu.
 	</elem>
 	<elem>
-	  play.c / play.h: 
+	  play.c / play.h:
 	  contains the code which ties the menu to the main gameloop.
 	</elem>
 	<elem>
-	  rules.c / rules.h: 
+	  rules.c / rules.h:
 	  code for the rules menu.
 	</elem>
 	<elem>
-	  score.c / score.h: 
+	  score.c / score.h:
 	  functions to display the scores at the end of the game.
 	</elem>
 	<elem>
-	  speeds.c / speeds.h: 
+	  speeds.c / speeds.h:
 	  contains the code for the speeds menu.
 	</elem>
 	<elem>
-	  team.c / team.h: 
+	  team.c / team.h:
 	  code for the team menu, where one choses which teams will play.
 	</elem>
 	<elem>
-	  volume.c / volume.h: 
+	  volume.c / volume.h:
 	  code for the sound menu.
 	</elem>
 	<elem>
-	  wave.c / wave.h: 
+	  wave.c / wave.h:
 	  code for the wave menu.
 	</elem>
       </list>
@@ -176,7 +176,7 @@
       </text>
       <list>
 	<elem>
-	  alleg2.c / alleg2.h: 
+	  alleg2.c / alleg2.h:
 	  contains some tweaked allegro functions. I wanted to use
 	  bitmaps with sevral colors for my fonts, and change some
 	  of the allegro default behavior. So rather than modifying
@@ -184,20 +184,20 @@
 	  it in this file and then modified it.
 	</elem>
 	<elem>
-	  back.c / back.h: 
+	  back.c / back.h:
 	  this modules displays the background image.
 	</elem>
 	<elem>
-	  dialog.c / dialog.h: 
+	  dialog.c / dialog.h:
 	  contains code for standard dialog boxes.
 	</elem>
 	<elem>
-	  error.c / error.h: 
+	  error.c / error.h:
 	  contains functions to display error messages once the game
 	  is in graphical mode.
 	</elem>
 	<elem>
-	  help.c / help.h: 
+	  help.c / help.h:
 	  generic functions to display the various help pages.
 	</elem>
       </list>
@@ -225,30 +225,30 @@
       </text>
       <list>
 	<elem>
-	  fighter.c / fighter.h: 
+	  fighter.c / fighter.h:
 	  contains code to move the armies, once the gradient has been calculated.
 	</elem>
 	<elem>
-	  grad.c / grad.h: 
+	  grad.c / grad.h:
 	  this module calculates the gradient for each team.
 	  One could say it's the "kernel" of the game,
 	  since most of the CPU time is spent in this module
 	  (except if you have a slow display...).
 	</elem>
 	<elem>
-	  mesh.c / mesh.h: 
+	  mesh.c / mesh.h:
 	  contains code to set up a usable mesh with a map.
 	  Mesh are re-calculated at each time a new game is started,
 	  the reason for this being that meshes are *very* big so
 	  it would not be reasonnable to save them directly on the HD.
 	</elem>
 	<elem>
-	  monster.s / monster.h: 
+	  monster.s / monster.h:
 	  assembly functions to speed-up the game.
 	  It's a replacement for some fighter.c functions.
 	</elem>
 	<elem>
-	  spread.s / spread.h: 
+	  spread.s / spread.h:
 	  contains assembly replacements for some functions of grad.c.
 	  These replacements do the same than the original ones from grad.c,
 	  but faster. Could still be optimized.
@@ -264,13 +264,13 @@
       </text>
       <list>
 	<elem>
-	  autoplay.c / autoplay.h: 
+	  autoplay.c / autoplay.h:
 	  contains the code for the computer AI.
 	  This module simulates keypresses from the computer,
 	  then the computer is handled as any other player.
 	</elem>
 	<elem>
-	  move.c / move.h: 
+	  move.c / move.h:
 	  provides an API to move the cursors.
 	</elem>
       </list>
@@ -288,22 +288,22 @@
       </text>
       <text>
 	This explains why there's so much code for user input,
-	when one would think at first sight that 
+	when one would think at first sight that
 	"polling the keyboard is enough".
       </text>
       <list>
 	<elem>
-	  joystick.c / joystick.h: 
+	  joystick.c / joystick.h:
 	  contains code to support joystick input. It wraps joystick buttons
 	  to virtual keyboard keys, so that joystick and keyboard behave
 	  exactly the same.
 	</elem>
 	<elem>
-	  keyboard.c / keyboard.h: 
+	  keyboard.c / keyboard.h:
 	  contains code to handle key presses.
 	</elem>
 	<elem>
-	  mouse.c / mouse.h: 
+	  mouse.c / mouse.h:
 	  wraps the mouse movements to virtual keyboard keys.
 	  This way the mouse can be used to control the players.
 	</elem>
@@ -317,24 +317,24 @@
       </text>
       <list>
 	<elem>
-	  area.c / area.h: 
+	  area.c / area.h:
 	  contains functions to create the game area.
 	  Basically it contains functions to create
 	  the data structures in which the level is
 	  stored during the game.
 	</elem>
 	<elem>
-	  army.c / army.h: 
+	  army.c / army.h:
 	  functions to create the armies, and place them on the
 	  battlefield.
 	</elem>
 	<elem>
-	  asm.c / asm.h: 
+	  asm.c / asm.h:
 	  various constants, macros and utilities to
 	  ensure that asembly code works correctly.
 	</elem>
 	<elem>
-	  bigdata.c / bigdata.h: 
+	  bigdata.c / bigdata.h:
 	  I had a really hard time with the malloc function with DJGPP
 	  under Win95 dos box. I tried to have it working for hours and
 	  hours but my program kept being buggy. So I decided to allocate
@@ -343,18 +343,18 @@
 	  and then give parts of it to the rest of the program.
 	</elem>
 	<elem>
-	  config.c / config.h: 
+	  config.c / config.h:
 	  contains everything that is related to the game configuration.
 	  This module contains in global variables all the parameters
 	  that are stored in the config file.
 	</elem>
 	<elem>
-	  cursor.c / cursor.h: 
+	  cursor.c / cursor.h:
 	  contains the code to init the cursors and place them
 	  on the battlefield at the beginning of the game.
 	</elem>
 	<elem>
-	  decal.c / decal.h: 
+	  decal.c / decal.h:
 	  This module makes the link between teams and players.
 	  Its coding is quite ugly, for some modules in LW assume
 	  that when 2 teams are playing they are always teams 0 and 1.
@@ -363,21 +363,21 @@
 	  That's what this module is for.
 	</elem>
 	<elem>
-	  exit.c / exit.h: 
+	  exit.c / exit.h:
 	  contains code that is executed when the game ends,
 	  it shuts down Allegro and displays messages on the console.
 	</elem>
 	<elem>
-	  gfxmode.c / gfxmode.h: 
+	  gfxmode.c / gfxmode.h:
 	  contains code to set up the various video modes,
 	  and defines which modes are available for each platform.
 	</elem>
 	<elem>
-	  init.c / init.h: 
+	  init.c / init.h:
 	  contains code to initialize Allegro with proper options and analyze failures.
 	</elem>
 	<elem>
-	  palette.c / palette.h: 
+	  palette.c / palette.h:
 	  contains function to set up the current color palette.
 	  Liquid War uses different palettes, depending on what
 	  colors are chosen for teams.
@@ -398,38 +398,38 @@
       </text>
       <list>
 	<elem>
-	  disp.c / disp.h: 
+	  disp.c / disp.h:
 	  contains functions to display the battlefield.
 	</elem>
 	<elem>
-	  distor.c / distor.h: 
+	  distor.c / distor.h:
 	  this module contains code to create the "wave effect".
 	  It uses a lot of data tables, and is quite complicated
 	  to understand...
 	</elem>
 	<elem>
-	  glouglou.s / glouglou.h: 
+	  glouglou.s / glouglou.h:
 	  assembly module, it is a replacement for some functions of distor.c.
 	  It goes much faster but does the same.
 	</elem>
 	<elem>
-	  info.c / info.h: 
+	  info.c / info.h:
 	  contains code to display the info bar.
 	  The info bar is the bar which display the time left and the amount of players
 	  for each team while the game is running.
 	</elem>
 	<elem>
-	  message.c / message.h: 
+	  message.c / message.h:
 	  provides an API to display messages during the game.
 	  Very useful if you want to debug the game: you can trace
 	  and display anything.
 	</elem>
 	<elem>
-	  pion.c / pion.h: 
+	  pion.c / pion.h:
 	  contains code to display the cursors.
 	</elem>
 	<elem>
-	  viewport.c / vieport.h: 
+	  viewport.c / vieport.h:
 	  code to allocate and resize the zone where the map is
 	  displayed, also called "viewport".
 	</elem>
@@ -444,11 +444,11 @@
       </text>
       <list>
 	<elem>
-	  music.c / music.h: 
+	  music.c / music.h:
 	  contains the code to control MIDI playback.
 	</elem>
 	<elem>
-	  sound.c / sound.h: 
+	  sound.c / sound.h:
 	  functions to play sound.
 	</elem>
       </list>
@@ -469,24 +469,24 @@
       </text>
       <list>
 	<elem>
-	  disk.c / disk.h: 
+	  disk.c / disk.h:
 	  contains all the code to access data from the hard drive.
 	  In fact, all the HD access is done at startup.
 	</elem>
 	<elem>
-	  map.c / map.h: 
+	  map.c / map.h:
 	  contains code to load the maps from a datafile raw data
 	  or a user defined bitmap
 	  to a usable structure in RAM.
 	</elem>
 	<elem>
-	  maptex.c / maptex.h: 
+	  maptex.c / maptex.h:
 	  contains code to handle the "use default texture"
 	  option, and associate a map with a given texture
 	  automatically.
 	</elem>
 	<elem>
-	  texture.c / texture.h: 
+	  texture.c / texture.h:
 	  contains code to handle textures.
 	  Textures are stored in a special format which uses
 	  5 bits per pixel.
@@ -507,14 +507,14 @@
       </text>
       <text>
 	The random map generator within Liquid War - which of course
-	works on any platform support by LW - uses for its greater 
+	works on any platform support by LW - uses for its greater
 	part the same source code as the external lwmapgen program.
       </text>
       <list>
 	<elem>
 	  random.c / random.h:
 	  wrapper for the map generator written by David Redick.
-	  It basically does the same as ./utils/lwmapgen/main.c 
+	  It basically does the same as ./utils/lwmapgen/main.c
 	  except that it does it within Liquid War as it is running
 	  and not in an external independant program.
 	</elem>
@@ -529,21 +529,21 @@
       </text>
       <text>
 	Note that on the client, I use 2 "different" clocks. The first
-	counts the "real" time, in seconds. The second one is counts "rounds" 
+	counts the "real" time, in seconds. The second one is counts "rounds"
 	and is incremented by 1 at each game round.
       </text>
       <list>
 	<elem>
-	  srvtime.c / srvtime.h: 
+	  srvtime.c / srvtime.h:
 	  code used to handle time on the server, where Allegro's functions
 	  are not available.
 	</elem>
 	<elem>
-	  ticker.c / ticker.h: 
+	  ticker.c / ticker.h:
 	  sets up a timer callback.
 	</elem>
 	<elem>
-	  time.c / time.h: 
+	  time.c / time.h:
 	  functions to know how long the game has been running,
 	  knowing that it can be interrupted.
 	</elem>
@@ -553,32 +553,32 @@
     <part title="In-game utilities">
       <text>
 	These are various utilities use to monitor and control
-	the game while one's playing. 
+	the game while one's playing.
       </text>
       <list>
 	<elem>
-	  capture.c / capture.h: 
+	  capture.c / capture.h:
 	  code used to capture the video output of the game and store it
 	  in .bmp files while playing.
 	</elem>
 	<elem>
-	  checksum.c / checksum.h: 
+	  checksum.c / checksum.h:
 	  utilities to generate a checksum from a given game state.
 	  Used in network code to make sure all the clients stay
 	  synchronized.
 	</elem>
 	<elem>
-	  code.c / code.h: 
+	  code.c / code.h:
 	  This file contains the code to handle key presses during
 	  the game. That's to say the pause key for instance.
 	</elem>
 	<elem>
-	  profile.c / profile.h: 
+	  profile.c / profile.h:
 	  provides tools to calculate how fast the game is runnning
 	  and what operations slow it down.
 	</elem>
 	<elem>
-	  watchdog.c / watchdog.h: 
+	  watchdog.c / watchdog.h:
 	  this module waits for "secret codes" to be typed while
 	  the game is running, and traps them.
 	</elem>
@@ -599,15 +599,15 @@
       </text>
       <list>
 	<elem>
-	  basicopt.c / basicopt.h: 
+	  basicopt.c / basicopt.h:
 	  handles basic command line parameters such as "-v" or "-h".
 	</elem>
 	<elem>
-	  parser.c / parser.h: 
+	  parser.c / parser.h:
 	  contains code to parse and analyze the command line parameters.
 	</elem>
 	<elem>
-	  startup.c / startup.h: 
+	  startup.c / startup.h:
 	  analyzes the command line parameters and stores them
 	  into global variables.
 	</elem>
@@ -624,20 +624,20 @@
 	Note to translators: if you decide to translate the
 	menus in another language, keep in mind that all the
 	translations must fit in the various buttons and textboxes.
-	The best resolution to test this 
+	The best resolution to test this
 	- the one where letters take most place - is 640x480.
       </text>
       <list>
 	<elem>
-	  lang.c / lang.h: 
+	  lang.c / lang.h:
 	  contains code to handle language dependant stuff.
 	</elem>
 	<elem>
-	  langen.c / langen.h: 
+	  langen.c / langen.h:
 	  contains code to handle English specific stuff.
 	</elem>
 	<elem>
-	  langfr.c / langfr.h: 
+	  langfr.c / langfr.h:
 	  contains code to handle French specific stuff.
 	</elem>
       </list>
@@ -660,18 +660,18 @@
       </text>
       <list>
 	<elem>
-	  log.h: 
+	  log.h:
 	  common header for logcli.c and logsrv.c.
 	</elem>
 	<elem>
-	  logcli.c: 
+	  logcli.c:
 	  contains code to display messages on the console.
 	  It's usefull for console may have different behaviors
 	  when the games is used on different platforms.
 	  This file is used to compile the client.
 	</elem>
 	<elem>
-	  logsrv.c: 
+	  logsrv.c:
 	  contains code to display messages on the console.
 	  This file is used to compile the server, which does not
 	  use Allegro at all.
@@ -709,7 +709,7 @@
       <text>
 	It's also important to note that Liquid War uses snprintf instead
 	of sprintf, for using the latter is very likely to cause buffer
-	overflows. Under Linux glibc provides this function but Microsoft 
+	overflows. Under Linux glibc provides this function but Microsoft
 	does not provide it natively on Windows. Therefore I used a
 	third party snprintf implementation by Mark Martinec:
 	"http://www.ijs.si/software/snprintf/" and its source is available
@@ -754,37 +754,37 @@
       </text>
       <list>
 	<elem>
-	  mutxdos.c: 
+	  mutxdos.c:
 	  provides fake mutex support under DOS.
 	  This module is here only to make compilation easier.
 	</elem>
 	<elem>
-	  mutxgen.h: 
+	  mutxgen.h:
 	  header for mutxdos.c, mutxunix.c and mutxw32.c.
 	</elem>
 	<elem>
-	  mutxunix.c: 
+	  mutxunix.c:
 	  provides mutex support on UNIX.
 	</elem>
 	<elem>
-	  mutxw32.c: 
+	  mutxw32.c:
 	  provides mutex support on Win32.
 	</elem>
 	<elem>
-	  thrddos.c: 
+	  thrddos.c:
 	  provides fake thread support under DOS.
 	  This module is here only to make compilation easier.
 	</elem>
 	<elem>
-	  thrdgen.h: 
+	  thrdgen.h:
 	  header for thrddos.c, thrdunix.c and thrdw32.c.
 	</elem>
 	<elem>
-	  thrdunix.c: 
+	  thrdunix.c:
 	  provides thread support on UNIX.
 	</elem>
 	<elem>
-	  thrdw32.c: 
+	  thrdw32.c:
 	  provides thread support on Win32.
 	</elem>
       </list>
@@ -847,40 +847,40 @@
       </text>
       <list>
 	<elem>
-	  dnsutil.c / dnsutil.h: 
+	  dnsutil.c / dnsutil.h:
 	  wrapper code to issue DNS requests, without having
 	  to handle the hostent struct.
 	</elem>
 	<elem>
-	  sock2cli.c: 
+	  sock2cli.c:
 	  sode used to wrap low-level network function on the client.
 	</elem>
 	<elem>
-	  sock2gen.h: 
+	  sock2gen.h:
 	  header for sock2cli.c and sock2srv.c.
 	</elem>
 	<elem>
-	  sock2srv.c: 
+	  sock2srv.c:
 	  code used to wrap low-level network function on the server.
 	</elem>
 	<elem>
-	  sockdos.c: 
+	  sockdos.c:
 	  network API for DOS.
 	</elem>
 	<elem>
-	  sockex.c: 
+	  sockex.c:
 	  netowrk routines shared by sockunix and sockw32.
 	</elem>
 	<elem>
-	  sockgen.h: 
+	  sockgen.h:
 	  header for sockdos.c, sockunix.c and sockw32.c.
 	</elem>
 	<elem>
-	  sockunix.c: 
+	  sockunix.c:
 	  network API for UNIX.
 	</elem>
 	<elem>
-	  sockw32.c: 
+	  sockw32.c:
 	  network API for Win32.
 	</elem>
       </list>
@@ -888,57 +888,57 @@
 
     <part title="High-level network code">
       <text>
-	These files contains network utilities 
+	These files contains network utilities
 	which are Liquid War specific.
       </text>
       <list>
 	<elem>
-	  chat.c / chat.h: 
+	  chat.c / chat.h:
 	  functions used to handle chat messages in network games.
 	</elem>
 	<elem>
-	  keyexch.c / keyexch.h: 
+	  keyexch.c / keyexch.h:
 	  functions to send and receive keys to the server. Used on the
 	  client.
 	</elem>
 	<elem>
-	  netconf.c / netconf.h: 
+	  netconf.c / netconf.h:
 	  code to send and receive the config of the clients over the network.
 	</elem>
 	<elem>
-	  netkey.c / netkey.h: 
+	  netkey.c / netkey.h:
 	  contains some tools to manipulate key strokes over the network.
 	</elem>
 	<elem>
-	  netmap.c / netmap.h: 
+	  netmap.c / netmap.h:
 	  code to send and receive the maps over the network.
 	</elem>
 	<elem>
-	  netmess.c / netmess.h: 
+	  netmess.c / netmess.h:
 	  contains a parser to interpret plain text messages. Used when
 	  exhanging information over the network.
 	</elem>
 	<elem>
-	  netplay.c / netplay.h: 
+	  netplay.c / netplay.h:
 	  contains the code to set up and start network games.
 	</elem>
 	<elem>
-	  network.c / network.h: 
+	  network.c / network.h:
 	  contains some network related functions and constants used on
 	  the client.
 	</elem>
 	<elem>
-	  ping.c / ping.h: 
+	  ping.c / ping.h:
 	  code used on the client to estimate the average ping time
 	  with a server.
 	</elem>
 	<elem>
-	  protocol.c / protocol.h: 
+	  protocol.c / protocol.h:
 	  contains the sequence of messages send and recevied by the
 	  client when connecting on the server.
 	</elem>
 	<elem>
-	  startinf.c / startinf.h: 
+	  startinf.c / startinf.h:
 	  contains struct and tools to handle some network informations while
 	  starting a network game.
 	</elem>
@@ -965,15 +965,15 @@
       </text>
       <list>
 	<elem>
-	  httputil.c / httputil.h: 
+	  httputil.c / httputil.h:
 	  low level functions to handle http requests.
 	</elem>
 	<elem>
-	  wwwcli.c / wwwcli.h: 
+	  wwwcli.c / wwwcli.h:
 	  code used on the client to communicate with the meta-server.
 	</elem>
 	<elem>
-	  wwwsrv.c / wwwsrv.h: 
+	  wwwsrv.c / wwwsrv.h:
 	  code used on the server to communicate with the meta-server.
 	</elem>
       </list>
@@ -998,20 +998,20 @@
       </text>
       <list>
 	<elem>
-	  server.c / server.h: 
+	  server.c / server.h:
 	  main code for the server (equivalent of main.c for the client).
 	</elem>
 	<elem>
-	  srvchan.c / srvchan.h: 
+	  srvchan.c / srvchan.h:
 	  code used to handles channels on the server. A channel is associated
 	  to a given computer and may manage several teams.
 	</elem>
 	<elem>
-	  srvcont.c / srvcont.h: 
+	  srvcont.c / srvcont.h:
 	  global network controler used on the server.
 	</elem>
 	<elem>
-	  srvteam.c / srvteam.h: 
+	  srvteam.c / srvteam.h:
 	  code used to handle teams on the server.
 	</elem>
       </list>

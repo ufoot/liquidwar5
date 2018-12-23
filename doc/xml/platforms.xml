@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-<!DOCTYPE file SYSTEM "file:xml/file.dtd">
+<!DOCTYPE file SYSTEM "./file.dtd">
 <file title="Platform specific issues">
 
   <chap title="General remarks">
@@ -8,7 +8,7 @@
       So now you can play under different OS.
     </text>
     <text>
-      The same source tree will compile on all supported platforms, 
+      The same source tree will compile on all supported platforms,
       but with slight differences when running. C preprocessor
       #defines are used to code some platform specific stuff,
       and in some cases there are different files for the
@@ -117,7 +117,7 @@
     </text>
     <text>
       One thing you might ask is: "why do you provide the binary as a plain
-      .tgz file, it would be much nicer if a standard FreeBSD port was 
+      .tgz file, it would be much nicer if a standard FreeBSD port was
       provided instead!". The answer is that the statically linked binary
       should work flawlessly and does not raise any dependency problem.
       Also I don't know how to make a BSD port
@@ -125,7 +125,7 @@
       can simply do it and send it back to me. If it's hard to do, then I do not
       really have the time nor motivation to do it. What I did is make the
       code and install scripts FreeBSD friendly so that it would be possible to
-      compile the game under FreeBSD. Packaging is another story. 
+      compile the game under FreeBSD. Packaging is another story.
     </text>
   </chap>
 
@@ -138,7 +138,7 @@
       expecially concerning networking.
     </text>
     <text>
-      There were some byte endianess problems in previous ( &lt;=5.5.8 ) 
+      There were some byte endianess problems in previous ( &lt;=5.5.8 )
       releases of LW, but I tried to fix them and they should be gone now.
     </text>
     <text>
@@ -170,4 +170,3 @@ LDFLAGS=-static ./configure --prefix=$GP2X_USER_PREFIX --build=x86_64-pc-linux-g
     </code>
   </chap>
 </file>
-

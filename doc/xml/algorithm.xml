@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-<!DOCTYPE file SYSTEM "file:xml/file.dtd">
+<!DOCTYPE file SYSTEM "./file.dtd">
 <file title="Core algorithm">
 
   <chap title="Introduction">
@@ -37,7 +37,7 @@
     <part title="History">
       <text>
 	The Liquid War algorithm has been invented by my friend
-	Thomas Colcombet 
+	Thomas Colcombet
 	In fact the Liquid War algorithm has been invented before
 	the game itself. The game came as a consequence of the
 	algorithm, he just thought
@@ -57,7 +57,7 @@
       </text>
       <list>
 	<elem>
-	  When you have to move lots of different points 
+	  When you have to move lots of different points
 	  toward one single point. Good thing that's the rule
 	  of Liquid War!
 	</elem>
@@ -213,7 +213,7 @@
 	Because it allows the module which calculates the gradient to work much faster.
 	With this system, the number of zones is reduced a lot, and calculus on the
 	mesh can go very fast. At the same time, this mesh structure is complicated to understand
-	by us humans but it's very easy for the computer. 
+	by us humans but it's very easy for the computer.
       </text>
     </part>
   </chap>
@@ -239,7 +239,7 @@
       <list>
 	<elem>
 	  pick up a direction between the 12 defined directions.
-	  They have to be chosen is a peculiar order to avoid 
+	  They have to be chosen is a peculiar order to avoid
 	  weird behaviors from fighters, but let's suppose we just pick up
 	  the "next" direction, ie if WSW was chosen the last time,
 	  we pick up WNW.
@@ -256,7 +256,7 @@
 	  to the cursor, estimated by the algorithm's last pass".
 	</elem>
 	<elem>
-	  If potential_of_the_neighbor_zone > (potential_of_the_current_zone + size_of_the_current_zone) then potentiel_of_the_neighbor_zone = potential_of_the_current_zone + size_of_the_current_zone 
+	  If potential_of_the_neighbor_zone > (potential_of_the_current_zone + size_of_the_current_zone) then potentiel_of_the_neighbor_zone = potential_of_the_current_zone + size_of_the_current_zone
 	</elem>
       </list>
     </part>
@@ -374,4 +374,3 @@
   </chap>
 
 </file>
-

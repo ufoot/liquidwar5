@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-<!DOCTYPE file SYSTEM "file:xml/file.dtd">
+<!DOCTYPE file SYSTEM "./file.dtd">
 <file title="Mailing lists">
 
   <chap title="liquidwar-user">
     <part title="Description">
       <text>
 	This list is for general discussions about Liquid War.
-	Here you can make suggestions, submit bug reports, 
-	ask for help, find players, etc...	
+	Here you can make suggestions, submit bug reports,
+	ask for help, find players, etc...
 	Basically, any question or remark which concerns the game
 	is welcomed on this list.
       </text>
@@ -15,14 +15,14 @@
     <part title="Practical informations">
       <text>
 	You can't send messages to the list without subscribing.
-	The only reason for this is that it's one of the only 
+	The only reason for this is that it's one of the only
 	way to block spam efficiently.
 	I first thought it could be OK to allow anyone to post, but
 	liquidwar-user seems to have be harvested by robots, so now I
-	need to restrict posters. 
+	need to restrict posters.
 	However, I insist on the fact that anyone can subscribe, and
 	the subscription to the list is not moderated.
-	So if you are a human being and not a stupid spam robot, 
+	So if you are a human being and not a stupid spam robot,
 	you're welcome on the list 8-)
       </text>
       <text>
@@ -32,12 +32,12 @@
 	<elem>
 	  To (un)subscribe: "http://mail.nongnu.org/mailman/listinfo/liquidwar-user"
 	</elem>
-	<elem>	  
+	<elem>
 	  To consult archives: "http://mail.nongnu.org/pipermail/liquidwar-user/"
 	</elem>
-	<elem>	  
+	<elem>
 	  To post on the list: "liquidwar-user@nongnu.org"
-	</elem>	  
+	</elem>
       </list>
     </part>
   </chap>
@@ -50,7 +50,7 @@
       </text>
       <text>
 	It's not as good as a good old IRC channel but not everybody can
-	use IRC (because of firewalls and the likes), 
+	use IRC (because of firewalls and the likes),
 	and I like the idea that people
 	can chat and have the list of available servers in one single
 	web page.
@@ -71,9 +71,9 @@
 	  to find players and chat while playing.
 	</elem>
 	<elem>
-	  #netgame_players : general channel for players 
+	  #netgame_players : general channel for players
 	  who want to play Internet games
-	  - Free Software and/or Open Source games of course, 
+	  - Free Software and/or Open Source games of course,
 	  we're on freenode.net 8-)
 	</elem>
       </list>

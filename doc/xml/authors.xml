@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-<!DOCTYPE file SYSTEM "file:xml/file.dtd">
+<!DOCTYPE file SYSTEM "./file.dtd">
 <file title="Authors">
 
   <chap title="Thom-Thom">
@@ -31,7 +31,7 @@
     <code>
 Christian Mauduit
 
-E-mail: "ufoot@ufoot.org" 
+E-mail: "ufoot@ufoot.org"
 Web site: "https://ufoot.org"
 
 GnuPG public key: CA272B47  - "https://ufoot.org/gnupg.pub"
@@ -45,7 +45,7 @@ Snail mail: 32 rue Jean Moulin  95100 Argenteuil  FRANCE
     <text>
       As Liquid War is now free software, protected by the GPL,
       anyone is allowed to view, edit, modify, re-compile
-      the source code, and distribute it, as long as Liquid 
+      the source code, and distribute it, as long as Liquid
       War is still distributed under the GPL.
     </text>
     <text>
@@ -70,7 +70,7 @@ Snail mail: 32 rue Jean Moulin  95100 Argenteuil  FRANCE
       <elem>
         Jan Gretschuskin : contributed 11 maps, and made the German
 	translation. So if you run Liquid War with German menus, you
-	know who you have to thank -> Jan! 8-) 
+	know who you have to thank -> Jan! 8-)
 	Also do not forget to visit "http://www.game-factor.de"
       </elem>
       <elem>
@@ -86,7 +86,7 @@ Snail mail: 32 rue Jean Moulin  95100 Argenteuil  FRANCE
 	Ryan D. Brown : ported Liquid War to Mac OS X.
       </elem>
       <elem>
-	Eduard Bloch : maintained the Debian package, 
+	Eduard Bloch : maintained the Debian package,
 	and helped with German support.
       </elem>
       <elem>

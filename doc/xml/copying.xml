@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-<!DOCTYPE file SYSTEM "file:xml/file.dtd">
+<!DOCTYPE file SYSTEM "./file.dtd">
 <file title="Copying">
-  
+
   <text>
     Liquid War is a multiplayer wargame.
   </text>
@@ -22,8 +22,8 @@
   </text>
   <text>
     You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software 
+    along with this program; if not, write to the Free Software
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
   </text>
-  
+
 </file>

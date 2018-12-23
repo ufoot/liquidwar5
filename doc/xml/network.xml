@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-<!DOCTYPE file SYSTEM "file:xml/file.dtd">
+<!DOCTYPE file SYSTEM "./file.dtd">
 <file title="Network game">
 
   <chap title="Basics">
@@ -69,7 +69,7 @@
       </text>
       <code>
 $ liquidwar-server
-How many teams will connect to this server? 
+How many teams will connect to this server?
       </code>
       <text>
 	At this point you must enter a number between 2 and 6, and then
@@ -81,10 +81,10 @@ How many teams will connect to this server?
 	It's possible to skip this question by typing
 	"liquidwar-server -2" instead of a plain "liquidwar-server".
       </text>
-      <code>      
+      <code>
 Use "-2" to get rid of this question.
-Register on "www.ufoot.org/metaserver/" (y/n)? 
-      </code>      
+Register on "www.ufoot.org/metaserver/" (y/n)?
+      </code>
       <text>
 	Now if we answer "y", then the server will automatically contact
 	the "meta-server" and it will be listed on
@@ -95,7 +95,7 @@ Register on "www.ufoot.org/metaserver/" (y/n)?
 	play with on the Net. For now, let's answer "n", we'll test
 	this meta-server stuff later 8-)
       </text>
-      <code>      
+      <code>
 Use "-private" to get rid of this question.
 2002-06-03 16:43:00: Listening on port 8035...
 2002-06-03 16:43:00: Waiting for 2 teams...
@@ -109,14 +109,14 @@ Use "-private" to get rid of this question.
     </part>
     <part title="Starting the clients">
       <text>
-	Start the client on computer A normally by typing 
+	Start the client on computer A normally by typing
 	"liquidwar" on GNU/Linux or
 	double-click "lwwin.exe" on Windows.
       </text>
       <text>
 	Go to the "Teams" menu and select 2 teams, a red human
 	and a blue CPU for instance.
-	If you don't know how to do this, then try and play Liquid War on 
+	If you don't know how to do this, then try and play Liquid War on
 	a single computer first.
 	It's important to notice that by default the "blue CPU" won't
 	connect on the network game. It's possible to allow bots to
@@ -180,7 +180,7 @@ Use "-private" to get rid of this question.
       <text>
 	And on the client you should see a screen which says
 	"Waiting for 1 team(s)" with the list of connected players
-	below (Napoleon). You do not need to click 
+	below (Napoleon). You do not need to click
 	on the "Start now" button.
       </text>
       <text>
@@ -204,7 +204,7 @@ Use "-private" to get rid of this question.
     <part title="Restart a new game">
       <text>
         Once the game is over, you can start another network game on
-	the clients without touching the server, because the server 
+	the clients without touching the server, because the server
 	automatically restarts and waits for players to connect.
       </text>
       <text>
@@ -271,10 +271,10 @@ docker run -i -p 8053:8053 ufoot/liquidwar-metaserver
 	Launch the server, and when you get the question:
       </text>
       <code>
-Register on "www.ufoot.org/metaserver/" (y/n)? 
+Register on "www.ufoot.org/metaserver/" (y/n)?
       </code>
       <text>
-	answer "y". 
+	answer "y".
       </text>
       <text>
 	Note that if you're behind a proxy or a firewall, the server
@@ -286,7 +286,7 @@ Register on "www.ufoot.org/metaserver/" (y/n)?
     </part>
     <part title="How to find a server">
       <text>
-	In the main menu, click on "Net Game" and then 
+	In the main menu, click on "Net Game" and then
 	"Search for internet games".
       </text>
       <text>
@@ -298,7 +298,7 @@ Register on "www.ufoot.org/metaserver/" (y/n)?
       <text>
 	Now you get on a "Waiting for teams" screen. You might
 	be interested in using the "Start now" button. Indeed, if
-	you are 4 players connected on a server that accepts up to 6 
+	you are 4 players connected on a server that accepts up to 6
 	players, maybe you'll want to start the game right away
 	without waiting for 2 more players. In this case, every player
 	must click "Start now". A "*" character will replace the "-"
@@ -307,7 +307,7 @@ Register on "www.ufoot.org/metaserver/" (y/n)?
       </text>
       <text>
 	You can also chat with other players by entering text in
-	the area above the "Send message" button, and then click on 
+	the area above the "Send message" button, and then click on
 	this button. Keep in mind that this is a very primitive chat
 	and that the best way to chat efficiently is IMHO to play
 	in windowed mode and have an IRC client at hand.
@@ -373,12 +373,12 @@ Register on "www.ufoot.org/metaserver/" (y/n)?
 	  password to be able to connect on the server.
 	</elem>
 	<elem>
-	  "-callback cmd" : with this option, the command "cmd" will 
+	  "-callback cmd" : with this option, the command "cmd" will
 	  be launched whenever someone connects on an empty server.
 	  For instance, if you want to run a permanent server and want
 	  to know when someone connects but do not wish to permanently
 	  keep an eye on the server's log, you might use this option
-	  and put in "cmd" a command that automatically sends you a 
+	  and put in "cmd" a command that automatically sends you a
 	  mail. You might also use a command that fires a popup window.
 	  It's up to you. 2 sample scripts are available in the "misc"
 	  directory of the Liquid War source distribution. One is
@@ -399,7 +399,7 @@ Register on "www.ufoot.org/metaserver/" (y/n)?
 	  Usefull if you want to use your own meta-server.
 	</elem>
         <elem>
-	  "-netlog" : 
+	  "-netlog" :
 	  if you use this option, the server will dump
           all the network traffic on the standard output. This is
 	  usefull for debugging.
@@ -407,7 +407,7 @@ Register on "www.ufoot.org/metaserver/" (y/n)?
         <elem>
 	  "-nobeep" :
 	  Disables the system beeps that the application might fire.
-	  These beeps are mostly used on the server to notify clients 
+	  These beeps are mostly used on the server to notify clients
 	  connections.
         </elem>
       </list>
@@ -461,15 +461,15 @@ Register on "www.ufoot.org/metaserver/" (y/n)?
       <text>
 	So if it takes 200 msec to send and then receive data from the
 	server (approx the time returned by the "ping" command) then
-	with a lag of 6, you can theorically play at a rate of 
+	with a lag of 6, you can theorically play at a rate of
 	(1/0.2)*6=30 rounds/sec.
       </text>
       <text>
-	On one hand, setting the lag parameter to a high value will avoid many 
+	On one hand, setting the lag parameter to a high value will avoid many
 	network	errors and allow you to play at a very fast pace, but the big
 	drawback is that there will be quite a long time between the instant you
 	send a key stroke to the server and the moment it comes back to you.
-	On the other hand, setting the lag to a low value will limit 
+	On the other hand, setting the lag to a low value will limit
 	drastically he number of rounds per second, but make the game
 	more "responsive".
       </text>
@@ -491,11 +491,11 @@ Register on "www.ufoot.org/metaserver/" (y/n)?
     </part>
     <part title="Performance issues">
       <text>
-	Liquid War uses a "light" server, and one of the 
+	Liquid War uses a "light" server, and one of the
 	advantages of this solution is that it allows
 	you to run the server on low-end computers. I personnally
 	run a permanent server on a 486 DX2, and it runs like
-	a charm. 
+	a charm.
       </text>
       <text>
 	The only thing you have to take care of when
@@ -504,13 +504,13 @@ Register on "www.ufoot.org/metaserver/" (y/n)?
 	and receives 12 bytes of data at each round. If you
 	add TCP/IP headers and the facts that stuff will probably be
 	bundled in bigger packets, a client must deliver
-	about 15 Kbit/sec (up and down) for a game that 
+	about 15 Kbit/sec (up and down) for a game that
 	runs at 100 frames/sec. A 56K V90 modem is enough for this.
       </text>
       <text>
 	So if you run a server with 2 clients connected, the server
 	will need to deliver 30 Kbit/sec in both ways. A 56K V90
-	modem _can_ do that, but your provider needs to be a good one 8-) 
+	modem _can_ do that, but your provider needs to be a good one 8-)
       </text>
       <text>
 	And if you run a server with 6 clients, you simply won't
@@ -553,9 +553,9 @@ Register on "www.ufoot.org/metaserver/" (y/n)?
     </part>
     <part title="Bugs in 5.4.x corrected in 5.4.2">
       <text>
-	Liquid War 5.4.0 and 5.4.1 were very hard to play over the Internet. 
-	The reason is that the network routines did not do enough error 
-	checking, and therefore there were very often errors when sending 
+	Liquid War 5.4.0 and 5.4.1 were very hard to play over the Internet.
+	The reason is that the network routines did not do enough error
+	checking, and therefore there were very often errors when sending
 	and/or receiving the map to the server. Hopefully, this bug should not
 	appear anymore in 5.4.2 or any other recent release.
       </text>
@@ -597,7 +597,7 @@ Register on "www.ufoot.org/metaserver/" (y/n)?
 	a permanent public server on my personnal computer 8-)
       </text>
       <text>
-	FYI, here are some things which I think make Liquid War rather safe 
+	FYI, here are some things which I think make Liquid War rather safe
 	to run:
       </text>
       <list>
@@ -619,7 +619,7 @@ Register on "www.ufoot.org/metaserver/" (y/n)?
 	  the network, you can't have long nicknames, and so on. But another
 	  consequence is that if you try to send garbage in the buffer, it
 	  will be truncated. Liquid War will protest with a "network error"
-	  message and the connection will be closed, but there will be no 
+	  message and the connection will be closed, but there will be no
 	  easy exploit possible here.
 	</elem>
 	<elem>
@@ -639,7 +639,7 @@ Register on "www.ufoot.org/metaserver/" (y/n)?
       </list>
       <text>
 	However, I have not - and I know nobody who has - audited Liquid War
-	for security holes. So there might be some. Therefore you should 
+	for security holes. So there might be some. Therefore you should
 	respect a few things while running Liquid War:
       </text>
       <list>
@@ -660,7 +660,7 @@ Register on "www.ufoot.org/metaserver/" (y/n)?
 	  password. Use something simple like "hello" or "goodbye".
 	</elem>
 	<elem>
-	  Keep in mind that Liquid War is a game, and not a bullet proof 
+	  Keep in mind that Liquid War is a game, and not a bullet proof
 	  professionnal server.
 	</elem>
       </list>
@@ -700,7 +700,7 @@ Register on "www.ufoot.org/metaserver/" (y/n)?
 	Apart from this, I can hardly see any way to cheat. Why? Because the Liquid
 	War server does not store any information about the game. It's not aware
 	of who wins, who looses, it knows nothing. The only thing it does is to
-	transmit key presses between client computers. 
+	transmit key presses between client computers.
       </text>
       <text>
 	This way, if someone plays with a tweaked release of Liquid War, thinking

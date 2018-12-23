@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-<!DOCTYPE file SYSTEM "file:xml/file.dtd">
+<!DOCTYPE file SYSTEM "./file.dtd">
 <file title="Menus and hot keys">
 
   <chap title="Introduction">
@@ -10,7 +10,7 @@
       and also since it's somewhat hard for me to figure out what
       is user-friendly and what's not, Liquid War's menus are not
       always self-explanatory. I'll just try and do something
-      better next time! 
+      better next time!
     </text>
   </chap>
 
@@ -33,11 +33,11 @@
 	  A texture for the zone where fighters are allowed to move.
 	</elem>
       </list>
-      <text>                
+      <text>
 	In the middle of the screen, there is a preview of the level.
 	In this menu, the values of the parameters can be independently changed by:
       </text>
-      <list> 
+      <list>
 	<elem>
 	  Moving a slider.
 	</elem>
@@ -71,7 +71,7 @@
 	You'll also notice that a "Random map" button is available.
 	This button generates a new random map using an external program,
 	"lwmapgen", developped by David Redick, available on
-	"http://www.cs.clemson.edu/~dredick/lwmapgen/"  	
+	"http://www.cs.clemson.edu/~dredick/lwmapgen/"
       </text>
       <text>
 	This program supports many command line options, and if you want
@@ -106,7 +106,7 @@
       </list>
       <text>
 	The computer plays poorly, so remember that Liquid War is basically
-	a multiplayer game, and that the cpu control is dedicated to beginners only. 
+	a multiplayer game, and that the cpu control is dedicated to beginners only.
       </text>
       <text>
 	You can also choose the color associated to each team by clicking on one
@@ -120,7 +120,7 @@
 	You can disable the joystick with the button which is at the bottom left of the menu.
 	Mouse input is also possible, and mouse movements are considered as keys too.
 	To define mouse control, click on the button associated to the direction
-	you want to control, and then move the mouse. 
+	you want to control, and then move the mouse.
 	Then the button should display something like "M->".
 	Mouse sensibility can be set with the little slider at the bottom right of the menu.
       </text>
@@ -142,7 +142,7 @@
 	you're running the game on.
       </text>
       <text>
-	I personnaly think the menus look best with the 640x480 resolution, 
+	I personnaly think the menus look best with the 640x480 resolution,
 	but some may prefer higher resolutions.
 	Lower resolutions should only be used if you have problems using SVGA video modes.
       </text>
@@ -183,12 +183,12 @@
 	do this while playing, by simply pressing F4.
       </text>
     </part>
-    
+
     <part title="Sound menu">
       <text>
 	This section allows you to set the sound volumes. There are 4 sliders, which are:
       </text>
-      <list> 
+      <list>
 	<elem>
 	  "Sfx": sets the volume of all the sfx sounds,
 	  thats to say'the sounds you hear when the game starts, when you loose etc...
@@ -234,7 +234,7 @@
 	than if there had only been 2 teams.
       </text>
       <text>
-	The "Cursor x" slider controls the speed of your cursor.         
+	The "Cursor x" slider controls the speed of your cursor.
       </text>
       <list>
 	<elem>
@@ -266,7 +266,7 @@
 	and keep the rest of your configuration options untouched.
       </text>
     </part>
-    
+
     <part title="Speeds menu">
       <text>
 	The "frames/s" slider allows you to limit the number of frames per second.
@@ -277,7 +277,7 @@
 	So this paramters limits the refreshment rate, so that there can be
 	several logical moves of the fichters for only one screen refreshing.
 	If it is set on its right, the display is limite to 10 fps,
-	so you'll have to find your setting. 
+	so you'll have to find your setting.
 	I personnally set it right in the middle, and get 40 fps.
 	If you press "F5", you'll get the number of frames per second,
 	and if you press "F6", you'll get the number of logical moves per second.
@@ -332,7 +332,7 @@
 	The wave effects can be toggled during the game by pressing the "F4" key.
       </text>
     </part>
-    
+
     <part title="Advanced menu">
       <text>
 	This menu allows the user to change the behaviour of the fighters.
@@ -356,7 +356,7 @@
 	The "Winner help" slider controls a parameter which causes
 	fighters to attack with various strength depending on
 	how many fighters belong to their team.
-	Not very clear... 
+	Not very clear...
 	Let's just say that:
       </text>
       <list>
@@ -367,7 +367,7 @@
 	</elem>
 	<elem>
 	  If it is centered, all the fighters of every team will
-	  always attack with the same strength.   
+	  always attack with the same strength.
 	</elem>
 	<elem>
 	  If it is set on the left,
@@ -437,7 +437,7 @@
     </text>
     <list>
       <elem>
-	F1: toggles the "info" zone where the game time and the 
+	F1: toggles the "info" zone where the game time and the
 	state of each team is displayed.
       </elem>
       <elem>
@@ -471,7 +471,7 @@
 	bitmaps.
       </elem>
       <elem>
-	F10: quits the game right away without any confirmation prompt, 
+	F10: quits the game right away without any confirmation prompt,
 	also known as the "my boss is coming here!" function.
       </elem>
     </list>
@@ -484,4 +484,3 @@
     </text>
   </chap>
 </file>
-
