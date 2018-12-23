@@ -27,6 +27,7 @@ branches:
 addons:
   apt:
     packages:
+      - indent
       - liballegro4-dev
 
 install: autoconf
