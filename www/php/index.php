@@ -17,7 +17,7 @@
 /* along with this program; if not, write to the Free Software               */
 /* Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA */
 /*                                                                           */
-/* Homepage       : http://www.ufoot.org                                     */
+/* Homepage       : https://ufoot.org                                     */
 /* Contact author : ufoot@ufoot.org                                          */
 /*****************************************************************************/
 
@@ -41,8 +41,8 @@ require 'metaserver.php';
 <HR>
 <H2>Introduction</H2>
 I call meta-server the software which I run on my web site to allow the
-<A HREF="http://www.ufoot.org/liquidwar/v5">Liquid War</A> and
-<A HREF="http://www.ufoot.org/u61">U61</A>
+<A HREF="https://ufoot.org/liquidwar/v5">Liquid War</A> and
+<A HREF="https://ufoot.org/u61">U61</A>
 servers to register themselves so that clients can automatically
 find out which servers are running in the world.
 <HR>
@@ -132,7 +132,7 @@ $result=metaserver_read("1.0","",0);
 <HR>
 <CENTER>
 More informations on
-<A HREF="http://www.ufoot.org">www.ufoot.org</A>.
+<A HREF="https://ufoot.org">www.ufoot.org</A>.
 </CENTER>
 </BODY
 </HTML>

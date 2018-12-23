@@ -4,7 +4,7 @@ contrôler une armée de liquide et d'essayer de "manger" ses adversaires.
 Il est possible de jouer seul, mais le jeux est conçu pour se jouer à 
 plusieurs, un mode réseau étant disponible.
 
-Site web de Liquid War  : http://www.ufoot.org/liquidwar/v5
+Site web de Liquid War  : https://ufoot.org/liquidwar/v5
 Pour contacter l'auteur : ufoot@ufoot.org
 
 Si vous avez des questions ou des remarques à propos de Liquid War,

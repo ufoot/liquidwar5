@@ -9,7 +9,7 @@ think for instance that the "official" is too slow, not enough reliable etc...
 You could also want to have a meta-server running on your LAN, to keep
 track of existing servers without informing the whole world about it.
 You do not need to do it, since there's a permanent meta-server running
-on http://www.ufoot.org. Anyway, I see no reasons not to share this code.
+on https://ufoot.org. Anyway, I see no reasons not to share this code.
 
 To set up the meta-server, you'll need:
 - a working PHP capable system. Wether you run it on UNIX or Windows, as an

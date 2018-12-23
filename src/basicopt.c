@@ -38,7 +38,7 @@
 /* along with this program; if not, write to the Free Software               */
 /* Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA */
 /*                                                                           */
-/* Liquid War homepage : http://www.ufoot.org/liquidwar/v5                   */
+/* Liquid War homepage : https://ufoot.org/liquidwar/v5                   */
 /* Contact author      : ufoot@ufoot.org                                     */
 /*****************************************************************************/
 
@@ -151,6 +151,6 @@ lw_basicopt_legal_info (char *name)
   log_println_str
     ("Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA");
   log_println ();
-  log_println_str ("Liquid War homepage : http://www.ufoot.org/liquidwar/v5");
+  log_println_str ("Liquid War homepage : https://ufoot.org/liquidwar/v5");
   log_println_str ("Contact author      : ufoot@ufoot.org");
 }

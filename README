@@ -4,7 +4,7 @@ You control an army of liquid and have to try and eat your
 opponents. A single player mode is available, but the game is
 definitely designed to be multiplayer, and has network support.
 
-Liquid War homepage : http://www.ufoot.org/liquidwar/v5
+Liquid War homepage : https://ufoot.org/liquidwar/v5
 Contact author      : ufoot@ufoot.org
 
 If you have any questions or remarks about Liquid War, you can

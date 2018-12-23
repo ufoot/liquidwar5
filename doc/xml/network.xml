@@ -88,7 +88,7 @@ Register on "www.ufoot.org/metaserver/" (y/n)?
       <text>
 	Now if we answer "y", then the server will automatically contact
 	the "meta-server" and it will be listed on
-	"http://www.ufoot.org/liquidwar/v5/metaserver.php"
+	"https://ufoot.org/liquidwar/v5/metaserver.php"
       </text>
       <text>
 	This can be convenient for people who want to find other gamers to
@@ -263,7 +263,7 @@ docker run -i -p 8053:8053 ufoot/liquidwar-metaserver
 	source package of Liquid War, so you might run such a server
 	yourself if you want to. However, by default, servers will
 	register themselves on my web site, and will be listed on
-	"http://www.ufoot.org/liquidwar/v5/metaserver.php"
+	"https://ufoot.org/liquidwar/v5/metaserver.php"
       </text>
     </part>
     <part title="How to register a server">
@@ -314,7 +314,7 @@ Register on "www.ufoot.org/metaserver/" (y/n)?
       </text>
       <text>
 	Note that you can also get the list of available servers
-	from "http://www.ufoot.org/liquidwar/v5/metaserver.php"
+	from "https://ufoot.org/liquidwar/v5/metaserver.php"
 	There you'll also find a little chat-box which will allow
 	you to send exchange messages with other players.
       </text>

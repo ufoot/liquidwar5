@@ -7,7 +7,7 @@
       the good news to Freshmeat
       ( "http://freshmeat.net/projects/liquidwar/" ).
       Then all releases are accessible from the main
-      download page, which is "http://www.ufoot.org/liquidwar/v5/download".
+      download page, which is "https://ufoot.org/liquidwar/v5/download".
     </text>
     <text>
       Releasing the game takes time, for I want all binaries
@@ -54,7 +54,7 @@ git clone http://git.savannah.gnu.org/r/liquidwar.git
     <text>
       Besides, most developpement is now done on Liquid War 6.
       See "http://www.gnu.org/software/liquidwar6/" or
-      "http://www.ufoot.org/liquidwar/v6" for more informations.
+      "https://ufoot.org/liquidwar/v6" for more informations.
     </text>
   </chap>
 </file>

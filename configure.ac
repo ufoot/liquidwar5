@@ -15,7 +15,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
-# Liquid War homepage : http://www.ufoot.org/liquidwar/v5
+# Liquid War homepage : https://ufoot.org/liquidwar/v5
 # Contact author      : ufoot@ufoot.org
 
 dnl Process this file with autoconf to produce a configure script.
@@ -409,7 +409,7 @@ dnl to build the Allegro static lib, I personnally use the
 dnl following configure options:
 dnl ./configure --enable-static --enable-dbglib --disable-modules --disable-linux --disable-vga --disable-fbcon --disable-vbeaf --disable-svgalib --with-x --disable-esddigi --disable-alsamidi --disable-alsadigi --enable-ossmidi --enable-ossdigi --disable-artsdigi --disable-mmx --disable-sse --disable-xwin-shm --disable-xwin-vidmode --disable-xwin-dga --disable-xwin-dga2 --disable-xim
 dnl These are the settings used by the static binaries
-dnl provided on http://www.ufoot.org
+dnl provided on https://ufoot.org
 AC_MSG_CHECKING(for static link)
 AC_ARG_ENABLE(static,[  --enable-static         Enable static link],
 [

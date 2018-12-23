@@ -15,12 +15,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
-# Liquid War homepage : http://www.ufoot.org/liquidwar/v5
+# Liquid War homepage : https://ufoot.org/liquidwar/v5
 # Contact author      : ufoot@ufoot.org
 
 FROM debian
 MAINTAINER Christian Mauduit "ufoot@ufoot.org"
-LABEL package="liquidwar" version="@VERSION@" org.ufoot.liquidwar.os="debian" org.ufoot.liquidwar.type="metaserver" description="Liquid War metaserver image, runs a metaserver on a LAMP stack (Linux/Apache/MySQL/PHP) listening on port 8053. Homepage http://www.ufoot.org/liquidwar/v5"
+LABEL package="liquidwar" version="@VERSION@" org.ufoot.liquidwar.os="debian" org.ufoot.liquidwar.type="metaserver" description="Liquid War metaserver image, runs a metaserver on a LAMP stack (Linux/Apache/MySQL/PHP) listening on port 8053. Homepage https://ufoot.org/liquidwar/v5"
 
 ENV DEBIAN_FRONTEND noninteractive
 RUN (apt-get update && apt-get upgrade -y -q && apt-get dist-upgrade -y -q && apt-get -y -q autoclean && apt-get -y -q autoremove)

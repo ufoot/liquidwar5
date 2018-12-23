@@ -15,7 +15,7 @@ Well, there are several reasons:
     small one indeed) I use is *really* basic, so writting docs is
     really an easy and quick task for me.
 3 - sgmltools was not flexible enough for me. Indeed, I use my little
-    doc generator to create some of the pages of http://www.ufoot.org.
+    doc generator to create some of the pages of https://ufoot.org.
     Therefore I the parser to be able to generate pages with a given
     look and feel, and for instance I do not like the "prev" and "next"
     buttons generated on HTML pages by sgmltools. Rather than wasting
@@ -31,7 +31,7 @@ The following formats can be generated:
 - txt  : universal reference, readable on *any* computer
 - man  : doc for die-hard man-page users =8-)
 - texi : texinfo doc (the GNU projet documentation format)
-- php : what I upload on http://www.ufoot.org
+- php : what I upload on https://ufoot.org
 
 Note that the parser currently uses xmllib, which is shipped with
 Python 1.5.2 but is marked as deprecated in Python 2.x. I don't feel

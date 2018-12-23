@@ -7,7 +7,7 @@ Release: @VERSION_REL@
 License: GPL
 Group: Amusements/Games
 Source: http://freesoftware.fsf.org/download/liquidwar/liquidwar-@VERSION@.tar.gz
-URL: http://www.ufoot.org/liquidwar/v5
+URL: https://ufoot.org/liquidwar/v5
 Vendor: Christian Mauduit <ufoot@ufoot.org>
 Packager: Christian Mauduit <ufoot@ufoot.org>
 BuildRoot: %{_tmppath}/%{name}-buildroot
