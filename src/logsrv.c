@@ -100,7 +100,7 @@ display_date_and_time ()
                          time_struct->tm_hour,
                          time_struct->tm_min, time_struct->tm_sec);
 
-      fprintf (LW_LOG_FILE, time_str);
+      fprintf (LW_LOG_FILE, "%s", time_str);
     }
   LW_LOG_NEW_LINE = 0;
 }
