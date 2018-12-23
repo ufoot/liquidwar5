@@ -20,3 +20,4 @@ Makefile.dep
 liquidwar
 liquidwar-server
 *.dat
+/misc/docker/tables.sql
