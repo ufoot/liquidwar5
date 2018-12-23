@@ -28,7 +28,7 @@ check:
 
 dep:
 
-clean: 
+clean:
 	@rm -f *.o
 	@rm -f */*.o
 	@rm -f $(OBJ_FILES)
@@ -51,5 +51,3 @@ liquidwar%: liquidwar%.o $(SNPRINTF_FILES)
 print_cmd_cc:
 	@echo "The command line to compile .c files in this directory is:"
 	@echo $(CMD_CC)
-
-
