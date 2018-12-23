@@ -199,7 +199,7 @@ install_gpl:
 install_readme:
 	@echo "Installing README in $(DOCDIR)."
 	@install -d $(DESTDIR)$(DOCDIR)
-	@install -c -m 0644 README $(DESTDIR)$(DOCDIR)
+	@install -c -m 0644 README.md $(DESTDIR)$(DOCDIR)/README
 	@install -c -m 0644 README.fr $(DESTDIR)$(DOCDIR)
 	@install -c -m 0644 README.de $(DESTDIR)$(DOCDIR)
 	@install -c -m 0644 README.dk $(DESTDIR)$(DOCDIR)
@@ -329,7 +329,7 @@ $(PACKAGE_DOS_ZIP): $(PACKAGE_DOS_EXE) $(PACKAGE_DOS_CWSDPMI)
 	@echo "Copying files."
 	@cp $(PACKAGE_DOS_EXE) $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR)
 	@cp $(PACKAGE_DOS_CWSDPMI) $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR)
-	@cp README $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR)/readme.txt
+	@cp README.md $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR)/readme.txt
 	@cp README.fr $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR)/readmefr.txt
 	@cp README.de $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR)/readmede.txt
 	@cp README.dk $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR)/readmedk.txt
@@ -369,7 +369,7 @@ $(PACKAGE_WIN32_ZIP): $(PACKAGE_WIN32_EXE) $(PACKAGE_WIN32_ALLEGDLL)
 	@echo "Copying files."
 	@cp $(PACKAGE_WIN32_EXE) $(PACKAGE_TMP)/$(PACKAGE_WIN32_DIR)
 	@cp $(PACKAGE_WIN32_ALLEGDLL) $(PACKAGE_TMP)/$(PACKAGE_WIN32_DIR)
-	@cp README $(PACKAGE_TMP)/$(PACKAGE_WIN32_DIR)/readme.txt
+	@cp README.md $(PACKAGE_TMP)/$(PACKAGE_WIN32_DIR)/readme.txt
 	@cp README.fr $(PACKAGE_TMP)/$(PACKAGE_WIN32_DIR)/readmefr.txt
 	@cp README.de $(PACKAGE_TMP)/$(PACKAGE_WIN32_DIR)/readmede.txt
 	@cp README.dk $(PACKAGE_TMP)/$(PACKAGE_WIN32_DIR)/readmedk.txt
@@ -489,7 +489,7 @@ $(PACKAGE_MACOSX_TGZ): $(PACKAGE_SOURCE_TARGZ)
 	@cp  $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/COPYING "$(PACKAGE_TMP)/Liquid War.app/Contents/Resources/doc/"
 	@cp  $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/COPYING "$(PACKAGE_TMP)/License.txt"
 	@cp  $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/ChangeLog "$(PACKAGE_TMP)/Liquid War.app/Contents/Resources/doc/"
-	@cp  $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/README "$(PACKAGE_TMP)/Liquid War.app/Contents/Resources/doc/"
+	@cp  $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/README.md "$(PACKAGE_TMP)/Liquid War.app/Contents/Resources/doc/README"
 	@cp  $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/README.de "$(PACKAGE_TMP)/Liquid War.app/Contents/Resources/doc/"
 	@cp  $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/README.dk "$(PACKAGE_TMP)/Liquid War.app/Contents/Resources/doc/"
 	@cp  $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/README.fr "$(PACKAGE_TMP)/Liquid War.app/Contents/Resources/doc/"
@@ -546,7 +546,7 @@ $(PACKAGE_GP2X_ZIP): $(PACKAGE_SOURCE_TARGZ)
 	@cp misc/liquidwar.gpe $(PACKAGE_TMP)/$(PACKAGE_GP2X_DIR)/
 	@cp COPYING $(PACKAGE_TMP)/$(PACKAGE_GP2X_DIR)/license.txt
 	@cp ChangeLog $(PACKAGE_TMP)/$(PACKAGE_GP2X_DIR)/changes.txt
-	@cp README $(PACKAGE_TMP)/$(PACKAGE_GP2X_DIR)/readme.txt
+	@cp README.md $(PACKAGE_TMP)/$(PACKAGE_GP2X_DIR)/readme.txt
 	@cp README.fr $(PACKAGE_TMP)/$(PACKAGE_GP2X_DIR)/readmefr.txt
 	@cp README.de $(PACKAGE_TMP)/$(PACKAGE_GP2X_DIR)/readmede.txt
 	@cp README.dk $(PACKAGE_TMP)/$(PACKAGE_GP2X_DIR)/readmedk.txt
