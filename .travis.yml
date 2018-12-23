@@ -40,5 +40,3 @@ deploy:
   file: liquidwar-*.tar.gz
   skip_cleanup: true
   overwrite: true
-  on:
-    tags: true
