@@ -16,3 +16,7 @@ macosx_info.plist
 Makefile.dep
 *.o
 *~
+*.tar.gz
+liquidwar
+liquidwar-server
+*.dat
