@@ -82,6 +82,8 @@ OBJ_NAMES = \
 	asm \
 	autoplay \
 	back \
+	backportgui \
+	backportguiproc \
 	basicopt \
 	bigdata \
 	capture \
