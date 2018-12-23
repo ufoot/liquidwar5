@@ -39,7 +39,6 @@ deploy:
   api_key: $GITHUB_OAUTH_TOKEN
   file: liquidwar-*.tar.gz
   skip_cleanup: true
+  overwrite: true
   on:
     tags: true
-  overwrite: true
-
