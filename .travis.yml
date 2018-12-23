@@ -27,8 +27,8 @@ branches:
 addons:
   apt:
     packages:
-      - indent
       - liballegro4-dev
+      - libxml2-utils
 
 install: autoconf
 

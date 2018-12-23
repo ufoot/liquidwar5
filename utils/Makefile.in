@@ -26,6 +26,8 @@ config: print_cmd_cc
 
 check:
 
+indent:
+
 dep:
 
 clean:
