@@ -42,7 +42,7 @@ distclean:
 
 liquidwar%: liquidwar%.o $(SNPRINTF_FILES)
 	@echo "Building $@"
-	@$(CC) $(LDFLAGS) $(LINK_OPTIONS) $(ALLIBS) -o $@ $< $(SNPRINTF_FILES)
+	@$(CC) $(LDFLAGS) -o $@ $< $(SNPRINTF_FILES) $(ALLIBS)
 
 %.o: %.c
 	@echo "Compiling" $<
@@ -52,4 +52,4 @@ print_cmd_cc:
 	@echo "The command line to compile .c files in this directory is:"
 	@echo -- $(CMD_CC)
 	@echo "The command line to link .o files in this directory is"
-	@echo -- $(CC) $(LDFLAGS) $(LINK_OPTIONS) $(ALLIBS)
+	@echo -- $(CC) $(LDFLAGS) $(ALLIBS)

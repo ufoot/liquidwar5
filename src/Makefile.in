@@ -310,7 +310,7 @@ print_cmd_as:
 	@echo $(CMD_AS)
 
 print_cmd_ld:
-	@echo "The command line to link binaries in this directory is:"
+	@echo "The command line to link .o files in this directory is:"
 	@echo $(CC) $(LDFLAGS) $(LINK_OPTIONS) $(PTHREAD) $(EXTERN_LIBS)
 
 include Makefile.dep

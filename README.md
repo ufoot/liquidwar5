@@ -1,8 +1,7 @@
 Liquid War 5
 ============
 
-What is this ?
---------------
+![Liquid War 5 icon](https://raw.githubusercontent.com/ufoot/liquidwar5/master/misc/liquidwar.png)
 
 Liquid War is a unique multiplayer wargame. Its rules are
 truely original and have been invented by Thomas Colcombet.
