@@ -25,9 +25,13 @@ U-Foot
 Status
 ------
 
+[![Build Status](https://travis-ci.org/ufoot/liquidwar5.svg?branch=master)](https://travis-ci.org/ufoot/liquidwar5/branches)
+
 Liquid War 5 is now (at least) 20 years old. Some files probably
 remained unchanged through all those years but yet, apparently,
-still compile and run.
+still compile and run. Don't trust the git log for activity,
+this thing used to be on [Source Forge](https://sourceforge.net/projects/liquidwar/)
+and even before that it was developped without any source control system, back in 1998.
 
 Since 2005, [Liquid War 6](https://www.gnu.org/software/liquidwar6)
 has been released, trying to get a better interfaces and technology
@@ -44,6 +48,17 @@ My overall advice would be to use this game and have fun with it,
 but if you want to hack around, there might be better things to
 do than touching this old and dusty code base. Please
 [contact me](mailto:ufoot@ufoot.org) if you want to know more.
+
+Install
+-------
+
+Get files [here](https://ufoot.org/liquidwar/v5/download) for Windows or Mac users.
+For GNU/Linux users, most of the time, something like this is enough:
+
+```
+sudo apt-get install liquidwar   # .deb distro (Debian, Ubuntu, ...)
+sudo yum install liquidwar       # .rpm distro (Fedora, ...)
+```
 
 Documentation
 -------------
