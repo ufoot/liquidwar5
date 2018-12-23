@@ -28,7 +28,7 @@
     </text>
     <text>
       So FYI the previously active CVS and GNU Arch repositories, on Sourceforge
-      and Savannah, are currently unmaintained.
+      and Savannah, are currently unmaintained. It has moved to Github.
     </text>
   </chap>
   <chap title="How to get latest releases">
@@ -36,13 +36,7 @@
       A typical git command would be:
     </text>
     <code>
-git clone git://git.sv.gnu.org/liquidwar.git
-    </code>
-    <text>
-     or if you are behind a firewall:
-    </text>
-    <code>
-git clone http://git.savannah.gnu.org/r/liquidwar.git
+git clone https://github.com/ufoot/liquidwar5.git
     </code>
     <text>
       If you are interested, I can open this repository in read/write

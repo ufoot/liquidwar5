@@ -18,8 +18,8 @@
       valuable feedback source.
     </text>
     <text>
-      Additionnaly, on online bug tracking system has been set up
-      on "http://savannah.nongnu.org/bugs/?group=liquidwar".
+      Additionnaly, on online bug tracking system is availalable
+      on "https://github.com/ufoot/liquidwar5/issues".
       I try to collect everything here : bugs reported on the mailing-list,
       bugs from Debian, and bugs I found myself. Alternatively
       you can report bugs directly on it 8-)
@@ -106,7 +106,7 @@
       </elem>
       <elem>
         The background image sometimes ends up using the wrong palette,
-	which has a very nasty consequence: it looks ugly. 
+	which has a very nasty consequence: it looks ugly.
       </elem>
     </list>
     <text>
@@ -119,17 +119,17 @@
   <chap title="Midi does not work on OSS">
     <part title="Preamble">
       <text>
-	IF your midi music on Liquid War, or indeed any other 
-	Allegro game, doesn't work and you are using the OSS 
-	(Open Sound System) drivers (these are the sound drivers 
+	IF your midi music on Liquid War, or indeed any other
+	Allegro game, doesn't work and you are using the OSS
+	(Open Sound System) drivers (these are the sound drivers
 	which come with the standard kernel distribution), this may
-	well be because Allegro only supports "FM synthesis" 
-	and not "wavetable" when it is using OSS. FM synthesis 
-	is a very old method of making sound from MIDI and 
+	well be because Allegro only supports "FM synthesis"
+	and not "wavetable" when it is using OSS. FM synthesis
+	is a very old method of making sound from MIDI and
 	has long since been replaced by wavetable synthesis, with the net
-	result that it's quite possible you've got OSS MIDI 
-	working nicely in other applications without having FM 
-	support set up at all. This is what I found. (It has 
+	result that it's quite possible you've got OSS MIDI
+	working nicely in other applications without having FM
+	support set up at all. This is what I found. (It has
 	to be said that I didn't find the FM sound quality quite as bad
 	as people have said, though).
       </text>
@@ -147,12 +147,12 @@
     </part>
     <part title="Use Allegro's DIGMID midi driver...">
       <text>
-	...which creates audio from MIDI using a set of patches 
-	(more info here: "http://www.talula.demon.co.uk/allegro/digmid.html") 
+	...which creates audio from MIDI using a set of patches
+	(more info here: "http://www.talula.demon.co.uk/allegro/digmid.html")
 	and plays back through your sound card's audio.
       </text>
     </part>
-    <part title="Get an FM driver up and running..."> 
+    <part title="Get an FM driver up and running...">
       <text>
 	...Which is comprised of the following steps:
       </text>
@@ -189,7 +189,7 @@
       </list>
     </part>
     <part title="Opl3 occult FAQ">
-      <text>	
+      <text>
 	--IMPORTANT-- If you are using Liquid War, your FM will only work if you go to the
 	map 'Elephant inside a boa' and proceed to chase each other round in circles for at
 	least 10 minutes. This cures a bug in the design of the OPL3 interface which
@@ -200,7 +200,7 @@
       <code>
 	Many roads a man must take. Those with one-track minds are DOOMED, I tells ya.
       </code>
-      <text>	
+      <text>
 	----  The Liquid War algorithm calculates distances to one place, the cursor.
       </text>
       <text>
