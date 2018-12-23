@@ -50,4 +50,6 @@ liquidwar%: liquidwar%.o $(SNPRINTF_FILES)
 
 print_cmd_cc:
 	@echo "The command line to compile .c files in this directory is:"
-	@echo $(CMD_CC)
+	@echo -- $(CMD_CC)
+	@echo "The command line to link .o files in this directory is"
+	@echo -- $(CC) $(LDFLAGS) $(LINK_OPTIONS) $(ALLIBS)
