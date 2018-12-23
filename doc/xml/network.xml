@@ -106,6 +106,14 @@ Use "-private" to get rid of this question.
 	setting by calling "liquidwar-server -port 8061" for
 	instance, but let's use the default port to make things easier.
       </text>
+      <text>
+    Alternatively, starting with version 5.6.5, it is possible ro run
+    the server using Docke, images are on "https://hub.docker.com/r/ufoot/liquidwar-server"
+    and by default start a server waiting for 2 players to join.
+      </text>
+      <code>
+docker run ufoot/liquidwar-server
+      </code>
     </part>
     <part title="Starting the clients">
       <text>

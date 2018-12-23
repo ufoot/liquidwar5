@@ -23,10 +23,10 @@ MAINTAINER Christian Mauduit "ufoot@ufoot.org"
 LABEL package="liquidwar" version="@VERSION@" org.ufoot.liquidwar.os="debian" org.ufoot.liquidwar.type="server" description="Liquid War server image, contains a running instance of the program, listening on default port 8035. Homepage https://ufoot.org/liquidwar/v5"
 
 ENV DEBIAN_FRONTEND noninteractive
-RUN (apt-get update && apt-get upgrade -y -q && apt-get dist-upgrade -y -q && apt-get -y -q autoclean && apt-get -y -q autoremove)
+RUN (apt-get update -y && apt-get upgrade -y && apt-get dist-upgrade -y && apt-get -y autoclean && apt-get -y autoremove)
 
 # minimal build requirements
-RUN apt-get install -y -q gcc make liballegro4-dev
+RUN apt-get install -y gcc make liballegro4-dev
 RUN apt-get clean
 
 # our build
@@ -39,5 +39,3 @@ RUN cd /usr/local/src/liquidwar-@VERSION@ && ./configure && make && make install
 EXPOSE 8035
 USER nobody
 ENTRYPOINT /usr/local/bin/liquidwar-server -2 -public -comment Public_Liquid_War_5_server_running_in_Docker_instance
-
-

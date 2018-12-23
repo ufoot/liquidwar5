@@ -23,10 +23,10 @@ MAINTAINER Christian Mauduit "ufoot@ufoot.org"
 LABEL package="liquidwar" version="@VERSION@" org.ufoot.liquidwar.os="debian" org.ufoot.liquidwar.type="build" description="Liquid War build image, contains all the requirements to build the program, and has it built once. Homepage https://ufoot.org/liquidwar/v5"
 
 ENV DEBIAN_FRONTEND noninteractive
-RUN (apt-get update && apt-get upgrade -y -q && apt-get dist-upgrade -y -q && apt-get -y -q autoclean && apt-get -y -q autoremove)
+RUN (apt-get update -y && apt-get upgrade -y && apt-get dist-upgrade -y && apt-get -y autoclean && apt-get -y autoremove)
 
 # complete build requirements
-RUN apt-get install -y -q gcc make liballegro4-dev python texinfo texlive texlive-latex-base
+RUN apt-get install -y gcc make liballegro4-dev python texinfo texlive texlive-latex-base
 RUN apt-get clean
 
 # our build
@@ -34,4 +34,3 @@ RUN install -d /usr/local/src
 COPY liquidwar-@VERSION@.tar.gz /usr/local/src/liquidwar-@VERSION@.tar.gz
 RUN cd /usr/local/src && tar xzf liquidwar-@VERSION@.tar.gz
 RUN cd /usr/local/src/liquidwar-@VERSION@ && ./configure && make && make install
-

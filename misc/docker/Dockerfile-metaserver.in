@@ -23,10 +23,10 @@ MAINTAINER Christian Mauduit "ufoot@ufoot.org"
 LABEL package="liquidwar" version="@VERSION@" org.ufoot.liquidwar.os="debian" org.ufoot.liquidwar.type="metaserver" description="Liquid War metaserver image, runs a metaserver on a LAMP stack (Linux/Apache/MySQL/PHP) listening on port 8053. Homepage https://ufoot.org/liquidwar/v5"
 
 ENV DEBIAN_FRONTEND noninteractive
-RUN (apt-get update && apt-get upgrade -y -q && apt-get dist-upgrade -y -q && apt-get -y -q autoclean && apt-get -y -q autoremove)
+RUN (apt-get update -y && apt-get upgrade -y && apt-get dist-upgrade -y && apt-get -y autoclean && apt-get -y autoremove)
 
 # typical LAMP install
-RUN apt-get install -y -q apache2 mysql-server libapache2-mod-php5 php5-mysql
+RUN apt-get install -y apache2 mysql-server libapache2-mod-php5 php5-mysql
 RUN apt-get clean
 
 # set up Apache
@@ -51,5 +51,3 @@ COPY lamp.sh /usr/local/bin/lamp.sh
 # run server on default port
 EXPOSE 8053
 ENTRYPOINT /usr/local/bin/lamp.sh
-
-
