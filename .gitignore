@@ -19,5 +19,16 @@ Makefile.dep
 *.tar.gz
 liquidwar
 liquidwar-server
+liquidwar-mapgen
+liquidwarcol
+liquidwarmap
+liquidwartex
 *.dat
 /misc/docker/tables.sql
+doc/tex/*.aux
+doc/tex/*.dvi
+doc/tex/*.log
+doc/tex/*.tex
+doc/tex/*.toc
+doc/texi/*.texi
+doc/txt/*.txt

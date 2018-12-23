@@ -21,7 +21,7 @@
 #!/bin/sh
 if /etc/init.d/mysql start ; then
     if /etc/init.d/apache2 start ; then
-        tail -f /var/log/mysql.log &
+        tail -f /var/log/mysql/error.log &
         tail -f /var/log/apache2/access-metaserver.log &
         while [ $(ps auxwww | grep mysqld | grep -v grep | wc -l) -ge 1 ] && [ $(ps auxwww | grep apache2 | grep -v grep | wc -l) -ge 1 ] ; do
             sleep 1

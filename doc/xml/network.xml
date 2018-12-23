@@ -112,7 +112,7 @@ Use "-private" to get rid of this question.
     and by default start a server waiting for 2 players to join.
       </text>
       <code>
-docker run ufoot/liquidwar-server
+docker run -p 8035:8035 ufoot/liquidwar-server
       </code>
     </part>
     <part title="Starting the clients">
