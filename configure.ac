@@ -56,7 +56,7 @@ dnl
 if test -z "$ALVERSION" ; then
   AC_MSG_ERROR(Allegro does not seem to be correctly installed - please reinstall it and keep in mind that you need the complete Allegro developpement package.)
 fi
-        
+
 dnl
 dnl version check
 dnl
@@ -79,7 +79,7 @@ dnl and we _really_ need it...
 AC_CHECK_PROG(ALLEGRO_DAT,dat,yes,no)
 
 if test $ALLEGRO_DAT != "yes"; then
-   AC_MSG_ERROR(Couldn't find the allegro datafile compiler - please install the complete Allegro package with all its developper tools. The end-user package is not enough to compile Liquid War.) 
+   AC_MSG_ERROR(Couldn't find the allegro datafile compiler - please install the complete Allegro package with all its developper tools. The end-user package is not enough to compile Liquid War.)
 fi;
 
 
@@ -105,7 +105,7 @@ AC_CHECK_HEADER(stdlib.h,,[AC_MSG_ERROR(Missing include file.)])
 AC_CHECK_HEADER(string.h,,[AC_MSG_ERROR(Missing include file.)])
 AC_CHECK_HEADER(sys/socket.h,,[AC_MSG_ERROR(Missing include file.)])
 AC_CHECK_HEADER(sys/time.h,,[AC_MSG_ERROR(Missing include file.)])
-AC_CHECK_HEADER(sys/types.h,,[AC_MSG_ERROR(Missing include file.)]) 
+AC_CHECK_HEADER(sys/types.h,,[AC_MSG_ERROR(Missing include file.)])
 AC_CHECK_HEADER(time.h,,[AC_MSG_ERROR(Missing include file.)])
 AC_CHECK_HEADER(unistd.h,,[AC_MSG_ERROR(Missing include file.)])
 
@@ -122,7 +122,7 @@ AC_CHECK_PROG(GNU_AS,as,yes,no)
 
 
 
-dnl Various checks which will enable/disable some of the doc targets 
+dnl Various checks which will enable/disable some of the doc targets
 AC_CHECK_PROG(PYTHON,python,yes,no)
 AC_CHECK_PROG(GZIP,gzip,yes,no)
 AC_CHECK_PROG(LATEX,latex,yes,no)
@@ -175,7 +175,7 @@ AC_SUBST(ASM)
 
 dnl Now we do a bunch of checks to see what kind of documentation
 dnl formats we should generate. This is quite boring but can be
-dnl very usefull for people who do not have all the software 
+dnl very usefull for people who do not have all the software
 dnl required to compile the doc (and PDFLaTeX for instance is
 dnl far from being installed everywere...)
 DOC_TXT_POSSIBLE="\"$PYTHON\" = \"yes\""
@@ -198,7 +198,7 @@ AC_ARG_ENABLE(doc-txt,[  --disable-doc-txt       Disable plain text doc],
     DOC_TXT=no
     AC_MSG_RESULT([disabled])
   fi
-],  
+],
 [
   if test $DOC_TXT_POSSIBLE; then
     DOC_TXT=yes
@@ -468,8 +468,8 @@ AC_SUBST(GP2X)
 dnl Here we test the $MAKE environment var, to use the correct "make".
 dnl Indeed, LW *requires* GNU Make to be compiled. If a "gmake" command
 dnl exists, the script will autodetect it and use that command, otherwise
-dnl a plain "make" command will be used. If you want to change this 
-dnl behavior, you can explicitly use a given executable to replace 
+dnl a plain "make" command will be used. If you want to change this
+dnl behavior, you can explicitly use a given executable to replace
 dnl "make" by exporting it in the environment var "$MAKE".
 AC_CHECK_PROG(GMAKE,gmake,yes,no)
 AC_MSG_CHECKING(for which GNU Make to use)
@@ -481,7 +481,7 @@ else
   else
     GMAKE=make
   fi
-fi 
+fi
 AC_MSG_RESULT([$GMAKE])
 AC_SUBST(GMAKE)
 
@@ -508,10 +508,10 @@ AC_SUBST(SRPMS_DIR)
 
 
 dnl Current version
-VERSION="5.6.5"
+VERSION="5.6.6"
 VERSION_REL="1"
-VERSION_COMPACT="565"
-VERSION_WIN32="5, 6, 5, 1"
+VERSION_COMPACT="566"
+VERSION_WIN32="5, 6, 6, 1"
 AC_SUBST(VERSION)
 AC_SUBST(VERSION_REL)
 AC_SUBST(VERSION_COMPACT)
@@ -557,4 +557,3 @@ chmod 755 misc/liquidward
 dnl Now we do a make dep. Not the best place to do it but...
 $GMAKE config
 $GMAKE dep
-
