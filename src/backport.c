@@ -105,6 +105,7 @@ putpixel (ALLEGRO_BITMAP * bitmap, int x, int y, int color)
     {
       return;
     }
+  ALLEGRO_COLOR al_color;
   al_color = GLOBAL_PALETTE[color];
   al_put_pixel (x, y, al_color);
 }
@@ -119,6 +120,7 @@ rectfill (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2, int color)
     {
       return;
     }
+  ALLEGRO_COLOR al_color;
   al_color = GLOBAL_PALETTE[color];
   // +1 on second coord because floating point vs integer
   al_draw_filled_rectangle (x1, y1, x2 + 1, y2 + 1, al_color);
@@ -178,7 +180,38 @@ uwidth (const char *s)
 }
 
 /*------------------------------------------------------------------*/
+int
+uisspace (int c)
+{
+  // https://liballeg.org/stabledocs/en/alleg002.html#uisspace
+  /*
+   * Super naive impl, should do the job for the LW use-case.
+   */
+  return c<=32;
+}
+
+/*------------------------------------------------------------------*/
 int text_length(ALLEGRO_FONT *f, const char *s) {
   // https://liballeg.org/stabledocs/en/alleg018.html#text_length
-  return al_get_text_width(f, s)
+  return al_get_text_width(f, s);
+}
+
+/*------------------------------------------------------------------*/
+int text_height(ALLEGRO_FONT *f) {
+  // https://liballeg.org/stabledocs/en/alleg018.html#text_height
+  return al_get_font_line_height(f);
+}
+
+/*------------------------------------------------------------------*/
+void textout_ex(ALLEGRO_BITMAP *bmp, const ALLEGRO_FONT *f, const char *s, int x, int y, int color, int bg){
+  // https://liballeg.org/stabledocs/en/alleg018.html#textout_ex
+
+  al_set_target_bitmap (bmp);
+  if (color < 0 || color >= PALETTE_SIZE)
+    {
+      return;
+    }
+  ALLEGRO_COLOR al_color;
+  al_color = GLOBAL_PALETTE[color];
+  al_draw_text(f,al_color,x,y,0,s);
 }

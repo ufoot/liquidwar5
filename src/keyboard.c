@@ -104,62 +104,62 @@ is_touched_key (int i)
   if (CONFIG_JOYSTICK_ON)
     switch (i)
       {
-      case KEY_JOY1_UP:
+      case ALLEGRO_KEY_JOY1_UP:
         found = 1;
         retval = JOYSTICK_CONTROL_JOY1_UP;
         break;
-      case KEY_JOY1_RIGHT:
+      case ALLEGRO_KEY_JOY1_RIGHT:
         found = 1;
         retval = JOYSTICK_CONTROL_JOY1_RIGHT;
         break;
-      case KEY_JOY1_DOWN:
+      case ALLEGRO_KEY_JOY1_DOWN:
         found = 1;
         retval = JOYSTICK_CONTROL_JOY1_DOWN;
         break;
-      case KEY_JOY1_LEFT:
+      case ALLEGRO_KEY_JOY1_LEFT:
         found = 1;
         retval = JOYSTICK_CONTROL_JOY1_LEFT;
         break;
 
-      case KEY_JOY1_B1:
+      case ALLEGRO_KEY_JOY1_B1:
         found = 1;
         retval = JOYSTICK_CONTROL_JOY1_B1;
         break;
-      case KEY_JOY1_B2:
+      case ALLEGRO_KEY_JOY1_B2:
         found = 1;
         retval = JOYSTICK_CONTROL_JOY1_B2;
         break;
-      case KEY_JOY1_B3:
+      case ALLEGRO_KEY_JOY1_B3:
         found = 1;
         retval = JOYSTICK_CONTROL_JOY1_B3;
         break;
-      case KEY_JOY1_B4:
+      case ALLEGRO_KEY_JOY1_B4:
         found = 1;
         retval = JOYSTICK_CONTROL_JOY1_B4;
         break;
 
-      case KEY_JOY2_UP:
+      case ALLEGRO_KEY_JOY2_UP:
         found = 1;
         retval = JOYSTICK_CONTROL_JOY2_UP;
         break;
-      case KEY_JOY2_RIGHT:
+      case ALLEGRO_KEY_JOY2_RIGHT:
         found = 1;
         retval = JOYSTICK_CONTROL_JOY2_RIGHT;
         break;
-      case KEY_JOY2_DOWN:
+      case ALLEGRO_KEY_JOY2_DOWN:
         found = 1;
         retval = JOYSTICK_CONTROL_JOY2_DOWN;
         break;
-      case KEY_JOY2_LEFT:
+      case ALLEGRO_KEY_JOY2_LEFT:
         found = 1;
         retval = JOYSTICK_CONTROL_JOY2_LEFT;
         break;
 
-      case KEY_JOY2_B1:
+      case ALLEGRO_KEY_JOY2_B1:
         found = 1;
         retval = JOYSTICK_CONTROL_JOY2_B1;
         break;
-      case KEY_JOY2_B2:
+      case ALLEGRO_KEY_JOY2_B2:
         found = 1;
         retval = JOYSTICK_CONTROL_JOY2_B2;
         break;
@@ -168,16 +168,16 @@ is_touched_key (int i)
   if (!found)
     switch (i)
       {
-      case KEY_MOUSE_UP:
+      case ALLEGRO_KEY_MOUSE_UP:
         retval = MOUSE_CONTROL_UP;
         break;
-      case KEY_MOUSE_RIGHT:
+      case ALLEGRO_KEY_MOUSE_RIGHT:
         retval = MOUSE_CONTROL_RIGHT;
         break;
-      case KEY_MOUSE_DOWN:
+      case ALLEGRO_KEY_MOUSE_DOWN:
         retval = MOUSE_CONTROL_DOWN;
         break;
-      case KEY_MOUSE_LEFT:
+      case ALLEGRO_KEY_MOUSE_LEFT:
         retval = MOUSE_CONTROL_LEFT;
         break;
       default:

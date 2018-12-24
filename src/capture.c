@@ -137,9 +137,9 @@ lw_capture_dump_menu ()
    * Now we check manually for F9 for there's no way
    * to do it easily within the generic menu code.
    */
-  if (key[KEY_F9])
+  if (key[ALLEGRO_KEY_F9])
     {
-      while (key[KEY_F9])
+      while (key[ALLEGRO_KEY_F9])
         {
           /*
            * Force a all to poll_keyboard if needed

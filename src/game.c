@@ -760,7 +760,7 @@ game (void)
        * - there are less than 2 teams playing, ie there's a winner
        * - the game time is elapsed
        */
-      while ((!WATCHDOG_SCANCODE[KEY_ESC])
+      while ((!WATCHDOG_SCANCODE[ALLEGRO_KEY_ESC])
              && (PLAYING_TEAMS >= 2)
              && (TIME_LEFT > 0) && (!LW_NETWORK_ERROR_DETECTED))
         {

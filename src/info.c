@@ -423,7 +423,7 @@ check_info_state (void)
 {
   static int changed;
 
-  if (WATCHDOG_SCANCODE[KEY_F1])
+  if (WATCHDOG_SCANCODE[ALLEGRO_KEY_F1])
     {
       if (CONFIG_INFO_BAR >= 4)
         CONFIG_INFO_BAR -= 4;
@@ -433,7 +433,7 @@ check_info_state (void)
       changed = CONFIG_PAGE_FLIP ? 2 : 1;
       lw_viewport_register_change (changed);
     }
-  if (WATCHDOG_SCANCODE[KEY_F2] && CONFIG_INFO_BAR < 4)
+  if (WATCHDOG_SCANCODE[ALLEGRO_KEY_F2] && CONFIG_INFO_BAR < 4)
     {
       CONFIG_INFO_BAR++;
       if (CONFIG_INFO_BAR == 4)

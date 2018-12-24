@@ -344,7 +344,7 @@ my_textbox_proc (int msg, DIALOG * d, int c)
   int start, top, bottom, l;
   int used, delta;
   int fg_color;
-  ASSERT (d);
+  ALLEGRO_ASSERT (d);
 
   fg_color = (d->flags & D_DISABLED) ? gui_mg_color : d->fg;
   /* calculate the actual height */
@@ -440,17 +440,17 @@ my_textbox_proc (int msg, DIALOG * d, int c)
           else
             bottom--;
 
-          if ((c >> 8) == KEY_UP)
+          if ((c >> 8) == ALLEGRO_KEY_UP)
             d->d2--;
-          else if ((c >> 8) == KEY_DOWN)
+          else if ((c >> 8) == ALLEGRO_KEY_DOWN)
             d->d2++;
-          else if ((c >> 8) == KEY_HOME)
+          else if ((c >> 8) == ALLEGRO_KEY_HOME)
             d->d2 = 0;
-          else if ((c >> 8) == KEY_END)
+          else if ((c >> 8) == ALLEGRO_KEY_END)
             d->d2 = d->d1 - l;
-          else if ((c >> 8) == KEY_PGUP)
+          else if ((c >> 8) == ALLEGRO_KEY_PGUP)
             d->d2 -= (bottom - top) ? bottom - top : 1;
-          else if ((c >> 8) == KEY_PGDN)
+          else if ((c >> 8) == ALLEGRO_KEY_PGDN)
             d->d2 += (bottom - top) ? bottom - top : 1;
           else
             used = D_O_K;
@@ -826,21 +826,21 @@ my_slider_proc (int msg, DIALOG * d, int c)
 
       if (vert)
         {
-          upkey = KEY_UP;
-          downkey = KEY_DOWN;
-          pgupkey = KEY_PGUP;
-          pgdnkey = KEY_PGDN;
-          homekey = KEY_END;
-          endkey = KEY_HOME;
+          upkey = ALLEGRO_KEY_UP;
+          downkey = ALLEGRO_KEY_DOWN;
+          pgupkey = ALLEGRO_KEY_PGUP;
+          pgdnkey = ALLEGRO_KEY_PGDN;
+          homekey = ALLEGRO_KEY_END;
+          endkey = ALLEGRO_KEY_HOME;
         }
       else
         {
-          upkey = KEY_RIGHT;
-          downkey = KEY_LEFT;
-          pgupkey = KEY_PGDN;
-          pgdnkey = KEY_PGUP;
-          homekey = KEY_HOME;
-          endkey = KEY_END;
+          upkey = ALLEGRO_KEY_RIGHT;
+          downkey = ALLEGRO_KEY_LEFT;
+          pgupkey = ALLEGRO_KEY_PGDN;
+          pgdnkey = ALLEGRO_KEY_PGUP;
+          homekey = ALLEGRO_KEY_HOME;
+          endkey = ALLEGRO_KEY_END;
         }
 
       if (c == upkey)
@@ -1076,7 +1076,7 @@ my_edit_proc (int msg, DIALOG * d, int c)
     case MSG_CHAR:
       ignore_next_uchar = FALSE;
 
-      if ((c >> 8) == KEY_LEFT)
+      if ((c >> 8) == ALLEGRO_KEY_LEFT)
         {
           if (d->d2 > 0)
             {
@@ -1102,7 +1102,7 @@ my_edit_proc (int msg, DIALOG * d, int c)
                 d->d2--;
             }
         }
-      else if ((c >> 8) == KEY_RIGHT)
+      else if ((c >> 8) == ALLEGRO_KEY_RIGHT)
         {
           if (d->d2 < l)
             {
@@ -1118,20 +1118,20 @@ my_edit_proc (int msg, DIALOG * d, int c)
                 d->d2++;
             }
         }
-      else if ((c >> 8) == KEY_HOME)
+      else if ((c >> 8) == ALLEGRO_KEY_HOME)
         {
           d->d2 = 0;
         }
-      else if ((c >> 8) == KEY_END)
+      else if ((c >> 8) == ALLEGRO_KEY_END)
         {
           d->d2 = l;
         }
-      else if ((c >> 8) == KEY_DEL)
+      else if ((c >> 8) == ALLEGRO_KEY_DEL)
         {
           if (d->d2 < l)
             uremove (s, d->d2);
         }
-      else if ((c >> 8) == KEY_BACKSPACE)
+      else if ((c >> 8) == ALLEGRO_KEY_BACKSPACE)
         {
           if (d->d2 > 0)
             {
@@ -1139,7 +1139,7 @@ my_edit_proc (int msg, DIALOG * d, int c)
               uremove (s, d->d2);
             }
         }
-      else if ((c >> 8) == KEY_ENTER)
+      else if ((c >> 8) == ALLEGRO_KEY_ENTER)
         {
           if (d->flags & D_EXIT)
             {
@@ -1149,7 +1149,7 @@ my_edit_proc (int msg, DIALOG * d, int c)
           else
             return D_O_K;
         }
-      else if ((c >> 8) == KEY_TAB)
+      else if ((c >> 8) == ALLEGRO_KEY_TAB)
         {
           ignore_next_uchar = TRUE;
           return D_O_K;
@@ -1440,8 +1440,9 @@ my_draw_listbox (DIALOG * d)
               fg = fg_color;
               bg = d->bg;
             }
-          ustrzcpy (s, sizeof (s),
-                    (*(my_getfuncptr) d->dp) (i + d->d2, NULL));
+          LW_MACRO_STRNCPY(s,
+                           (*(my_getfuncptr) d->dp) (i + d->d2, NULL),
+                           sizeof(s));
           x = d->x + 2;
           y = d->y + 2 + i * text_height (font);
           rectfill (gui_bmp, x, y, x + 7, y + text_height (font) - 1, bg);
@@ -1613,22 +1614,22 @@ my_list_proc (int msg, DIALOG * d, int c)
 
           orig = d->d1;
 
-          if (c == KEY_UP)
+          if (c == ALLEGRO_KEY_UP)
             d->d1--;
-          else if (c == KEY_DOWN)
+          else if (c == ALLEGRO_KEY_DOWN)
             d->d1++;
-          else if (c == KEY_HOME)
+          else if (c == ALLEGRO_KEY_HOME)
             d->d1 = 0;
-          else if (c == KEY_END)
+          else if (c == ALLEGRO_KEY_END)
             d->d1 = listsize - 1;
-          else if (c == KEY_PGUP)
+          else if (c == ALLEGRO_KEY_PGUP)
             {
               if (d->d1 > d->d2)
                 d->d1 = d->d2;
               else
                 d->d1 -= (bottom - d->d2) ? bottom - d->d2 : 1;
             }
-          else if (c == KEY_PGDN)
+          else if (c == ALLEGRO_KEY_PGDN)
             {
               if (d->d1 < bottom)
                 d->d1 = bottom;
@@ -1674,7 +1675,7 @@ my_create_bitmap (int w, int h)
 {
   ALLEGRO_BITMAP *bmp;
 
-  bmp = create_bitmap (w, h);
+  bmp = al_create_bitmap (w, h);
   if (bmp == NULL)
     my_exit (EXIT_CODE_MEM_TROUBLE);
 

@@ -98,8 +98,8 @@ standard_error (char *str)
   d[1].proc = d_keyboard_proc;
   d[1].dp = return_d_close;
   d[1].key = ' ';
-  d[1].d1 = KEY_ENTER;
-  d[1].d2 = KEY_ESC;
+  d[1].d1 = ALLEGRO_KEY_ENTER;
+  d[1].d2 = ALLEGRO_KEY_ESC;
 
   d[2].proc = NULL;
 

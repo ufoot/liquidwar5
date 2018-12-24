@@ -102,6 +102,9 @@ void rectfill (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2, int colo
 int usetc (char *s, int c);
 int ugetc (const char *s);
 int uwidth (const char *s);
+int uisspace (int c);
 int text_length(ALLEGRO_FONT *f, const char *s);
+int text_height(ALLEGRO_FONT *f);
+void textout_ex(ALLEGRO_BITMAP *bmp, const ALLEGRO_FONT *f, const char *s, int x, int y, int color, int bg);
 
 #endif // LIQUID_WAR_INCLUDE_BACKPORT

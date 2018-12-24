@@ -214,7 +214,7 @@ connect_on_server_start (int *sock, char *address, int port)
    */
   while (connect_data->running && !esc_pressed)
     {
-      if (key[KEY_ESC])
+      if (key[ALLEGRO_KEY_ESC])
         {
           esc_pressed = 1;
         }

@@ -276,7 +276,7 @@ my_exit_poll ()
    * We exit if the close button has been clicked or
    * F10 has been pressed
    */
-  if (LW_EXIT_FORCE_SHUTDOWN || key[KEY_F10])
+  if (LW_EXIT_FORCE_SHUTDOWN || key[ALLEGRO_KEY_F10])
     {
       my_exit (EXIT_CODE_OK);
     }

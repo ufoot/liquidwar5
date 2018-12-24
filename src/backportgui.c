@@ -804,19 +804,19 @@ move_focus (DIALOG * d, int ascii, int scan, int *focus_obj)
   /* choose a comparison function */
   switch (scan)
     {
-    case KEY_TAB:
+    case ALLEGRO_KEY_TAB:
       cmp = (ascii == '\t') ? cmp_tab : cmp_shift_tab;
       break;
-    case KEY_RIGHT:
+    case ALLEGRO_KEY_RIGHT:
       cmp = cmp_right;
       break;
-    case KEY_LEFT:
+    case ALLEGRO_KEY_LEFT:
       cmp = cmp_left;
       break;
-    case KEY_DOWN:
+    case ALLEGRO_KEY_DOWN:
       cmp = cmp_down;
       break;
-    case KEY_UP:
+    case ALLEGRO_KEY_UP:
       cmp = cmp_up;
       break;
     default:
@@ -1373,31 +1373,31 @@ update_dialog (DIALOG_PLAYER * player)
       if (joy[0].stick[0].axis[0].d1)
         {
           cascii = 0;
-          cscan = KEY_LEFT;
+          cscan = ALLEGRO_KEY_LEFT;
           player->joy_on = TRUE;
         }
       else if (joy[0].stick[0].axis[0].d2)
         {
           cascii = 0;
-          cscan = KEY_RIGHT;
+          cscan = ALLEGRO_KEY_RIGHT;
           player->joy_on = TRUE;
         }
       else if (joy[0].stick[0].axis[1].d1)
         {
           cascii = 0;
-          cscan = KEY_UP;
+          cscan = ALLEGRO_KEY_UP;
           player->joy_on = TRUE;
         }
       else if (joy[0].stick[0].axis[1].d2)
         {
           cascii = 0;
-          cscan = KEY_DOWN;
+          cscan = ALLEGRO_KEY_DOWN;
           player->joy_on = TRUE;
         }
       else if ((joy[0].button[0].b) || (joy[0].button[1].b))
         {
           cascii = ' ';
-          cscan = KEY_SPACE;
+          cscan = ALLEGRO_KEY_SPACE;
           player->joy_on = TRUE;
         }
       else
@@ -1902,9 +1902,9 @@ static int
 menu_alt_key (int k, MENU * m)
 {
   static unsigned char alt_table[] = {
-    KEY_A, KEY_B, KEY_C, KEY_D, KEY_E, KEY_F, KEY_G, KEY_H, KEY_I,
-    KEY_J, KEY_K, KEY_L, KEY_M, KEY_N, KEY_O, KEY_P, KEY_Q, KEY_R,
-    KEY_S, KEY_T, KEY_U, KEY_V, KEY_W, KEY_X, KEY_Y, KEY_Z
+    ALLEGRO_KEY_A, ALLEGRO_KEY_B, ALLEGRO_KEY_C, ALLEGRO_KEY_D, ALLEGRO_KEY_E, ALLEGRO_KEY_F, ALLEGRO_KEY_G, ALLEGRO_KEY_H, ALLEGRO_KEY_I,
+    ALLEGRO_KEY_J, ALLEGRO_KEY_K, ALLEGRO_KEY_L, ALLEGRO_KEY_M, ALLEGRO_KEY_N, ALLEGRO_KEY_O, ALLEGRO_KEY_P, ALLEGRO_KEY_Q, ALLEGRO_KEY_R,
+    ALLEGRO_KEY_S, ALLEGRO_KEY_T, ALLEGRO_KEY_U, ALLEGRO_KEY_V, ALLEGRO_KEY_W, ALLEGRO_KEY_X, ALLEGRO_KEY_Y, ALLEGRO_KEY_Z
   };
 
   AL_CONST char *s;
@@ -2145,22 +2145,22 @@ update_menu (MENU_PLAYER * player)
           switch (c >> 8)
             {
 
-            case KEY_LEFT:
+            case ALLEGRO_KEY_LEFT:
               if (player->parent)
                 {
                   if (player->parent->bar)
                     {
-                      simulate_keypress (KEY_LEFT << 8);
-                      simulate_keypress (KEY_DOWN << 8);
+                      simulate_keypress (ALLEGRO_KEY_LEFT << 8);
+                      simulate_keypress (ALLEGRO_KEY_DOWN << 8);
                     }
                   player->ret = -2;
                   goto End;
                 }
               /* fall through */
 
-            case KEY_UP:
-              if ((((c >> 8) == KEY_LEFT) && (player->bar)) ||
-                  (((c >> 8) == KEY_UP) && (!player->bar)))
+            case ALLEGRO_KEY_UP:
+              if ((((c >> 8) == ALLEGRO_KEY_LEFT) && (player->bar)) ||
+                  (((c >> 8) == ALLEGRO_KEY_UP) && (!player->bar)))
                 {
                   c = player->sel;
                   do
@@ -2175,26 +2175,26 @@ update_menu (MENU_PLAYER * player)
                 }
               break;
 
-            case KEY_RIGHT:
+            case ALLEGRO_KEY_RIGHT:
               if (((player->sel < 0) || (!player->menu[player->sel].child)) &&
                   (player->parent) && (player->parent->bar))
                 {
-                  simulate_keypress (KEY_RIGHT << 8);
-                  simulate_keypress (KEY_DOWN << 8);
+                  simulate_keypress (ALLEGRO_KEY_RIGHT << 8);
+                  simulate_keypress (ALLEGRO_KEY_DOWN << 8);
                   player->ret = -2;
                   goto End;
                 }
               /* fall through */
 
-            case KEY_DOWN:
+            case ALLEGRO_KEY_DOWN:
               if ((player->sel >= 0) && (player->menu[player->sel].child) &&
-                  ((((c >> 8) == KEY_RIGHT) && (!player->bar)) ||
-                   (((c >> 8) == KEY_DOWN) && (player->bar))))
+                  ((((c >> 8) == ALLEGRO_KEY_RIGHT) && (!player->bar)) ||
+                   (((c >> 8) == ALLEGRO_KEY_DOWN) && (player->bar))))
                 {
                   player->ret = player->sel;
                 }
-              else if ((((c >> 8) == KEY_RIGHT) && (player->bar)) ||
-                       (((c >> 8) == KEY_DOWN) && (!player->bar)))
+              else if ((((c >> 8) == ALLEGRO_KEY_RIGHT) && (player->bar)) ||
+                       (((c >> 8) == ALLEGRO_KEY_DOWN) && (!player->bar)))
                 {
                   c = player->sel;
                   do
@@ -2209,8 +2209,8 @@ update_menu (MENU_PLAYER * player)
                 }
               break;
 
-            case KEY_SPACE:
-            case KEY_ENTER:
+            case ALLEGRO_KEY_SPACE:
+            case ALLEGRO_KEY_ENTER:
               if (player->sel >= 0)
                 player->ret = player->sel;
               break;

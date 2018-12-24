@@ -91,7 +91,7 @@ display_special_info (void)
 {
   int global, spread, move, disp, flip;
 
-  if (WATCHDOG_SCANCODE[KEY_F5])
+  if (WATCHDOG_SCANCODE[ALLEGRO_KEY_F5])
     {
       global = get_profile (GLOBAL_PROFILE);
       if (global <=0)
@@ -100,7 +100,7 @@ display_special_info (void)
                        1000 / global);
     }
 
-  if (WATCHDOG_SCANCODE[KEY_F6])
+  if (WATCHDOG_SCANCODE[ALLEGRO_KEY_F6])
     {
       global = get_logic_rate ();
       if (global <=0)
@@ -109,7 +109,7 @@ display_special_info (void)
                        1000 / global);
     }
 
-  if (WATCHDOG_SCANCODE[KEY_F7])
+  if (WATCHDOG_SCANCODE[ALLEGRO_KEY_F7])
     {
       global = get_profile (GLOBAL_PROFILE);
       spread = get_profile (SPREAD_PROFILE);
@@ -120,7 +120,7 @@ display_special_info (void)
                        (100 * (spread + move)) / global);
     }
 
-  if (WATCHDOG_SCANCODE[KEY_F8])
+  if (WATCHDOG_SCANCODE[ALLEGRO_KEY_F8])
     {
       global = get_profile (GLOBAL_PROFILE);
       disp = get_profile (DISP_PROFILE);
@@ -211,7 +211,7 @@ check_boolean_codes (void)
   /*
    * If we press F3 and we're not in network mode -> toggle pause mode
    */
-  if (WATCHDOG_SCANCODE[KEY_F3] && !LW_NETWORK_ON)
+  if (WATCHDOG_SCANCODE[ALLEGRO_KEY_F3] && !LW_NETWORK_ON)
     {
       if (PAUSE_ON)
         {
@@ -224,7 +224,7 @@ check_boolean_codes (void)
           message_str (lw_lang_string (LW_LANG_STRING_CODE_PAUSEON));
         }
     }
-  if (WATCHDOG_SCANCODE[KEY_F4])
+  if (WATCHDOG_SCANCODE[ALLEGRO_KEY_F4])
     {
       if (CONFIG_WAVE_ON)
         {
@@ -237,7 +237,7 @@ check_boolean_codes (void)
           message_str (lw_lang_string (LW_LANG_STRING_CODE_WAVEEFFECTSON));
         }
     }
-  if (WATCHDOG_SCANCODE[KEY_F9])
+  if (WATCHDOG_SCANCODE[ALLEGRO_KEY_F9])
     {
       if (lw_capture_get_mode ())
         {
