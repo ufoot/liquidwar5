@@ -61,6 +61,7 @@
 /* variables globales                                               */
 /*==================================================================*/
 
+ALLEGRO_BITMAP *screen=NULL;
 ALLEGRO_FONT *font=NULL;
 
 /*==================================================================*/
@@ -188,6 +189,96 @@ uisspace (int c)
    * Super naive impl, should do the job for the LW use-case.
    */
   return c<=32;
+}
+
+/*------------------------------------------------------------------*/
+int
+usetat(char *s, int index, int c,int max_size){
+  // https://liballeg.org/stabledocs/en/alleg002.html#usetat
+  /*
+   * Altered the protoype of that one, not giving max_size here
+   * is just totally super-dangerous IMHO.
+   */
+  int l;
+  int max_len=max_size-1;
+
+  l=strlen(s);
+  if (index<0) {
+    index=l-index;
+  }
+  if (index>= max_len || index<0){
+    return;
+  }
+
+  us = al_ustr_new (s);
+  if (c==0) {
+    al_ustr_truncate(us,index);
+  } else {
+    al_ustr_remove_chr(us,index);
+    al_ustr_insert_chr(us,index,c);
+  }
+  LW_MACRO_STRNCPY(s,al_cstr(us),max_size);
+  al_ustr_free (us);
+
+  return (strlen(s)-l);
+}
+
+/*------------------------------------------------------------------*/
+int uinsert(char *s, int index, int c,int max_size){
+  // https://liballeg.org/stabledocs/en/alleg002.html#uinsert
+  /*
+   * Altered the protoype of that one, not giving max_size here
+   * is just totally super-dangerous IMHO.
+   */
+  us = al_ustr_new (s);
+  al_ustr_free (us);
+
+  int l;
+  int max_len=max_size-1;
+
+  l=strlen(s);
+  if (index<0) {
+    index=l-index;
+  }
+  if (index>= max_len || index<0){
+    return;
+  }
+
+  us = al_ustr_new (s);
+  if (c==0) {
+    al_ustr_truncate(us,index);
+  } else {
+    al_ustr_insert_chr(us,index,c);
+  }
+  LW_MACRO_STRNCPY(s,al_cstr(us),max_size);
+  al_ustr_free (us);
+
+  return (strlen(s)-l);
+}
+
+/*------------------------------------------------------------------*/
+int
+uremove(char *s, int index){
+  // https://liballeg.org/stabledocs/en/alleg002.html#uremove
+  us = al_ustr_new (s);
+  al_ustr_free (us);
+
+  int l;
+
+  l=strlen(s);
+  if (index<0) {
+    index=l-index;
+  }
+  if (index>= max_len || index<0){
+    return;
+  }
+
+  us = al_ustr_new (s);
+  al_ustr_remove_chr(us,index);
+  LW_MACRO_STRNCPY(s,al_cstr(us),max_size);
+  al_ustr_free (us);
+
+  return (strlen(s)-l);
 }
 
 /*------------------------------------------------------------------*/

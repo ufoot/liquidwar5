@@ -89,6 +89,7 @@ PALETTE;
 /* variables globales                                               */
 /*==================================================================*/
 
+extern ALLEGRO_BITMAP *screen;
 extern ALLEGRO_FONT *font;
 
 /*==================================================================*/
@@ -103,6 +104,9 @@ int usetc (char *s, int c);
 int ugetc (const char *s);
 int uwidth (const char *s);
 int uisspace (int c);
+int usetat(char *s, int index, int c);
+int uinsert(char *s, int index, int c);
+int uremove(char *s, int index);
 int text_length(ALLEGRO_FONT *f, const char *s);
 int text_height(ALLEGRO_FONT *f);
 void textout_ex(ALLEGRO_BITMAP *bmp, const ALLEGRO_FONT *f, const char *s, int x, int y, int color, int bg);

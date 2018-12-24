@@ -965,11 +965,11 @@ my_edit_proc (int msg, DIALOG * d, int c)
 {
   static int ignore_next_uchar = FALSE;
   ALLEGRO_BITMAP *gui_bmp;
-  int last_was_space, new_pos, i, k;
+  int last_was_space, new_pos;
   int f, l, p, w, x, b, scroll;
   int fg;
   char buf[16];
-  char *s, *t;
+  char *s;
   ASSERT (d);
 
   gui_bmp = gui_get_screen ();
@@ -1080,42 +1080,14 @@ my_edit_proc (int msg, DIALOG * d, int c)
         {
           if (d->d2 > 0)
             {
-              if (key_shifts & KB_CTRL_FLAG)
-                {
-                  last_was_space = TRUE;
-                  new_pos = 0;
-                  t = s;
-                  for (i = 0; i < d->d2; i++)
-                    {
-                      k = ugetx (&t);
-                      if (uisspace (k))
-                        last_was_space = TRUE;
-                      else if (last_was_space)
-                        {
-                          last_was_space = FALSE;
-                          new_pos = i;
-                        }
-                    }
-                  d->d2 = new_pos;
-                }
-              else
-                d->d2--;
+              d->d2--;
             }
         }
       else if ((c >> 8) == ALLEGRO_KEY_RIGHT)
         {
           if (d->d2 < l)
             {
-              if (key_shifts & KB_CTRL_FLAG)
-                {
-                  t = s + uoffset (s, d->d2);
-                  for (k = ugetx (&t); uisspace (k); k = ugetx (&t))
-                    d->d2++;
-                  for (; k && !uisspace (k); k = ugetx (&t))
-                    d->d2++;
-                }
-              else
-                d->d2++;
+              d->d2++;
             }
         }
       else if ((c >> 8) == ALLEGRO_KEY_HOME)
@@ -1315,7 +1287,7 @@ my_handle_listbox_click (DIALOG * d)
 {
   char *sel = d->dp2;
   int listsize, height;
-  int i, j;
+  int i;
 
   (*(my_getfuncptr) d->dp) (-1, &listsize);
   if (!listsize)
@@ -1345,18 +1317,7 @@ my_handle_listbox_click (DIALOG * d)
     {
       if (sel)
         {
-          if (key_shifts & (KB_SHIFT_FLAG | KB_CTRL_FLAG))
-            {
-              if ((key_shifts & KB_SHIFT_FLAG) || (d->flags & D_INTERNAL))
-                {
-                  for (j = MIN (i, d->d1); j <= MAX (i, d->d1); j++)
-                    sel[j] = TRUE;
-                }
-              else
-                sel[i] = !sel[i];
-            }
-          else
-            sel[i] = TRUE;
+          sel[i] = TRUE;
         }
 
       d->d1 = i;
@@ -1375,10 +1336,7 @@ my_handle_listbox_click (DIALOG * d)
         {
           if (sel)
             {
-              if ((key_shifts & KB_CTRL_FLAG))
-                sel[i] = !sel[i];
-              else
-                sel[i] = TRUE;
+              sel[i] = TRUE;
 
               d->flags |= D_DIRTY;
             }
@@ -1504,7 +1462,7 @@ my_draw_listbox (DIALOG * d)
 int
 my_list_proc (int msg, DIALOG * d, int c)
 {
-  int listsize, i, bottom, height, bar, orig;
+  int listsize, i, bottom, height, bar;
   char *sel = d->dp2;
   int redraw = FALSE;
   ASSERT (d);
@@ -1527,7 +1485,7 @@ my_list_proc (int msg, DIALOG * d, int c)
       bar = (listsize > height);
       if ((!bar) || (gui_mouse_x () < d->x + d->w - 13))
         {
-          if ((sel) && (!(key_shifts & KB_CTRL_FLAG)))
+          if (sel)
             {
               for (i = 0; i < listsize; i++)
                 {
@@ -1612,8 +1570,6 @@ my_list_proc (int msg, DIALOG * d, int c)
           if (bottom >= listsize - 1)
             bottom = listsize - 1;
 
-          orig = d->d1;
-
           if (c == ALLEGRO_KEY_UP)
             d->d1--;
           else if (c == ALLEGRO_KEY_DOWN)
@@ -1638,25 +1594,6 @@ my_list_proc (int msg, DIALOG * d, int c)
             }
           else
             return D_O_K;
-
-          if (sel)
-            {
-              if (!(key_shifts & (KB_SHIFT_FLAG | KB_CTRL_FLAG)))
-                {
-                  for (i = 0; i < listsize; i++)
-                    sel[i] = FALSE;
-                }
-              else if (key_shifts & KB_SHIFT_FLAG)
-                {
-                  for (i = MIN (orig, d->d1); i <= MAX (orig, d->d1); i++)
-                    {
-                      if (key_shifts & KB_CTRL_FLAG)
-                        sel[i] = (i != d->d1);
-                      else
-                        sel[i] = TRUE;
-                    }
-                }
-            }
 
           /* if we changed something, better redraw... */
           my_handle_scrollable_scroll (d, listsize, &d->d1, &d->d2);
