@@ -66,12 +66,30 @@
 #define AL_CONST const
 #endif // AL_CONST
 
+#ifndef FALSE
+#define FALSE 0
+#endif
+
+#ifndef TRUE
+#define TRUE 1
+#endif
+
+/*==================================================================*/
+/* types                                                            */
+/*==================================================================*/
+
 #define PALETTE_SIZE 256
 typedef struct
 {
   ALLEGRO_COLOR colors[PALETTE_SIZE];
 }
 PALETTE;
+
+/*==================================================================*/
+/* variables globales                                               */
+/*==================================================================*/
+
+extern ALLEGRO_FONT *font;
 
 /*==================================================================*/
 /* fonctions globales                                               */
