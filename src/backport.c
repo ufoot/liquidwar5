@@ -43,82 +43,71 @@
 /*****************************************************************************/
 
 /********************************************************************/
-/* nom           : disk.h                                           */
-/* contenu       : chargement des donnees du fichier .dat           */
-/* date de modif : 3 mai 98                                         */
+/* name          : backport.c                                       */
+/* content       : missing allegro 4 stuff                          */
+/* last update   : Dec 24th 2018                                    */
 /********************************************************************/
-
-#ifndef LIQUID_WAR_INCLUDE_DISK
-#define LIQUID_WAR_INCLUDE_DISK
 
 /*==================================================================*/
 /* includes                                                         */
 /*==================================================================*/
 
-#include <allegro5/allegro.h>
-#include <allegro5/allegro_audio.h>
-#include <allegro5/allegro_font.h>
-
-/*==================================================================*/
-/* constantes                                                       */
-/*==================================================================*/
-
-#define SAMPLE_WATER_MAX_NUMBER  32
-#define SAMPLE_WATER_DAT_NUMBER  32
-
-#define RAW_MAP_MAX_NUMBER     1024
-#define RAW_MAP_DAT_NUMBER      512
-
-#define RAW_TEXTURE_MAX_NUMBER 1024
-#define RAW_TEXTURE_DAT_NUMBER  512
-
-#define MIDI_MUSIC_MAX_NUMBER   256
-#define MIDI_MUSIC_DAT_NUMBER   128
+#include "backport.h"
 
 /*==================================================================*/
 /* variables globales                                               */
 /*==================================================================*/
 
-extern int SAMPLE_WATER_NUMBER;
-extern int RAW_TEXTURE_NUMBER;
-extern int RAW_MAPTEX_NUMBER;
-extern int RAW_MAP_NUMBER;
-extern int MIDI_MUSIC_NUMBER;
-
-extern int LOADED_BACK;
-extern int LOADED_TEXTURE;
-extern int LOADED_MAPTEX;
-extern int LOADED_SFX;
-extern int LOADED_WATER;
-
-extern ALLEGRO_SAMPLE *SAMPLE_SFX_TIME;
-extern ALLEGRO_SAMPLE *SAMPLE_SFX_WIN;
-extern ALLEGRO_SAMPLE *SAMPLE_SFX_GO;
-extern ALLEGRO_SAMPLE *SAMPLE_SFX_CLICK;
-extern ALLEGRO_SAMPLE *SAMPLE_SFX_LOOSE;
-extern ALLEGRO_SAMPLE *SAMPLE_SFX_CONNECT;
-
-extern ALLEGRO_SAMPLE *SAMPLE_WATER[SAMPLE_WATER_MAX_NUMBER];
-extern void *RAW_MAP[RAW_MAP_MAX_NUMBER];
-extern void *RAW_MAP_ORDERED[RAW_MAP_MAX_NUMBER];
-extern void *RAW_TEXTURE[RAW_TEXTURE_MAX_NUMBER];
-extern void *RAW_MAPTEX[RAW_TEXTURE_MAX_NUMBER];
-extern ALLEGRO_SAMPLE *MIDI_MUSIC[MIDI_MUSIC_MAX_NUMBER];
-
-extern ALLEGRO_BITMAP *BACK_IMAGE;
-
-extern ALLEGRO_FONT *BIG_FONT;
-extern ALLEGRO_FONT *SMALL_FONT;
-extern ALLEGRO_BITMAP *BIG_MOUSE_CURSOR;
-extern ALLEGRO_BITMAP *SMALL_MOUSE_CURSOR;
-extern ALLEGRO_BITMAP *INVISIBLE_MOUSE_CURSOR;
-
 /*==================================================================*/
-/* fonctions globales                                               */
+/* fonctions                                                        */
 /*==================================================================*/
 
-int load_dat (void);
-int load_custom (void);
-void order_map (void);
+/*------------------------------------------------------------------*/
+void scare_mouse() {
+  /*
+   * Using a higher level API now, looks like those disappeared.
+   * Keeping them so that whatever workaround those calls were
+   * achieving, it's easier to backport it afterwards.
+   */
+}
 
-#endif
+/*------------------------------------------------------------------*/
+void unscare_mouse() {
+  /*
+   * Using a higher level API now, looks like those disappeared.
+   * Keeping them so that whatever workaround those calls were
+   * achieving, it's easier to backport it afterwards.
+   */
+}
+
+/*------------------------------------------------------------------*/
+void putpixel(ALLEGRO_BITMAP *bitmap,int x,int y, int color) {
+  /*
+   * Very likely, this is totally sub-efficient as we call set_target_bitmap
+   * on *EVERY* putpixel call. Also, we emulate PALETTE code, which is ugly.
+   * However, at least, it's safe transition code.
+   * [TODO:ufoot] optimize that crap.
+   */
+  void al_set_target_bitmap(bitmap);
+  if (color<0 || color>=PALETTE_SIZE) {
+    return
+  }
+  al_color=GLOBAL_PALETTE[color];
+  al_put_pixel(x,y,al_color);
+}
+
+/*------------------------------------------------------------------*/
+void int usetc(char *s, int c) {
+  ALLEGRO_USTR *us=NULL;
+  int l=0;
+  const char *s=NULL;
+
+  us=al_ustr_new("");
+  al_ustr_append_chr(us, c);
+  s=al_cstr(us);
+  l=strlen(s);
+  LW_MACRO_STRNCPY(s,al_cstr(us));
+  al_ustr_free(us);
+
+  return l;
+}

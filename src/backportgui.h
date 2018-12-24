@@ -19,13 +19,11 @@
 #ifndef ALLEGRO_GUI_H
 #define ALLEGRO_GUI_H
 
-#include "base.h"
-
 #ifdef __cplusplus
    extern "C" {
 #endif
 
-struct BITMAP;
+struct ALLEGRO_BITMAP;
 struct DIALOG;
 
 typedef AL_METHOD(int, DIALOG_PROC, (int msg, struct DIALOG *d, int c));
@@ -78,18 +76,18 @@ typedef struct MENU_PLAYER
    int sel;                         /* selected item */
    int x, y, w, h;                  /* screen position of the menu */
    int (*proc)(void);               /* callback function */
-   BITMAP *saved;                   /* saved what was underneath it */
-   
+   ALLEGRO_BITMAP *saved;                   /* saved what was underneath it */
+
    int mouse_button_was_pressed;    /* set if mouse button pressed on last iteration */
-   int back_from_child;             /* set if a child was activated on last iteration */    
+   int back_from_child;             /* set if a child was activated on last iteration */
    int timestamp;                   /* timestamp for gui_timer events */
    int mouse_sel;                   /* item the mouse is currently over */
    int redraw;                      /* set if redrawing is required */
    int auto_open;                   /* set if menu auto-opening is activated */
    int ret;                         /* return value */
-   
+
    DIALOG *dialog;                  /* d_menu_proc() parent dialog (if any) */
-   
+
    struct MENU_PLAYER *parent;      /* the parent menu, or NULL for root */
    struct MENU_PLAYER *child;       /* the child menu, or NULL for none */
 } MENU_PLAYER;
@@ -193,9 +191,9 @@ AL_FUNCPTR(int, gui_mouse_y, (void));
 AL_FUNCPTR(int, gui_mouse_z, (void));
 AL_FUNCPTR(int, gui_mouse_b, (void));
 
-AL_FUNC(void, gui_set_screen, (BITMAP *bmp));
-AL_FUNC(BITMAP *, gui_get_screen, (void));
-AL_FUNC(int, gui_textout_ex, (struct BITMAP *bmp, AL_CONST char *s, int x, int y, int color, int bg, int centre));
+AL_FUNC(void, gui_set_screen, (ALLEGRO_BITMAP *bmp));
+AL_FUNC(ALLEGRO_BITMAP *, gui_get_screen, (void));
+AL_FUNC(int, gui_textout_ex, (struct ALLEGRO_BITMAP *bmp, AL_CONST char *s, int x, int y, int color, int bg, int centre));
 AL_FUNC(int, gui_strlen, (AL_CONST char *s));
 AL_FUNC(void, position_dialog, (DIALOG *dialog, int x, int y));
 AL_FUNC(void, centre_dialog, (DIALOG *dialog));
@@ -227,5 +225,3 @@ AL_FUNC(int, gfx_mode_select_filter, (int *card, int *w, int *h, int *color_dept
 #endif
 
 #endif          /* ifndef ALLEGRO_GUI_H */
-
-

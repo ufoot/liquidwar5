@@ -82,6 +82,7 @@ OBJ_NAMES = \
 	asm \
 	autoplay \
 	back \
+	backport \
 	backportgui \
 	backportguiproc \
 	basicopt \

@@ -75,7 +75,7 @@
 #define DIR_NNW 11
 
 #define LW_PROGRAM               "liquidwar"
-#define LW_VERSION               "5.6.5"
+#define LW_VERSION               "5.6.6"
 
 #define NAME_SIZE 10
 #define PASSWORD_SIZE 20

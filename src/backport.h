@@ -44,8 +44,8 @@
 
 /********************************************************************/
 /* nom           : backport.h                                       */
-/* contenu       : ...                                              */
-/* date de modif : 3 mai 98                                         */
+/* content       : missing allegro 4 stuff                          */
+/* last update   : Dec 24th 2018                                    */
 /********************************************************************/
 
 #ifndef LIQUID_WAR_INCLUDE_BACKPORT
@@ -58,11 +58,27 @@
 #include <allegro5/allegro.h>
 
 /*==================================================================*/
-/* variables globales                                               */
+/* defines                                                          */
 /*==================================================================*/
 
 #ifndef AL_CONST
 #define AL_CONST const
 #endif // AL_CONST
+
+#define PALETTE_SIZE 256
+typedef struct
+{
+  ALLEGRO_COLOR colors[PALETTE_SIZE];
+}
+PALETTE;
+
+/*==================================================================*/
+/* fonctions globales                                               */
+/*==================================================================*/
+
+void scare_mouse();
+void unscare_mouse();
+void putpixel(ALLEGRO_BITMAP *bitmap,int x,int y, int color);
+int usetc(char *s, int c);
 
 #endif // LIQUID_WAR_INCLUDE_BACKPORT

@@ -55,6 +55,7 @@
 #include <string.h>
 
 #include "advanced.h"
+#include "backport.h"
 #include "config.h"
 #include "dialog.h"
 #include "disk.h"
