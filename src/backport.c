@@ -54,6 +54,8 @@
 
 #include "backport.h"
 
+#include <allegro5/allegro_primitives.h>
+
 /*==================================================================*/
 /* variables globales                                               */
 /*==================================================================*/
@@ -63,7 +65,9 @@
 /*==================================================================*/
 
 /*------------------------------------------------------------------*/
-void scare_mouse() {
+void
+scare_mouse ()
+{
   /*
    * Using a higher level API now, looks like those disappeared.
    * Keeping them so that whatever workaround those calls were
@@ -72,7 +76,9 @@ void scare_mouse() {
 }
 
 /*------------------------------------------------------------------*/
-void unscare_mouse() {
+void
+unscare_mouse ()
+{
   /*
    * Using a higher level API now, looks like those disappeared.
    * Keeping them so that whatever workaround those calls were
@@ -81,33 +87,52 @@ void unscare_mouse() {
 }
 
 /*------------------------------------------------------------------*/
-void putpixel(ALLEGRO_BITMAP *bitmap,int x,int y, int color) {
+void
+putpixel (ALLEGRO_BITMAP * bitmap, int x, int y, int color)
+{
   /*
    * Very likely, this is totally sub-efficient as we call set_target_bitmap
    * on *EVERY* putpixel call. Also, we emulate PALETTE code, which is ugly.
    * However, at least, it's safe transition code.
    * [TODO:ufoot] optimize that crap.
    */
-  void al_set_target_bitmap(bitmap);
-  if (color<0 || color>=PALETTE_SIZE) {
-    return
-  }
-  al_color=GLOBAL_PALETTE[color];
-  al_put_pixel(x,y,al_color);
+  void al_set_target_bitmap (bitmap);
+  if (color < 0 || color >= PALETTE_SIZE)
+    {
+      return;
+    }
+  al_color = GLOBAL_PALETTE[color];
+  al_put_pixel (x, y, al_color);
 }
 
 /*------------------------------------------------------------------*/
-void int usetc(char *s, int c) {
-  ALLEGRO_USTR *us=NULL;
-  int l=0;
-  const char *s=NULL;
+void
+rectfill (ALLEGRO_BITMAP * bitmap, x1, y1, x2, y2, int color)
+{
+  void al_set_target_bitmap (bitmap);
+  if (color < 0 || color >= PALETTE_SIZE)
+    {
+      return;
+    }
+  al_color = GLOBAL_PALETTE[color];
+  // +1 on second coord because floating point vs integer
+  al_draw_filled_rectangle (x1, y1, x2 + 1, y2 + 1, al_color);
+}
 
-  us=al_ustr_new("");
-  al_ustr_append_chr(us, c);
-  s=al_cstr(us);
-  l=strlen(s);
-  LW_MACRO_STRNCPY(s,al_cstr(us));
-  al_ustr_free(us);
+/*------------------------------------------------------------------*/
+int
+usetc (char *s, int c)
+{
+  ALLEGRO_USTR *us = NULL;
+  int l = 0;
+  const char *s = NULL;
+
+  us = al_ustr_new ("");
+  al_ustr_append_chr (us, c);
+  s = al_cstr (us);
+  l = strlen (s);
+  LW_MACRO_STRNCPY (s, al_cstr (us));
+  al_ustr_free (us);
 
   return l;
 }

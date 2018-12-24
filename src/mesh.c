@@ -236,7 +236,8 @@ group_mesher (MESHER * mesher, ALLEGRO_BITMAP * map, int step)
 
 /*------------------------------------------------------------------*/
 static MESH *
-mesher_to_mesh (MESHER * mesher, ALLEGRO_BITMAP * map, int *size, int *w, int *h)
+mesher_to_mesh (MESHER * mesher, ALLEGRO_BITMAP * map, int *size, int *w,
+                int *h)
 {
   MESH *result;
   MESHER *temp;

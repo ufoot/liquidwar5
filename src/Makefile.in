@@ -16,6 +16,7 @@ DEBUG =           @DEBUG@
 EFENCE =          @EFENCE@
 PTHREAD =         @PTHREAD@
 GP2X =            @GP2X@
+ALLIBS =	      @ALLIBS@
 
 ifeq ($(HOST_OPT),yes)
 	HOST =          @host@
@@ -36,11 +37,9 @@ endif
 ifeq ($(DEBUG),yes)
 	DEBUG_FLAGS =   -g3
 	DEBUG_OPTIONS = -DDEBUG
-	ALLEGRO_LIBRARY = debug
 else
 	DEBUG_FLAGS =   -O2 -fomit-frame-pointer
 	DEBUG_OPTIONS =
-	ALLEGRO_LIBRARY = release
 endif
 
 ifeq ($(EFENCE),yes)
@@ -233,10 +232,10 @@ EXE_FILES = liquidwar liquidwar-server liquidwar-mapgen
 
 ifeq ($(STATIC),yes)
     LINK_OPTIONS = --static
-    EXTERN_LIBS = `allegro-config --static $(ALLEGRO_LIBRARY)` $(EFENCE_LIBRARY)
+    EXTERN_LIBS = $(ALLIBS) $(EFENCE_LIBRARY)
 else
     LINK_OPTIONS =
-    EXTERN_LIBS = `allegro-config --libs $(ALLEGRO_LIBRARY)` $(EFENCE_LIBRARY)
+    EXTERN_LIBS = $(ALLIBS) $(EFENCE_LIBRARY)
 endif
 
 CONFIG_OPTIONS = \

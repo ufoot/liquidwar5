@@ -70,12 +70,12 @@ int lw_maptex_is_custom_texture_used (int num,
                                       int network, int random,
                                       int use_default_texture);
 ALLEGRO_BITMAP *lw_maptex_create_map (int num, int fg, int bg, int network,
-                              int random, int min_w, int min_h,
-                              int use_default_texture);
+                                      int random, int min_w, int min_h,
+                                      int use_default_texture);
 ALLEGRO_BITMAP *lw_maptex_create_fg (int num, int fg, int network, int random,
-                             int use_default_texture);
+                                     int use_default_texture);
 ALLEGRO_BITMAP *lw_maptex_create_bg (int num, int bg, int network, int random,
-                             int use_default_texture);
+                                     int use_default_texture);
 void lw_maptex_set_fg_palette (int num, int fg, int network, int random,
                                int use_default_texture);
 void lw_maptex_set_bg_palette (int num, int bg, int network, int random,

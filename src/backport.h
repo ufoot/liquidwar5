@@ -76,9 +76,10 @@ PALETTE;
 /* fonctions globales                                               */
 /*==================================================================*/
 
-void scare_mouse();
-void unscare_mouse();
-void putpixel(ALLEGRO_BITMAP *bitmap,int x,int y, int color);
-int usetc(char *s, int c);
+void scare_mouse ();
+void unscare_mouse ();
+void putpixel (ALLEGRO_BITMAP * bitmap, int x, int y, int color);
+void rectfill (ALLEGRO_BITMAP * bitmap, x1, y1, x2, y2, int color);
+int usetc (char *s, int c);
 
 #endif // LIQUID_WAR_INCLUDE_BACKPORT

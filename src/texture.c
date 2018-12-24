@@ -101,7 +101,8 @@ exist_color (PALETTE pal, RGB rgb)
 
 /*-----------------------------------------------------------------*/
 static int
-recalculate_number_of_colors (int max_number, ALLEGRO_BITMAP * bmp, PALETTE pal)
+recalculate_number_of_colors (int max_number, ALLEGRO_BITMAP * bmp,
+                              PALETTE pal)
 {
   int i, x, y, n = 1;
   RGB color;
@@ -126,7 +127,8 @@ recalculate_number_of_colors (int max_number, ALLEGRO_BITMAP * bmp, PALETTE pal)
 static void
 create_new_palette (PALETTE dst,
                     PALETTE src,
-                    ALLEGRO_BITMAP * bmp, int first_color, int number_of_colors)
+                    ALLEGRO_BITMAP * bmp, int first_color,
+                    int number_of_colors)
 {
   int i, x, y, index;
   int nb_retries = 0;
@@ -202,7 +204,8 @@ create_converted_bitmap (ALLEGRO_BITMAP * bmp,
 
 /*------------------------------------------------------------------*/
 static void
-red8col (ALLEGRO_BITMAP * bmp, PALETTE pal, int first_color, int number_of_colors)
+red8col (ALLEGRO_BITMAP * bmp, PALETTE pal, int first_color,
+         int number_of_colors)
 {
   PALETTE pal2;
   int i;

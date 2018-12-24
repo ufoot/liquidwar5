@@ -329,7 +329,8 @@ fill_with_fg_and_bg (ALLEGRO_BITMAP * bmp, int fg, int bg)
 
 /*-----------------------------------------------------------------*/
 static void
-convert_to_buffer (ALLEGRO_BITMAP * bmp, char *buffer, int *size, int *bg_size)
+convert_to_buffer (ALLEGRO_BITMAP * bmp, char *buffer, int *size,
+                   int *bg_size)
 {
   int pos_src, l, wh;
   char *data;
@@ -368,7 +369,8 @@ convert_to_buffer (ALLEGRO_BITMAP * bmp, char *buffer, int *size, int *bg_size)
 
 /*------------------------------------------------------------------*/
 void *
-lw_map_archive_raw_bmp (ALLEGRO_BITMAP * bmp, PALETTE pal, const char *filename)
+lw_map_archive_raw_bmp (ALLEGRO_BITMAP * bmp, PALETTE pal,
+                        const char *filename)
 {
   int w = 0, h = 0, size = 0, bg_size = 0;
   ALLEGRO_BITMAP *sub_bmp;

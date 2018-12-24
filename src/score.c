@@ -204,7 +204,8 @@ init_tombola ()
 
 /*------------------------------------------------------------------*/
 static int
-draw_score_bitmap (ALLEGRO_BITMAP * bitmap, int cursor, int ellipse_h, int fill_level)
+draw_score_bitmap (ALLEGRO_BITMAP * bitmap, int cursor, int ellipse_h,
+                   int fill_level)
 {
   int w, h;
   int color1 = 0, color2 = 0;
