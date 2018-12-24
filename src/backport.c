@@ -55,6 +55,7 @@
 #include "backport.h"
 
 #include <allegro5/allegro_primitives.h>
+#include <allegro5/allegro_font.h>
 
 /*==================================================================*/
 /* variables globales                                               */
@@ -153,4 +154,29 @@ ugetc (const char *s)
   al_ustr_free (us);
 
   return c;
+}
+
+/*------------------------------------------------------------------*/
+int
+uwidth (const char *s)
+{
+  // https://liballeg.org/stabledocs/en/alleg002.html#uwidth
+  ALLEGRO_USTR *us = NULL;
+  int pos = 0;
+  bool found;
+
+  us = al_ustr_new (s);
+  found=al_ustr_next(us,&pos);
+  al_ustr_free (us);
+
+  if (!found) {
+    return 0;
+  }
+  return pos;
+}
+
+/*------------------------------------------------------------------*/
+int text_length(ALLEGRO_FONT *f, const char *s) {
+  // https://liballeg.org/stabledocs/en/alleg018.html#text_length
+  return al_get_text_width(f, s)
 }

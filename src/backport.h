@@ -56,6 +56,7 @@
 /*==================================================================*/
 
 #include <allegro5/allegro.h>
+#include <allegro5/allegro_font.h>
 
 /*==================================================================*/
 /* defines                                                          */
@@ -82,5 +83,7 @@ void putpixel (ALLEGRO_BITMAP * bitmap, int x, int y, int color);
 void rectfill (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2, int color);
 int usetc (char *s, int c);
 int ugetc (const char *s);
+int uwidth (const char *s);
+int text_length(ALLEGRO_FONT *f, const char *s);
 
 #endif // LIQUID_WAR_INCLUDE_BACKPORT
