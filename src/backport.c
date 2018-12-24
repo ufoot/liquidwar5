@@ -168,7 +168,7 @@ uwidth (const char *s)
   // https://liballeg.org/stabledocs/en/alleg002.html#uwidth
   ALLEGRO_USTR *us = NULL;
   int pos = 0;
-  bool found;
+  bool found=false;
 
   us = al_ustr_new (s);
   found=al_ustr_next(us,&pos);
@@ -178,6 +178,21 @@ uwidth (const char *s)
     return 0;
   }
   return pos;
+}
+
+/*------------------------------------------------------------------*/
+int
+ustrlen (const char *s)
+{
+  // https://liballeg.org/stabledocs/en/alleg002.html#ustrlen
+  ALLEGRO_USTR *us = NULL;
+  int l=0;
+
+  us = al_ustr_new (s);
+  l=al_ustr_length(s);
+  al_ustr_free (us);
+
+  return l;
 }
 
 /*------------------------------------------------------------------*/
@@ -192,6 +207,19 @@ uisspace (int c)
 }
 
 /*------------------------------------------------------------------*/
+int ugetat(char *s, int index) {
+  // https://liballeg.org/stabledocs/en/alleg002.html#ugetat
+  ALLEGRO_USTR *us = NULL;
+  int c=0;
+
+  us = al_ustr_new (s);
+  c=al_ustr_get(us,index);
+  al_ustr_free (us);
+
+  return c;
+}
+
+/*------------------------------------------------------------------*/
 int
 usetat(char *s, int index, int c,int max_size){
   // https://liballeg.org/stabledocs/en/alleg002.html#usetat
@@ -199,7 +227,8 @@ usetat(char *s, int index, int c,int max_size){
    * Altered the protoype of that one, not giving max_size here
    * is just totally super-dangerous IMHO.
    */
-  int l;
+  ALLEGRO_USTR *us = NULL;
+  int l=0;
   int max_len=max_size-1;
 
   l=strlen(s);
@@ -230,10 +259,8 @@ int uinsert(char *s, int index, int c,int max_size){
    * Altered the protoype of that one, not giving max_size here
    * is just totally super-dangerous IMHO.
    */
-  us = al_ustr_new (s);
-  al_ustr_free (us);
-
-  int l;
+  ALLEGRO_USTR *us = NULL;
+  int l=0;
   int max_len=max_size-1;
 
   l=strlen(s);
@@ -260,10 +287,8 @@ int uinsert(char *s, int index, int c,int max_size){
 int
 uremove(char *s, int index){
   // https://liballeg.org/stabledocs/en/alleg002.html#uremove
-  us = al_ustr_new (s);
-  al_ustr_free (us);
-
-  int l;
+  ALLEGRO_USTR *us = NULL;
+  int l=0;
 
   l=strlen(s);
   if (index<0) {
@@ -279,6 +304,17 @@ uremove(char *s, int index){
   al_ustr_free (us);
 
   return (strlen(s)-l);
+}
+
+/*------------------------------------------------------------------*/
+int
+uisok(int c){
+  // https://liballeg.org/stabledocs/en/alleg002.html#uiosok
+  /*
+   * [FIXME:ufoot] right now does nothing real, but game handles
+   * UTF-8 very poorly, TBH.
+   */
+  return ((c >= ' ') && (c <= 127));
 }
 
 /*------------------------------------------------------------------*/
@@ -305,4 +341,28 @@ void textout_ex(ALLEGRO_BITMAP *bmp, const ALLEGRO_FONT *f, const char *s, int x
   ALLEGRO_COLOR al_color;
   al_color = GLOBAL_PALETTE[color];
   al_draw_text(f,al_color,x,y,0,s);
+}
+
+/*------------------------------------------------------------------*/
+void rest_callback(unsigned int time, void (*callback)(void)) {
+  // https://liballeg.org/stabledocs/en/alleg005.html#rest_callback
+  double delay;
+
+  delay=double(time)/1000.0;
+  if (callback==NULL) {
+    al_rest(delay);
+  } else {
+    int i;
+
+    for (i=0; i<time; i++) {
+      al_rest(0.001);
+      callback();
+    }
+  }
+}
+
+/*------------------------------------------------------------------*/
+void rest(unsigned int time) {
+  // https://liballeg.org/stabledocs/en/alleg005.html#rest
+  rest_callback(int,NULL);
 }

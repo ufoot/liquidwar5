@@ -705,7 +705,7 @@ my_slider_proc (int msg, DIALOG * d, int c)
   int pgupkey, pgdnkey;
   int homekey, endkey;
   int delta;
-  fixed slratio, slmax, slpos;
+  al_fixed slratio, slmax, slpos;
   int (*proc) (void *cbpointer, int d2value);
   int oldval;
   ASSERT (d);
@@ -726,10 +726,10 @@ my_slider_proc (int msg, DIALOG * d, int c)
 
   hmar = hh / 2;
   irange = (vert) ? d->h : d->w;
-  slmax = itofix (irange - hh);
+  slmax = al_itofix (irange - hh);
   slratio = slmax / (d->d1);
   slpos = slratio * d->d2;
-  slp = fixtoi (slpos);
+  slp = al_fixtoi (slpos);
 
   switch (msg)
     {
@@ -867,7 +867,7 @@ my_slider_proc (int msg, DIALOG * d, int c)
             {
               d->d2 = d->d2 + delta;
               slpos = slratio * d->d2;
-              slp = fixtoi (slpos);
+              slp = al_fixtoi (slpos);
               if ((slp != oldpos) || (d->d2 <= 0) || (d->d2 >= d->d1))
                 break;
             }
@@ -926,9 +926,9 @@ my_slider_proc (int msg, DIALOG * d, int c)
             mp = 0;
           if (mp > irange - hh)
             mp = irange - hh;
-          slpos = itofix (mp);
-          slmax = fixdiv (slpos, slratio);
-          newpos = fixtoi (slmax);
+          slpos = al_itofix (mp);
+          slmax = al_fixdiv (slpos, slratio);
+          newpos = al_fixtoi (slmax);
           if (newpos != oldval)
             {
               d->d2 = newpos;
@@ -965,7 +965,6 @@ my_edit_proc (int msg, DIALOG * d, int c)
 {
   static int ignore_next_uchar = FALSE;
   ALLEGRO_BITMAP *gui_bmp;
-  int last_was_space, new_pos;
   int f, l, p, w, x, b, scroll;
   int fg;
   char buf[16];
@@ -1098,7 +1097,7 @@ my_edit_proc (int msg, DIALOG * d, int c)
         {
           d->d2 = l;
         }
-      else if ((c >> 8) == ALLEGRO_KEY_DEL)
+      else if ((c >> 8) == ALLEGRO_KEY_DELETE)
         {
           if (d->d2 < l)
             uremove (s, d->d2);

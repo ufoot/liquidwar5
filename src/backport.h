@@ -74,6 +74,29 @@
 #define TRUE 1
 #endif
 
+#ifndef MIN
+#define MIN(x,y)     (((x) < (y)) ? (x) : (y))
+#endif // MIN
+#ifndef MAX
+#define MAX(x,y)     (((x) > (y)) ? (x) : (y))
+#endif // MAX
+#ifndef MID
+/* Returns the median of x, y, z */
+#define MID(x,y,z)   ((x) > (y) ? ((y) > (z) ? (y) : ((x) > (z) ?    \
+                       (z) : (x))) : ((y) > (z) ? ((z) > (x) ? (z) : \
+                       (x)): (y)))
+#endif // MID
+#ifndef CLAMP
+/* Optimized version of MID for when x <= z. */
+#define CLAMP(x,y,z) MAX((x), MIN((y), (z)))
+#endif // CLAMP
+#ifndef ABS
+#define ABS(x)       (((x) >= 0) ? (x) : (-(x)))
+#endif // ABS
+#ifndef SGN
+#define SGN(x)       (((x) >= 0) ? 1 : -1)
+#endif // SGN
+
 /*==================================================================*/
 /* types                                                            */
 /*==================================================================*/
@@ -98,17 +121,26 @@ extern ALLEGRO_FONT *font;
 
 void scare_mouse ();
 void unscare_mouse ();
+
 void putpixel (ALLEGRO_BITMAP * bitmap, int x, int y, int color);
 void rectfill (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2, int color);
+
 int usetc (char *s, int c);
 int ugetc (const char *s);
 int uwidth (const char *s);
+int ustrlen (const char *s);
 int uisspace (int c);
+int ugetat(char *s, int index);
 int usetat(char *s, int index, int c);
 int uinsert(char *s, int index, int c);
 int uremove(char *s, int index);
+int uisok(int c);
+
 int text_length(ALLEGRO_FONT *f, const char *s);
 int text_height(ALLEGRO_FONT *f);
 void textout_ex(ALLEGRO_BITMAP *bmp, const ALLEGRO_FONT *f, const char *s, int x, int y, int color, int bg);
+
+void rest_callback(unsigned int time, void (*callback)(void));
+void rest(unsigned int time);
 
 #endif // LIQUID_WAR_INCLUDE_BACKPORT

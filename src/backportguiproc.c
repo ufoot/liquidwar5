@@ -1,6 +1,6 @@
-/*         ______   ___    ___ 
- *        /\  _  \ /\_ \  /\_ \ 
- *        \ \ \L\ \\//\ \ \//\ \      __     __   _ __   ___ 
+/*         ______   ___    ___
+ *        /\  _  \ /\_ \  /\_ \
+ *        \ \ \L\ \\//\ \ \//\ \      __     __   _ __   ___
  *         \ \  __ \ \ \ \  \ \ \   /'__`\ /'_ `\/\`'__\/ __`\
  *          \ \ \/\ \ \_\ \_ \_\ \_/\  __//\ \L\ \ \ \//\ \L\ \
  *           \ \_\ \_\/\____\/\____\ \____\ \____ \ \_\\ \____/
@@ -345,8 +345,8 @@ d_rtext_proc (int msg, DIALOG * d, int c)
 
 /* d_button_proc:
  *  A button object (the dp field points to the text string). This object
- *  can be selected by clicking on it with the mouse or by pressing its 
- *  keyboard shortcut. If the D_EXIT flag is set, selecting it will close 
+ *  can be selected by clicking on it with the mouse or by pressing its
+ *  keyboard shortcut. If the D_EXIT flag is set, selecting it will close
  *  the dialog, otherwise it will toggle on and off.
  */
 int
@@ -462,7 +462,7 @@ d_button_proc (int msg, DIALOG * d, int c)
 
 
 /* d_check_proc:
- *  Who needs C++ after all? This is derived from d_button_proc, 
+ *  Who needs C++ after all? This is derived from d_button_proc,
  *  but overrides the drawing routine to provide a check box.
  */
 int
@@ -595,7 +595,7 @@ d_radio_proc (int msg, DIALOG * d, int c)
 
 /* d_icon_proc:
  *  Allows graphic icons to be used as buttons.
- * 
+ *
  *  Parameters:
  *    fg = color dotted line showing focus will be drawn in
  *    bg = shadow color used to fill in top and left sides of
@@ -727,7 +727,7 @@ d_keyboard_proc (int msg, DIALOG * d, int c)
  *  An editable text object (the dp field points to the string). When it
  *  has the input focus (obtained by clicking on it with the mouse), text
  *  can be typed into this object. The d1 field specifies the maximum
- *  number of characters that it will accept, and d2 is the text cursor 
+ *  number of characters that it will accept, and d2 is the text cursor
  *  position within the string.
  */
 int
@@ -895,7 +895,7 @@ d_edit_proc (int msg, DIALOG * d, int c)
         {
           d->d2 = l;
         }
-      else if ((c >> 8) == ALLEGRO_KEY_DEL)
+      else if ((c >> 8) == ALLEGRO_KEY_DELETE)
         {
           if (d->d2 < l)
             uremove (s, d->d2);
@@ -1329,9 +1329,9 @@ _draw_listbox (DIALOG * d)
  *  index is  negative, it should return null and list_size should be set
  *  to the number of items in the list. The list box object will allow the
  *  user to scroll through the list and to select items list by clicking
- *  on them, and if it has the input focus also by using the arrow keys. If 
- *  the D_EXIT flag is set, double clicking on a list item will cause it to 
- *  close the dialog. The index of the selected item is held in the d1 
+ *  on them, and if it has the input focus also by using the arrow keys. If
+ *  the D_EXIT flag is set, double clicking on a list item will cause it to
+ *  close the dialog. The index of the selected item is held in the d1
  *  field, and d2 is used to store how far it has scrolled through the list.
  */
 int
@@ -1974,8 +1974,8 @@ d_textbox_proc (int msg, DIALOG * d, int c)
  *  A slider control object. This object returns a value in d2, in the
  *  range from 0 to d1. It will display as a vertical slider if h is
  *  greater than or equal to w; otherwise, it will display as a horizontal
- *  slider. dp can contain an optional bitmap to use for the slider handle; 
- *  dp2 can contain an optional callback function, which is called each 
+ *  slider. dp can contain an optional bitmap to use for the slider handle;
+ *  dp2 can contain an optional callback function, which is called each
  *  time d2 changes. The callback function should have the following
  *  prototype:
  *
