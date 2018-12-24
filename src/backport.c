@@ -107,7 +107,7 @@ putpixel (ALLEGRO_BITMAP * bitmap, int x, int y, int color)
 
 /*------------------------------------------------------------------*/
 void
-rectfill (ALLEGRO_BITMAP * bitmap, x1, y1, x2, y2, int color)
+rectfill (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2, int color)
 {
   void al_set_target_bitmap (bitmap);
   if (color < 0 || color >= PALETTE_SIZE)
