@@ -2,11 +2,11 @@ Summary: A unique multiplayer wargame.
 Summary(fr): Un "wargame" multijoueur inédit.
 Summary(de): Ein einzigartiges Kriegspiel für mehrere Spieler.
 Name: liquidwar
-Version: 5.6.5
+Version: 5.6.6
 Release: 1
 License: GPL
 Group: Amusements/Games
-Source: http://freesoftware.fsf.org/download/liquidwar/liquidwar-5.6.5.tar.gz
+Source: http://freesoftware.fsf.org/download/liquidwar/liquidwar-5.6.6.tar.gz
 URL: https://ufoot.org/liquidwar/v5
 Vendor: Christian Mauduit <ufoot@ufoot.org>
 Packager: Christian Mauduit <ufoot@ufoot.org>
