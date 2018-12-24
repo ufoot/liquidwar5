@@ -90,6 +90,7 @@ unscare_mouse ()
 void
 putpixel (ALLEGRO_BITMAP * bitmap, int x, int y, int color)
 {
+  // https://liballeg.org/stabledocs/en/alleg013.html#putpixel
   /*
    * Very likely, this is totally sub-efficient as we call set_target_bitmap
    * on *EVERY* putpixel call. Also, we emulate PALETTE code, which is ugly.
@@ -109,6 +110,7 @@ putpixel (ALLEGRO_BITMAP * bitmap, int x, int y, int color)
 void
 rectfill (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2, int color)
 {
+  // https://liballeg.org/stabledocs/en/alleg013.html#rectfill
   void al_set_target_bitmap (bitmap);
   if (color < 0 || color >= PALETTE_SIZE)
     {
@@ -123,6 +125,7 @@ rectfill (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2, int color)
 int
 usetc (char *s, int c)
 {
+  // https://liballeg.org/stabledocs/en/alleg002.html#usetc
   ALLEGRO_USTR *us = NULL;
   int l = 0;
   const char *s = NULL;
@@ -135,4 +138,19 @@ usetc (char *s, int c)
   al_ustr_free (us);
 
   return l;
+}
+
+/*------------------------------------------------------------------*/
+int
+ugetc (const char *s)
+{
+  // https://liballeg.org/stabledocs/en/alleg002.html#ugetc
+  ALLEGRO_USTR *us = NULL;
+  int c = 0;
+
+  us = al_ustr_new (s);
+  c= al_ustr_get(us, 0);
+  al_ustr_free (us);
+
+  return c;
 }
