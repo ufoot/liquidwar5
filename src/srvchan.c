@@ -75,6 +75,7 @@
 static char *ACCEPTED_VERSIONS[] = { "5.6.3",
   "5.6.4",
   "5.6.5",
+  "5.6.6",
   LW_VERSION,
   NULL
 };
@@ -357,7 +358,7 @@ handle_team (LW_SRVCHAN * chan, LW_NETMESS * mess, int *free_teams)
       /*
        * OK, there are 3 arguments
        * - arg 1 is the team index
-       * - arg 2 is the "control_type" parameter 
+       * - arg 2 is the "control_type" parameter
        * - arg 3 is the team name
        */
       i = atoi (mess->argv[0]);
@@ -991,7 +992,7 @@ lw_srvchan_wait_teams (LW_SRVCHAN * chan, int *free_teams,
                     }
 
                   /*
-                   * lw_netmess_free must *not* be forgetted 
+                   * lw_netmess_free must *not* be forgetted
                    */
                   lw_netmess_free (mess);
 
@@ -1022,7 +1023,7 @@ lw_srvchan_wait_teams (LW_SRVCHAN * chan, int *free_teams,
           log_print_int (chan->port);
           log_println_str ("\" accepted");
 
-          /* 
+          /*
            * We play a little sound for people who have the server
            * opened on a console and want it to beep when someone
            * connects
@@ -1144,7 +1145,7 @@ lw_srvchan_keepalive (LW_SRVCHAN * chan,
                     }
 
                   /*
-                   * lw_netmess_free must *not* be forgetted 
+                   * lw_netmess_free must *not* be forgetted
                    */
                   lw_netmess_free (mess);
 
@@ -1200,7 +1201,7 @@ lw_srvchan_keepalive (LW_SRVCHAN * chan,
 
 /*------------------------------------------------------------------*/
 /*
- * Answers OK to a client, and waits for the "WHO" message 
+ * Answers OK to a client, and waits for the "WHO" message
  */
 int
 lw_srvchan_tell_who (LW_SRVCHAN * chan, void *map, LW_NETCONF * config)
@@ -1268,7 +1269,7 @@ lw_srvchan_tell_who (LW_SRVCHAN * chan, void *map, LW_NETCONF * config)
                     }
 
                   /*
-                   * lw_netmess_free must *not* be forgetted 
+                   * lw_netmess_free must *not* be forgetted
                    */
                   lw_netmess_free (mess);
 
@@ -1400,7 +1401,7 @@ lw_srvchan_close (LW_SRVCHAN * chan)
 /*
  * Receives key presses from a computer.
  * The keys come in the "computer's order" ie one still has to
- * sort them by server id. 
+ * sort them by server id.
  */
 int
 lw_srvchan_recv_keys (LW_SRVCHAN * chan, LW_NETKEY * netkey)
@@ -1433,7 +1434,7 @@ lw_srvchan_recv_keys (LW_SRVCHAN * chan, LW_NETKEY * netkey)
 /*
  * Sends key presses to a computer.
  * The keys must be send in the "computer's order" ie they must
- * be sorted first. 
+ * be sorted first.
  */
 int
 lw_srvchan_send_keys (LW_SRVCHAN * chan, LW_NETKEY * netkey)
