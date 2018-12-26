@@ -60,16 +60,6 @@ else
    echo "found $ALVERSION".
 fi
 
-dnl very often, dat (the datafile compiler) is not installed,
-dnl and we _really_ need it...
-AC_CHECK_PROG(ALLEGRO_DAT,dat,yes,no)
-
-if test $ALLEGRO_DAT != "yes"; then
-   AC_MSG_ERROR(Couldn't find the allegro datafile compiler - please install the complete Allegro package with all its developper tools. The end-user package is not enough to compile Liquid War.)
-fi;
-
-
-
 dnl Uncomment this if you want to shock your users
 #cat <<EOF
 #checking for good places in /etc/passwd... yes
