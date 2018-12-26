@@ -113,6 +113,27 @@ putpixel (ALLEGRO_BITMAP * bitmap, int x, int y, int color)
 
 /*------------------------------------------------------------------*/
 void
+rect (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2, int color)
+{
+  // https://liballeg.org/stabledocs/en/alleg013.html#rect
+  if (x2<x1 || y2<y1) {
+    return;
+  }
+  void al_set_target_bitmap (bitmap);
+  if (color < 0 || color >= PALETTE_SIZE)
+    {
+      return;
+    }
+  ALLEGRO_COLOR al_color;
+  al_color = GLOBAL_PALETTE[color];
+  al_draw_filled_rectangle (x1, y1, x2, y1 + 1, al_color);
+  al_draw_filled_rectangle (x2, y1, x2 + 1, y2, al_color);
+  al_draw_filled_rectangle (x1 + 1, y2, x2 + 1, y2 + 1, al_color);
+  al_draw_filled_rectangle (x1, y1 + 1, x1 + 1, y2 + 1, al_color);
+}
+
+/*------------------------------------------------------------------*/
+void
 rectfill (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2, int color)
 {
   // https://liballeg.org/stabledocs/en/alleg013.html#rectfill
@@ -125,6 +146,42 @@ rectfill (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2, int color)
   al_color = GLOBAL_PALETTE[color];
   // +1 on second coord because floating point vs integer
   al_draw_filled_rectangle (x1, y1, x2 + 1, y2 + 1, al_color);
+}
+
+/*------------------------------------------------------------------*/
+void
+vline (ALLEGRO_BITMAP * bitmap, int x, int y1, int y2, int color)
+{
+  // https://liballeg.org/stabledocs/en/alleg013.html#rect
+  if (y2<y1) {
+    return;
+  }
+  void al_set_target_bitmap (bitmap);
+  if (color < 0 || color >= PALETTE_SIZE)
+    {
+      return;
+    }
+  ALLEGRO_COLOR al_color;
+  al_color = GLOBAL_PALETTE[color];
+  al_draw_filled_rectangle (x, y1, x + 1, y2 + 1, al_color);
+}
+
+/*------------------------------------------------------------------*/
+void
+hline (ALLEGRO_BITMAP * bitmap, int x1, int y, int x2, int color)
+{
+  // https://liballeg.org/stabledocs/en/alleg013.html#rect
+  if (x2<x1) {
+    return;
+  }
+  void al_set_target_bitmap (bitmap);
+  if (color < 0 || color >= PALETTE_SIZE)
+    {
+      return;
+    }
+  ALLEGRO_COLOR al_color;
+  al_color = GLOBAL_PALETTE[color];
+  al_draw_filled_rectangle (x1, y, x2 + 1, y + 1, al_color);
 }
 
 /*------------------------------------------------------------------*/
@@ -365,4 +422,11 @@ void rest_callback(unsigned int time, void (*callback)(void)) {
 void rest(unsigned int time) {
   // https://liballeg.org/stabledocs/en/alleg005.html#rest
   rest_callback(int,NULL);
+}
+
+/*------------------------------------------------------------------*/
+void draw_sprite(ALLEGRO_BITMAP *bmp, ALLEGRO_BITMAP *sprite, int x, int y) {
+  // https://liballeg.org/stabledocs/en/alleg014.html#draw_sprite
+  void al_set_target_bitmap (bmp);
+  al_draw_bitmap(bmp,sprite,x,y,0);
 }

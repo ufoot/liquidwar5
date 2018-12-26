@@ -123,7 +123,10 @@ void scare_mouse ();
 void unscare_mouse ();
 
 void putpixel (ALLEGRO_BITMAP * bitmap, int x, int y, int color);
+void rect (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2, int color);
 void rectfill (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2, int color);
+void vline (ALLEGRO_BITMAP * bitmap, int x, int y1, int y2, int color);
+void hline (ALLEGRO_BITMAP * bitmap, int x1, int y, int x2, int color);
 
 int usetc (char *s, int c);
 int ugetc (const char *s);
@@ -142,5 +145,7 @@ void textout_ex(ALLEGRO_BITMAP *bmp, const ALLEGRO_FONT *f, const char *s, int x
 
 void rest_callback(unsigned int time, void (*callback)(void));
 void rest(unsigned int time);
+
+void draw_sprite(ALLEGRO_BITMAP *bmp, ALLEGRO_BITMAP *sprite, int x, int y);
 
 #endif // LIQUID_WAR_INCLUDE_BACKPORT

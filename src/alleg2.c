@@ -514,7 +514,7 @@ my_button_proc (int msg, DIALOG * d, int c)
   int black;
   int swap;
   int g;
-  ASSERT (d);
+  ALLEGRO_ASSERT (d);
 
   LW_MACRO_NOP (c);             // ufoot
 
@@ -551,7 +551,7 @@ my_button_proc (int msg, DIALOG * d, int c)
         }
       else
         {
-          black = makecol (0, 0, 0);
+          black = 0; // [FIXME:ufoot] sounds a bit hardcoded, double-check this
           vline (gui_bmp, d->x + d->w - 1, d->y + 1, d->y + d->h - 2, black);
           hline (gui_bmp, d->x + 1, d->y + d->h - 1, d->x + d->w - 1, black);
         }
@@ -626,7 +626,7 @@ my_text_proc (int msg, DIALOG * d, int c)
 {
   LW_MACRO_NOP (c);             // ufoot
 
-  ASSERT (d);
+  ALLEGRO_ASSERT (d);
   if (msg == MSG_DRAW)
     {
       //int fg = (d->flags & D_DISABLED) ? gui_mg_color : d->fg; // ufoot
@@ -653,7 +653,7 @@ my_ctext_proc (int msg, DIALOG * d, int c)
 {
   LW_MACRO_NOP (c);             // ufoot
 
-  ASSERT (d);
+  ALLEGRO_ASSERT (d);
   if (msg == MSG_DRAW)
     {
       // int fg = (d->flags & D_DISABLED) ? gui_mg_color : d->fg; // ufoot
@@ -708,7 +708,7 @@ my_slider_proc (int msg, DIALOG * d, int c)
   al_fixed slratio, slmax, slpos;
   int (*proc) (void *cbpointer, int d2value);
   int oldval;
-  ASSERT (d);
+  ALLEGRO_ASSERT (d);
 
   /* check for slider direction */
   if (d->h < d->w)
@@ -719,9 +719,9 @@ my_slider_proc (int msg, DIALOG * d, int c)
     {
       slhan = (ALLEGRO_BITMAP *) d->dp;
       if (vert)
-        hh = slhan->h;
+        hh = al_get_bitmap_height(slhan);
       else
-        hh = slhan->w;
+        hh = al_get_bitmap_width(slhan);
     }
 
   hmar = hh / 2;
@@ -766,13 +766,13 @@ my_slider_proc (int msg, DIALOG * d, int c)
         {
           if (vert)
             {
-              slx = d->x + (d->w / 2) - (slhan->w / 2);
+              slx = d->x + (d->w / 2) - (al_get_bitmap_width(slhan) / 2);
               sly = d->y + (d->h - 1) - (hh + slp);
             }
           else
             {
               slx = d->x + slp;
-              sly = d->y + (d->h / 2) - (slhan->h / 2);
+              sly = d->y + (d->h / 2) - (al_get_bitmap_height(slhan) / 2);
             }
           draw_sprite (gui_bmp, slhan, slx, sly);
         }
@@ -969,7 +969,7 @@ my_edit_proc (int msg, DIALOG * d, int c)
   int fg;
   char buf[16];
   char *s;
-  ASSERT (d);
+  ALLEGRO_ASSERT (d);
 
   gui_bmp = gui_get_screen ();
 
@@ -1464,7 +1464,7 @@ my_list_proc (int msg, DIALOG * d, int c)
   int listsize, i, bottom, height, bar;
   char *sel = d->dp2;
   int redraw = FALSE;
-  ASSERT (d);
+  ALLEGRO_ASSERT (d);
 
   switch (msg)
     {
