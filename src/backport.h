@@ -113,6 +113,8 @@ PALETTE;
 /*==================================================================*/
 
 extern ALLEGRO_BITMAP *screen;
+extern int SCREEN_W;
+extern int SCREEN_H;
 extern ALLEGRO_FONT *font;
 
 /*==================================================================*/
@@ -147,5 +149,8 @@ void rest_callback(unsigned int time, void (*callback)(void));
 void rest(unsigned int time);
 
 void draw_sprite(ALLEGRO_BITMAP *bmp, ALLEGRO_BITMAP *sprite, int x, int y);
+void stretch_blit(ALLEGRO_BITMAP *source, ALLEGRO_BITMAP *dest,
+                  int source_x, int source_y, int source_width, int source_height,
+                  int dest_x, int dest_y, int dest_width, int dest_height);
 
 #endif // LIQUID_WAR_INCLUDE_BACKPORT

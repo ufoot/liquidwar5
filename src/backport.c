@@ -62,6 +62,8 @@
 /*==================================================================*/
 
 ALLEGRO_BITMAP *screen=NULL;
+int SCREEN_W=0;
+int SCREEN_H=0;
 ALLEGRO_FONT *font=NULL;
 
 /*==================================================================*/
@@ -428,5 +430,16 @@ void rest(unsigned int time) {
 void draw_sprite(ALLEGRO_BITMAP *bmp, ALLEGRO_BITMAP *sprite, int x, int y) {
   // https://liballeg.org/stabledocs/en/alleg014.html#draw_sprite
   void al_set_target_bitmap (bmp);
+  al_draw_bitmap(sprite,x,y,0);
+}
+
+/*------------------------------------------------------------------*/
+void stretch_blit(ALLEGRO_BITMAP *source, ALLEGRO_BITMAP *dest,
+                  int source_x, int source_y, int source_width, int source_height,
+                  int dest_x, int dest_y, int dest_width, int dest_height) {
+  // https://liballeg.org/stabledocs/en/alleg014.html#stretch_blit
+  void al_set_target_bitmap (dest);
   al_draw_bitmap(bmp,sprite,x,y,0);
+  al_draw_scaled_bitmap(source,source_x,source_y,source_width,source_height,
+                        dest_x,dest_y,dest_width,dest_height,0);
 }
