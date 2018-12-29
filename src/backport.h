@@ -124,12 +124,14 @@ volatile int mouse_b;
 void scare_mouse ();
 void scare_mouse_area (int x, int y, int w, int h);
 void unscare_mouse ();
-int poll_mouse(void);
-int mouse_needs_poll(void);
+int poll_mouse (void);
+int mouse_needs_poll (void);
 
 void putpixel (ALLEGRO_BITMAP * bitmap, int x, int y, int color);
-void rect (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2, int color);
-void rectfill (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2, int color);
+void rect (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2,
+           int color);
+void rectfill (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2,
+               int color);
 void vline (ALLEGRO_BITMAP * bitmap, int x, int y1, int y2, int color);
 void hline (ALLEGRO_BITMAP * bitmap, int x1, int y, int x2, int color);
 
@@ -138,22 +140,25 @@ int ugetc (const char *s);
 int uwidth (const char *s);
 int ustrlen (const char *s);
 int uisspace (int c);
-int ugetat(char *s, int index);
-int usetat(char *s, int index, int c,int max_size);
-int uinsert(char *s, int index, int c,int max_size);
-int uremove(char *s, int index);
-int uisok(int c);
+int ugetat (char *s, int index);
+int usetat (char *s, int index, int c, int max_size);
+int uinsert (char *s, int index, int c, int max_size);
+int uremove (char *s, int index);
+int uisok (int c);
 
-int text_length(const ALLEGRO_FONT *f, const char *s);
-int text_height(const ALLEGRO_FONT *f);
-void textout_ex(ALLEGRO_BITMAP *bmp, const ALLEGRO_FONT *f, const char *s, int x, int y, int color, int bg);
+int text_length (const ALLEGRO_FONT * f, const char *s);
+int text_height (const ALLEGRO_FONT * f);
+void textout_ex (ALLEGRO_BITMAP * bmp, const ALLEGRO_FONT * f, const char *s,
+                 int x, int y, int color, int bg);
 
-void rest_callback(unsigned int time, void (*callback)(void));
-void rest(unsigned int time);
+void rest_callback (unsigned int time, void (*callback) (void));
+void rest (unsigned int time);
 
-void draw_sprite(ALLEGRO_BITMAP *bmp, ALLEGRO_BITMAP *sprite, int x, int y);
-void stretch_blit(ALLEGRO_BITMAP *source, ALLEGRO_BITMAP *dest,
-                  int source_x, int source_y, int source_width, int source_height,
-                  int dest_x, int dest_y, int dest_width, int dest_height);
+void draw_sprite (ALLEGRO_BITMAP * bmp, ALLEGRO_BITMAP * sprite, int x,
+                  int y);
+void stretch_blit (ALLEGRO_BITMAP * source, ALLEGRO_BITMAP * dest,
+                   int source_x, int source_y, int source_width,
+                   int source_height, int dest_x, int dest_y, int dest_width,
+                   int dest_height);
 
 #endif // LIQUID_WAR_INCLUDE_BACKPORT

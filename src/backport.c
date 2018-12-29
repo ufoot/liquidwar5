@@ -63,14 +63,14 @@
 /* variables globales                                               */
 /*==================================================================*/
 
-ALLEGRO_BITMAP *screen=NULL;
-int SCREEN_W=0;
-int SCREEN_H=0;
-ALLEGRO_FONT *font=NULL;
-volatile int mouse_x=0;
-volatile int mouse_y=0;
-volatile int mouse_z=0;
-volatile int mouse_b=0;
+ALLEGRO_BITMAP *screen = NULL;
+int SCREEN_W = 0;
+int SCREEN_H = 0;
+ALLEGRO_FONT *font = NULL;
+volatile int mouse_x = 0;
+volatile int mouse_y = 0;
+volatile int mouse_z = 0;
+volatile int mouse_b = 0;
 
 /*==================================================================*/
 /* fonctions                                                        */
@@ -110,29 +110,36 @@ unscare_mouse ()
 }
 
 /*------------------------------------------------------------------*/
-int poll_mouse(void){
+int
+poll_mouse (void)
+{
   // https://liballeg.org/stabledocs/en/alleg004.html#poll_mouse
   ALLEGRO_MOUSE_STATE mouse_state;
 
-  memset(&mouse_state,0,sizeof(mouse_state));
-  al_get_mouse_state(&mouse_state);
-  int num_axes= num_axes=al_get_mouse_num_axes();
-  if (num_axes>=1) {
-    mouse_x=al_get_mouse_state_axis(&mouse_state,0);
-  }
-  if (num_axes>=2) {
-    mouse_y=al_get_mouse_state_axis(&mouse_state,1);
-  }
-  if (num_axes>=3) {
-    mouse_z=al_get_mouse_state_axis(&mouse_state,2);
-  }
-  mouse_b=mouse_state.buttons;
+  memset (&mouse_state, 0, sizeof (mouse_state));
+  al_get_mouse_state (&mouse_state);
+  int num_axes = num_axes = al_get_mouse_num_axes ();
+  if (num_axes >= 1)
+    {
+      mouse_x = al_get_mouse_state_axis (&mouse_state, 0);
+    }
+  if (num_axes >= 2)
+    {
+      mouse_y = al_get_mouse_state_axis (&mouse_state, 1);
+    }
+  if (num_axes >= 3)
+    {
+      mouse_z = al_get_mouse_state_axis (&mouse_state, 2);
+    }
+  mouse_b = mouse_state.buttons;
 
   return 0;
 }
 
 /*------------------------------------------------------------------*/
-int mouse_needs_poll(void){
+int
+mouse_needs_poll (void)
+{
   // https://liballeg.org/stabledocs/en/alleg004.html#mouse_needs_poll
   /*
    * Stupid answer which means "poll all the time" but this is (hopefully)
@@ -168,9 +175,10 @@ void
 rect (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2, int color)
 {
   // https://liballeg.org/stabledocs/en/alleg013.html#rect
-  if (x2<x1 || y2<y1) {
-    return;
-  }
+  if (x2 < x1 || y2 < y1)
+    {
+      return;
+    }
   al_set_target_bitmap (bitmap);
   if (color < 0 || color >= PALETTE_SIZE)
     {
@@ -205,9 +213,10 @@ void
 vline (ALLEGRO_BITMAP * bitmap, int x, int y1, int y2, int color)
 {
   // https://liballeg.org/stabledocs/en/alleg013.html#rect
-  if (y2<y1) {
-    return;
-  }
+  if (y2 < y1)
+    {
+      return;
+    }
   al_set_target_bitmap (bitmap);
   if (color < 0 || color >= PALETTE_SIZE)
     {
@@ -223,9 +232,10 @@ void
 hline (ALLEGRO_BITMAP * bitmap, int x1, int y, int x2, int color)
 {
   // https://liballeg.org/stabledocs/en/alleg013.html#rect
-  if (x2<x1) {
-    return;
-  }
+  if (x2 < x1)
+    {
+      return;
+    }
   al_set_target_bitmap (bitmap);
   if (color < 0 || color >= PALETTE_SIZE)
     {
@@ -243,13 +253,13 @@ usetc (char *s, int c)
   // https://liballeg.org/stabledocs/en/alleg002.html#usetc
   ALLEGRO_USTR *us = NULL;
   int l = 0;
-  const char *s2=NULL;
+  const char *s2 = NULL;
 
   us = al_ustr_new (s);
-  al_ustr_set_chr (us, 0,c);
+  al_ustr_set_chr (us, 0, c);
   s2 = al_cstr (us);
   l = strlen (s);
-  LW_MACRO_STRNCPY (s, s2,l+1);
+  LW_MACRO_STRNCPY (s, s2, l + 1);
   al_ustr_free (us);
 
   return l;
@@ -264,7 +274,7 @@ ugetc (const char *s)
   int c = 0;
 
   us = al_ustr_new (s);
-  c= al_ustr_get(us, 0);
+  c = al_ustr_get (us, 0);
   al_ustr_free (us);
 
   return c;
@@ -277,15 +287,16 @@ uwidth (const char *s)
   // https://liballeg.org/stabledocs/en/alleg002.html#uwidth
   ALLEGRO_USTR *us = NULL;
   int pos = 0;
-  bool found=false;
+  bool found = false;
 
   us = al_ustr_new (s);
-  found=al_ustr_next(us,&pos);
+  found = al_ustr_next (us, &pos);
   al_ustr_free (us);
 
-  if (!found) {
-    return 0;
-  }
+  if (!found)
+    {
+      return 0;
+    }
   return pos;
 }
 
@@ -295,10 +306,10 @@ ustrlen (const char *s)
 {
   // https://liballeg.org/stabledocs/en/alleg002.html#ustrlen
   ALLEGRO_USTR *us = NULL;
-  int l=0;
+  int l = 0;
 
   us = al_ustr_new (s);
-  l = al_ustr_length(us);
+  l = al_ustr_length (us);
   al_ustr_free (us);
 
   return l;
@@ -312,17 +323,19 @@ uisspace (int c)
   /*
    * Super naive impl, should do the job for the LW use-case.
    */
-  return c<=32;
+  return c <= 32;
 }
 
 /*------------------------------------------------------------------*/
-int ugetat(char *s, int index) {
+int
+ugetat (char *s, int index)
+{
   // https://liballeg.org/stabledocs/en/alleg002.html#ugetat
   ALLEGRO_USTR *us = NULL;
-  int c=0;
+  int c = 0;
 
   us = al_ustr_new (s);
-  c = al_ustr_get(us,index);
+  c = al_ustr_get (us, index);
   al_ustr_free (us);
 
   return c;
@@ -330,94 +343,111 @@ int ugetat(char *s, int index) {
 
 /*------------------------------------------------------------------*/
 int
-usetat(char *s, int index, int c,int max_size){
+usetat (char *s, int index, int c, int max_size)
+{
   // https://liballeg.org/stabledocs/en/alleg002.html#usetat
   /*
    * Altered the protoype of that one, not giving max_size here
    * is just totally super-dangerous IMHO.
    */
   ALLEGRO_USTR *us = NULL;
-  int l=0;
-  int max_len=max_size-1;
+  int l = 0;
+  int max_len = max_size - 1;
 
-  l=strlen(s);
-  if (index<0) {
-    index=l-index;
-  }
-  if (index>= max_len || index<0){
-    return 0;
-  }
+  l = strlen (s);
+  if (index < 0)
+    {
+      index = l - index;
+    }
+  if (index >= max_len || index < 0)
+    {
+      return 0;
+    }
 
   us = al_ustr_new (s);
-  if (c==0) {
-    al_ustr_truncate(us,index);
-  } else {
-    al_ustr_remove_chr(us,index);
-    al_ustr_insert_chr(us,index,c);
-  }
-  LW_MACRO_STRNCPY(s,al_cstr(us),max_size);
+  if (c == 0)
+    {
+      al_ustr_truncate (us, index);
+    }
+  else
+    {
+      al_ustr_remove_chr (us, index);
+      al_ustr_insert_chr (us, index, c);
+    }
+  LW_MACRO_STRNCPY (s, al_cstr (us), max_size);
   al_ustr_free (us);
 
-  return (strlen(s)-l);
+  return (strlen (s) - l);
 }
 
 /*------------------------------------------------------------------*/
-int uinsert(char *s, int index, int c,int max_size){
+int
+uinsert (char *s, int index, int c, int max_size)
+{
   // https://liballeg.org/stabledocs/en/alleg002.html#uinsert
   /*
    * Altered the protoype of that one, not giving max_size here
    * is just totally super-dangerous IMHO.
    */
   ALLEGRO_USTR *us = NULL;
-  int l=0;
-  int max_len=max_size-1;
+  int l = 0;
+  int max_len = max_size - 1;
 
-  l=strlen(s);
-  if (index<0) {
-    index=l-index;
-  }
-  if (index>= max_len || index<0){
-    return 0;
-  }
+  l = strlen (s);
+  if (index < 0)
+    {
+      index = l - index;
+    }
+  if (index >= max_len || index < 0)
+    {
+      return 0;
+    }
 
   us = al_ustr_new (s);
-  if (c==0) {
-    al_ustr_truncate(us,index);
-  } else {
-    al_ustr_insert_chr(us,index,c);
-  }
-  LW_MACRO_STRNCPY(s,al_cstr(us),max_size);
+  if (c == 0)
+    {
+      al_ustr_truncate (us, index);
+    }
+  else
+    {
+      al_ustr_insert_chr (us, index, c);
+    }
+  LW_MACRO_STRNCPY (s, al_cstr (us), max_size);
   al_ustr_free (us);
 
-  return (strlen(s)-l);
+  return (strlen (s) - l);
 }
 
 /*------------------------------------------------------------------*/
 int
-uremove(char *s, int index){
+uremove (char *s, int index)
+{
   // https://liballeg.org/stabledocs/en/alleg002.html#uremove
   ALLEGRO_USTR *us = NULL;
-  int l=0;
+  int l = 0;
 
-  l=strlen(s);
-  if (index<0) {
-    index=l-index;
-  }
-  if (index<0){
-    return 0;
-  }
+  l = strlen (s);
+  if (index < 0)
+    {
+      index = l - index;
+    }
+  if (index < 0)
+    {
+      return 0;
+    }
 
   us = al_ustr_new (s);
-  al_ustr_remove_chr(us,index);
-  LW_MACRO_STRNCPY(s,al_cstr(us),l);
+  al_ustr_remove_chr (us, index);
+  LW_MACRO_STRNCPY (s, al_cstr (us), l);
   al_ustr_free (us);
 
-  return (strlen(s)-l);
+  return (strlen (s) - l);
 }
 
 /*------------------------------------------------------------------*/
 int
-uisok(int c){
+uisok (int c)
+{
   // https://liballeg.org/stabledocs/en/alleg002.html#uiosok
   /*
    * [FIXME:ufoot] right now does nothing real, but game handles
@@ -427,26 +457,33 @@ uisok(int c){
 }
 
 /*------------------------------------------------------------------*/
-int text_length(const ALLEGRO_FONT *f, const char *s) {
+int
+text_length (const ALLEGRO_FONT * f, const char *s)
+{
   // https://liballeg.org/stabledocs/en/alleg018.html#text_length
-  return al_get_text_width(f, s);
+  return al_get_text_width (f, s);
 }
 
 /*------------------------------------------------------------------*/
-int text_height(const ALLEGRO_FONT *f) {
+int
+text_height (const ALLEGRO_FONT * f)
+{
   // https://liballeg.org/stabledocs/en/alleg018.html#text_height
-  return al_get_font_line_height(f);
+  return al_get_font_line_height (f);
 }
 
 /*------------------------------------------------------------------*/
-void textout_ex(ALLEGRO_BITMAP *bmp, const ALLEGRO_FONT *f, const char *s, int x, int y, int color, int bg){
+void
+textout_ex (ALLEGRO_BITMAP * bmp, const ALLEGRO_FONT * f, const char *s,
+            int x, int y, int color, int bg)
+{
   // https://liballeg.org/stabledocs/en/alleg018.html#textout_ex
   int w = 0;
   int h = 0;
 
-  w = text_length(f, s);
-  h = text_height(f);
-  rectfill (bmp, x,y, x+w-1, y+h-1, bg);
+  w = text_length (f, s);
+  h = text_height (f);
+  rectfill (bmp, x, y, x + w - 1, y + h - 1, bg);
 
   al_set_target_bitmap (bmp);
   if (color < 0 || color >= PALETTE_SIZE)
@@ -456,46 +493,59 @@ void textout_ex(ALLEGRO_BITMAP *bmp, const ALLEGRO_FONT *f, const char *s, int x
   ALLEGRO_COLOR al_color;
   al_color = GLOBAL_PALETTE[color];
 
-  al_draw_text(f,al_color,x,y,0,s);
+  al_draw_text (f, al_color, x, y, 0, s);
 }
 
 /*------------------------------------------------------------------*/
-void rest_callback(unsigned int time, void (*callback)(void)) {
+void
+rest_callback (unsigned int time, void (*callback) (void))
+{
   // https://liballeg.org/stabledocs/en/alleg005.html#rest_callback
   double delay;
 
-  delay=((double) time)/1000.0;
-  if (callback==NULL) {
-    al_rest(delay);
-  } else {
-    unsigned int i;
-
-    for (i=0; i<time; i++) {
-      al_rest(0.001);
-      callback();
+  delay = ((double) time) / 1000.0;
+  if (callback == NULL)
+    {
+      al_rest (delay);
     }
-  }
+  else
+    {
+      unsigned int i;
+
+      for (i = 0; i < time; i++)
+        {
+          al_rest (0.001);
+          callback ();
+        }
+    }
 }
 
 /*------------------------------------------------------------------*/
-void rest(unsigned int time) {
+void
+rest (unsigned int time)
+{
   // https://liballeg.org/stabledocs/en/alleg005.html#rest
-  rest_callback(time,NULL);
+  rest_callback (time, NULL);
 }
 
 /*------------------------------------------------------------------*/
-void draw_sprite(ALLEGRO_BITMAP *bmp, ALLEGRO_BITMAP *sprite, int x, int y) {
+void
+draw_sprite (ALLEGRO_BITMAP * bmp, ALLEGRO_BITMAP * sprite, int x, int y)
+{
   // https://liballeg.org/stabledocs/en/alleg014.html#draw_sprite
   al_set_target_bitmap (bmp);
-  al_draw_bitmap(sprite,x,y,0);
+  al_draw_bitmap (sprite, x, y, 0);
 }
 
 /*------------------------------------------------------------------*/
-void stretch_blit(ALLEGRO_BITMAP *source, ALLEGRO_BITMAP *dest,
-                  int source_x, int source_y, int source_width, int source_height,
-                  int dest_x, int dest_y, int dest_width, int dest_height) {
+void
+stretch_blit (ALLEGRO_BITMAP * source, ALLEGRO_BITMAP * dest,
+              int source_x, int source_y, int source_width, int source_height,
+              int dest_x, int dest_y, int dest_width, int dest_height)
+{
   // https://liballeg.org/stabledocs/en/alleg014.html#stretch_blit
   al_set_target_bitmap (dest);
-  al_draw_scaled_bitmap(source,source_x,source_y,source_width,source_height,
-                        dest_x,dest_y,dest_width,dest_height,0);
+  al_draw_scaled_bitmap (source, source_x, source_y, source_width,
+                         source_height, dest_x, dest_y, dest_width,
+                         dest_height, 0);
 }

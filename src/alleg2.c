@@ -551,7 +551,7 @@ my_button_proc (int msg, DIALOG * d, int c)
         }
       else
         {
-          black = 0; // [FIXME:ufoot] sounds a bit hardcoded, double-check this
+          black = 0;            // [FIXME:ufoot] sounds a bit hardcoded, double-check this
           vline (gui_bmp, d->x + d->w - 1, d->y + 1, d->y + d->h - 2, black);
           hline (gui_bmp, d->x + 1, d->y + d->h - 1, d->x + d->w - 1, black);
         }
@@ -719,9 +719,9 @@ my_slider_proc (int msg, DIALOG * d, int c)
     {
       slhan = (ALLEGRO_BITMAP *) d->dp;
       if (vert)
-        hh = al_get_bitmap_height(slhan);
+        hh = al_get_bitmap_height (slhan);
       else
-        hh = al_get_bitmap_width(slhan);
+        hh = al_get_bitmap_width (slhan);
     }
 
   hmar = hh / 2;
@@ -766,13 +766,13 @@ my_slider_proc (int msg, DIALOG * d, int c)
         {
           if (vert)
             {
-              slx = d->x + (d->w / 2) - (al_get_bitmap_width(slhan) / 2);
+              slx = d->x + (d->w / 2) - (al_get_bitmap_width (slhan) / 2);
               sly = d->y + (d->h - 1) - (hh + slp);
             }
           else
             {
               slx = d->x + slp;
-              sly = d->y + (d->h / 2) - (al_get_bitmap_height(slhan) / 2);
+              sly = d->y + (d->h / 2) - (al_get_bitmap_height (slhan) / 2);
             }
           draw_sprite (gui_bmp, slhan, slx, sly);
         }
@@ -1139,7 +1139,7 @@ my_edit_proc (int msg, DIALOG * d, int c)
         {
           if (l < d->d1)
             {
-              uinsert (s, d->d2, c,d->d1);
+              uinsert (s, d->d2, c, d->d1);
               d->d2++;
 
               object_message (d, MSG_DRAW, 0);
@@ -1397,9 +1397,9 @@ my_draw_listbox (DIALOG * d)
               fg = fg_color;
               bg = d->bg;
             }
-          LW_MACRO_STRNCPY(s,
-                           (*(my_getfuncptr) d->dp) (i + d->d2, NULL),
-                           sizeof(s));
+          LW_MACRO_STRNCPY (s,
+                            (*(my_getfuncptr) d->dp) (i + d->d2, NULL),
+                            sizeof (s));
           x = d->x + 2;
           y = d->y + 2 + i * text_height (font);
           rectfill (gui_bmp, x, y, x + 7, y + text_height (font) - 1, bg);
@@ -1408,7 +1408,7 @@ my_draw_listbox (DIALOG * d)
           while (text_length (font, s) >= MAX (d->w - 1 - (bar ? 22 : 10), 1))
             {
               len--;
-              usetat (s, len, 0,sizeof(s));
+              usetat (s, len, 0, sizeof (s));
             }
           //textout_ex(gui_bmp, font, s, x, y, fg, bg);
           textout_ex (gui_bmp, font, s, x, y, -1, bg);  // ufoot

@@ -74,7 +74,7 @@ display_a_back_image (ALLEGRO_BITMAP * bmp)
 {
   scare_mouse ();
   stretch_blit (bmp, screen, 0, 0,
-                al_get_bitmap_width(bmp), al_get_bitmap_height(bmp),
+                al_get_bitmap_width (bmp), al_get_bitmap_height (bmp),
                 0, PAGE_FLIP_H, SCREEN_W, SCREEN_H);
   unscare_mouse ();
 }
