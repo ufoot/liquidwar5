@@ -28,6 +28,8 @@
 
 #include <allegro5/keycodes.h>
 
+#include "backport.h"
+#include "backportgui.h"
 
 /* if set, the input focus follows the mouse pointer */
 int gui_mouse_focus = TRUE;
@@ -55,7 +57,7 @@ DIALOG *active_dialog = NULL;
 MENU *active_menu = NULL;
 
 
-static BITMAP *gui_screen = NULL;
+static ALLEGRO_BITMAP *gui_screen = NULL;
 
 
 /* list of currently active (initialized) dialog players */
@@ -873,8 +875,8 @@ move_focus (DIALOG * d, int ascii, int scan, int *focus_obj)
 int
 do_dialog (DIALOG * dialog, int focus_obj)
 {
-  BITMAP *mouse_screen = _mouse_screen;
-  BITMAP *gui_bmp = gui_get_screen ();
+  ALLEGRO_BITMAP *mouse_screen = _mouse_screen;
+  ALLEGRO_BITMAP *gui_bmp = gui_get_screen ();
   int screen_count = _gfx_mode_set_count;
   void *player;
   ASSERT (dialog);
@@ -912,8 +914,8 @@ do_dialog (DIALOG * dialog, int focus_obj)
 int
 popup_dialog (DIALOG * dialog, int focus_obj)
 {
-  BITMAP *bmp;
-  BITMAP *gui_bmp;
+  ALLEGRO_BITMAP *bmp;
+  ALLEGRO_BITMAP *gui_bmp;
   int ret;
   ASSERT (dialog);
 
@@ -951,7 +953,7 @@ DIALOG_PLAYER *
 init_dialog (DIALOG * dialog, int focus_obj)
 {
   DIALOG_PLAYER *player;
-  BITMAP *gui_bmp = gui_get_screen ();
+  ALLEGRO_BITMAP *gui_bmp = gui_get_screen ();
   struct al_active_dialog_player *n;
   char tmp1[64], tmp2[64];
   int c;
@@ -1084,7 +1086,7 @@ init_dialog (DIALOG * dialog, int focus_obj)
  *  Changes the target bitmap for GUI drawing operations
  */
 void
-gui_set_screen (BITMAP * bmp)
+gui_set_screen (ALLEGRO_BITMAP * bmp)
 {
   gui_screen = bmp;
 }
@@ -1094,7 +1096,7 @@ gui_set_screen (BITMAP * bmp)
 /* gui_get_screen:
  *  Returns the gui_screen, or the default surface if gui_screen is NULL
  */
-BITMAP *
+ALLEGRO_BITMAP *
 gui_get_screen (void)
 {
   return gui_screen ? gui_screen : screen;
@@ -1629,7 +1631,7 @@ draw_menu_item (MENU_PLAYER * m, int c)
   int x, y, w;
   char *buf, *tok1, *tok2;
   int my;
-  BITMAP *gui_bmp = gui_get_screen ();
+  ALLEGRO_BITMAP *gui_bmp = gui_get_screen ();
 
   get_menu_pos (m, c, &x, &y, &w);
 
@@ -1718,7 +1720,7 @@ draw_menu (MENU_PLAYER * m)
     gui_menu_draw_menu (m->x, m->y, m->w, m->h);
   else
     {
-      BITMAP *gui_bmp = gui_get_screen ();
+      ALLEGRO_BITMAP *gui_bmp = gui_get_screen ();
       rectfill (gui_bmp, m->x, m->y, m->x + m->w - 2, m->y + m->h - 2,
                 gui_bg_color);
       rect (gui_bmp, m->x, m->y, m->x + m->w - 2, m->y + m->h - 2,
@@ -1988,7 +1990,7 @@ static MENU_PLAYER *
 init_single_menu (MENU * menu, MENU_PLAYER * parent, DIALOG * dialog, int bar,
                   int x, int y, int repos, int minw, int minh)
 {
-  BITMAP *gui_bmp = gui_get_screen ();
+  ALLEGRO_BITMAP *gui_bmp = gui_get_screen ();
   int scare = is_same_bitmap (gui_bmp, _mouse_screen);
   MENU_PLAYER *player;
   ASSERT (menu);
@@ -2246,7 +2248,7 @@ update_menu (MENU_PLAYER * player)
 
   if ((player->redraw) || (player->sel != old_sel))
     {                           /* selection changed? */
-      BITMAP *gui_bmp = gui_get_screen ();
+      ALLEGRO_BITMAP *gui_bmp = gui_get_screen ();
       int scare = is_same_bitmap (gui_bmp, _mouse_screen);
       player->timestamp = gui_timer;
 
@@ -2419,7 +2421,7 @@ shutdown_single_menu (MENU_PLAYER * player, int *dret)
   /* restore screen */
   if (player->saved)
     {
-      BITMAP *gui_bmp = gui_get_screen ();
+      ALLEGRO_BITMAP *gui_bmp = gui_get_screen ();
       int scare = is_same_bitmap (gui_bmp, _mouse_screen);
       if (scare)
         scare_mouse_area (player->x, player->y, player->w, player->h);

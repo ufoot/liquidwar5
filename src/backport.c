@@ -67,6 +67,8 @@ ALLEGRO_BITMAP *screen=NULL;
 int SCREEN_W=0;
 int SCREEN_H=0;
 ALLEGRO_FONT *font=NULL;
+volatile int mouse_x=0;
+volatile int mouse_y=0;
 
 /*==================================================================*/
 /* fonctions                                                        */
@@ -450,4 +452,28 @@ void stretch_blit(ALLEGRO_BITMAP *source, ALLEGRO_BITMAP *dest,
   al_set_target_bitmap (dest);
   al_draw_scaled_bitmap(source,source_x,source_y,source_width,source_height,
                         dest_x,dest_y,dest_width,dest_height,0);
+}
+
+/*------------------------------------------------------------------*/
+int poll_mouse(void){
+  // https://liballeg.org/stabledocs/en/alleg004.html#poll_mouse
+  ALLEGRO_MOUSE_STATE mouse_state;
+
+  memset(&mouse_state,0,sizeof(mouse_state));
+  al_get_mouse_state(&mouse_state);
+  mouse_x=al_get_mouse_state_axis(&mouse_state,0);
+  mouse_y=al_get_mouse_state_axis(&mouse_state,1);
+
+  return 0;
+}
+
+/*------------------------------------------------------------------*/
+int mouse_needs_poll(void){
+  // https://liballeg.org/stabledocs/en/alleg004.html#mouse_needs_poll
+  /*
+   * Stupid answer which means "poll all the time" but this is (hopefully)
+   * transition code, if this is a perf bottleneck it should be easy to
+   * remove or change all that polling logic.
+   */
+  return 1;
 }
