@@ -57,6 +57,7 @@
 
 #include "backport.h"
 #include "palette.h"
+#include "macro.h"
 
 /*==================================================================*/
 /* variables globales                                               */
@@ -194,13 +195,13 @@ usetc (char *s, int c)
   // https://liballeg.org/stabledocs/en/alleg002.html#usetc
   ALLEGRO_USTR *us = NULL;
   int l = 0;
-  const char *s = NULL;
+  const char *s2=NULL;
 
-  us = al_ustr_new ("");
-  al_ustr_append_chr (us, c);
-  s = al_cstr (us);
+  us = al_ustr_new (s);
+  al_ustr_set_chr (us, 0,c);
+  s2 = al_cstr (us);
   l = strlen (s);
-  LW_MACRO_STRNCPY (s, al_cstr (us));
+  LW_MACRO_STRNCPY (s, s2,l+1);
   al_ustr_free (us);
 
   return l;
@@ -249,7 +250,7 @@ ustrlen (const char *s)
   int l=0;
 
   us = al_ustr_new (s);
-  l=al_ustr_length(s);
+  l = al_ustr_length(us);
   al_ustr_free (us);
 
   return l;
@@ -273,7 +274,7 @@ int ugetat(char *s, int index) {
   int c=0;
 
   us = al_ustr_new (s);
-  c=al_ustr_get(us,index);
+  c = al_ustr_get(us,index);
   al_ustr_free (us);
 
   return c;
@@ -296,7 +297,7 @@ usetat(char *s, int index, int c,int max_size){
     index=l-index;
   }
   if (index>= max_len || index<0){
-    return;
+    return 0;
   }
 
   us = al_ustr_new (s);
@@ -328,7 +329,7 @@ int uinsert(char *s, int index, int c,int max_size){
     index=l-index;
   }
   if (index>= max_len || index<0){
-    return;
+    return 0;
   }
 
   us = al_ustr_new (s);
@@ -354,13 +355,13 @@ uremove(char *s, int index){
   if (index<0) {
     index=l-index;
   }
-  if (index>= max_len || index<0){
-    return;
+  if (index<0){
+    return 0;
   }
 
   us = al_ustr_new (s);
   al_ustr_remove_chr(us,index);
-  LW_MACRO_STRNCPY(s,al_cstr(us),max_size);
+  LW_MACRO_STRNCPY(s,al_cstr(us),l);
   al_ustr_free (us);
 
   return (strlen(s)-l);
@@ -378,13 +379,13 @@ uisok(int c){
 }
 
 /*------------------------------------------------------------------*/
-int text_length(ALLEGRO_FONT *f, const char *s) {
+int text_length(const ALLEGRO_FONT *f, const char *s) {
   // https://liballeg.org/stabledocs/en/alleg018.html#text_length
   return al_get_text_width(f, s);
 }
 
 /*------------------------------------------------------------------*/
-int text_height(ALLEGRO_FONT *f) {
+int text_height(const ALLEGRO_FONT *f) {
   // https://liballeg.org/stabledocs/en/alleg018.html#text_height
   return al_get_font_line_height(f);
 }
@@ -392,6 +393,12 @@ int text_height(ALLEGRO_FONT *f) {
 /*------------------------------------------------------------------*/
 void textout_ex(ALLEGRO_BITMAP *bmp, const ALLEGRO_FONT *f, const char *s, int x, int y, int color, int bg){
   // https://liballeg.org/stabledocs/en/alleg018.html#textout_ex
+  int w = 0;
+  int h = 0;
+
+  w = text_length(f, s);
+  h = text_height(f);
+  rectfill (bmp, x,y, x+w-1, y+h-1, bg);
 
   al_set_target_bitmap (bmp);
   if (color < 0 || color >= PALETTE_SIZE)
@@ -400,6 +407,7 @@ void textout_ex(ALLEGRO_BITMAP *bmp, const ALLEGRO_FONT *f, const char *s, int x
     }
   ALLEGRO_COLOR al_color;
   al_color = GLOBAL_PALETTE[color];
+
   al_draw_text(f,al_color,x,y,0,s);
 }
 
@@ -408,7 +416,7 @@ void rest_callback(unsigned int time, void (*callback)(void)) {
   // https://liballeg.org/stabledocs/en/alleg005.html#rest_callback
   double delay;
 
-  delay=double(time)/1000.0;
+  delay=((double) time)/1000.0;
   if (callback==NULL) {
     al_rest(delay);
   } else {

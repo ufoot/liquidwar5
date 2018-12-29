@@ -1139,7 +1139,7 @@ my_edit_proc (int msg, DIALOG * d, int c)
         {
           if (l < d->d1)
             {
-              uinsert (s, d->d2, c);
+              uinsert (s, d->d2, c,d->d1);
               d->d2++;
 
               object_message (d, MSG_DRAW, 0);
@@ -1408,7 +1408,7 @@ my_draw_listbox (DIALOG * d)
           while (text_length (font, s) >= MAX (d->w - 1 - (bar ? 22 : 10), 1))
             {
               len--;
-              usetat (s, len, 0);
+              usetat (s, len, 0,sizeof(s));
             }
           //textout_ex(gui_bmp, font, s, x, y, fg, bg);
           textout_ex (gui_bmp, font, s, x, y, -1, bg);  // ufoot

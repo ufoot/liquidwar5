@@ -132,13 +132,13 @@ int uwidth (const char *s);
 int ustrlen (const char *s);
 int uisspace (int c);
 int ugetat(char *s, int index);
-int usetat(char *s, int index, int c);
-int uinsert(char *s, int index, int c);
+int usetat(char *s, int index, int c,int max_size);
+int uinsert(char *s, int index, int c,int max_size);
 int uremove(char *s, int index);
 int uisok(int c);
 
-int text_length(ALLEGRO_FONT *f, const char *s);
-int text_height(ALLEGRO_FONT *f);
+int text_length(const ALLEGRO_FONT *f, const char *s);
+int text_height(const ALLEGRO_FONT *f);
 void textout_ex(ALLEGRO_BITMAP *bmp, const ALLEGRO_FONT *f, const char *s, int x, int y, int color, int bg);
 
 void rest_callback(unsigned int time, void (*callback)(void));
