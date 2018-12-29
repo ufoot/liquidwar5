@@ -26,9 +26,7 @@
 
 #include <limits.h>
 
-#include "allegro.h"
-#include "allegro/internal/aintern.h"
-
+#include <allegro5/keycodes.h>
 
 
 /* if set, the input focus follows the mouse pointer */

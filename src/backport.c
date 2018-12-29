@@ -420,7 +420,7 @@ void rest_callback(unsigned int time, void (*callback)(void)) {
   if (callback==NULL) {
     al_rest(delay);
   } else {
-    int i;
+    unsigned int i;
 
     for (i=0; i<time; i++) {
       al_rest(0.001);
@@ -432,7 +432,7 @@ void rest_callback(unsigned int time, void (*callback)(void)) {
 /*------------------------------------------------------------------*/
 void rest(unsigned int time) {
   // https://liballeg.org/stabledocs/en/alleg005.html#rest
-  rest_callback(int,NULL);
+  rest_callback(time,NULL);
 }
 
 /*------------------------------------------------------------------*/
@@ -448,7 +448,6 @@ void stretch_blit(ALLEGRO_BITMAP *source, ALLEGRO_BITMAP *dest,
                   int dest_x, int dest_y, int dest_width, int dest_height) {
   // https://liballeg.org/stabledocs/en/alleg014.html#stretch_blit
   al_set_target_bitmap (dest);
-  al_draw_bitmap(bmp,sprite,x,y,0);
   al_draw_scaled_bitmap(source,source_x,source_y,source_width,source_height,
                         dest_x,dest_y,dest_width,dest_height,0);
 }
