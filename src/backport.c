@@ -69,6 +69,8 @@ int SCREEN_H=0;
 ALLEGRO_FONT *font=NULL;
 volatile int mouse_x=0;
 volatile int mouse_y=0;
+volatile int mouse_z=0;
+volatile int mouse_b=0;
 
 /*==================================================================*/
 /* fonctions                                                        */
@@ -461,8 +463,17 @@ int poll_mouse(void){
 
   memset(&mouse_state,0,sizeof(mouse_state));
   al_get_mouse_state(&mouse_state);
-  mouse_x=al_get_mouse_state_axis(&mouse_state,0);
-  mouse_y=al_get_mouse_state_axis(&mouse_state,1);
+  int num_axes= num_axes=al_get_mouse_num_axes();
+  if (num_axes>=1) {
+    mouse_x=al_get_mouse_state_axis(&mouse_state,0);
+  }
+  if (num_axes>=2) {
+    mouse_y=al_get_mouse_state_axis(&mouse_state,1);
+  }
+  if (num_axes>=3) {
+    mouse_z=al_get_mouse_state_axis(&mouse_state,2);
+  }
+  mouse_b=mouse_state.buttons;
 
   return 0;
 }

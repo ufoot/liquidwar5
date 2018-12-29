@@ -86,10 +86,6 @@ default_mouse_x (void)
   return mouse_x;
 }
 
-END_OF_STATIC_FUNCTION (default_mouse_x);
-
-
-
 /* hook function for reading the mouse y position */
 static int
 default_mouse_y (void)
@@ -99,10 +95,6 @@ default_mouse_y (void)
 
   return mouse_y;
 }
-
-END_OF_STATIC_FUNCTION (default_mouse_y);
-
-
 
 /* hook function for reading the mouse z position */
 static int
@@ -114,10 +106,6 @@ default_mouse_z (void)
   return mouse_z;
 }
 
-END_OF_STATIC_FUNCTION (default_mouse_z);
-
-
-
 /* hook function for reading the mouse button state */
 static int
 default_mouse_b (void)
@@ -127,10 +115,6 @@ default_mouse_b (void)
 
   return mouse_b;
 }
-
-END_OF_STATIC_FUNCTION (default_mouse_b);
-
-
 
 /* hook functions for reading the mouse state */
 int (*gui_mouse_x) (void) = default_mouse_x;
@@ -198,10 +182,6 @@ dclick_check (void)
     dclick_status = DCLICK_NOT;
 }
 
-END_OF_STATIC_FUNCTION (dclick_check);
-
-
-
 /* gui_switch_callback:
  *  Sets the dirty flags whenever a display switch occurs.
  */
@@ -224,7 +204,7 @@ position_dialog (DIALOG * dialog, int x, int y)
   int min_y = INT_MAX;
   int xc, yc;
   int c;
-  ASSERT (dialog);
+  ALLEGRO_ASSERT (dialog);
 
   /* locate the upper-left corner */
   for (c = 0; dialog[c].proc; c++)
@@ -262,7 +242,7 @@ centre_dialog (DIALOG * dialog)
   int max_y = INT_MIN;
   int xc, yc;
   int c;
-  ASSERT (dialog);
+  ALLEGRO_ASSERT (dialog);
 
   /* find the extents of the dialog (done in many loops due to a bug
    * in MSVC that prevents the more sensible version from working)
@@ -312,7 +292,7 @@ void
 set_dialog_color (DIALOG * dialog, int fg, int bg)
 {
   int c;
-  ASSERT (dialog);
+  ALLEGRO_ASSERT (dialog);
 
   for (c = 0; dialog[c].proc; c++)
     {
@@ -332,7 +312,7 @@ int
 find_dialog_focus (DIALOG * dialog)
 {
   int c;
-  ASSERT (dialog);
+  ALLEGRO_ASSERT (dialog);
 
   for (c = 0; dialog[c].proc; c++)
     if (dialog[c].flags & D_GOTFOCUS)
@@ -356,7 +336,7 @@ object_message (DIALOG * dialog, int msg, int c)
 #endif
 
   int ret;
-  ASSERT (dialog);
+  ALLEGRO_ASSERT (dialog);
 
   if (msg == MSG_DRAW)
     {
@@ -404,7 +384,7 @@ dialog_message (DIALOG * dialog, int msg, int c, int *obj)
 {
   int count, res, r, force, try;
   DIALOG *menu_dialog = NULL;
-  ASSERT (dialog);
+  ALLEGRO_ASSERT (dialog);
 
   /* Note: don't acquire the screen in here.  A deadlock develops in a
    * situation like this:
@@ -503,7 +483,7 @@ find_mouse_object (DIALOG * d)
   int mouse_object = -1;
   int c;
   int res;
-  ASSERT (d);
+  ALLEGRO_ASSERT (d);
 
   for (c = 0; d[c].proc; c++)
     {
@@ -533,8 +513,8 @@ int
 offer_focus (DIALOG * dialog, int obj, int *focus_obj, int force)
 {
   int res = D_O_K;
-  ASSERT (dialog);
-  ASSERT (focus_obj);
+  ALLEGRO_ASSERT (dialog);
+  ALLEGRO_ASSERT (focus_obj);
 
   if ((obj == *focus_obj) ||
       ((obj >= 0) && (dialog[obj].flags & (D_HIDDEN | D_DISABLED))))
@@ -879,7 +859,7 @@ do_dialog (DIALOG * dialog, int focus_obj)
   ALLEGRO_BITMAP *gui_bmp = gui_get_screen ();
   int screen_count = _gfx_mode_set_count;
   void *player;
-  ASSERT (dialog);
+  ALLEGRO_ASSERT (dialog);
 
   if (!is_same_bitmap (_mouse_screen, gui_bmp)
       && !(gfx_capabilities & GFX_HW_CURSOR))
@@ -917,7 +897,7 @@ popup_dialog (DIALOG * dialog, int focus_obj)
   ALLEGRO_BITMAP *bmp;
   ALLEGRO_BITMAP *gui_bmp;
   int ret;
-  ASSERT (dialog);
+  ALLEGRO_ASSERT (dialog);
 
   bmp = create_bitmap (dialog->w, dialog->h);
   gui_bmp = gui_get_screen ();
@@ -957,7 +937,7 @@ init_dialog (DIALOG * dialog, int focus_obj)
   struct al_active_dialog_player *n;
   char tmp1[64], tmp2[64];
   int c;
-  ASSERT (dialog);
+  ALLEGRO_ASSERT (dialog);
 
   /* close any menu opened by a d_menu_proc */
   if (active_menu_player)
@@ -1112,7 +1092,7 @@ check_for_redraw (DIALOG_PLAYER * player)
 {
   struct al_active_dialog_player *iter;
   int c, r;
-  ASSERT (player);
+  ALLEGRO_ASSERT (player);
 
   /* need to redraw all active dialogs? */
   if (player->res & D_REDRAW_ALL)
@@ -1155,7 +1135,7 @@ update_dialog (DIALOG_PLAYER * player)
 {
   int c, cascii, cscan, ccombo, r, ret, nowhere, z;
   int new_mouse_b;
-  ASSERT (player);
+  ALLEGRO_ASSERT (player);
 
   /* redirect to update_menu() whenever a menu is activated */
   if (active_menu_player)
@@ -1179,7 +1159,7 @@ update_dialog (DIALOG_PLAYER * player)
           for (c = 0; player->dialog[c].proc; c++)
             if (&player->dialog[c] == active_menu_player->dialog)
               break;
-          ASSERT (player->dialog[c].proc);
+          ALLEGRO_ASSERT (player->dialog[c].proc);
 
           MESSAGE (c, MSG_LOSTMOUSE, 0);
           goto getout;
@@ -1493,7 +1473,7 @@ shutdown_dialog (DIALOG_PLAYER * player)
 {
   struct al_active_dialog_player *iter, *prev;
   int obj;
-  ASSERT (player);
+  ALLEGRO_ASSERT (player);
 
   /* send the finish messages */
   dialog_message (player->dialog, MSG_END, 0, &player->obj);
@@ -1964,7 +1944,7 @@ do_menu (MENU * menu, int x, int y)
 {
   MENU_PLAYER *player;
   int ret;
-  ASSERT (menu);
+  ALLEGRO_ASSERT (menu);
 
   player = init_menu (menu, x, y);
 
@@ -1993,7 +1973,7 @@ init_single_menu (MENU * menu, MENU_PLAYER * parent, DIALOG * dialog, int bar,
   ALLEGRO_BITMAP *gui_bmp = gui_get_screen ();
   int scare = is_same_bitmap (gui_bmp, _mouse_screen);
   MENU_PLAYER *player;
-  ASSERT (menu);
+  ALLEGRO_ASSERT (menu);
 
   player = _AL_MALLOC (sizeof (MENU_PLAYER));
   if (!player)
@@ -2080,7 +2060,7 @@ update_menu (MENU_PLAYER * player)
   int c, c2;
   int old_sel, child_ret;
   int child_x, child_y;
-  ASSERT (player);
+  ALLEGRO_ASSERT (player);
 
   /* find activated menu */
   while (player->child)
@@ -2392,7 +2372,7 @@ static int
 shutdown_single_menu (MENU_PLAYER * player, int *dret)
 {
   int ret;
-  ASSERT (player);
+  ALLEGRO_ASSERT (player);
 
   if (dret)
     *dret = 0;
@@ -2449,7 +2429,7 @@ shutdown_single_menu (MENU_PLAYER * player, int *dret)
 static int
 shutdown_tree_menu (MENU_PLAYER * player, int *dret)
 {
-  ASSERT (player);
+  ALLEGRO_ASSERT (player);
 
   if (player->child)
     {
@@ -2488,7 +2468,7 @@ d_menu_proc (int msg, DIALOG * d, int c)
   MENU_PLAYER m, *mp;
   int ret = D_O_K;
   int x, i;
-  ASSERT (d);
+  ALLEGRO_ASSERT (d);
 
   switch (msg)
     {

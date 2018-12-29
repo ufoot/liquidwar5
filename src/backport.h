@@ -114,6 +114,8 @@ extern int SCREEN_H;
 extern ALLEGRO_FONT *font;
 volatile int mouse_x;
 volatile int mouse_y;
+volatile int mouse_z;
+volatile int mouse_b;
 
 /*==================================================================*/
 /* fonctions globales                                               */
