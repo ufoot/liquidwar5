@@ -89,6 +89,17 @@ scare_mouse ()
 
 /*------------------------------------------------------------------*/
 void
+scare_mouse_area (int x, int y, int w, int h)
+{
+  /*
+   * Using a higher level API now, looks like those disappeared.
+   * Keeping them so that whatever workaround those calls were
+   * achieving, it's easier to backport it afterwards.
+   */
+}
+
+/*------------------------------------------------------------------*/
+void
 unscare_mouse ()
 {
   /*
@@ -96,6 +107,39 @@ unscare_mouse ()
    * Keeping them so that whatever workaround those calls were
    * achieving, it's easier to backport it afterwards.
    */
+}
+
+/*------------------------------------------------------------------*/
+int poll_mouse(void){
+  // https://liballeg.org/stabledocs/en/alleg004.html#poll_mouse
+  ALLEGRO_MOUSE_STATE mouse_state;
+
+  memset(&mouse_state,0,sizeof(mouse_state));
+  al_get_mouse_state(&mouse_state);
+  int num_axes= num_axes=al_get_mouse_num_axes();
+  if (num_axes>=1) {
+    mouse_x=al_get_mouse_state_axis(&mouse_state,0);
+  }
+  if (num_axes>=2) {
+    mouse_y=al_get_mouse_state_axis(&mouse_state,1);
+  }
+  if (num_axes>=3) {
+    mouse_z=al_get_mouse_state_axis(&mouse_state,2);
+  }
+  mouse_b=mouse_state.buttons;
+
+  return 0;
+}
+
+/*------------------------------------------------------------------*/
+int mouse_needs_poll(void){
+  // https://liballeg.org/stabledocs/en/alleg004.html#mouse_needs_poll
+  /*
+   * Stupid answer which means "poll all the time" but this is (hopefully)
+   * transition code, if this is a perf bottleneck it should be easy to
+   * remove or change all that polling logic.
+   */
+  return 1;
 }
 
 /*------------------------------------------------------------------*/
@@ -454,37 +498,4 @@ void stretch_blit(ALLEGRO_BITMAP *source, ALLEGRO_BITMAP *dest,
   al_set_target_bitmap (dest);
   al_draw_scaled_bitmap(source,source_x,source_y,source_width,source_height,
                         dest_x,dest_y,dest_width,dest_height,0);
-}
-
-/*------------------------------------------------------------------*/
-int poll_mouse(void){
-  // https://liballeg.org/stabledocs/en/alleg004.html#poll_mouse
-  ALLEGRO_MOUSE_STATE mouse_state;
-
-  memset(&mouse_state,0,sizeof(mouse_state));
-  al_get_mouse_state(&mouse_state);
-  int num_axes= num_axes=al_get_mouse_num_axes();
-  if (num_axes>=1) {
-    mouse_x=al_get_mouse_state_axis(&mouse_state,0);
-  }
-  if (num_axes>=2) {
-    mouse_y=al_get_mouse_state_axis(&mouse_state,1);
-  }
-  if (num_axes>=3) {
-    mouse_z=al_get_mouse_state_axis(&mouse_state,2);
-  }
-  mouse_b=mouse_state.buttons;
-
-  return 0;
-}
-
-/*------------------------------------------------------------------*/
-int mouse_needs_poll(void){
-  // https://liballeg.org/stabledocs/en/alleg004.html#mouse_needs_poll
-  /*
-   * Stupid answer which means "poll all the time" but this is (hopefully)
-   * transition code, if this is a perf bottleneck it should be easy to
-   * remove or change all that polling logic.
-   */
-  return 1;
 }

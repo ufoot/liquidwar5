@@ -122,7 +122,10 @@ volatile int mouse_b;
 /*==================================================================*/
 
 void scare_mouse ();
+void scare_mouse_area (int x, int y, int w, int h);
 void unscare_mouse ();
+int poll_mouse(void);
+int mouse_needs_poll(void);
 
 void putpixel (ALLEGRO_BITMAP * bitmap, int x, int y, int color);
 void rect (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2, int color);
@@ -152,8 +155,5 @@ void draw_sprite(ALLEGRO_BITMAP *bmp, ALLEGRO_BITMAP *sprite, int x, int y);
 void stretch_blit(ALLEGRO_BITMAP *source, ALLEGRO_BITMAP *dest,
                   int source_x, int source_y, int source_width, int source_height,
                   int dest_x, int dest_y, int dest_width, int dest_height);
-
-int poll_mouse(void);
-int mouse_needs_poll(void);
 
 #endif // LIQUID_WAR_INCLUDE_BACKPORT
