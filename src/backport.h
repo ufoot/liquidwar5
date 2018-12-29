@@ -102,11 +102,7 @@
 /*==================================================================*/
 
 #define PALETTE_SIZE 256
-typedef struct
-{
-  ALLEGRO_COLOR colors[PALETTE_SIZE];
-}
-PALETTE;
+typedef ALLEGRO_COLOR PALETTE[PALETTE_SIZE];
 
 /*==================================================================*/
 /* variables globales                                               */

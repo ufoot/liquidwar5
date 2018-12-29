@@ -52,10 +52,11 @@
 /* includes                                                         */
 /*==================================================================*/
 
-#include "backport.h"
-
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_font.h>
+
+#include "backport.h"
+#include "palette.h"
 
 /*==================================================================*/
 /* variables globales                                               */
@@ -103,7 +104,7 @@ putpixel (ALLEGRO_BITMAP * bitmap, int x, int y, int color)
    * However, at least, it's safe transition code.
    * [TODO:ufoot] optimize that crap.
    */
-  void al_set_target_bitmap (bitmap);
+  al_set_target_bitmap (bitmap);
   if (color < 0 || color >= PALETTE_SIZE)
     {
       return;
@@ -121,7 +122,7 @@ rect (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2, int color)
   if (x2<x1 || y2<y1) {
     return;
   }
-  void al_set_target_bitmap (bitmap);
+  al_set_target_bitmap (bitmap);
   if (color < 0 || color >= PALETTE_SIZE)
     {
       return;
@@ -139,7 +140,7 @@ void
 rectfill (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2, int color)
 {
   // https://liballeg.org/stabledocs/en/alleg013.html#rectfill
-  void al_set_target_bitmap (bitmap);
+  al_set_target_bitmap (bitmap);
   if (color < 0 || color >= PALETTE_SIZE)
     {
       return;
@@ -158,7 +159,7 @@ vline (ALLEGRO_BITMAP * bitmap, int x, int y1, int y2, int color)
   if (y2<y1) {
     return;
   }
-  void al_set_target_bitmap (bitmap);
+  al_set_target_bitmap (bitmap);
   if (color < 0 || color >= PALETTE_SIZE)
     {
       return;
@@ -176,7 +177,7 @@ hline (ALLEGRO_BITMAP * bitmap, int x1, int y, int x2, int color)
   if (x2<x1) {
     return;
   }
-  void al_set_target_bitmap (bitmap);
+  al_set_target_bitmap (bitmap);
   if (color < 0 || color >= PALETTE_SIZE)
     {
       return;
@@ -429,7 +430,7 @@ void rest(unsigned int time) {
 /*------------------------------------------------------------------*/
 void draw_sprite(ALLEGRO_BITMAP *bmp, ALLEGRO_BITMAP *sprite, int x, int y) {
   // https://liballeg.org/stabledocs/en/alleg014.html#draw_sprite
-  void al_set_target_bitmap (bmp);
+  al_set_target_bitmap (bmp);
   al_draw_bitmap(sprite,x,y,0);
 }
 
@@ -438,7 +439,7 @@ void stretch_blit(ALLEGRO_BITMAP *source, ALLEGRO_BITMAP *dest,
                   int source_x, int source_y, int source_width, int source_height,
                   int dest_x, int dest_y, int dest_width, int dest_height) {
   // https://liballeg.org/stabledocs/en/alleg014.html#stretch_blit
-  void al_set_target_bitmap (dest);
+  al_set_target_bitmap (dest);
   al_draw_bitmap(bmp,sprite,x,y,0);
   al_draw_scaled_bitmap(source,source_x,source_y,source_width,source_height,
                         dest_x,dest_y,dest_width,dest_height,0);
