@@ -728,5 +728,39 @@ set_clip_rect (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2)
 {
   // https://liballeg.org/stabledocs/en/alleg009.html#set_clip_rect
   al_set_target_bitmap (bitmap);
-  al_set_clipping_rectangle (x1, y1, x2 - x1 + 1, y2 - y1 + 1);
+  if (x1 < 0)
+    {
+      x1 = 0;
+    }
+  if (y1 < 0)
+    {
+      y1 = 0;
+    }
+  if (x1 > al_get_bitmap_width ())
+    {
+      x1 = al_get_bitmap_width ();
+    }
+  if (y1 > al_get_bitmap_height ())
+    {
+      y1 = al_get_bitmap_height ();
+    }
+  if (x2 > al_get_bitmap_width ())
+    {
+      x2 = al_get_bitmap_width ();
+    }
+  if (y2 > al_get_bitmap_height ())
+    {
+      y2 = al_get_bitmap_height ();
+    }
+  int w = x2 - x1 + 1;
+  int h = y2 - y1 + 1;
+  if (w < 0)
+    {
+      w = 0;
+    }
+  if (h < 0)
+    {
+      h = 0;
+    }
+  al_set_clipping_rectangle (x1, y1, w, h);
 }
