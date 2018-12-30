@@ -736,21 +736,21 @@ set_clip_rect (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2)
     {
       y1 = 0;
     }
-  if (x1 > al_get_bitmap_width ())
+  if (x1 > al_get_bitmap_width (bitmap))
     {
-      x1 = al_get_bitmap_width ();
+      x1 = al_get_bitmap_width (bitmap);
     }
-  if (y1 > al_get_bitmap_height ())
+  if (y1 > al_get_bitmap_height (bitmap))
     {
-      y1 = al_get_bitmap_height ();
+      y1 = al_get_bitmap_height (bitmap);
     }
-  if (x2 > al_get_bitmap_width ())
+  if (x2 > al_get_bitmap_width (bitmap))
     {
-      x2 = al_get_bitmap_width ();
+      x2 = al_get_bitmap_width (bitmap);
     }
-  if (y2 > al_get_bitmap_height ())
+  if (y2 > al_get_bitmap_height (bitmap))
     {
-      y2 = al_get_bitmap_height ();
+      y2 = al_get_bitmap_height (bitmap);
     }
   int w = x2 - x1 + 1;
   int h = y2 - y1 + 1;

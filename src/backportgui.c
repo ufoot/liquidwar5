@@ -927,7 +927,6 @@ init_dialog (DIALOG * dialog, int focus_obj)
   DIALOG_PLAYER *player;
   ALLEGRO_BITMAP *gui_bmp = gui_get_screen ();
   struct al_active_dialog_player *n;
-  char tmp1[64], tmp2[64];
   int c;
   ALLEGRO_ASSERT (dialog);
 
