@@ -28,7 +28,7 @@ addons:
       - liballegro-image5-dev
       - libxml2-utils
 
-install: autoconf
+install: autoconf && pkg-config --list-all | sort -u
 
 script: ./configure && make && make check && make package_source
 
