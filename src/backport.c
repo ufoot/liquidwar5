@@ -545,6 +545,21 @@ draw_sprite (ALLEGRO_BITMAP * bmp, ALLEGRO_BITMAP * sprite, int x, int y)
 
 /*------------------------------------------------------------------*/
 void
+blit (ALLEGRO_BITMAP * source, ALLEGRO_BITMAP * dest,
+      int source_x, int source_y,
+      int dest_x, int dest_y, int dest_width, int dest_height)
+{
+  // https://liballeg.org/stabledocs/en/alleg014.html#blit
+  al_set_target_bitmap (dest);
+  int sw = MAX (MIN (al_get_bitmap_width (source) - source_x, dest_width), 0);
+  int sh =
+    MAX (MIN (al_get_bitmap_height (source) - source_y, dest_height), 0);
+  al_draw_bitmap_region (source, source_x, source_y, sw, sh, dest_x, dest_y,
+                         0);
+}
+
+/*------------------------------------------------------------------*/
+void
 stretch_blit (ALLEGRO_BITMAP * source, ALLEGRO_BITMAP * dest,
               int source_x, int source_y, int source_width, int source_height,
               int dest_x, int dest_y, int dest_width, int dest_height)

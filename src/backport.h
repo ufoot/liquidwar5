@@ -156,6 +156,9 @@ void rest (unsigned int time);
 
 void draw_sprite (ALLEGRO_BITMAP * bmp, ALLEGRO_BITMAP * sprite, int x,
                   int y);
+void blit (ALLEGRO_BITMAP * source, ALLEGRO_BITMAP * dest,
+           int source_x, int source_y,
+           int dest_x, int dest_y, int dest_width, int dest_height);
 void stretch_blit (ALLEGRO_BITMAP * source, ALLEGRO_BITMAP * dest,
                    int source_x, int source_y, int source_width,
                    int source_height, int dest_x, int dest_y, int dest_width,
