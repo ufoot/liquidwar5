@@ -95,6 +95,7 @@ volatile int mouse_y = 0;
 volatile int mouse_z = 0;
 volatile int mouse_b = 0;
 int *allegro_errno = &_allegro_errno;
+JOYSTICK_INFO joy[MAX_JOYSTICKS];
 
 /*==================================================================*/
 /* fonctions                                                        */
@@ -763,4 +764,57 @@ set_clip_rect (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2)
       h = 0;
     }
   al_set_clipping_rectangle (x1, y1, w, h);
+}
+
+/*------------------------------------------------------------------*/
+int
+poll_joystick ()
+{
+  // https://liballeg.org/stabledocs/en/alleg007.html#poll_joystick
+
+  memset (&joy[0], 0, sizeof (joy));
+  int num_joysticks = al_get_num_joysticks ();
+  for (int j = 0; j < num_joysticks && j < MAX_JOYSTICKS; j++)
+    {
+      ALLEGRO_JOYSTICK *joystick = NULL;
+      joystick = al_get_joystick (j);
+      if (joystick == NULL)
+        {
+          continue;
+        }
+      joy[j].name = al_get_joystick_name (joystick);
+      ALLEGRO_JOYSTICK_STATE joystick_state;
+      memset (&joystick_state, 0, sizeof (joystick_state));
+      al_get_joystick_state (joystick, &joystick_state);
+      int num_sticks = al_get_joystick_num_sticks (joystick);
+      for (int s = 0; s < num_sticks && s < MAX_JOYSTICK_STICKS; s++)
+        {
+          joy[j].stick[s].name = al_get_joystick_stick_name (joystick, s);
+          int num_axes = al_get_joystick_num_axes (joystick, s);
+          for (int a = 0; a < num_axes && a < MAX_JOYSTICK_AXIS; a++)
+            {
+              joy[j].stick[s].axis[a].name =
+                al_get_joystick_axis_name (joystick, s, a);
+              float p = joystick_state.stick[s].axis[a];
+              joy[j].stick[s].axis[a].pos = (int) (p * 128.0);
+              if (p < 0)
+                {
+                  joy[j].stick[s].axis[a].d1 = 1;
+                }
+              else if (p > 0)
+                {
+                  joy[j].stick[s].axis[a].d2 = 1;
+                }
+            }
+          int num_buttons = al_get_joystick_num_buttons (joystick);
+          for (int b = 0; b < num_buttons && b < MAX_JOYSTICK_BUTTONS; b++)
+            {
+              joy[j].button[b].name =
+                al_get_joystick_button_name (joystick, b);
+              joy[j].button[b].b = joystick_state.button[b] ? 1 : 0;
+            }
+        }
+    }
+
+  return 0;
 }

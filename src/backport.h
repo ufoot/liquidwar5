@@ -114,6 +114,46 @@
 #define PALETTE_SIZE 256
 typedef ALLEGRO_COLOR PALETTE[PALETTE_SIZE];
 
+#define MAX_JOYSTICKS            8
+#define MAX_JOYSTICK_AXIS        3
+#define MAX_JOYSTICK_STICKS      5
+#define MAX_JOYSTICK_BUTTONS     32
+
+/* information about a single joystick axis */
+typedef struct JOYSTICK_AXIS_INFO
+{
+  int pos;
+  int d1, d2;
+  const char *name;
+} JOYSTICK_AXIS_INFO;
+
+/* information about one or more axis (a slider or directional control) */
+typedef struct JOYSTICK_STICK_INFO
+{
+  int flags;
+  int num_axis;
+  JOYSTICK_AXIS_INFO axis[MAX_JOYSTICK_AXIS];
+  const char *name;
+} JOYSTICK_STICK_INFO;
+
+/* information about a joystick button */
+typedef struct JOYSTICK_BUTTON_INFO
+{
+  int b;
+  const char *name;
+} JOYSTICK_BUTTON_INFO;
+
+/* information about an entire joystick */
+typedef struct JOYSTICK_INFO
+{
+  //  int flags;
+  const char *name;
+  int num_sticks;
+  int num_buttons;
+  JOYSTICK_STICK_INFO stick[MAX_JOYSTICK_STICKS];
+  JOYSTICK_BUTTON_INFO button[MAX_JOYSTICK_BUTTONS];
+} JOYSTICK_INFO;
+
 /*==================================================================*/
 /* variables globales                                               */
 /*==================================================================*/
@@ -122,11 +162,12 @@ extern ALLEGRO_BITMAP *screen;
 extern int SCREEN_W;
 extern int SCREEN_H;
 extern ALLEGRO_FONT *font;
-volatile int mouse_x;
-volatile int mouse_y;
-volatile int mouse_z;
-volatile int mouse_b;
-int *allegro_errno;
+extern volatile int mouse_x;
+extern volatile int mouse_y;
+extern volatile int mouse_z;
+extern volatile int mouse_b;
+extern int *allegro_errno;
+extern JOYSTICK_INFO joy[MAX_JOYSTICKS];
 
 /*==================================================================*/
 /* fonctions globales                                               */
@@ -184,5 +225,7 @@ void acquire_screen ();
 void release_bitmap (ALLEGRO_BITMAP * bmp);
 void release_screen ();
 void set_clip_rect (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2);
+
+int poll_joystick ();
 
 #endif // LIQUID_WAR_INCLUDE_BACKPORT
