@@ -164,10 +164,10 @@ void textout_ex (ALLEGRO_BITMAP * bmp, const ALLEGRO_FONT * f, const char *s,
 
 void rest_callback (unsigned int time, void (*callback) (void));
 void rest (unsigned int time);
-int install_timer();
-void remove_timer();
-int install_int(void (*proc)(), int speed);
-void remove_int(void (*proc)());
+int install_timer ();
+void remove_timer ();
+int install_int (void (*proc) (), int speed);
+void remove_int (void (*proc) ());
 
 void draw_sprite (ALLEGRO_BITMAP * bmp, ALLEGRO_BITMAP * sprite, int x,
                   int y);
@@ -183,6 +183,6 @@ void acquire_bitmap (ALLEGRO_BITMAP * bmp);
 void acquire_screen ();
 void release_bitmap (ALLEGRO_BITMAP * bmp);
 void release_screen ();
-
+void set_clip_rect (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2);
 
 #endif // LIQUID_WAR_INCLUDE_BACKPORT

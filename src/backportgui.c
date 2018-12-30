@@ -32,7 +32,7 @@
 #include "backportgui.h"
 #include "alleg2.h"
 
-static int _allegro_count = 1; // number of times allegro has been initialized.
+static int _allegro_count = 1;  // number of times allegro has been initialized.
 
 /* if set, the input focus follows the mouse pointer */
 int gui_mouse_focus = TRUE;

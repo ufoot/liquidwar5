@@ -71,9 +71,10 @@
 /* types                                                            */
 /*==================================================================*/
 
-typedef struct {
+typedef struct
+{
   int delay_ms;
-  void (*proc)();
+  void (*proc) ();
 } _backport_timer_data;
 
 /*==================================================================*/
@@ -83,7 +84,7 @@ typedef struct {
 static int _allegro_errno = 0;
 static int _dummy = 0;          // stupid dummy to get rid of unused param warning
 static _backport_timer_data _backport_timers[_NB_TIMERS];
-static LW_MUTEX_DATA _backport_timer_mutex={NULL};
+static LW_MUTEX_DATA _backport_timer_mutex = { NULL };
 
 ALLEGRO_BITMAP *screen = NULL;
 int SCREEN_W = 0;
@@ -556,80 +557,100 @@ rest (unsigned int time)
 }
 
 /*------------------------------------------------------------------*/
-int install_timer(){
+int
+install_timer ()
+{
   // https://liballeg.org/stabledocs/en/alleg005.html#install_timer
-  memset(_backport_timers,0,sizeof(_backport_timers));
-  memset(&_backport_timer_mutex,0,sizeof(_backport_timer_mutex));
+  memset (_backport_timers, 0, sizeof (_backport_timers));
+  memset (&_backport_timer_mutex, 0, sizeof (_backport_timer_mutex));
 
-  return (lw_mutex_init(&_backport_timer_mutex)==0) ? 0:-1;
+  return (lw_mutex_init (&_backport_timer_mutex) == 0) ? 0 : -1;
 }
 
 /*------------------------------------------------------------------*/
-void remove_timer(){
+void
+remove_timer ()
+{
   // https://liballeg.org/stabledocs/en/alleg005.html#remove_timer
-  memset(_backport_timers,0,sizeof(_backport_timers));
-  memset(&_backport_timer_mutex,0,sizeof(_backport_timer_mutex));
+  memset (_backport_timers, 0, sizeof (_backport_timers));
+  memset (&_backport_timer_mutex, 0, sizeof (_backport_timer_mutex));
 }
 
 
 /*------------------------------------------------------------------*/
-void _backport_timer_callback(void *ptr) {
-  _backport_timer_data *data=NULL;
+void
+_backport_timer_callback (void *ptr)
+{
+  _backport_timer_data *data = NULL;
 
-  data=(_backport_timer_data *) ptr;
-  while (data->proc) {
-    data->proc();
-    rest(data->delay_ms);
-  }
+  data = (_backport_timer_data *) ptr;
+  while (data->proc)
+    {
+      data->proc ();
+      rest (data->delay_ms);
+    }
 }
 
 /*------------------------------------------------------------------*/
-int install_int(void (*proc)(), int speed) {
+int
+install_int (void (*proc) (), int speed)
+{
   // https://liballeg.org/stabledocs/en/alleg005.html#install_int
-  int i=0;
-  bool found=false;
-  int ret=0;
+  int i = 0;
+  bool found = false;
+  int ret = 0;
 
-  if (speed<=0) {
-    speed=1;
-  }
+  if (speed <= 0)
+    {
+      speed = 1;
+    }
 
-  lw_mutex_lock(&_backport_timer_mutex);
-  for (i=0;i<_NB_TIMERS && !found;i++) {
-    if (_backport_timers[i].proc==proc) {
-      _backport_timers[i].delay_ms=speed;
-      found=true;
+  lw_mutex_lock (&_backport_timer_mutex);
+  for (i = 0; i < _NB_TIMERS && !found; i++)
+    {
+      if (_backport_timers[i].proc == proc)
+        {
+          _backport_timers[i].delay_ms = speed;
+          found = true;
+        }
     }
-  }
-  for (i=0;i<_NB_TIMERS && !found;i++) {
-    if (_backport_timers[i].proc==NULL) {
-      _backport_timers[i].proc=proc;
-      _backport_timers[i].delay_ms=speed;
-      if (!lw_thread_start(_backport_timer_callback,&(_backport_timers[i]))) {
-        ret=-2;
-      }
-      found=true;
+  for (i = 0; i < _NB_TIMERS && !found; i++)
+    {
+      if (_backport_timers[i].proc == NULL)
+        {
+          _backport_timers[i].proc = proc;
+          _backport_timers[i].delay_ms = speed;
+          if (!lw_thread_start
+              (_backport_timer_callback, &(_backport_timers[i])))
+            {
+              ret = -2;
+            }
+          found = true;
+        }
     }
-  }
-  lw_mutex_unlock(&_backport_timer_mutex);
+  lw_mutex_unlock (&_backport_timer_mutex);
 
   return found ? ret : -1;
 }
 
 /*------------------------------------------------------------------*/
-void remove_int(void (*proc)()) {
+void
+remove_int (void (*proc) ())
+{
   // https://liballeg.org/stabledocs/en/alleg005.html#remove_int
-  int i=0;
-  bool found=false;
+  int i = 0;
+  bool found = false;
 
-  lw_mutex_lock(&_backport_timer_mutex);
-  for (i=0;i<_NB_TIMERS && !found;i++) {
-    if (_backport_timers[i].proc==proc) {
-      _backport_timers[i].proc=NULL;
-      found=true;
+  lw_mutex_lock (&_backport_timer_mutex);
+  for (i = 0; i < _NB_TIMERS && !found; i++)
+    {
+      if (_backport_timers[i].proc == proc)
+        {
+          _backport_timers[i].proc = NULL;
+          found = true;
+        }
     }
-  }
-  lw_mutex_unlock(&_backport_timer_mutex);
+  lw_mutex_unlock (&_backport_timer_mutex);
 }
 
 /*------------------------------------------------------------------*/
@@ -699,4 +720,13 @@ release_screen ()
 {
   // https://liballeg.org/stabledocs/en/alleg009.html#release_screen
   release_bitmap (screen);
+}
+
+/*------------------------------------------------------------------*/
+void
+set_clip_rect (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2)
+{
+  // https://liballeg.org/stabledocs/en/alleg009.html#set_clip_rect
+  al_set_target_bitmap (bitmap);
+  al_set_clipping_rectangle (x1, y1, x2 - x1 + 1, y2 - y1 + 1);
 }
