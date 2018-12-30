@@ -23,7 +23,7 @@ language: c
 addons:
   apt:
     packages:
-      - liballegro4-dev
+      - liballegro5-dev
       - libxml2-utils
 
 install: autoconf
