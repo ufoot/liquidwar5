@@ -829,3 +829,17 @@ keypressed ()
    */
   return 0;
 }
+
+/*------------------------------------------------------------------*/
+int
+ureadkey (int *scancode)
+{
+  // https://liballeg.org/stabledocs/en/alleg006.html#keypressed
+  /*
+   * [FIXME:ufoot] implement this.
+   */
+  if (scancode!=NULL) {
+    (*scancode)=0;
+  }
+  return 0;
+}

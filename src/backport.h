@@ -229,5 +229,6 @@ void set_clip_rect (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2);
 int poll_joystick ();
 
 int keypressed ();
+int ureadkey (int *scancode);
 
 #endif // LIQUID_WAR_INCLUDE_BACKPORT
