@@ -116,6 +116,7 @@ volatile int mouse_x;
 volatile int mouse_y;
 volatile int mouse_z;
 volatile int mouse_b;
+int *allegro_errno;
 
 /*==================================================================*/
 /* fonctions globales                                               */

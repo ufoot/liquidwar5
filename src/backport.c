@@ -63,6 +63,9 @@
 /* variables globales                                               */
 /*==================================================================*/
 
+static int _allegro_errno = 0;
+static int _dummy = 0;          // stupid dummy to get rid of unused param warning
+
 ALLEGRO_BITMAP *screen = NULL;
 int SCREEN_W = 0;
 int SCREEN_H = 0;
@@ -71,8 +74,7 @@ volatile int mouse_x = 0;
 volatile int mouse_y = 0;
 volatile int mouse_z = 0;
 volatile int mouse_b = 0;
-
-static int dummy = 0;           // stupid dummy to get rid of unused param warning
+int *allegro_errno = &_allegro_errno;
 
 /*==================================================================*/
 /* fonctions                                                        */
@@ -98,10 +100,10 @@ scare_mouse_area (int x, int y, int w, int h)
    * Keeping them so that whatever workaround those calls were
    * achieving, it's easier to backport it afterwards.
    */
-  dummy = x;
-  dummy = y;
-  dummy = w;
-  dummy = h;
+  _dummy = x;
+  _dummy = y;
+  _dummy = w;
+  _dummy = h;
 }
 
 /*------------------------------------------------------------------*/

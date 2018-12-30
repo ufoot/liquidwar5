@@ -907,7 +907,7 @@ popup_dialog (DIALOG * dialog, int focus_obj)
       scare_mouse_area (dialog->x, dialog->y, dialog->w, dialog->h);
       blit (bmp, gui_bmp, 0, 0, dialog->x, dialog->y, dialog->w, dialog->h);
       unscare_mouse ();
-      destroy_bitmap (bmp);
+      al_destroy_bitmap (bmp);
     }
 
   return ret;
@@ -2391,7 +2391,7 @@ shutdown_single_menu (MENU_PLAYER * player, int *dret)
       ALLEGRO_BITMAP *gui_bmp = gui_get_screen ();
       blit (player->saved, gui_bmp, 0, 0, player->x, player->y, player->w,
             player->h);
-      destroy_bitmap (player->saved);
+      al_destroy_bitmap (player->saved);
     }
 
   ret = player->ret;
