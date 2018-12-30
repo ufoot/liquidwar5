@@ -93,6 +93,7 @@
 #ifndef ABS
 #define ABS(x)       (((x) >= 0) ? (x) : (-(x)))
 #endif // ABS
+
 #ifndef SGN
 #define SGN(x)       (((x) >= 0) ? 1 : -1)
 #endif // SGN
@@ -163,6 +164,10 @@ void textout_ex (ALLEGRO_BITMAP * bmp, const ALLEGRO_FONT * f, const char *s,
 
 void rest_callback (unsigned int time, void (*callback) (void));
 void rest (unsigned int time);
+int install_timer();
+void remove_timer();
+int install_int(void (*proc)(), int speed);
+void remove_int(void (*proc)());
 
 void draw_sprite (ALLEGRO_BITMAP * bmp, ALLEGRO_BITMAP * sprite, int x,
                   int y);
@@ -178,5 +183,6 @@ void acquire_bitmap (ALLEGRO_BITMAP * bmp);
 void acquire_screen ();
 void release_bitmap (ALLEGRO_BITMAP * bmp);
 void release_screen ();
+
 
 #endif // LIQUID_WAR_INCLUDE_BACKPORT
