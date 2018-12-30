@@ -25,7 +25,7 @@ addons:
     packages:
       - liballegro5-dev
       - liballegro-audio5-dev
-      - liballegro-images5-dev
+      - liballegro-image5-dev
       - libxml2-utils
 
 install: autoconf
