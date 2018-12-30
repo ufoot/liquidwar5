@@ -514,6 +514,118 @@ ustrdup (const char *src)
 
 /*------------------------------------------------------------------*/
 int
+ugetx (char **s)
+{
+  // https://liballeg.org/stabledocs/en/alleg002.html#ugetx
+  return ugetxc ((const char **) s);
+}
+
+/*------------------------------------------------------------------*/
+int
+ugetxc (const char **s)
+{
+  // https://liballeg.org/stabledocs/en/alleg002.html#ugetxc
+  int c = *((unsigned char *) ((*s)++));
+  int n, t;
+
+  if (c & 0x80)
+    {
+      n = 1;
+      while (c & (0x80 >> n))
+        n++;
+
+      c &= (1 << (8 - n)) - 1;
+
+      while (--n > 0)
+        {
+          t = *((unsigned char *) ((*s)++));
+
+          if ((!(t & 0x80)) || (t & 0x40))
+            {
+              (*s)--;
+              return '^';
+            }
+
+          c = (c << 6) | (t & 0x3F);
+        }
+    }
+
+  return c;
+}
+
+/*------------------------------------------------------------------*/
+char *
+ustrtok_r (char *s, AL_CONST char *set, char **last)
+{
+  // https://liballeg.org/stabledocs/en/alleg002.html#ustrtok_r
+  char *prev_str, *tok;
+  AL_CONST char *setp;
+  int c, sc;
+
+  ALLEGRO_ASSERT (last);
+
+  if (!s)
+    {
+      s = *last;
+
+      if (!s)
+        return NULL;
+    }
+
+skip_leading_delimiters:
+
+  prev_str = s;
+  c = ugetx (&s);
+
+  setp = set;
+
+  while ((sc = ugetxc (&setp)) != 0)
+    {
+      if (c == sc)
+        goto skip_leading_delimiters;
+    }
+
+  if (!c)
+    {
+      *last = NULL;
+      return NULL;
+    }
+
+  tok = prev_str;
+
+  for (;;)
+    {
+      prev_str = s;
+      c = ugetx (&s);
+
+      setp = set;
+
+      do
+        {
+          sc = ugetxc (&setp);
+          if (sc == c)
+            {
+              if (!c)
+                {
+                  *last = NULL;
+                  return tok;
+                }
+              else
+                {
+                  int l = 0;
+                  l = strlen (prev_str);
+                  s += usetat (prev_str, 0, 0, l + 1);
+                  *last = s;
+                  return tok;
+                }
+            }
+        }
+      while (sc);
+    }
+}
+
+/*------------------------------------------------------------------*/
+int
 text_length (const ALLEGRO_FONT * f, const char *s)
 {
   // https://liballeg.org/stabledocs/en/alleg018.html#text_length

@@ -199,6 +199,9 @@ int uremove (char *s, int index);
 int uisok (int c);
 int utolower (int c);
 char *ustrdup (const char *src);
+int ugetx (char **s);
+int ugetxc (const char **s);
+char *ustrtok_r (char *s, AL_CONST char *set, char **last);
 
 int text_length (const ALLEGRO_FONT * f, const char *s);
 int text_height (const ALLEGRO_FONT * f);
