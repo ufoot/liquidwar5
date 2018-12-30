@@ -185,18 +185,6 @@ dclick_check (void)
     dclick_status = DCLICK_NOT;
 }
 
-/* gui_switch_callback:
- *  Sets the dirty flags whenever a display switch occurs.
- */
-static void
-gui_switch_callback (void)
-{
-  if (active_dialog_player)
-    active_dialog_player->res |= D_REDRAW_ALL;
-}
-
-
-
 /* position_dialog:
  *  Moves all the objects in a dialog to the specified position.
  */
@@ -1458,7 +1446,6 @@ shutdown_dialog (DIALOG_PLAYER * player)
   if (gui_install_count <= 0)
     {
       remove_int (dclick_check);
-      remove_display_switch_callback (gui_switch_callback);
     }
 
   if (player->mouse_obj >= 0)
@@ -1506,8 +1493,6 @@ void (*gui_menu_draw_menu) (int x, int y, int w, int h) = NULL;
 void (*gui_menu_draw_menu_item) (MENU * m, int x, int y, int w, int h,
                                  int bar, int sel) = NULL;
 
-
-
 /* split_around_tab:
  *  Helper function for splitting a string into two tokens
  *  delimited by the first TAB character.
@@ -1518,7 +1503,7 @@ split_around_tab (const char *s, char **tok1, char **tok2)
   char *buf, *last;
   char tmp[16];
 
-  buf = _al_ustrdup (s);
+  buf = ustrdup (s);
   *tok1 = ustrtok_r (buf, uconvert_ascii ("\t", tmp), &last);
   *tok2 = ustrtok_r (NULL, empty_string, &last);
 

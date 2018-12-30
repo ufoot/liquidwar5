@@ -502,6 +502,17 @@ utolower (int c)
 }
 
 /*------------------------------------------------------------------*/
+char *
+ustrdup (const char *src)
+{
+  // https://liballeg.org/stabledocs/en/alleg002.html#ustrdup
+  /*
+   * [TODO:ufoot] find out why this was redefined in the first place.
+   */
+  return strdup (src);
+}
+
+/*------------------------------------------------------------------*/
 int
 text_length (const ALLEGRO_FONT * f, const char *s)
 {

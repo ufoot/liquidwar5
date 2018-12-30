@@ -44,7 +44,7 @@ PKG_CHECK_MODULES([ALLEGRO5],
     )]
 )
 
-echo "Using allegro-$ALLEGRO5_VERSION"
+echo "using allegro-$ALLEGRO5_VERSION"
 
 ALCFLAGS=$(pkg-config --cflags allegro-$ALLEGRO5_VERSION allegro_primitives-$ALLEGRO5_VERSION allegro_audio-$ALLEGRO5_VERSION allegro_font-$ALLEGRO5_VERSION)
 ALLIBS=$(pkg-config --libs allegro-$ALLEGRO5_VERSION allegro_primitives-$ALLEGRO5_VERSION allegro_audio-$ALLEGRO5_VERSION allegro_font-$ALLEGRO5_VERSION)

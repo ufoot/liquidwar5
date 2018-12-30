@@ -198,6 +198,7 @@ int uinsert (char *s, int index, int c, int max_size);
 int uremove (char *s, int index);
 int uisok (int c);
 int utolower (int c);
+char *ustrdup (const char *src);
 
 int text_length (const ALLEGRO_FONT * f, const char *s);
 int text_height (const ALLEGRO_FONT * f);
