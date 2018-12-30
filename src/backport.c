@@ -487,6 +487,22 @@ uisok (int c)
 
 /*------------------------------------------------------------------*/
 int
+utolower (int c)
+{
+  // https://liballeg.org/stabledocs/en/alleg002.html#utolower
+  /*
+   * [FIXME:ufoot] right now does nothing real, but game handles
+   * UTF-8 very poorly, TBH.
+   */
+  if ((c >= 'A') && (c <= 'Z'))
+    {
+      c += 'a' - 'A';
+    }
+  return c;
+}
+
+/*------------------------------------------------------------------*/
+int
 text_length (const ALLEGRO_FONT * f, const char *s)
 {
   // https://liballeg.org/stabledocs/en/alleg018.html#text_length
@@ -838,8 +854,9 @@ ureadkey (int *scancode)
   /*
    * [FIXME:ufoot] implement this.
    */
-  if (scancode!=NULL) {
-    (*scancode)=0;
-  }
+  if (scancode != NULL)
+    {
+      (*scancode) = 0;
+    }
   return 0;
 }
