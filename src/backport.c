@@ -818,3 +818,14 @@ poll_joystick ()
 
   return 0;
 }
+
+/*------------------------------------------------------------------*/
+int
+keypressed ()
+{
+  // https://liballeg.org/stabledocs/en/alleg006.html#keypressed
+  /*
+   * [FIXME:ufoot] implement this.
+   */
+  return 0;
+}
