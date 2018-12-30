@@ -72,6 +72,8 @@ volatile int mouse_y = 0;
 volatile int mouse_z = 0;
 volatile int mouse_b = 0;
 
+static int dummy = 0;           // stupid dummy to get rid of unused param warning
+
 /*==================================================================*/
 /* fonctions                                                        */
 /*==================================================================*/
@@ -96,6 +98,10 @@ scare_mouse_area (int x, int y, int w, int h)
    * Keeping them so that whatever workaround those calls were
    * achieving, it's easier to backport it afterwards.
    */
+  dummy = x;
+  dummy = y;
+  dummy = w;
+  dummy = h;
 }
 
 /*------------------------------------------------------------------*/
@@ -548,4 +554,36 @@ stretch_blit (ALLEGRO_BITMAP * source, ALLEGRO_BITMAP * dest,
   al_draw_scaled_bitmap (source, source_x, source_y, source_width,
                          source_height, dest_x, dest_y, dest_width,
                          dest_height, 0);
+}
+
+/*------------------------------------------------------------------*/
+void
+acquire_bitmap (ALLEGRO_BITMAP * bmp)
+{
+  // https://liballeg.org/stabledocs/en/alleg009.html#acquire_bitmap
+  al_lock_bitmap (bmp, ALLEGRO_PIXEL_FORMAT_ANY, ALLEGRO_PIXEL_FORMAT_ANY);
+}
+
+/*------------------------------------------------------------------*/
+void
+acquire_screen ()
+{
+  // https://liballeg.org/stabledocs/en/alleg009.html#acquire_screen
+  acquire_bitmap (screen);
+}
+
+/*------------------------------------------------------------------*/
+void
+release_bitmap (ALLEGRO_BITMAP * bmp)
+{
+  // https://liballeg.org/stabledocs/en/alleg009.html#release_bitmap
+  al_unlock_bitmap (bmp);
+}
+
+/*------------------------------------------------------------------*/
+void
+release_screen ()
+{
+  // https://liballeg.org/stabledocs/en/alleg009.html#release_screen
+  release_bitmap (screen);
 }

@@ -161,4 +161,9 @@ void stretch_blit (ALLEGRO_BITMAP * source, ALLEGRO_BITMAP * dest,
                    int source_height, int dest_x, int dest_y, int dest_width,
                    int dest_height);
 
+void acquire_bitmap (ALLEGRO_BITMAP * bmp);
+void acquire_screen ();
+void release_bitmap (ALLEGRO_BITMAP * bmp);
+void release_screen ();
+
 #endif // LIQUID_WAR_INCLUDE_BACKPORT
