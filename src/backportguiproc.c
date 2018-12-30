@@ -24,8 +24,8 @@
  */
 
 
-#include "allegro.h"
-#include "allegro/internal/aintern.h"
+#include "backport.h"
+#include "backportgui.h"
 
 
 #ifdef ALLEGRO_WINDOWS

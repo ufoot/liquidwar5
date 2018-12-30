@@ -790,7 +790,8 @@ poll_joystick ()
 
   memset (&joy[0], 0, sizeof (joy));
   int num_joysticks = al_get_num_joysticks ();
-  for (int j = 0; j < num_joysticks && j < MAX_JOYSTICKS; j++)
+  int j = 0;
+  for (j = 0; j < num_joysticks && j < MAX_JOYSTICKS; j++)
     {
       ALLEGRO_JOYSTICK *joystick = NULL;
       joystick = al_get_joystick (j);
@@ -803,11 +804,13 @@ poll_joystick ()
       memset (&joystick_state, 0, sizeof (joystick_state));
       al_get_joystick_state (joystick, &joystick_state);
       int num_sticks = al_get_joystick_num_sticks (joystick);
-      for (int s = 0; s < num_sticks && s < MAX_JOYSTICK_STICKS; s++)
+      int s = 0;
+      for (s = 0; s < num_sticks && s < MAX_JOYSTICK_STICKS; s++)
         {
           joy[j].stick[s].name = al_get_joystick_stick_name (joystick, s);
           int num_axes = al_get_joystick_num_axes (joystick, s);
-          for (int a = 0; a < num_axes && a < MAX_JOYSTICK_AXIS; a++)
+          int a = 0;
+          for (a = 0; a < num_axes && a < MAX_JOYSTICK_AXIS; a++)
             {
               joy[j].stick[s].axis[a].name =
                 al_get_joystick_axis_name (joystick, s, a);
@@ -823,7 +826,8 @@ poll_joystick ()
                 }
             }
           int num_buttons = al_get_joystick_num_buttons (joystick);
-          for (int b = 0; b < num_buttons && b < MAX_JOYSTICK_BUTTONS; b++)
+          int b = 0;
+          for (b = 0; b < num_buttons && b < MAX_JOYSTICK_BUTTONS; b++)
             {
               joy[j].button[b].name =
                 al_get_joystick_button_name (joystick, b);
