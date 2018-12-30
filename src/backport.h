@@ -100,6 +100,12 @@
 #define _AL_MALLOC(size) al_malloc(size)
 #define _AL_FREE(ptr) al_free(ptr)
 
+#define LOCK_DATA(d, s)
+#define LOCK_CODE(c, s)
+#define UNLOCK_DATA(d, s)
+#define LOCK_VARIABLE(x)
+#define LOCK_FUNCTION(x)
+
 /*==================================================================*/
 /* types                                                            */
 /*==================================================================*/
