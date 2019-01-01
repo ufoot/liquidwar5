@@ -168,6 +168,7 @@ extern volatile int mouse_z;
 extern volatile int mouse_b;
 extern int *allegro_errno;
 extern JOYSTICK_INFO joy[MAX_JOYSTICKS];
+extern char empty_string[];
 
 /*==================================================================*/
 /* fonctions globales                                               */
@@ -202,6 +203,7 @@ char *ustrdup (const char *src);
 int ugetx (char **s);
 int ugetxc (const char **s);
 char *ustrtok_r (char *s, AL_CONST char *set, char **last);
+char *uconvert_ascii (const char *s, char buf[], int size);
 
 int text_length (const ALLEGRO_FONT * f, const char *s);
 int text_height (const ALLEGRO_FONT * f);

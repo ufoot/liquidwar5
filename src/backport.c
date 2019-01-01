@@ -96,6 +96,7 @@ volatile int mouse_z = 0;
 volatile int mouse_b = 0;
 int *allegro_errno = &_allegro_errno;
 JOYSTICK_INFO joy[MAX_JOYSTICKS];
+char empty_string[] = { 0, 0, 0, 0 };
 
 /*==================================================================*/
 /* fonctions                                                        */
@@ -622,6 +623,18 @@ skip_leading_delimiters:
         }
       while (sc);
     }
+}
+
+/*------------------------------------------------------------------*/
+char *
+uconvert_ascii (const char *s, char buf[], int size)
+{
+  // https://liballeg.org/stabledocs/en/alleg002.html#uconvert_ascii
+  /*
+   * Slightly altered prototype to make sure we use explicit size
+   */
+  LW_MACRO_STRNCPY (buf, s, size);
+  return (char *) buf;
 }
 
 /*------------------------------------------------------------------*/
