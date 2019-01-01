@@ -187,6 +187,8 @@ void rectfill (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2,
                int color);
 void vline (ALLEGRO_BITMAP * bitmap, int x, int y1, int y2, int color);
 void hline (ALLEGRO_BITMAP * bitmap, int x1, int y, int x2, int color);
+void line (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2,
+           int color);
 
 int usetc (char *s, int c);
 int ugetc (const char *s);

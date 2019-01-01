@@ -242,10 +242,12 @@ rectfill (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2, int color)
 void
 vline (ALLEGRO_BITMAP * bitmap, int x, int y1, int y2, int color)
 {
-  // https://liballeg.org/stabledocs/en/alleg013.html#rect
+  // https://liballeg.org/stabledocs/en/alleg013.html#vline
   if (y2 < y1)
     {
-      return;
+      int y = y2;
+      y2 = y1;
+      y1 = y;
     }
   al_set_target_bitmap (bitmap);
   if (color < 0 || color >= PALETTE_SIZE)
@@ -261,10 +263,12 @@ vline (ALLEGRO_BITMAP * bitmap, int x, int y1, int y2, int color)
 void
 hline (ALLEGRO_BITMAP * bitmap, int x1, int y, int x2, int color)
 {
-  // https://liballeg.org/stabledocs/en/alleg013.html#rect
+  // https://liballeg.org/stabledocs/en/alleg013.html#hline
   if (x2 < x1)
     {
-      return;
+      int x = x2;
+      x2 = x1;
+      x1 = x;
     }
   al_set_target_bitmap (bitmap);
   if (color < 0 || color >= PALETTE_SIZE)
@@ -274,6 +278,42 @@ hline (ALLEGRO_BITMAP * bitmap, int x1, int y, int x2, int color)
   ALLEGRO_COLOR al_color;
   al_color = GLOBAL_PALETTE[color];
   al_draw_filled_rectangle (x1, y, x2 + 1, y + 1, al_color);
+}
+
+void
+line (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2, int color)
+{
+  // https://liballeg.org/stabledocs/en/alleg013.html#line
+  if (x1 == x2)
+    {
+      vline (bitmap, x1, y1, y2, color);
+      return;
+    }
+  if (y1 == y2)
+    {
+      hline (bitmap, x1, y1, x2, color);
+      return;
+    }
+
+  al_set_target_bitmap (bitmap);
+  if (color < 0 || color >= PALETTE_SIZE)
+    {
+      return;
+    }
+  ALLEGRO_COLOR al_color;
+  al_color = GLOBAL_PALETTE[color];
+
+  /* ugliest line drawing ever, but we don't care, this is never called */
+  int w = x2 - x1;
+  int h = y2 - y1;
+  int d = ABS (w) + ABS (h);
+  int i = 0;
+  for (i = 0; i <= d; i++)
+    {
+      int x = ((i * x2) + ((d - i) * x1)) / d;
+      int y = ((i * y2) + ((d - i) * y1)) / d;
+      al_put_pixel (x, y, al_color);
+    }
 }
 
 /*------------------------------------------------------------------*/
