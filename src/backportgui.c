@@ -1935,6 +1935,7 @@ init_single_menu (MENU * menu, MENU_PLAYER * parent, DIALOG * dialog, int bar,
   ALLEGRO_BITMAP *gui_bmp = gui_get_screen ();
   MENU_PLAYER *player;
   ALLEGRO_ASSERT (menu);
+  int scare = 0;
 
   player = _AL_MALLOC (sizeof (MENU_PLAYER));
   if (!player)
