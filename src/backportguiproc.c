@@ -27,6 +27,7 @@
 #include "backport.h"
 #include "backportgui.h"
 #include "backportguiproc.h"
+#include "macro.h"
 
 
 #ifdef ALLEGRO_WINDOWS
@@ -1089,13 +1090,14 @@ _draw_scrollable_frame (DIALOG * d, int listsize, int offset, int height,
         }
       if (yy + i < d->y + d->h - 3)
         {
-          rectfill_dotted (gui_bmp, xx, yy, xx + 8, yy + i, fg_color,bg);
+          rectfill_dotted (gui_bmp, xx, yy, xx + 8, yy + i, fg_color, bg);
           yy += i + 1;
           rectfill (gui_bmp, xx, yy, xx + 8, d->y + d->h - 3, bg);
         }
       else
         {
-          rectfill_dotted (gui_bmp, xx, yy, xx + 8, d->y + d->h - 3, fg_color,bg);
+          rectfill_dotted (gui_bmp, xx, yy, xx + 8, d->y + d->h - 3, fg_color,
+                           bg);
         }
     }
   else
@@ -1163,7 +1165,8 @@ _draw_listbox (DIALOG * d)
               fg = fg_color;
               bg = d->bg;
             }
-          ustrzcpy (s, sizeof (s), (*(getfuncptr) d->dp) (i + d->d2, NULL));
+          LW_MACRO_STRNCPY (s, (*(getfuncptr) d->dp) (i + d->d2, NULL),
+                            sizeof (s));
           x = d->x + 2;
           y = d->y + 2 + i * text_height (font);
           rectfill (gui_bmp, x, y, x + 7, y + text_height (font) - 1, bg);
@@ -1172,7 +1175,7 @@ _draw_listbox (DIALOG * d)
           while (text_length (font, s) >= MAX (d->w - 1 - (bar ? 22 : 10), 1))
             {
               len--;
-              usetat (s, len, 0);
+              usetat (s, len, 0, sizeof (s));
             }
           textout_ex (gui_bmp, font, s, x, y, fg, bg);
           x += text_length (font, s);
@@ -1217,9 +1220,7 @@ _draw_listbox (DIALOG * d)
 int
 d_list_proc (int msg, DIALOG * d, int c)
 {
-  int listsize, i, bottom, height, bar, orig;
-  char *sel = d->dp2;
-  int redraw = FALSE;
+  int listsize, i, bottom, height, bar;
   ALLEGRO_ASSERT (d);
 
   switch (msg)
@@ -1240,19 +1241,6 @@ d_list_proc (int msg, DIALOG * d, int c)
       bar = (listsize > height);
       if ((!bar) || (gui_mouse_x () < d->x + d->w - 13))
         {
-          if ((sel) && (!(key_shifts & KB_CTRL_FLAG)))
-            {
-              for (i = 0; i < listsize; i++)
-                {
-                  if (sel[i])
-                    {
-                      redraw = TRUE;
-                      sel[i] = FALSE;
-                    }
-                }
-              if (redraw)
-                object_message (d, MSG_DRAW, 0);
-            }
           _handle_listbox_click (d);
           while (gui_mouse_b ())
             {
@@ -1325,8 +1313,6 @@ d_list_proc (int msg, DIALOG * d, int c)
           if (bottom >= listsize - 1)
             bottom = listsize - 1;
 
-          orig = d->d1;
-
           if (c == ALLEGRO_KEY_UP)
             d->d1--;
           else if (c == ALLEGRO_KEY_DOWN)
@@ -1351,25 +1337,6 @@ d_list_proc (int msg, DIALOG * d, int c)
             }
           else
             return D_O_K;
-
-          if (sel)
-            {
-              if (!(key_shifts & (KB_SHIFT_FLAG | KB_CTRL_FLAG)))
-                {
-                  for (i = 0; i < listsize; i++)
-                    sel[i] = FALSE;
-                }
-              else if (key_shifts & KB_SHIFT_FLAG)
-                {
-                  for (i = MIN (orig, d->d1); i <= MAX (orig, d->d1); i++)
-                    {
-                      if (key_shifts & KB_CTRL_FLAG)
-                        sel[i] = (i != d->d1);
-                      else
-                        sel[i] = TRUE;
-                    }
-                }
-            }
 
           /* if we changed something, better redraw... */
           _handle_scrollable_scroll (d, listsize, &d->d1, &d->d2);
@@ -1883,7 +1850,7 @@ d_slider_proc (int msg, DIALOG * d, int c)
   int pgupkey, pgdnkey;
   int homekey, endkey;
   int delta;
-  fixed slratio, slmax, slpos;
+  al_fixed slratio, slmax, slpos;
   int (*proc) (void *cbpointer, int d2value);
   int oldval;
   ALLEGRO_ASSERT (d);
@@ -1897,17 +1864,17 @@ d_slider_proc (int msg, DIALOG * d, int c)
     {
       slhan = (ALLEGRO_BITMAP *) d->dp;
       if (vert)
-        hh = slhan->h;
+        hh = al_get_bitmap_height (slhan);
       else
-        hh = slhan->w;
+        hh = al_get_bitmap_width (slhan);
     }
 
   hmar = hh / 2;
   irange = (vert) ? d->h : d->w;
-  slmax = itofix (irange - hh);
+  slmax = al_itofix (irange - hh);
   slratio = slmax / (d->d1);
   slpos = slratio * d->d2;
-  slp = fixtoi (slpos);
+  slp = al_fixtoi (slpos);
 
   switch (msg)
     {
@@ -1939,13 +1906,13 @@ d_slider_proc (int msg, DIALOG * d, int c)
         {
           if (vert)
             {
-              slx = d->x + (d->w / 2) - (slhan->w / 2);
+              slx = d->x + (d->w / 2) - (al_get_bitmap_width (slhan) / 2);
               sly = d->y + (d->h - 1) - (hh + slp);
             }
           else
             {
               slx = d->x + slp;
-              sly = d->y + (d->h / 2) - (slhan->h / 2);
+              sly = d->y + (d->h / 2) - (al_get_bitmap_height (slhan) / 2);
             }
           draw_sprite (gui_bmp, slhan, slx, sly);
         }
@@ -2040,7 +2007,7 @@ d_slider_proc (int msg, DIALOG * d, int c)
             {
               d->d2 = d->d2 + delta;
               slpos = slratio * d->d2;
-              slp = fixtoi (slpos);
+              slp = al_fixtoi (slpos);
               if ((slp != oldpos) || (d->d2 <= 0) || (d->d2 >= d->d1))
                 break;
             }
@@ -2099,9 +2066,9 @@ d_slider_proc (int msg, DIALOG * d, int c)
             mp = 0;
           if (mp > irange - hh)
             mp = irange - hh;
-          slpos = itofix (mp);
-          slmax = fixdiv (slpos, slratio);
-          newpos = fixtoi (slmax);
+          slpos = al_itofix (mp);
+          slmax = al_fixdiv (slpos, slratio);
+          newpos = al_fixtoi (slmax);
           if (newpos != oldval)
             {
               d->d2 = newpos;

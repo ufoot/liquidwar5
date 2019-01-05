@@ -255,7 +255,8 @@ rectfill (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2, int color)
 
 /*------------------------------------------------------------------*/
 void
-rectfill_dotted (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2, int fg, int bg)
+rectfill_dotted (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2,
+                 int fg, int bg)
 {
   /*
    * This is not a genuine Allegro function, but used to backport the behavior
@@ -289,16 +290,18 @@ rectfill_dotted (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2, int fg
   ALLEGRO_COLOR al_bg;
   al_bg = GLOBAL_PALETTE[bg];
 
-  ALLEGRO_COLOR al_color=al_bg;
-  int x=0;
-  int y=0;
+  ALLEGRO_COLOR al_color = al_bg;
+  int x = 0;
+  int y = 0;
 
-  for (y=y1;y<=y2;y++) {
-    for (x=x1;x<=x2;x++) {
-      al_color=((x+y)%2)!=0 ? al_fg:al_bg;
-      al_put_pixel (x, y, al_color);
+  for (y = y1; y <= y2; y++)
+    {
+      for (x = x1; x <= x2; x++)
+        {
+          al_color = ((x + y) % 2) != 0 ? al_fg : al_bg;
+          al_put_pixel (x, y, al_color);
+        }
     }
-  }
 }
 
 /*------------------------------------------------------------------*/
