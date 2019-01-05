@@ -194,6 +194,7 @@ int usetc (char *s, int c);
 int ugetc (const char *s);
 int uwidth (const char *s);
 int ustrlen (const char *s);
+int ucwidth (int c);
 int uisspace (int c);
 int ugetat (char *s, int index);
 int usetat (char *s, int index, int c, int max_size);
@@ -241,7 +242,7 @@ int keypressed ();
 int readkey ();
 int ureadkey (int *scancode);
 void clear_keybuf ();
-void simulate_keypress(int key);
+void simulate_keypress (int key);
 int scancode_to_ascii (int scancode);
 
 #endif // LIQUID_WAR_INCLUDE_BACKPORT

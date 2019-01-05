@@ -297,6 +297,8 @@ check:
 indent:
 	@find . -name "*.[c|h]" -a ! -path "*32*" -exec indent -nut {} \;
 	@find . -name "*.[c|h]" -a ! -path "*32*" -exec indent -nut {} \;
+
+lint:
 	@find . -name "*.[c|h]" -a ! -path "*32*" -exec splint {} \;
 
 print_config:

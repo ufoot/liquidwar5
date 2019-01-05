@@ -45,8 +45,8 @@ typedef char *(*getfuncptr) (int, int *);
  *  the width of the output string in pixels.
  */
 int
-gui_textout_ex (BITMAP * bmp, AL_CONST char *s, int x, int y, int color,
-                int bg, int centre)
+gui_textout_ex (ALLEGRO_BITMAP * bmp, AL_CONST char *s, int x, int y,
+                int color, int bg, int centre)
 {
   char tmp[1024];
   int hline_pos = -1;
@@ -54,7 +54,7 @@ gui_textout_ex (BITMAP * bmp, AL_CONST char *s, int x, int y, int color,
   int in_pos = 0;
   int out_pos = 0;
   int pix_len, c;
-  ASSERT (s);
+  ALLEGRO_ASSERT (s);
 
   while (((c = ugetc (s + in_pos)) != 0)
          && (out_pos < (int) (sizeof (tmp) - ucwidth (0))))
@@ -115,7 +115,7 @@ gui_textout_ex (BITMAP * bmp, AL_CONST char *s, int x, int y, int color,
 int
 gui_strlen (AL_CONST char *s)
 {
-  ASSERT (s);
+  ALLEGRO_ASSERT (s);
   return gui_textout_ex (NULL, s, 0, 0, 0, 0, 0);
 }
 
@@ -127,7 +127,7 @@ gui_strlen (AL_CONST char *s)
 static void
 dotted_rect (int x1, int y1, int x2, int y2, int fg, int bg)
 {
-  BITMAP *gui_bmp = gui_get_screen ();
+  ALLEGRO_BITMAP *gui_bmp = gui_get_screen ();
   int x = ((x1 + y1) & 1) ? 1 : 0;
   int c;
 
@@ -168,7 +168,7 @@ d_yield_proc (int msg, DIALOG * d, int c)
 int
 d_clear_proc (int msg, DIALOG * d, int c)
 {
-  ASSERT (d);
+  ALLEGRO_ASSERT (d);
 
 #ifdef ALLEGRO_WINDOWS
   /* kludge to get the exported address of d_clear_proc */
@@ -178,7 +178,7 @@ d_clear_proc (int msg, DIALOG * d, int c)
 
   if (msg == MSG_DRAW)
     {
-      BITMAP *gui_bmp = gui_get_screen ();
+      ALLEGRO_BITMAP *gui_bmp = gui_get_screen ();
       int w, h;
 
       /* Get width and height of target bitmap. We can't use SCREEN_W and
@@ -205,11 +205,11 @@ d_clear_proc (int msg, DIALOG * d, int c)
 int
 d_box_proc (int msg, DIALOG * d, int c)
 {
-  ASSERT (d);
+  ALLEGRO_ASSERT (d);
   if (msg == MSG_DRAW)
     {
       int fg = (d->flags & D_DISABLED) ? gui_mg_color : d->fg;
-      BITMAP *gui_bmp = gui_get_screen ();
+      ALLEGRO_BITMAP *gui_bmp = gui_get_screen ();
 
       rectfill (gui_bmp, d->x + 1, d->y + 1, d->x + d->w - 2, d->y + d->h - 2,
                 d->bg);
@@ -227,12 +227,12 @@ d_box_proc (int msg, DIALOG * d, int c)
 int
 d_shadow_box_proc (int msg, DIALOG * d, int c)
 {
-  ASSERT (d);
+  ALLEGRO_ASSERT (d);
   if (msg == MSG_DRAW)
     {
       int fg = (d->flags & D_DISABLED) ? gui_mg_color : d->fg;
       int black = makecol (0, 0, 0);
-      BITMAP *gui_bmp = gui_get_screen ();
+      ALLEGRO_BITMAP *gui_bmp = gui_get_screen ();
 
       rectfill (gui_bmp, d->x + 1, d->y + 1, d->x + d->w - 3, d->y + d->h - 3,
                 d->bg);
@@ -252,10 +252,10 @@ d_shadow_box_proc (int msg, DIALOG * d, int c)
 int
 d_bitmap_proc (int msg, DIALOG * d, int c)
 {
-  BITMAP *b;
-  ASSERT (d);
+  ALLEGRO_BITMAP *b;
+  ALLEGRO_ASSERT (d);
 
-  b = (BITMAP *) d->dp;
+  b = (ALLEGRO_BITMAP *) d->dp;
   if (msg == MSG_DRAW)
     blit (b, gui_get_screen (), 0, 0, d->x, d->y, d->w, d->h);
 
@@ -270,7 +270,7 @@ d_bitmap_proc (int msg, DIALOG * d, int c)
 int
 d_text_proc (int msg, DIALOG * d, int c)
 {
-  ASSERT (d);
+  ALLEGRO_ASSERT (d);
   if (msg == MSG_DRAW)
     {
       int fg = (d->flags & D_DISABLED) ? gui_mg_color : d->fg;
@@ -296,7 +296,7 @@ d_text_proc (int msg, DIALOG * d, int c)
 int
 d_ctext_proc (int msg, DIALOG * d, int c)
 {
-  ASSERT (d);
+  ALLEGRO_ASSERT (d);
   if (msg == MSG_DRAW)
     {
       int fg = (d->flags & D_DISABLED) ? gui_mg_color : d->fg;
@@ -323,7 +323,7 @@ d_ctext_proc (int msg, DIALOG * d, int c)
 int
 d_rtext_proc (int msg, DIALOG * d, int c)
 {
-  ASSERT (d);
+  ALLEGRO_ASSERT (d);
   if (msg == MSG_DRAW)
     {
       int fg = (d->flags & D_DISABLED) ? gui_mg_color : d->fg;
@@ -353,12 +353,12 @@ d_rtext_proc (int msg, DIALOG * d, int c)
 int
 d_button_proc (int msg, DIALOG * d, int c)
 {
-  BITMAP *gui_bmp;
+  ALLEGRO_BITMAP *gui_bmp;
   int state1, state2;
   int black;
   int swap;
   int g;
-  ASSERT (d);
+  ALLEGRO_ASSERT (d);
 
   gui_bmp = gui_get_screen ();
 
@@ -469,10 +469,10 @@ d_button_proc (int msg, DIALOG * d, int c)
 int
 d_check_proc (int msg, DIALOG * d, int c)
 {
-  BITMAP *gui_bmp = gui_get_screen ();
+  ALLEGRO_BITMAP *gui_bmp = gui_get_screen ();
   int x, y, h;
   int fg, bg;
-  ASSERT (d);
+  ALLEGRO_ASSERT (d);
 
   if (msg == MSG_DRAW)
     {
@@ -516,10 +516,10 @@ d_check_proc (int msg, DIALOG * d, int c)
 int
 d_radio_proc (int msg, DIALOG * d, int c)
 {
-  BITMAP *gui_bmp = gui_get_screen ();
+  ALLEGRO_BITMAP *gui_bmp = gui_get_screen ();
   int x, y, h, r, ret, fg, bg;
   int centerx, centery;
-  ASSERT (d);
+  ALLEGRO_ASSERT (d);
 
   switch (msg)
     {
@@ -612,16 +612,16 @@ d_radio_proc (int msg, DIALOG * d, int c)
 int
 d_icon_proc (int msg, DIALOG * d, int c)
 {
-  BITMAP *butimage;
-  BITMAP *gui_bmp;
+  ALLEGRO_BITMAP *butimage;
+  ALLEGRO_BITMAP *gui_bmp;
   int butx;
   int buty;
   int index;
   int indent;
   int depth;
-  ASSERT (d);
+  ALLEGRO_ASSERT (d);
 
-  butimage = (BITMAP *) d->dp;
+  butimage = (ALLEGRO_BITMAP *) d->dp;
   gui_bmp = gui_get_screen ();
   if ((msg == MSG_DRAW) && (!(d->flags & D_HIDDEN)))
     {
@@ -634,11 +634,11 @@ d_icon_proc (int msg, DIALOG * d, int c)
         }
       if ((d->dp2 != NULL) && (d->flags & D_SELECTED))
         {
-          butimage = (BITMAP *) d->dp2;
+          butimage = (ALLEGRO_BITMAP *) d->dp2;
         }
       if ((d->dp3 != NULL) && (d->flags & D_DISABLED))
         {
-          butimage = (BITMAP *) d->dp3;
+          butimage = (ALLEGRO_BITMAP *) d->dp3;
         }
       indent = d->d2;
       if (indent == 0)
@@ -697,7 +697,7 @@ d_keyboard_proc (int msg, DIALOG * d, int c)
 {
   int (*proc) (void);
   int ret = D_O_K;
-  ASSERT (d);
+  ALLEGRO_ASSERT (d);
 
   switch (msg)
     {
@@ -735,12 +735,12 @@ int
 d_edit_proc (int msg, DIALOG * d, int c)
 {
   static int ignore_next_uchar = FALSE;
-  BITMAP *gui_bmp;
+  ALLEGRO_BITMAP *gui_bmp;
   int last_was_space, new_pos, i, k;
   int f, l, p, w, x, fg, b, scroll;
   char buf[16];
   char *s, *t;
-  ASSERT (d);
+  ALLEGRO_ASSERT (d);
 
   gui_bmp = gui_get_screen ();
 
@@ -1157,9 +1157,9 @@ void
 _draw_scrollable_frame (DIALOG * d, int listsize, int offset, int height,
                         int fg_color, int bg)
 {
-  BITMAP *gui_bmp = gui_get_screen ();
+  ALLEGRO_BITMAP *gui_bmp = gui_get_screen ();
   int i, len;
-  BITMAP *pattern;
+  ALLEGRO_BITMAP *pattern;
   int xx, yy;
 
   /* draw frame */
@@ -1239,7 +1239,7 @@ _draw_scrollable_frame (DIALOG * d, int listsize, int offset, int height,
 void
 _draw_listbox (DIALOG * d)
 {
-  BITMAP *gui_bmp = gui_get_screen ();
+  ALLEGRO_BITMAP *gui_bmp = gui_get_screen ();
   int height, listsize, i, len, bar, x, y, w;
   int fg_color, fg, bg;
   char *sel = d->dp2;
@@ -1341,7 +1341,7 @@ d_list_proc (int msg, DIALOG * d, int c)
   int listsize, i, bottom, height, bar, orig;
   char *sel = d->dp2;
   int redraw = FALSE;
-  ASSERT (d);
+  ALLEGRO_ASSERT (d);
 
   switch (msg)
     {
@@ -1516,7 +1516,7 @@ d_text_list_proc (int msg, DIALOG * d, int c)
   int listsize, i, a, failure;
   char *selected, *thisitem;
   char *sel = d->dp2;
-  ASSERT (d);
+  ALLEGRO_ASSERT (d);
 
   switch (msg)
     {
@@ -1614,7 +1614,7 @@ _draw_textbox (char *thetext, int *listsize, int draw, int offset,
                int wword, int tabsize, int x, int y, int w, int h,
                int disabled, int fore, int deselect, int disable)
 {
-  BITMAP *gui_bmp = gui_get_screen ();
+  ALLEGRO_BITMAP *gui_bmp = gui_get_screen ();
   int fg = fore;
   int y1 = y + 4;
   int x1;
@@ -1830,7 +1830,7 @@ d_textbox_proc (int msg, DIALOG * d, int c)
   int start, top, bottom, l;
   int used, delta;
   int fg_color;
-  ASSERT (d);
+  ALLEGRO_ASSERT (d);
 
   fg_color = (d->flags & D_DISABLED) ? gui_mg_color : d->fg;
   /* calculate the actual height */
@@ -1987,8 +1987,8 @@ d_textbox_proc (int msg, DIALOG * d, int c)
 int
 d_slider_proc (int msg, DIALOG * d, int c)
 {
-  BITMAP *gui_bmp = gui_get_screen ();
-  BITMAP *slhan = NULL;
+  ALLEGRO_BITMAP *gui_bmp = gui_get_screen ();
+  ALLEGRO_BITMAP *slhan = NULL;
   int oldpos, newpos;
   int sfg;                      /* slider foreground color */
   int vert = TRUE;              /* flag: is slider vertical? */
@@ -2007,7 +2007,7 @@ d_slider_proc (int msg, DIALOG * d, int c)
   fixed slratio, slmax, slpos;
   int (*proc) (void *cbpointer, int d2value);
   int oldval;
-  ASSERT (d);
+  ALLEGRO_ASSERT (d);
 
   /* check for slider direction */
   if (d->h < d->w)
@@ -2016,7 +2016,7 @@ d_slider_proc (int msg, DIALOG * d, int c)
   /* set up the metrics for the control */
   if (d->dp != NULL)
     {
-      slhan = (BITMAP *) d->dp;
+      slhan = (ALLEGRO_BITMAP *) d->dp;
       if (vert)
         hh = slhan->h;
       else

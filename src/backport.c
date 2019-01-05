@@ -398,6 +398,14 @@ uisspace (int c)
 
 /*------------------------------------------------------------------*/
 int
+ucwidth (int c)
+{
+  // https://liballeg.org/stabledocs/en/alleg002.html#ucwidth
+  return 1;
+}
+
+/*------------------------------------------------------------------*/
+int
 ugetat (char *s, int index)
 {
   // https://liballeg.org/stabledocs/en/alleg002.html#ugetat
@@ -1063,7 +1071,9 @@ clear_keybuf ()
 }
 
 /*------------------------------------------------------------------*/
-void simulate_keypress(int key){
+void
+simulate_keypress (int key)
+{
   // https://liballeg.org/stabledocs/en/alleg006.html#simulate_keypress
   /*
    * [FIXME:ufoot] implement this.

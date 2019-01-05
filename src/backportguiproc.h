@@ -25,11 +25,11 @@
  * But I won't backport all of aintern.h so just extracted those gui funcs.
  */
 
-int _gui_shadow_box_proc(int msg, DIALOG *d, int c);
-int _gui_ctext_proc(int msg, DIALOG *d, int c);
-int _gui_button_proc(int msg, DIALOG *d, int c);
-int _gui_edit_proc(int msg, DIALOG *d, int c);
-int _gui_list_proc(int msg, DIALOG *d, int c);
-int _gui_text_list_proc(int msg, DIALOG *d, int c);
+int _gui_shadow_box_proc (int msg, DIALOG * d, int c);
+int _gui_ctext_proc (int msg, DIALOG * d, int c);
+int _gui_button_proc (int msg, DIALOG * d, int c);
+int _gui_edit_proc (int msg, DIALOG * d, int c);
+int _gui_list_proc (int msg, DIALOG * d, int c);
+int _gui_text_list_proc (int msg, DIALOG * d, int c);
 
 #endif // ALLEGRO_GUIPROC_H
