@@ -1042,10 +1042,20 @@ ureadkey (int *scancode)
 }
 
 /*------------------------------------------------------------------*/
+void
+clear_beybuf ()
+{
+  // https://liballeg.org/stabledocs/en/alleg006.html#clear_keybuf
+  /*
+   * [FIXME:ufoot] implement this.
+   */
+}
+
+/*------------------------------------------------------------------*/
 int
 scancode_to_ascii (int scancode)
 {
-  // https://liballeg.org/stabledocs/en/alleg006.html#keypressed
+  // https://liballeg.org/stabledocs/en/alleg006.html#scancode_to_ascii
   /*
    * Again, most unreliable and primitive impl, but should be enough
    * for the limited usage we make of that function.
