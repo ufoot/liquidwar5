@@ -241,6 +241,7 @@ int keypressed ();
 int readkey ();
 int ureadkey (int *scancode);
 void clear_keybuf ();
+void simulate_keypress(int key);
 int scancode_to_ascii (int scancode);
 
 #endif // LIQUID_WAR_INCLUDE_BACKPORT

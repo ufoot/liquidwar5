@@ -1063,6 +1063,15 @@ clear_keybuf ()
 }
 
 /*------------------------------------------------------------------*/
+void simulate_keypress(int key){
+  // https://liballeg.org/stabledocs/en/alleg006.html#simulate_keypress
+  /*
+   * [FIXME:ufoot] implement this.
+   */
+  _dummy = key;
+}
+
+/*------------------------------------------------------------------*/
 int
 scancode_to_ascii (int scancode)
 {

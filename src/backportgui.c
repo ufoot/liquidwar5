@@ -30,6 +30,7 @@
 
 #include "backport.h"
 #include "backportgui.h"
+#include "backportguiproc.h"
 #include "alleg2.h"
 
 static int _allegro_count = 1;  // number of times allegro has been initialized.

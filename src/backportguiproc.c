@@ -26,6 +26,7 @@
 
 #include "backport.h"
 #include "backportgui.h"
+#include "backportguiproc.h"
 
 
 #ifdef ALLEGRO_WINDOWS
