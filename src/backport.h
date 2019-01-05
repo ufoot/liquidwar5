@@ -186,6 +186,8 @@ void rect (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2,
            int color);
 void rectfill (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2,
                int color);
+void rectfill_dotted (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2,
+               int fg,int bg);
 void vline (ALLEGRO_BITMAP * bitmap, int x, int y1, int y2, int color);
 void hline (ALLEGRO_BITMAP * bitmap, int x1, int y, int x2, int color);
 void line (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2,

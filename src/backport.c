@@ -255,6 +255,54 @@ rectfill (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2, int color)
 
 /*------------------------------------------------------------------*/
 void
+rectfill_dotted (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2, int fg, int bg)
+{
+  /*
+   * This is not a genuine Allegro function, but used to backport the behavior
+   * of filling zones with a pattern which is:
+   * +--+--+--+--+
+   * +fg+bg+fg+bg+
+   * +--+--+--+--+
+   * +bg+fg+bg+fg+
+   * +--+--+--+--+
+   * +fg+bg+fg+bg+
+   * +--+--+--+--+
+   * +bg+fg+bg+fg+
+   * +--+--+--+--+
+   * etc.
+   * Rather than implemeting generic pattern handling, this is quicker to implement.
+   * and suits our limited need.
+   */
+  al_set_target_bitmap (bitmap);
+
+  if (fg < 0 || fg >= PALETTE_SIZE)
+    {
+      return;
+    }
+  ALLEGRO_COLOR al_fg;
+  al_fg = GLOBAL_PALETTE[fg];
+
+  if (bg < 0 || bg >= PALETTE_SIZE)
+    {
+      return;
+    }
+  ALLEGRO_COLOR al_bg;
+  al_bg = GLOBAL_PALETTE[bg];
+
+  ALLEGRO_COLOR al_color=al_bg;
+  int x=0;
+  int y=0;
+
+  for (y=y1;y<=y2;y++) {
+    for (x=x1;x<=x2;x++) {
+      al_color=((x+y)%2)!=0 ? al_fg:al_bg;
+      al_put_pixel (x, y, al_color);
+    }
+  }
+}
+
+/*------------------------------------------------------------------*/
+void
 vline (ALLEGRO_BITMAP * bitmap, int x, int y1, int y2, int color)
 {
   // https://liballeg.org/stabledocs/en/alleg013.html#vline

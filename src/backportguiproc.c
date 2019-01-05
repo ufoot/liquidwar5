@@ -1050,7 +1050,6 @@ _draw_scrollable_frame (DIALOG * d, int listsize, int offset, int height,
 {
   ALLEGRO_BITMAP *gui_bmp = gui_get_screen ();
   int i, len;
-  ALLEGRO_BITMAP *pattern;
   int xx, yy;
 
   /* draw frame */
@@ -1078,15 +1077,9 @@ _draw_scrollable_frame (DIALOG * d, int listsize, int offset, int height,
         }
 
       /* create and draw the scrollbar */
-      pattern = al_create_bitmap (2, 2);
       i = ((d->h - 5) * height + listsize / 2) / listsize;
       xx = d->x + d->w - 11;
       yy = d->y + 2;
-
-      putpixel (pattern, 0, 1, bg);
-      putpixel (pattern, 1, 0, bg);
-      putpixel (pattern, 0, 0, fg_color);
-      putpixel (pattern, 1, 1, fg_color);
 
       if (offset > 0)
         {
@@ -1096,19 +1089,14 @@ _draw_scrollable_frame (DIALOG * d, int listsize, int offset, int height,
         }
       if (yy + i < d->y + d->h - 3)
         {
-          drawing_mode (DRAW_MODE_COPY_PATTERN, pattern, 0, 0);
-          rectfill (gui_bmp, xx, yy, xx + 8, yy + i, 0);
-          solid_mode ();
+          rectfill_dotted (gui_bmp, xx, yy, xx + 8, yy + i, fg_color,bg);
           yy += i + 1;
           rectfill (gui_bmp, xx, yy, xx + 8, d->y + d->h - 3, bg);
         }
       else
         {
-          drawing_mode (DRAW_MODE_COPY_PATTERN, pattern, 0, 0);
-          rectfill (gui_bmp, xx, yy, xx + 8, d->y + d->h - 3, 0);
-          solid_mode ();
+          rectfill_dotted (gui_bmp, xx, yy, xx + 8, d->y + d->h - 3, fg_color,bg);
         }
-      destroy_bitmap (pattern);
     }
   else
     {
