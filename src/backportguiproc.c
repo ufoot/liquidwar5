@@ -172,6 +172,8 @@ d_clear_proc (int msg, DIALOG * d, int c)
 {
   ALLEGRO_ASSERT (d);
 
+  _dummy_c = c;
+
 #ifdef ALLEGRO_WINDOWS
   /* kludge to get the exported address of d_clear_proc */
   if (!_d_clear_proc)
@@ -195,6 +197,8 @@ d_clear_proc (int msg, DIALOG * d, int c)
       clear_to_color (gui_bmp, d->bg);
     }
 
+  _dummy_c = c;
+
   return D_O_K;
 }
 
@@ -217,6 +221,8 @@ d_box_proc (int msg, DIALOG * d, int c)
       rect (gui_bmp, d->x, d->y, d->x + d->w - 1, d->y + d->h - 1, fg);
     }
 
+  _dummy_c = c;
+
   return D_O_K;
 }
 
@@ -232,7 +238,7 @@ d_shadow_box_proc (int msg, DIALOG * d, int c)
   if (msg == MSG_DRAW)
     {
       int fg = (d->flags & D_DISABLED) ? gui_mg_color : d->fg;
-      int black = makecol (0, 0, 0);
+      int black = 0;            // [FIXME:ufoot] sounds a bit hardcoded, double-check this
       ALLEGRO_BITMAP *gui_bmp = gui_get_screen ();
 
       rectfill (gui_bmp, d->x + 1, d->y + 1, d->x + d->w - 3, d->y + d->h - 3,
@@ -241,6 +247,8 @@ d_shadow_box_proc (int msg, DIALOG * d, int c)
       vline (gui_bmp, d->x + d->w - 1, d->y + 1, d->y + d->h - 1, black);
       hline (gui_bmp, d->x + 1, d->y + d->h - 1, d->x + d->w - 1, black);
     }
+
+  _dummy_c = c;
 
   return D_O_K;
 }
@@ -260,6 +268,8 @@ d_bitmap_proc (int msg, DIALOG * d, int c)
   if (msg == MSG_DRAW)
     blit (b, gui_get_screen (), 0, 0, d->x, d->y, d->w, d->h);
 
+  _dummy_c = c;
+
   return D_O_K;
 }
 
@@ -275,7 +285,7 @@ d_text_proc (int msg, DIALOG * d, int c)
   if (msg == MSG_DRAW)
     {
       int fg = (d->flags & D_DISABLED) ? gui_mg_color : d->fg;
-      FONT *oldfont = font;
+      ALLEGRO_FONT *oldfont = font;
 
       if (d->dp2)
         font = d->dp2;
@@ -284,6 +294,8 @@ d_text_proc (int msg, DIALOG * d, int c)
 
       font = oldfont;
     }
+
+  _dummy_c = c;
 
   return D_O_K;
 }
@@ -301,7 +313,7 @@ d_ctext_proc (int msg, DIALOG * d, int c)
   if (msg == MSG_DRAW)
     {
       int fg = (d->flags & D_DISABLED) ? gui_mg_color : d->fg;
-      FONT *oldfont = font;
+      ALLEGRO_FONT *oldfont = font;
 
       if (d->dp2)
         font = d->dp2;
@@ -311,6 +323,8 @@ d_ctext_proc (int msg, DIALOG * d, int c)
 
       font = oldfont;
     }
+
+  _dummy_c = c;
 
   return D_O_K;
 }
@@ -328,7 +342,7 @@ d_rtext_proc (int msg, DIALOG * d, int c)
   if (msg == MSG_DRAW)
     {
       int fg = (d->flags & D_DISABLED) ? gui_mg_color : d->fg;
-      FONT *oldfont = font;
+      ALLEGRO_FONT *oldfont = font;
 
       if (d->dp2)
         font = d->dp2;
@@ -339,6 +353,8 @@ d_rtext_proc (int msg, DIALOG * d, int c)
 
       font = oldfont;
     }
+
+  _dummy_c = c;
 
   return D_O_K;
 }
@@ -395,7 +411,7 @@ d_button_proc (int msg, DIALOG * d, int c)
         }
       else
         {
-          black = makecol (0, 0, 0);
+          black = 0;            // [FIXME:ufoot] sounds a bit hardcoded, double-check this
           vline (gui_bmp, d->x + d->w - 1, d->y + 1, d->y + d->h - 2, black);
           hline (gui_bmp, d->x + 1, d->y + d->h - 1, d->x + d->w - 1, black);
         }
@@ -458,6 +474,8 @@ d_button_proc (int msg, DIALOG * d, int c)
       break;
     }
 
+  _dummy_c = c;
+
   return D_O_K;
 }
 
@@ -503,6 +521,8 @@ d_check_proc (int msg, DIALOG * d, int c)
 
       return D_O_K;
     }
+
+  _dummy_c = c;
 
   return d_button_proc (msg, d, 0);
 }
