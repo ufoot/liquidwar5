@@ -1028,9 +1028,20 @@ keypressed ()
 
 /*------------------------------------------------------------------*/
 int
+readkey ()
+{
+  // https://liballeg.org/stabledocs/en/alleg006.html#readkey
+  /*
+   * [FIXME:ufoot] implement this.
+   */
+  return 0;
+}
+
+/*------------------------------------------------------------------*/
+int
 ureadkey (int *scancode)
 {
-  // https://liballeg.org/stabledocs/en/alleg006.html#keypressed
+  // https://liballeg.org/stabledocs/en/alleg006.html#ureadkey
   /*
    * [FIXME:ufoot] implement this.
    */

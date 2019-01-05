@@ -238,6 +238,7 @@ void set_clip_rect (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2);
 int poll_joystick ();
 
 int keypressed ();
+int readkey ();
 int ureadkey (int *scancode);
 void clear_keybuf ();
 int scancode_to_ascii (int scancode);
