@@ -239,5 +239,6 @@ int poll_joystick ();
 
 int keypressed ();
 int ureadkey (int *scancode);
+int scancode_to_ascii (int scancode);
 
 #endif // LIQUID_WAR_INCLUDE_BACKPORT

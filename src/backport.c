@@ -1040,3 +1040,40 @@ ureadkey (int *scancode)
     }
   return 0;
 }
+
+/*------------------------------------------------------------------*/
+int
+scancode_to_ascii (int scancode)
+{
+  // https://liballeg.org/stabledocs/en/alleg006.html#keypressed
+  /*
+   * Again, most unreliable and primitive impl, but should be enough
+   * for the limited usage we make of that function.
+   */
+  int ascii = 0;
+  char *name = ustrdup (al_keycode_to_name (scancode));
+
+  // naive tolower
+  char *pos = NULL;
+  for (pos = name; *pos; pos++)
+    {
+      char c = *pos;
+      if (c >= 'A' && c <= 'Z')
+        {
+          (*pos) = c + 'a' - 'A';
+        }
+    }
+  // normally it's "space" but accept " " too.
+  if (strcmp (name, " ") == 0 || strcmp (name, "space") == 0)
+    {
+      ascii = 0;
+    }
+  else if (strlen (name) == 1 && name[0] >= 'a' && name[0] <= 'z')
+    {
+      // standard letter, the only thing we really need to handle
+      ascii = name[0];
+    }
+  free (name);
+
+  return ascii;
+}
