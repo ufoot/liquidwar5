@@ -1043,7 +1043,7 @@ ureadkey (int *scancode)
 
 /*------------------------------------------------------------------*/
 void
-clear_beybuf ()
+clear_keybuf ()
 {
   // https://liballeg.org/stabledocs/en/alleg006.html#clear_keybuf
   /*
