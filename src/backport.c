@@ -181,6 +181,21 @@ mouse_needs_poll (void)
 
 /*------------------------------------------------------------------*/
 void
+clear_to_color (ALLEGRO_BITMAP * bitmap, int color)
+{
+  // https://liballeg.org/stabledocs/en/alleg013.html#clear_to_color
+  al_set_target_bitmap (bitmap);
+  if (color < 0 || color >= PALETTE_SIZE)
+    {
+      return;
+    }
+  ALLEGRO_COLOR al_color;
+  al_color = GLOBAL_PALETTE[color];
+  al_clear_to_color (al_color);
+}
+
+/*------------------------------------------------------------------*/
+void
 putpixel (ALLEGRO_BITMAP * bitmap, int x, int y, int color)
 {
   // https://liballeg.org/stabledocs/en/alleg013.html#putpixel
@@ -401,6 +416,7 @@ int
 ucwidth (int c)
 {
   // https://liballeg.org/stabledocs/en/alleg002.html#ucwidth
+  _dummy = c;
   return 1;
 }
 

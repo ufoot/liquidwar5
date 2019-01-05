@@ -37,7 +37,7 @@ int (*_d_clear_proc) (int, DIALOG *, int) = NULL;
 /* typedef for the listbox callback functions */
 typedef char *(*getfuncptr) (int, int *);
 
-
+static int _dummy_c = 0;
 
 /* gui_textout_ex:
  *  Wrapper function for drawing text to the screen, which interprets the
@@ -93,7 +93,7 @@ gui_textout_ex (ALLEGRO_BITMAP * bmp, AL_CONST char *s, int x, int y,
       if (hline_pos >= 0)
         {
           c = ugetat (tmp, hline_pos);
-          usetat (tmp, hline_pos, 0);
+          usetat (tmp, hline_pos, 0, sizeof (tmp));
           hline_pos = text_length (font, tmp);
           c = usetc (tmp, c);
           usetc (tmp + c, 0);
@@ -153,8 +153,10 @@ dotted_rect (int x1, int y1, int x2, int y2, int fg, int bg)
 int
 d_yield_proc (int msg, DIALOG * d, int c)
 {
-  if (msg == MSG_IDLE)
+  if (d == NULL || msg == MSG_IDLE)
     rest (1);
+
+  _dummy_c = c;
 
   return D_O_K;
 }
@@ -186,11 +188,10 @@ d_clear_proc (int msg, DIALOG * d, int c)
        * bmp->w and bmp->h either because if it is the screen these are actually
        * wrong. Ugh!
        */
-      w = (gui_bmp == screen) ? SCREEN_W : gui_bmp->w;
-      h = (gui_bmp == screen) ? SCREEN_H : gui_bmp->h;
+      w = (gui_bmp == screen) ? SCREEN_W : al_get_bitmap_width (gui_bmp);
+      h = (gui_bmp == screen) ? SCREEN_H : al_get_bitmap_height (gui_bmp);
 
       set_clip_rect (gui_bmp, 0, 0, w - 1, h - 1);
-      set_clip_state (gui_bmp, TRUE);
       clear_to_color (gui_bmp, d->bg);
     }
 

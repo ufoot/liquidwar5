@@ -180,6 +180,7 @@ void unscare_mouse ();
 int poll_mouse (void);
 int mouse_needs_poll (void);
 
+void clear_to_color (ALLEGRO_BITMAP * bitmap, int color);
 void putpixel (ALLEGRO_BITMAP * bitmap, int x, int y, int color);
 void rect (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2,
            int color);
