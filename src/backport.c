@@ -95,8 +95,9 @@ volatile int mouse_y = 0;
 volatile int mouse_z = 0;
 volatile int mouse_b = 0;
 int *allegro_errno = &_allegro_errno;
-JOYSTICK_INFO joy[MAX_JOYSTICKS];
+volatile JOYSTICK_INFO joy[MAX_JOYSTICKS];
 char empty_string[] = { 0, 0, 0, 0 };
+volatile char key[KEY_MAX];
 
 /*==================================================================*/
 /* fonctions                                                        */
@@ -1039,7 +1040,7 @@ poll_joystick ()
 {
   // https://liballeg.org/stabledocs/en/alleg007.html#poll_joystick
 
-  memset (&joy[0], 0, sizeof (joy));
+  memset ((void *) &joy[0], 0, sizeof (joy));
   int num_joysticks = al_get_num_joysticks ();
   int j = 0;
   for (j = 0; j < num_joysticks && j < MAX_JOYSTICKS; j++)

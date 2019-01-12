@@ -154,6 +154,8 @@ typedef struct JOYSTICK_INFO
   JOYSTICK_BUTTON_INFO button[MAX_JOYSTICK_BUTTONS];
 } JOYSTICK_INFO;
 
+#define KEY_MAX 127
+
 /*==================================================================*/
 /* variables globales                                               */
 /*==================================================================*/
@@ -167,8 +169,9 @@ extern volatile int mouse_y;
 extern volatile int mouse_z;
 extern volatile int mouse_b;
 extern int *allegro_errno;
-extern JOYSTICK_INFO joy[MAX_JOYSTICKS];
+extern volatile JOYSTICK_INFO joy[MAX_JOYSTICKS];
 extern char empty_string[];
+extern volatile char key[];
 
 /*==================================================================*/
 /* fonctions globales                                               */
