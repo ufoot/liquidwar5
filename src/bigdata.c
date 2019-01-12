@@ -225,7 +225,7 @@ check_free_memory (void)
 
   result = my_create_bitmap (MEMORY_TO_LEAVE / 2, 1024);
   if (result)
-    destroy_bitmap (result);
+    al_destroy_bitmap (result);
 
   return result != NULL;
 }
