@@ -8,7 +8,7 @@ To compile and install Liquid War under GNU/Linux, you need:
 - dvips    (optional) : http://www.radicaleye.com/dvips.html
 - PDFLaTeX (optional) : http://www.tug.org/applications/pdftex/
 - makeinfo (optional) : http://www.gnu.org/software/texinfo/texinfo.html
-- Allegro  (***)      : http://www.talula.demon.co.uk/allegro/
+- Allegro  (***)      : https://liballeg.org/
 
 (*) You need to have GNU Make installed. Others flavors of the make 
     utility might simply not work at all when compiling LW.
