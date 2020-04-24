@@ -125,14 +125,34 @@ lw_path_get_system_name (const char *filename)
  * Fonction used to build complete paths from different parts.
  */
 char *
-lw_path_join(const char *begin, const char *end) {
+lw_path_join2(const char *begin, const char *end) {
   int begin_len = strlen(begin);
   int end_len = strlen(end);
   int joined_len = begin_len + end_len;
   char *joined = malloc(joined_len+2);
-  memset(joined, 0, joined_len+1);
+  memset(joined, 0, joined_len+2);
   memcpy(joined, begin, begin_len);
   joined[begin_len] = _SEP;
   memcpy(joined+begin_len+1, end, end_len);
+  return joined;
+}
+
+/*------------------------------------------------------------------*/
+/*
+ * Fonction used to build complete paths from different parts.
+ */
+char *
+lw_path_join3(const char *begin, const char *middle, const char *end) {
+  int begin_len = strlen(begin);
+  int middle_len = strlen(middle);
+  int end_len = strlen(end);
+  int joined_len = begin_len + middle_len + end_len;
+  char *joined = malloc(joined_len+3);
+  memset(joined, 0, joined_len+3);
+  memcpy(joined, begin, begin_len);
+  joined[begin_len] = _SEP;
+  memcpy(joined+middle_len+1, middle, middle_len);
+  joined[begin_len+middle_len+1] = _SEP;
+  memcpy(joined+begin_len+middle_len+2, end, end_len);
   return joined;
 }

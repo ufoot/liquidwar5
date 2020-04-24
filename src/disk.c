@@ -60,10 +60,10 @@
 #include "disk.h"
 #include "log.h"
 #include "map.h"
-#include "palette.h"
 #include "startup.h"
 #include "texture.h"
 #include "macro.h"
+#include "path.h"
 
 /*==================================================================*/
 /* defines                                                          */
@@ -102,7 +102,7 @@ void *RAW_MAP[RAW_MAP_MAX_NUMBER];
 void *RAW_MAP_ORDERED[RAW_MAP_MAX_NUMBER];
 void *RAW_TEXTURE[RAW_TEXTURE_MAX_NUMBER];
 void *RAW_MAPTEX[RAW_TEXTURE_MAX_NUMBER];
-MIDI *MIDI_MUSIC[MIDI_MUSIC_MAX_NUMBER];
+//MIDI *MIDI_MUSIC[MIDI_MUSIC_MAX_NUMBER];
 
 ALLEGRO_BITMAP *BACK_IMAGE = NULL;
 
@@ -112,8 +112,8 @@ ALLEGRO_BITMAP *BIG_MOUSE_CURSOR = NULL;
 ALLEGRO_BITMAP *SMALL_MOUSE_CURSOR = NULL;
 ALLEGRO_BITMAP *INVISIBLE_MOUSE_CURSOR = NULL;
 
-static RGB *FONT_PALETTE = NULL;
-static RGB *BACK_PALETTE = NULL;
+//static RGB *FONT_PALETTE = NULL;
+//static RGB *BACK_PALETTE = NULL;
 
 static int CUSTOM_TEXTURE_OK = 0;
 static int CUSTOM_MAP_OK = 0;
@@ -136,43 +136,40 @@ lock_sound (ALLEGRO_SAMPLE * smp)
 }
 
 /*------------------------------------------------------------------*/
-static void
-read_sfx_dat (DATAFILE * df)
+static ALLEGRO_SAMPLE *read_sfx(const char *filename) {
+  ALLEGRO_SAMPLE *ret = NULL;
+
+  char * path = lw_path_join3(STARTUP_DAT_PATH, "sfx", filename);
+  if (path == NULL) {
+    return NULL;
+  }
+  ret = al_load_sample(path);
+  free(path);
+  return ret;
+}
+
+/*------------------------------------------------------------------*/
+static bool
+read_sfx_dat ()
 {
-  ALLEGRO_SAMPLE *list[SAMPLE_SFX_NUMBER];
-  int i;
+  SAMPLE_SFX_TIME = read_sfx("clock1.wav");
+  SAMPLE_SFX_WIN = read_sfx("crowd1.wav");
+  SAMPLE_SFX_CONNECT = read_sfx("cuckoo.wav");
+  SAMPLE_SFX_GO = read_sfx("foghorn.wav");
+  SAMPLE_SFX_CLICK = read_sfx("spash1.wav");
+  SAMPLE_SFX_LOOSE = read_sfx("war.wav");
 
-  /*
-   * First, we associate the _first_ sound of the sub datafile
-   * to all sounds. This will operate as default value which
-   * will prevent the game from segfaulting if we use it with
-   * an outdated or too recent datafile
-   */
-  for (i = 0; i < SAMPLE_SFX_NUMBER && df[i].type != DAT_END; ++i)
-    {
-      list[i] = df[0].dat;
-    }
-
-  /*
-   * Now we associate the real sounds, provided that they exist...
-   */
-  for (i = 0; i < 6 && df[i].type != DAT_END; ++i)
-    {
-      list[i] = df[i].dat;
-      lock_sound (list[i]);
-    }
-
-  SAMPLE_SFX_TIME = list[0];
-  SAMPLE_SFX_WIN = list[1];
-  SAMPLE_SFX_CONNECT = list[2];
-  SAMPLE_SFX_GO = list[3];
-  SAMPLE_SFX_CLICK = list[4];
-  SAMPLE_SFX_LOOSE = list[5];
+  return SAMPLE_SFX_TIME != NULL &&
+    SAMPLE_SFX_WIN != NULL &&
+    SAMPLE_SFX_CONNECT != NULL &&
+    SAMPLE_SFX_GO != NULL &&
+    SAMPLE_SFX_CLICK != NULL &&
+    SAMPLE_SFX_LOOSE != NULL;
 }
 
 /*------------------------------------------------------------------*/
 static void
-read_water_dat (DATAFILE * df)
+read_water_dat ()
 {
   int i;
 
@@ -190,7 +187,7 @@ read_water_dat (DATAFILE * df)
 
 /*------------------------------------------------------------------*/
 static void
-read_texture_dat (DATAFILE * df)
+read_texture_dat ()
 {
   int i;
 
@@ -204,7 +201,7 @@ read_texture_dat (DATAFILE * df)
 
 /*------------------------------------------------------------------*/
 static void
-read_maptex_dat (DATAFILE * df)
+read_maptex_dat ()
 {
   int i;
 
@@ -218,7 +215,7 @@ read_maptex_dat (DATAFILE * df)
 
 /*------------------------------------------------------------------*/
 static void
-read_map_dat (DATAFILE * df)
+read_map_dat ()
 {
   int i;
 
@@ -232,7 +229,7 @@ read_map_dat (DATAFILE * df)
 
 /*------------------------------------------------------------------*/
 static void
-read_back_dat (DATAFILE * df)
+read_back_dat ()
 {
   int i, x, y;
 
@@ -258,23 +255,7 @@ read_back_dat (DATAFILE * df)
 
 /*------------------------------------------------------------------*/
 static void
-create_default_back (void)
-{
-  static RGB back_coul;
-
-  memset (&back_coul, 0, sizeof (RGB));
-  back_coul.r = 1;
-  back_coul.g = 1;
-  back_coul.b = 8;
-
-  BACK_IMAGE = my_create_bitmap (1, 1);
-  putpixel (BACK_IMAGE, 0, 0, 18);
-  GLOBAL_PALETTE[18] = back_coul;
-}
-
-/*------------------------------------------------------------------*/
-static void
-read_font_dat (DATAFILE * df)
+read_font_dat ()
 {
   int i;
 
@@ -284,23 +265,20 @@ read_font_dat (DATAFILE * df)
   SMALL_MOUSE_CURSOR = df[2].dat;
   BIG_MOUSE_CURSOR = df[3].dat;
   INVISIBLE_MOUSE_CURSOR = df[5].dat;
-
-  for (i = 1; i <= 17; ++i)
-    GLOBAL_PALETTE[i] = FONT_PALETTE[i];
 }
 
 /*------------------------------------------------------------------*/
 static void
-read_music_dat (DATAFILE * df)
+read_music_dat ()
 {
-  int i;
+  /* int i; */
 
-  MIDI_MUSIC_NUMBER = 0;
-  for (i = 0; i < MIDI_MUSIC_DAT_NUMBER && df[i].type != DAT_END; ++i)
-    {
-      MIDI_MUSIC[i] = df[i].dat;
-      MIDI_MUSIC_NUMBER++;
-    }
+  /* MIDI_MUSIC_NUMBER = 0; */
+  /* for (i = 0; i < MIDI_MUSIC_DAT_NUMBER && df[i].type != DAT_END; ++i) */
+  /*   { */
+  /*     MIDI_MUSIC[i] = df[i].dat; */
+  /*     MIDI_MUSIC_NUMBER++; */
+  /*   } */
 }
 
 
@@ -331,7 +309,6 @@ load_dat (void)
 {
   int result = 1;
   int loadable = 0;
-  DATAFILE *df;
 
   log_print_str ("Loading data from \"");
   log_print_str (STARTUP_DAT_PATH);
@@ -344,7 +321,7 @@ load_dat (void)
     {
       log_print_str ("Loading fonts");
       log_flush ();
-      LOADED_FONT=read_font_dat ();
+      LOADED_FONT = read_font_dat ();
       display_success (LOADED_FONT);
       result &= LOADED_FONT;
     }
@@ -352,29 +329,19 @@ load_dat (void)
     {
       log_print_str ("Loading maps");
       log_flush ();
-      LOADED_FONT=read_map_dat ();
+      LOADED_FONT = read_map_dat ();
       display_success (LOADED_MAP);
       result &= LOADED_MAP;
     }
-
   if (loadable && STARTUP_BACK_STATE)
     {
       log_print_str ("Loading background bitmap");
       log_flush ();
-      if (read_back_dat())
-        {
-          LOADED_BACK = 1;
-          display_success(1);
-        }
-      else
-        {
-          create_default_back ();
-          result &= !STARTUP_CHECK;
-          display_success(0);
-        }
+      LOADED_BACK = read_back_dat();
+      display_success(LOADED_BACK);
+      result &= LOADED_BACK;
     }
-  else
-    create_default_back ();
+
   if (loadable && STARTUP_SFX_STATE)
     {
       log_print_str ("Loading sound fx");
