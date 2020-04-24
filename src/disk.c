@@ -81,6 +81,8 @@ int RAW_MAPTEX_NUMBER = 0;
 int RAW_MAP_NUMBER = 0;
 int MIDI_MUSIC_NUMBER = 0;
 
+int LOADED_FONT = 0;
+int LOADED_MAP = 0;
 int LOADED_BACK = 0;
 int LOADED_TEXTURE = 0;
 int LOADED_MAPTEX = 0;
@@ -342,37 +344,34 @@ load_dat (void)
     {
       log_print_str ("Loading fonts");
       log_flush ();
-      df = load_datafile_object (STARTUP_DAT_PATH, "font_dat");
-      if (result &= (df != NULL))
-        read_font_dat (df[0].dat);
-      display_success (df != NULL);
+      LOADED_FONT=read_font_dat ();
+      display_success (LOADED_FONT);
+      result &= LOADED_FONT;
     }
   if (loadable)
     {
       log_print_str ("Loading maps");
       log_flush ();
-      df = load_datafile_object (STARTUP_DAT_PATH, "map_dat");
-      if (result &= (df != NULL))
-        read_map_dat (df[0].dat);
-      display_success (df != NULL);
+      LOADED_FONT=read_map_dat ();
+      display_success (LOADED_MAP);
+      result &= LOADED_MAP;
     }
 
   if (loadable && STARTUP_BACK_STATE)
     {
       log_print_str ("Loading background bitmap");
       log_flush ();
-      df = load_datafile_object (STARTUP_DAT_PATH, "back_dat");
-      if (df != NULL)
+      if (read_back_dat())
         {
-          read_back_dat (df[0].dat);
           LOADED_BACK = 1;
+          display_success(1);
         }
       else
         {
           create_default_back ();
           result &= !STARTUP_CHECK;
+          display_success(0);
         }
-      display_success (df != NULL);
     }
   else
     create_default_back ();
@@ -380,71 +379,76 @@ load_dat (void)
     {
       log_print_str ("Loading sound fx");
       log_flush ();
-      df = load_datafile_object (STARTUP_DAT_PATH, "sfx_dat");
-      if (df != NULL)
+      if (read_sfx_dat())
         {
-          read_sfx_dat (df[0].dat);
           LOADED_SFX = 1;
+          display_success(1);
         }
       else
-        result &= !STARTUP_CHECK;
-      display_success (df != NULL);
+        {
+          result &= !STARTUP_CHECK;
+          display_success(0);
+        }
     }
   if (loadable && STARTUP_TEXTURE_STATE)
     {
       log_print_str ("Loading textures");
       log_flush ();
-      df = load_datafile_object (STARTUP_DAT_PATH, "texture_dat");
-      if (df != NULL)
+      if (read_texture_dat())
         {
-          read_texture_dat (df[0].dat);
           LOADED_TEXTURE = 1;
+          display_success(1);
         }
       else
-        result &= !STARTUP_CHECK;
-      display_success (df != NULL);
+        {
+          result &= !STARTUP_CHECK;
+          display_success(0);
+        }
 
       log_print_str ("Loading map textures");
       log_flush ();
-      df = load_datafile_object (STARTUP_DAT_PATH, "maptex_dat");
-      if (df != NULL)
+      if (read_maptex_dat())
         {
-          read_maptex_dat (df[0].dat);
           LOADED_MAPTEX = 1;
+          display_success(1);
         }
       else
-        result &= !STARTUP_CHECK;
-      display_success (df != NULL);
+        {
+          result &= !STARTUP_CHECK;
+          display_success(0);
+        }
     }
 
   if (loadable && STARTUP_WATER_STATE)
     {
       log_print_str ("Loading water sounds");
       log_flush ();
-      df = load_datafile_object (STARTUP_DAT_PATH, "water_dat");
-      if (df != NULL)
+      if (read_water_dat())
         {
-          read_water_dat (df[0].dat);
           LOADED_WATER = 1;
+          display_success(1);
         }
       else
-        result &= !STARTUP_CHECK;
-      display_success (df != NULL);
+        {
+          result &= !STARTUP_CHECK;
+          display_success(0);
+        }
     }
 
   if (loadable && STARTUP_MUSIC_STATE)
     {
       log_print_str ("Loading midi music");
       log_flush ();
-      df = load_datafile_object (STARTUP_DAT_PATH, "music_dat");
-      if (df != NULL)
+      if (read_music_dat())
         {
-          read_music_dat (df[0].dat);
           LOADED_MUSIC = 1;
+          display_success(1);
         }
       else
-        result &= !STARTUP_CHECK;
-      display_success (df != NULL);
+        {
+          result &= !STARTUP_CHECK;
+          display_success(0);
+        }
     }
 
   return loadable && result;
