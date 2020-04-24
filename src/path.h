@@ -67,5 +67,6 @@
 /*==================================================================*/
 
 char *lw_path_get_system_name (const char *filename);
+char *lw_path_join(const char *begin, const char *end);
 
 #endif
