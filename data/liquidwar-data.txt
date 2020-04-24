@@ -1,0 +1,30 @@
+# Liquid War is a multiplayer wargame
+# Copyright (C) 1998-2020 Christian Mauduit
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+#
+# Liquid War homepage : https://ufoot.org/liquidwar/v5
+# Contact author      : ufoot@ufoot.org
+
+This is the data directory for Liquid War 5. Previous versions relying
+on Allegro 4.x used a .dat file. However this feature has been dropped
+in Allegro 5.x. At least Allegro 5.x does not promote bundling all
+data in a single file, it does have some custom filesystem abstraction
+but not the batteries-included feature that Allegro 4.x exposed. As a
+consequence, newer versions of Liquid War 5 just read plain files from
+the filesystem. This .TXT file should not be removed, it is checked by
+the program to get an idea whether the folder it is going to read is a
+realistic equivalent of the former .DAT file. It is just checked for
+existence.

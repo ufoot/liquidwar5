@@ -301,24 +301,41 @@ read_music_dat (DATAFILE * df)
     }
 }
 
+
 /*------------------------------------------------------------------*/
-int
-load_dat (void)
-{
-  int result = 1;
-  int loadable;
-  DATAFILE *df;
-
-  log_print_str ("Loading data from \"");
-  log_print_str (STARTUP_DAT_PATH);
-  log_print_str ("\"");
-
+static int check_loadable() {
 #ifdef DOS
   loadable = 1;
 #else
   loadable = exists (STARTUP_DAT_PATH);
 #endif
 
+  // Checking for the existence of this file, to quickly spot whether
+  // this is a genuine data folder. If that text file is not there, we
+  // can just leave and assume this is an unkown random place.
+  char * path = lw_path_join(STARTUP_DAT_PATH, "liquidwar-data.txt");
+  if (path == NULL) {
+    return 0;
+  }
+  loadable = exists(path);
+  free(path);
+
+  return loadable;
+}
+
+/*------------------------------------------------------------------*/
+int
+load_dat (void)
+{
+  int result = 1;
+  int loadable = 0;
+  DATAFILE *df;
+
+  log_print_str ("Loading data from \"");
+  log_print_str (STARTUP_DAT_PATH);
+  log_print_str ("\"");
+
+  loadable = check_loadable();
   display_success (loadable);
 
   if (loadable)
