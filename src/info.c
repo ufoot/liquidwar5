@@ -60,7 +60,6 @@
 #include "config.h"
 #include "info.h"
 #include "decal.h"
-#include "palette.h"
 #include "maptex.h"
 #include "texture.h"
 #include "time.h"

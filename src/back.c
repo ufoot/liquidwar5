@@ -56,7 +56,6 @@
 
 #include "back.h"
 #include "disk.h"
-#include "palette.h"
 #include "viewport.h"
 #include "dialog.h"
 

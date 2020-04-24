@@ -60,7 +60,6 @@
 #include "viewport.h"
 #include "log.h"
 #include "init.h"
-#include "palette.h"
 #include "config.h"
 #include "ticker.h"
 #include "macro.h"

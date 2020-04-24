@@ -62,7 +62,6 @@
 #include "mesh.h"
 #include "fighter.h"
 #include "monster.h"
-#include "palette.h"
 #include "startup.h"
 #include "time.h"
 

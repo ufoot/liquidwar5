@@ -56,7 +56,6 @@
 #include "maptex.h"
 #include "map.h"
 #include "texture.h"
-#include "palette.h"
 #include "disk.h"
 
 /*==================================================================*/

@@ -59,7 +59,6 @@
 #include "grad.h"
 #include "cursor.h"
 #include "mesh.h"
-#include "palette.h"
 
 /*==================================================================*/
 /* variables globales                                               */
@@ -67,7 +66,7 @@
 
 /*
  * globals holding all the cursors of the game
- * I first wanted to have several cursors per team, for LW's 
+ * I first wanted to have several cursors per team, for LW's
  * core algorithm can handle that easily, but I gave up since
  * it would have represented too much work with cursor & teams
  * associations and also with the GUI
@@ -111,7 +110,7 @@ init_cursor (int index, int team, int x, int y, char *name)
    * the following line reveals an important point of LW's algorithm
    * at game start, one has to set up the value of the cursor with
    * a great value, since it will be decremented at each game cycle.
-   * the reason is the following: 
+   * the reason is the following:
    * on one hand, since I move my cursor of let's say
    * 1 pixel, I can not assume that the points on the map have kept
    * the same distance with the cursor. In the worst case, any point
@@ -185,7 +184,7 @@ apply_all_cursor (void)
 /*
  * the purpose of this function is to place the cursor automatically
  * on the map, knowing that we can give a fixed position for each
- * team since all maps are potentially different. 
+ * team since all maps are potentially different.
  */
 void
 auto_cursor (int index, int team, char *name)
@@ -228,7 +227,7 @@ auto_cursor (int index, int team, char *name)
    */
   while (!ok)
     {
-      /* 
+      /*
        * try and find a good spot going right
        */
       for (x = x_min; x <= x_max && !ok; ++x)
@@ -244,7 +243,7 @@ auto_cursor (int index, int team, char *name)
       if (x_max < CURRENT_AREA_W - 1)
         ++x_max;
 
-      /* 
+      /*
        * try and find a good spot going down
        */
       for (y = y_min; y <= y_max && !ok; ++y)
@@ -260,7 +259,7 @@ auto_cursor (int index, int team, char *name)
       if (y_max < CURRENT_AREA_H - 1)
         ++y_max;
 
-      /* 
+      /*
        * try and find a good spot going left
        */
       for (x = x_max; x >= x_min && !ok; --x)
@@ -276,8 +275,8 @@ auto_cursor (int index, int team, char *name)
       if (x_min > 0)
         --x_min;
 
-      /* 
-       * try and find a good spot going up 
+      /*
+       * try and find a good spot going up
        */
       for (y = y_max; y >= y_min && !ok; --y)
         if (CURRENT_AREA[y * CURRENT_AREA_W + x].mesh != NULL)

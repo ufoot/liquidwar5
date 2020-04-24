@@ -58,7 +58,6 @@
 #include "alleg2.h"
 #include "config.h"
 #include "gfxmode.h"
-#include "palette.h"
 #include "viewport.h"
 #include "info.h"
 #include "distor.h"

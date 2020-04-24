@@ -57,7 +57,6 @@
 #include "decal.h"
 #include "grad.h"
 #include "mesh.h"
-#include "palette.h"
 #include "spread.h"
 #include "startup.h"
 #include "time.h"

@@ -60,7 +60,6 @@
 #include "joystick.h"
 #include "keyboard.h"
 #include "mouse.h"
-#include "palette.h"
 #include "startup.h"
 #include "server.h"
 #include "lang.h"
