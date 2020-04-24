@@ -251,4 +251,11 @@ void clear_keybuf ();
 void simulate_keypress (int key);
 int scancode_to_ascii (int scancode);
 
+void set_config_file(char *filename);
+int get_config_int(const char *section, const char *key, int def);
+const char *get_config_string(const char *section, const char *key, const char *def);
+void set_config_int(const char *section, const char *key, int value);
+void set_config_string(const char *section, const char *key, const char *value);
+void flush_config_file();
+
 #endif // LIQUID_WAR_INCLUDE_BACKPORT

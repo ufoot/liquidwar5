@@ -79,7 +79,6 @@ static void my_handle_scrollable_scroll (DIALOG * d, int listsize, int *index,
                                          int *offset);
 static void my_handle_listbox_click (DIALOG * d);
 
-
 /*==================================================================*/
 /* fonctions                                                        */
 /*==================================================================*/

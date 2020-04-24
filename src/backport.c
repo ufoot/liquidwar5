@@ -60,12 +60,14 @@
 #include "macro.h"
 #include "mutxgen.h"
 #include "thrdgen.h"
+#include "log.h"
 
 /*==================================================================*/
 /* defines                                                          */
 /*==================================================================*/
 
 #define _NB_TIMERS 16
+#define _ITOA_BUF_SIZE 30
 
 /*==================================================================*/
 /* types                                                            */
@@ -85,6 +87,8 @@ static int _allegro_errno = 0;
 static int _dummy = 0;          // stupid dummy to get rid of unused param warning
 static _backport_timer_data _backport_timers[_NB_TIMERS];
 static LW_MUTEX_DATA _backport_timer_mutex = { NULL };
+static char *_config_file = NULL;
+static ALLEGRO_CONFIG *_config = NULL;
 
 ALLEGRO_BITMAP *screen = NULL;
 int SCREEN_W = 0;
@@ -1184,4 +1188,67 @@ scancode_to_ascii (int scancode)
   free (name);
 
   return ascii;
+}
+
+/*------------------------------------------------------------------*/
+void set_config_file(char *filename) {
+  _config_file = filename;
+  _config = al_load_config_file(filename);
+  if (_config != NULL) {
+    log_println_str("loaded config");
+  } else {
+    log_println_str("could not load config");
+  }
+}
+
+/*------------------------------------------------------------------*/
+int get_config_int(const char *section, const char *key, int def) {
+  const char *value = get_config_string(section, key, "");
+  if (value == NULL || strlen(value) == 0) {
+    return def;
+  }
+  return atoi(value);
+}
+
+/*------------------------------------------------------------------*/
+const char *get_config_string(const char *section, const char *key, const char *def) {
+  if (_config == NULL) {
+    return def;
+  }
+  const char *value = al_get_config_value(_config, section, key);
+  if (value == NULL) {
+    return def;
+  }
+  return value;
+}
+
+/*------------------------------------------------------------------*/
+void set_config_int(const char *section, const char *key, int value) {
+  // The following leaks memory as this buf is never freed. However, in the
+  // program, set_config_int is really rarely used, only at the end of the
+  // program, so before it causes a critical visible leak, there is a long way.
+  char *buf = malloc(_ITOA_BUF_SIZE);
+  memset(buf, 0, _ITOA_BUF_SIZE);
+  snprintf(buf, _ITOA_BUF_SIZE, "%d", value);
+  set_config_string(section, key, buf);
+}
+
+/*------------------------------------------------------------------*/
+void set_config_string(const char *section, const char *key, const char *value) {
+  if (_config == NULL) {
+    return;
+  }
+  al_set_config_value(_config, section, key, value);
+}
+
+/*------------------------------------------------------------------*/
+void flush_config_file() {
+  if (_config == NULL) {
+    return ;
+  }
+  if (al_save_config_file(_config_file, _config)) {
+    log_println_str("saved config");
+  } else {
+    log_println_str("could not save config");
+  }
 }

@@ -168,16 +168,16 @@ is_touched_key (int i)
   if (!found)
     switch (i)
       {
-      case ALLEGRO_KEY_MOUSE_UP:
+      case KEY_MOUSE_UP:
         retval = MOUSE_CONTROL_UP;
         break;
-      case ALLEGRO_KEY_MOUSE_RIGHT:
+      case KEY_MOUSE_RIGHT:
         retval = MOUSE_CONTROL_RIGHT;
         break;
-      case ALLEGRO_KEY_MOUSE_DOWN:
+      case KEY_MOUSE_DOWN:
         retval = MOUSE_CONTROL_DOWN;
         break;
-      case ALLEGRO_KEY_MOUSE_LEFT:
+      case KEY_MOUSE_LEFT:
         retval = MOUSE_CONTROL_LEFT;
         break;
       default:
