@@ -59,6 +59,7 @@
 #include "config.h"
 #include "cursor.h"
 #include "decal.h"
+#include "palette.h"
 #include "viewport.h"
 #include "pion.h"
 #include "time.h"

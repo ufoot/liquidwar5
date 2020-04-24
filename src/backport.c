@@ -56,6 +56,7 @@
 #include <allegro5/allegro_font.h>
 
 #include "backport.h"
+#include "palette.h"
 #include "macro.h"
 #include "mutxgen.h"
 #include "thrdgen.h"

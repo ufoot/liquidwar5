@@ -64,6 +64,7 @@
 #include "map.h"
 #include "maptex.h"
 #include "menu.h"
+#include "palette.h"
 #include "sound.h"
 #include "texture.h"
 #include "macro.h"

@@ -62,6 +62,7 @@
 #include "error.h"
 #include "game.h"
 #include "gfxmode.h"
+#include "palette.h"
 #include "maptex.h"
 #include "play.h"
 #include "score.h"

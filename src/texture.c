@@ -57,6 +57,7 @@
 #include "bigdata.h"
 #include "texture.h"
 #include "disk.h"
+#include "palette.h"
 #include "startup.h"
 #include "log.h"
 #include "serial.h"

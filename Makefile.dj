@@ -13,35 +13,48 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA #
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+#
 # Liquid War homepage : https://ufoot.org/liquidwar/v5
 # Contact author      : ufoot@ufoot.org
-
-# This Makefile is used to compile the MS Windows 32-bit executable binary.
 #
-# It requires a working MinGW http://www.mingw.org/ install to work.
-# Previous releases of Liquid War required MSVC (Microsoft Visual C++).
-# It is not the case any more, Liquid War can be built with free tools.
+# This Makefile is used to compile the MS DOS 32-bit executable binary.
+# 
+# It requires a working DJGPP http://www.delorie.com/djgpp/ install to work.
+# 
+# Typical DJGPP requirements are:
+# v2/copying.dj
+# v2/djdev203.zip
+# v2/faq230b.zip
+# v2/readme.1st
+# v2gnu/bnu2161b.zip
+# v2gnu/fil41b.zip
+# v2gnu/gcc401b.zip
+# v2gnu/gdb611b.zip
+# v2gnu/gpp401b.zip
+# v2gnu/mak3791b.zip
+# v2gnu/sed414b.zip
+# v2gnu/txi48b.zip
+# v2gnu/txt20b.zip
 #
-# To compile Allegro for MinGW, read "./docs/build/mingw32.txt" in the
+# To compile Allegro for MinGW, read "./docs/build/djgpp.txt" in the
 # Allegro source distribution. Usually, the following sequence works:
-# > fix mingw
+# > fix djgpp
 # > make
 # > make install
 #
 # Then to compile Liquid War:
-# > mingw32-make -f makefile.mgw > make-log.txt 2> make-err.txt
+# > make -f makefile.dj > make-log.txt 2> make-err.txt
 #
 # Note that the .exe produced won't work as is, you need to put the datafile
-# in the right path, and a few other things, see the "package_win32" target
+# in the right path, and a few other things, see the "package_dos" target
 # of the main UNIX Makefile in Liquid War source distribution.
 
 C_PATH=./src/
 H_PATH=./src/
 ASM_PATH=./src/
 OBJ_PATH=./src/
-RC_PATH=./src/
-OBJ_EXT=.mgw.o
+OBJ_EXT=.dj.o
 
 OBJ_NAMES=\
 about \
@@ -73,11 +86,11 @@ exec2 \
 exit \
 fighter \
 game \
-httputil \
 gfxmode \
 grad \
 graphics \
 help \
+httputil \
 info \
 init \
 internet \
@@ -103,13 +116,13 @@ message \
 mouse \
 move \
 music \
-mutxw32 \
+mutxdos \
 netconf \
 netkey \
 netgame \
 netmap \
 netmess \
-netplay\
+netplay \
 network \
 options \
 palette \
@@ -118,7 +131,6 @@ path \
 ping \
 pion \
 play \
-popupw32 \
 profile \
 protocol \
 random \
@@ -126,15 +138,14 @@ rules \
 score \
 serial \
 sock2cli \
-sockex \
-sockw32 \
+sockdos \
 sound \
 speeds \
 startinf \
 startup \
 team \
 texture \
-thrdw32 \
+thrddos \
 ticker \
 time \
 viewport \
@@ -145,32 +156,7 @@ wwwcli \
 glouglou \
 monster \
 spread \
-lwwin 
-
-OBJ_NAMES_SRV=\
-basicopt \
-chat \
-dnsutil \
-execw32 \
-httputil \
-logsrv \
-netconf \
-netkey \
-netmap \
-netmess \
-parser \
-serial \
-server \
-sock2srv \
-sockex \
-sockw32 \
-srvchan \
-srvcont \
-srvteam \
-srvtime \
-startinf \
-thrdw32 \
-wwwsrv
+../utils/snprintf/snprintf
 
 OBJ_NAMES_MAPGEN=\
 ../utils/lwmapgen/big_quad \
@@ -191,20 +177,16 @@ OBJ_NAMES_MAPGEN=\
 ../utils/lwmapgen/rand_poly \
 ../utils/lwmapgen/rand_poly_cut \
 ../utils/lwmapgen/street \
-../utils/lwmapgen/worms 
-       
+../utils/lwmapgen/worms
+ 
 OBJ_FILES=$(addprefix $(OBJ_PATH),$(addsuffix $(OBJ_EXT),$(OBJ_NAMES)))
-
-OBJ_FILES_SRV=$(addprefix $(OBJ_PATH),$(addsuffix $(OBJ_EXT),$(OBJ_NAMES_SRV)))
-
 OBJ_FILES_MAPGEN=$(addprefix $(OBJ_PATH),$(addsuffix $(OBJ_EXT),$(OBJ_NAMES_MAPGEN)))
 
 C_FLAGS=-O2 -fomit-frame-pointer -Wall -I$(H_PATH)
-C_COMPILE=gcc $(C_FLAGS) -o $@ -c $< -DWIN32 -DASM
-ASM_COMPILE=gcc $(C_FLAGS) -o $@ -c $<
-RC_COMPILE=windres -o $@ -i $<
+C_COMPILE=gcc -c $< -o $@ $(C_FLAGS) -DDOS -DASM -DSNPRINTF
+ASM_COMPILE=gcc -c $< -o $@
 
-all: lwwin.exe lwwinsrv.exe lwwinmap.exe
+all: lwdos.exe lwdosmap.exe
 
 $(OBJ_PATH)%$(OBJ_EXT): $(C_PATH)%.c
 	$(C_COMPILE)
@@ -212,18 +194,9 @@ $(OBJ_PATH)%$(OBJ_EXT): $(C_PATH)%.c
 $(OBJ_PATH)%$(OBJ_EXT): $(ASM_PATH)%.s
 	$(ASM_COMPILE)
 
-$(OBJ_PATH)%$(OBJ_EXT): $(RC_PATH)%.rc
-	$(RC_COMPILE)
+lwdos.exe: $(OBJ_FILES)
+	gcc -o $@ $(OBJ_FILES) -lalleg
 
-
-lwwin.exe: $(OBJ_FILES)
-	gcc -Wl,--subsystem,windows -o $@ $(OBJ_FILES) -lalleg -lws2_32
-
-lwwinsrv.exe: $(OBJ_FILES_SRV)
-	gcc -Wl,--subsystem,console -o $@ $(OBJ_FILES_SRV) -lws2_32
-
-lwwinmap.exe: $(OBJ_FILES_MAPGEN)
-	gcc -Wl,--subsystem,console -o $@ $(OBJ_FILES_MAPGEN) -lalleg
-
-
+lwdosmap.exe: $(OBJ_FILES_MAPGEN)
+	gcc -o $@ $(OBJ_FILES_MAPGEN) -lalleg
 

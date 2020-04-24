@@ -60,6 +60,7 @@
 #include "disk.h"
 #include "log.h"
 #include "map.h"
+#include "palette.h"
 #include "startup.h"
 #include "texture.h"
 #include "macro.h"
@@ -101,7 +102,7 @@ void *RAW_MAP[RAW_MAP_MAX_NUMBER];
 void *RAW_MAP_ORDERED[RAW_MAP_MAX_NUMBER];
 void *RAW_TEXTURE[RAW_TEXTURE_MAX_NUMBER];
 void *RAW_MAPTEX[RAW_TEXTURE_MAX_NUMBER];
-//MIDI *MIDI_MUSIC[MIDI_MUSIC_MAX_NUMBER];
+MIDI *MIDI_MUSIC[MIDI_MUSIC_MAX_NUMBER];
 
 ALLEGRO_BITMAP *BACK_IMAGE = NULL;
 
@@ -111,8 +112,8 @@ ALLEGRO_BITMAP *BIG_MOUSE_CURSOR = NULL;
 ALLEGRO_BITMAP *SMALL_MOUSE_CURSOR = NULL;
 ALLEGRO_BITMAP *INVISIBLE_MOUSE_CURSOR = NULL;
 
-//static RGB *FONT_PALETTE = NULL;
-//static RGB *BACK_PALETTE = NULL;
+static RGB *FONT_PALETTE = NULL;
+static RGB *BACK_PALETTE = NULL;
 
 static int CUSTOM_TEXTURE_OK = 0;
 static int CUSTOM_MAP_OK = 0;
@@ -136,7 +137,7 @@ lock_sound (ALLEGRO_SAMPLE * smp)
 
 /*------------------------------------------------------------------*/
 static void
-read_sfx_dat ()
+read_sfx_dat (DATAFILE * df)
 {
   ALLEGRO_SAMPLE *list[SAMPLE_SFX_NUMBER];
   int i;
@@ -171,7 +172,7 @@ read_sfx_dat ()
 
 /*------------------------------------------------------------------*/
 static void
-read_water_dat ()
+read_water_dat (DATAFILE * df)
 {
   int i;
 
@@ -189,7 +190,7 @@ read_water_dat ()
 
 /*------------------------------------------------------------------*/
 static void
-read_texture_dat ()
+read_texture_dat (DATAFILE * df)
 {
   int i;
 
@@ -203,7 +204,7 @@ read_texture_dat ()
 
 /*------------------------------------------------------------------*/
 static void
-read_maptex_dat ()
+read_maptex_dat (DATAFILE * df)
 {
   int i;
 
@@ -217,7 +218,7 @@ read_maptex_dat ()
 
 /*------------------------------------------------------------------*/
 static void
-read_map_dat ()
+read_map_dat (DATAFILE * df)
 {
   int i;
 
@@ -231,7 +232,7 @@ read_map_dat ()
 
 /*------------------------------------------------------------------*/
 static void
-read_back_dat ()
+read_back_dat (DATAFILE * df)
 {
   int i, x, y;
 
@@ -257,7 +258,23 @@ read_back_dat ()
 
 /*------------------------------------------------------------------*/
 static void
-read_font_dat ()
+create_default_back (void)
+{
+  static RGB back_coul;
+
+  memset (&back_coul, 0, sizeof (RGB));
+  back_coul.r = 1;
+  back_coul.g = 1;
+  back_coul.b = 8;
+
+  BACK_IMAGE = my_create_bitmap (1, 1);
+  putpixel (BACK_IMAGE, 0, 0, 18);
+  GLOBAL_PALETTE[18] = back_coul;
+}
+
+/*------------------------------------------------------------------*/
+static void
+read_font_dat (DATAFILE * df)
 {
   int i;
 
@@ -267,20 +284,23 @@ read_font_dat ()
   SMALL_MOUSE_CURSOR = df[2].dat;
   BIG_MOUSE_CURSOR = df[3].dat;
   INVISIBLE_MOUSE_CURSOR = df[5].dat;
+
+  for (i = 1; i <= 17; ++i)
+    GLOBAL_PALETTE[i] = FONT_PALETTE[i];
 }
 
 /*------------------------------------------------------------------*/
 static void
-read_music_dat ()
+read_music_dat (DATAFILE * df)
 {
-  /* int i; */
+  int i;
 
-  /* MIDI_MUSIC_NUMBER = 0; */
-  /* for (i = 0; i < MIDI_MUSIC_DAT_NUMBER && df[i].type != DAT_END; ++i) */
-  /*   { */
-  /*     MIDI_MUSIC[i] = df[i].dat; */
-  /*     MIDI_MUSIC_NUMBER++; */
-  /*   } */
+  MIDI_MUSIC_NUMBER = 0;
+  for (i = 0; i < MIDI_MUSIC_DAT_NUMBER && df[i].type != DAT_END; ++i)
+    {
+      MIDI_MUSIC[i] = df[i].dat;
+      MIDI_MUSIC_NUMBER++;
+    }
 }
 
 
@@ -311,6 +331,7 @@ load_dat (void)
 {
   int result = 1;
   int loadable = 0;
+  DATAFILE *df;
 
   log_print_str ("Loading data from \"");
   log_print_str (STARTUP_DAT_PATH);
@@ -323,7 +344,7 @@ load_dat (void)
     {
       log_print_str ("Loading fonts");
       log_flush ();
-      LOADED_FONT = read_font_dat ();
+      LOADED_FONT=read_font_dat ();
       display_success (LOADED_FONT);
       result &= LOADED_FONT;
     }
@@ -331,19 +352,29 @@ load_dat (void)
     {
       log_print_str ("Loading maps");
       log_flush ();
-      LOADED_FONT = read_map_dat ();
+      LOADED_FONT=read_map_dat ();
       display_success (LOADED_MAP);
       result &= LOADED_MAP;
     }
+
   if (loadable && STARTUP_BACK_STATE)
     {
       log_print_str ("Loading background bitmap");
       log_flush ();
-      LOADED_BACK = read_back_dat();
-      display_success(LOADED_BACK);
-      result &= LOADED_BACK;
+      if (read_back_dat())
+        {
+          LOADED_BACK = 1;
+          display_success(1);
+        }
+      else
+        {
+          create_default_back ();
+          result &= !STARTUP_CHECK;
+          display_success(0);
+        }
     }
-
+  else
+    create_default_back ();
   if (loadable && STARTUP_SFX_STATE)
     {
       log_print_str ("Loading sound fx");

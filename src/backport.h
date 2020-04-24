@@ -111,6 +111,9 @@
 /* types                                                            */
 /*==================================================================*/
 
+#define PALETTE_SIZE 256
+typedef ALLEGRO_COLOR PALETTE[PALETTE_SIZE];
+
 #define MAX_JOYSTICKS            8
 #define MAX_JOYSTICK_AXIS        3
 #define MAX_JOYSTICK_STICKS      5

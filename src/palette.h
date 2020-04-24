@@ -43,13 +43,13 @@
 /*****************************************************************************/
 
 /********************************************************************/
-/* nom           : dialog.h                                         */
-/* contenu       : utilitaires gui                                  */
+/* nom           : palette.h                                        */
+/* contenu       : gestion des palettes de couleur                  */
 /* date de modif : 3 mai 98                                         */
 /********************************************************************/
 
-#ifndef LIQUID_WAR_INCLUDE_DIALOG
-#define LIQUID_WAR_INCLUDE_DIALOG
+#ifndef LIQUID_WAR_INCLUDE_PALETTE
+#define LIQUID_WAR_INCLUDE_PALETTE
 
 /*==================================================================*/
 /* includes                                                         */
@@ -58,67 +58,38 @@
 #include <allegro5/allegro.h>
 
 #include "backport.h"
-#include "backportgui.h"
-#include "alleg2.h"
-#include "palette.h"
 
 /*==================================================================*/
 /* variables globales                                               */
 /*==================================================================*/
 
-#define BUFFER_EDIT_NUMBER 33
+#define CHOOSE_COLOR_NUMBER 128
+#define CHOOSE_COLOR_WHITE 120
+#define CHOOSE_COLOR_BLACK 127
 
-#define MENU_TOP -1
-#define MENU_EXIT -2
-#define MENU_PLAY -3
-#define MENU_OK -4
+#define TEAM_FIRST_COLOR 128
 
-#define MENU_QUICK_QUIT 0
-#define MENU_QUICK_PLAY 1
-#define MENU_QUICK_MAIN 2
-#define MENU_QUICK_BACK 3
+#define FG_TEXTURE_FIRST_COLOR 64
+#define BG_TEXTURE_FIRST_COLOR 96
 
-#define MENU_VIRTUAL_W 320
-#define MENU_VIRTUAL_H 240
+#define TEXTURE_COLOR_NUMBER 32
 
-#define MENU_H_STANDARD 15
-#define MENU_H_QUICK 15
-#define MENU_H_SPACE 3
-#define MENU_H_LEVEL 15
-#define MENU_H_SAMPLE 120
-#define MENU_H_TEAM 90
-#define MENU_H_INTERNET_LIST 175
-#define MENU_W_STANDARD 100
-#define MENU_W_QUICK 60
-#define MENU_W_SPACE 3
-#define MENU_W_LEVEL 40
-#define MENU_W_SAMPLE 160
-#define MENU_W_TEAM 75
-#define MENU_W_INTERNET_LIST 150
+#define MENU_BG 16
+#define MENU_FG 17
+
+extern PALETTE GLOBAL_PALETTE;
+extern int COLORS_PER_TEAM;
 
 /*==================================================================*/
 /* fonctions globales                                               */
 /*==================================================================*/
 
-int menu_real_x (int x);
-int menu_real_y (int y);
-void menu_real_coord (DIALOG * d);
-int find_center (int pos, int num, int space, int size);
-void color_one_dialog (DIALOG * d);
-void center_one_dialog (DIALOG * d, int x, int y, int w, int h);
-void quick_buttons (DIALOG * d);
-void standard_button (DIALOG * d, int x_pos, int y_pos, int x_num, int y_num);
-void standard_small_button (DIALOG * d, int x_pos, int y_pos,
-                            int x_num, int y_num);
-void standard_big_button (DIALOG * d, int x_pos, int y_pos,
-                          int x_num, int y_num);
-void main_message (DIALOG * d, char *str);
-void main_info (DIALOG * d, char *str);
-DIALOG_PLAYER *my_init_dialog (DIALOG * d, int f);
-int my_do_dialog_no_clear (DIALOG * d, int f);
-int my_do_dialog (DIALOG * d, int f);
-int my_update_dialog (DIALOG_PLAYER * d);
-void display_center_message (char *str);
-int slider_int (void *dp3, int d2);
+void my_set_palette (void);
+void set_bg_texture_palette (int num);
+void set_fg_texture_palette (int num);
+void set_palette_for_choose_color (void);
+void set_playing_teams_palette (void);
+void my_fade_out (void);
+void my_fade_in (void);
 
 #endif
