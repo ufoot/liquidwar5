@@ -258,4 +258,6 @@ void set_config_int(const char *section, const char *key, int value);
 void set_config_string(const char *section, const char *key, const char *value);
 void flush_config_file();
 
+int exists(const char *filename);
+
 #endif // LIQUID_WAR_INCLUDE_BACKPORT

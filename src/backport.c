@@ -1252,3 +1252,13 @@ void flush_config_file() {
     log_println_str("could not save config");
   }
 }
+
+/*------------------------------------------------------------------*/
+int exists(const char *filename) {
+  FILE *f = fopen(filename, "r");
+  if (f != NULL) {
+    fclose(f);
+    return 1;
+  }
+  return 0;
+}
