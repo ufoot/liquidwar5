@@ -66,8 +66,8 @@
 /* variables globales                                               */
 /*==================================================================*/
 
-void *LW_RANDOM_RAW_MAP;
-int LW_RANDOM_ON;
+extern void *LW_RANDOM_RAW_MAP;
+extern int LW_RANDOM_ON;
 
 /*==================================================================*/
 /* fonctions globales                                               */
