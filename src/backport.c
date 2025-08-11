@@ -84,6 +84,8 @@ typedef struct
 /*==================================================================*/
 
 static int _allegro_errno = 0;
+static unsigned char *_rgb_to_palette_map = NULL;  // 24-bit RGB to palette index map
+static int _rgb_map_initialized = 0;
 static int _dummy = 0;          // stupid dummy to get rid of unused param warning
 static _backport_timer_data _backport_timers[_NB_TIMERS];
 static LW_MUTEX_DATA _backport_timer_mutex = { NULL };
@@ -218,6 +220,107 @@ putpixel (ALLEGRO_BITMAP * bitmap, int x, int y, int color)
   ALLEGRO_COLOR al_color;
   al_color = GLOBAL_PALETTE[color];
   al_put_pixel (x, y, al_color);
+}
+
+/*------------------------------------------------------------------*/
+static void
+_init_rgb_to_palette_map (void)
+{
+  // Initialize the 24-bit RGB to palette index lookup table
+  if (_rgb_map_initialized) 
+    {
+      return;
+    }
+  
+  // Allocate 16MB for 24-bit RGB space (2^24 = 16,777,216 bytes)
+  _rgb_to_palette_map = malloc(16777216);
+  if (_rgb_to_palette_map == NULL)
+    {
+      return;  // Fall back to slow lookup if allocation fails
+    }
+  
+  // Initialize all entries to 255 (invalid palette index)
+  memset(_rgb_to_palette_map, 255, 16777216);
+  
+  // Fill the map with palette colors
+  for (int i = 0; i < PALETTE_SIZE; i++)
+    {
+      float r, g, b, a;
+      al_unmap_rgba_f (GLOBAL_PALETTE[i], &r, &g, &b, &a);
+      
+      // Convert to 8-bit RGB
+      unsigned char r8 = (unsigned char)(r * 255.0f);
+      unsigned char g8 = (unsigned char)(g * 255.0f);
+      unsigned char b8 = (unsigned char)(b * 255.0f);
+      
+      // Calculate 24-bit RGB index
+      int rgb_index = (r8 << 16) | (g8 << 8) | b8;
+      _rgb_to_palette_map[rgb_index] = (unsigned char)i;
+    }
+  
+  _rgb_map_initialized = 1;
+}
+
+/*------------------------------------------------------------------*/
+int
+getpixel (ALLEGRO_BITMAP * bitmap, int x, int y)
+{
+  // https://liballeg.org/stabledocs/en/alleg013.html#getpixel
+  /*
+   * Fast palette lookup using 24-bit RGB to palette index map.
+   * Falls back to distance calculation if color not found in map.
+   */
+  al_set_target_bitmap (bitmap);
+  ALLEGRO_COLOR pixel_color = al_get_pixel (bitmap, x, y);
+  
+  // Convert to RGB
+  float r, g, b, a;
+  al_unmap_rgba_f (pixel_color, &r, &g, &b, &a);
+  unsigned char r8 = (unsigned char)(r * 255.0f);
+  unsigned char g8 = (unsigned char)(g * 255.0f);
+  unsigned char b8 = (unsigned char)(b * 255.0f);
+  
+  // Initialize lookup table if needed
+  if (!_rgb_map_initialized)
+    {
+      _init_rgb_to_palette_map();
+    }
+  
+  // Fast lookup if map is available
+  if (_rgb_to_palette_map != NULL)
+    {
+      int rgb_index = (r8 << 16) | (g8 << 8) | b8;
+      unsigned char palette_index = _rgb_to_palette_map[rgb_index];
+      
+      if (palette_index != 255)  // Found exact match
+        {
+          return (int)palette_index;
+        }
+    }
+  
+  // Fallback: find closest palette color by distance
+  int best_match = 0;
+  float best_distance = 9999999.0f;
+  
+  for (int i = 0; i < PALETTE_SIZE; i++)
+    {
+      float pr, pg, pb, pa;
+      al_unmap_rgba_f (GLOBAL_PALETTE[i], &pr, &pg, &pb, &pa);
+      
+      // Calculate distance (simple RGB distance)
+      float dr = r - pr;
+      float dg = g - pg;
+      float db = b - pb;
+      float distance = dr * dr + dg * dg + db * db;
+      
+      if (distance < best_distance)
+        {
+          best_distance = distance;
+          best_match = i;
+        }
+    }
+  
+  return best_match;
 }
 
 /*------------------------------------------------------------------*/

@@ -277,8 +277,13 @@ distclean:
 config: print_config print_cmd_cc print_cmd_ld
 	@true
 
-check:
-	@echo No unit tests, blame the lazy developper.
+test_backport_pixel: test_backport_pixel.o backport.o palette.o
+	@echo "Building pixel test"
+	@$(CC) $(LDFLAGS) $(LINK_OPTIONS) -o $@ $^ $(PTHREAD) $(EXTERN_LIBS)
+
+check: test_backport_pixel
+	@echo "Running unit tests..."
+	@./test_backport_pixel
 
 indent:
 	@find . -name "*.[c|h]" -a ! -path "*32*" -exec indent -nut {} \;
