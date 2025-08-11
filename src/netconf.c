@@ -144,10 +144,6 @@ lw_netconf_send (int *sock, LW_NETCONF * config)
                                                      config->cpu_vs_human);
                                   if (lw_sock_send_str (sock, buffer))
                                     {
-                                      LW_MACRO_SPRINTF1 (buffer, "%d",
-                                                         config->asm_algorithm);
-                                      if (lw_sock_send_str (sock, buffer))
-                                        {
                                           LW_MACRO_SPRINTF1 (buffer, "%d",
                                                              config->min_map_res);
                                           if (lw_sock_send_str (sock, buffer))
@@ -209,8 +205,6 @@ lw_netconf_recv (int *sock, LW_NETCONF * config)
                                       config->cpu_vs_human = atoi (buffer);
                                       if (lw_sock_recv_str (sock, buffer))
                                         {
-                                          config->asm_algorithm =
-                                            atoi (buffer);
                                           if (lw_sock_recv_str (sock, buffer))
                                             {
                                               config->min_map_res =
@@ -250,7 +244,6 @@ lw_netconf_check (LW_NETCONF * config)
   LW_NETCONF_CHECK_RANGE (game_time, 16);
   LW_NETCONF_CHECK_RANGE (cpu_advantage, 4);
   LW_NETCONF_CHECK_RANGE (cpu_vs_human, 2);
-  LW_NETCONF_CHECK_RANGE (asm_algorithm, 1);
   LW_NETCONF_CHECK_RANGE (min_map_res, 8);
 
   return result;
@@ -272,6 +265,5 @@ lw_netconf_print (LW_NETCONF * config)
   LW_NETCONF_PRINT_VALUE (game_time);
   LW_NETCONF_PRINT_VALUE (cpu_advantage);
   LW_NETCONF_PRINT_VALUE (cpu_vs_human);
-  LW_NETCONF_PRINT_VALUE (asm_algorithm);
   LW_NETCONF_PRINT_VALUE (min_map_res);
 }

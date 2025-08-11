@@ -72,7 +72,6 @@ typedef struct
   int game_time;
   int cpu_advantage;
   int cpu_vs_human;
-  int asm_algorithm;
   int min_map_res;
 }
 LW_NETCONF;

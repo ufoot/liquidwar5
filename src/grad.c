@@ -58,7 +58,6 @@
 #include "grad.h"
 #include "mesh.h"
 #include "palette.h"
-#include "spread.h"
 #include "startup.h"
 #include "time.h"
 #include "config.h"
@@ -149,33 +148,6 @@ spread_single_gradient (void)
     case DIR_SW:
       pos = CURRENT_MESH;
       last = CURRENT_MESH + CURRENT_MESH_SIZE;
-#ifdef ASM
-      if (STARTUP_ASM && LW_CONFIG_CURRENT_RULES.asm_algorithm)
-        switch (PLAYING_TEAMS)
-          {
-          case 6:
-            boost_gradient_down_6
-              (pos, CURRENT_MESH_SIZE - 1, OFFSET_TO_FIRST_LINK + dir * 4);
-            break;
-          case 5:
-            boost_gradient_down_5
-              (pos, CURRENT_MESH_SIZE - 1, OFFSET_TO_FIRST_LINK + dir * 4);
-            break;
-          case 4:
-            boost_gradient_down_4
-              (pos, CURRENT_MESH_SIZE - 1, OFFSET_TO_FIRST_LINK + dir * 4);
-            break;
-          case 3:
-            boost_gradient_down_3
-              (pos, CURRENT_MESH_SIZE - 1, OFFSET_TO_FIRST_LINK + dir * 4);
-            break;
-          default:
-            boost_gradient_down_2
-              (pos, CURRENT_MESH_SIZE - 1, OFFSET_TO_FIRST_LINK + dir * 4);
-            break;
-          }
-      else
-#endif
         while (pos != last)
           {
             for (i = 0; i < PLAYING_TEAMS; ++i)
@@ -195,33 +167,6 @@ spread_single_gradient (void)
     case DIR_NE:
       pos = CURRENT_MESH + CURRENT_MESH_SIZE - 1;
       last = CURRENT_MESH - 1;
-#ifdef ASM
-      if (STARTUP_ASM && LW_CONFIG_CURRENT_RULES.asm_algorithm)
-        switch (PLAYING_TEAMS)
-          {
-          case 6:
-            boost_gradient_up_6
-              (pos, CURRENT_MESH_SIZE - 1, OFFSET_TO_FIRST_LINK + dir * 4);
-            break;
-          case 5:
-            boost_gradient_up_5
-              (pos, CURRENT_MESH_SIZE - 1, OFFSET_TO_FIRST_LINK + dir * 4);
-            break;
-          case 4:
-            boost_gradient_up_4
-              (pos, CURRENT_MESH_SIZE - 1, OFFSET_TO_FIRST_LINK + dir * 4);
-            break;
-          case 3:
-            boost_gradient_up_3
-              (pos, CURRENT_MESH_SIZE - 1, OFFSET_TO_FIRST_LINK + dir * 4);
-            break;
-          default:
-            boost_gradient_up_2
-              (pos, CURRENT_MESH_SIZE - 1, OFFSET_TO_FIRST_LINK + dir * 4);
-            break;
-          }
-      else
-#endif
         while (pos != last)
           {
             for (i = 0; i < PLAYING_TEAMS; ++i)

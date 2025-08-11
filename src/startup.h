@@ -78,7 +78,6 @@ extern int STARTUP_WATER_STATE;
 extern int STARTUP_SFX_STATE;
 extern int STARTUP_MUSIC_STATE;
 extern int STARTUP_CUSTOM_STATE;
-extern int STARTUP_ASM;
 extern int STARTUP_SVGA;
 extern int STARTUP_STOP;
 extern int STARTUP_AUTO;

@@ -153,9 +153,6 @@ volume \
 watchdog \
 wave \
 wwwcli \
-glouglou \
-monster \
-spread \
 ../utils/snprintf/snprintf
 
 OBJ_NAMES_MAPGEN=\

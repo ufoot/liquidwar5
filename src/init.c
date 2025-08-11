@@ -70,7 +70,6 @@
 #include "ticker.h"
 #include "sockgen.h"
 #include "lang.h"
-#include "asm.h"
 #include "capture.h"
 
 /*==================================================================*/

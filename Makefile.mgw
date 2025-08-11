@@ -142,9 +142,6 @@ volume \
 watchdog \
 wave \
 wwwcli \
-glouglou \
-monster \
-spread \
 lwwin 
 
 OBJ_NAMES_SRV=\

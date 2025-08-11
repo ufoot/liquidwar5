@@ -74,7 +74,6 @@
 #define IDENT_NOCUSTOM            "nocustom"
 #define IDENT_NOSOUND             "silent"
 #define IDENT_NOSVGA              "vga"
-#define IDENT_NOASM               "c"
 #define IDENT_NOJOY               "nojoy"
 #define IDENT_STOP                "stop"
 #define IDENT_SAFE                "safe"
@@ -108,7 +107,6 @@ int STARTUP_WATER_STATE = 1;
 int STARTUP_SFX_STATE = 1;
 int STARTUP_MUSIC_STATE = 1;
 int STARTUP_CUSTOM_STATE = 1;
-int STARTUP_ASM = 1;
 int STARTUP_SVGA = 1;
 int STARTUP_STOP = 0;
 int STARTUP_AUTO = 0;
@@ -236,14 +234,6 @@ set_graphic_possibilities (void)
 {
   if (exist_argument (IDENT_NOSVGA))
     STARTUP_SVGA = 0;
-}
-
-/*------------------------------------------------------------------*/
-static void
-set_c_or_asm (void)
-{
-  if (exist_argument (IDENT_NOASM))
-    STARTUP_ASM = 0;
 }
 
 /*------------------------------------------------------------------*/
@@ -455,14 +445,7 @@ set_misc (void)
 static void
 set_various_hacks (void)
 {
-#ifndef ASM
-  /*
-   * important to set it to 0, even if assembly code is not compiled
-   * in, for we want the program to be able to tell others that it
-   * can't do any assembly, in a network game for instance.
-   */
-  STARTUP_ASM = 0;
-#endif
+  /* Assembly support removed */
 }
 
 /*------------------------------------------------------------------*/
@@ -472,7 +455,6 @@ set_startup (void)
   set_joystick ();
   set_load_states ();
   set_graphic_possibilities ();
-  set_c_or_asm ();
   set_path ();
   set_stop ();
   set_safe ();

@@ -11,7 +11,6 @@ HOST_OPT =        @HOST_OPT@
 STATIC =          @STATIC@
 SNPRINTF =        @SNPRINTF@
 ALCFLAGS =        @ALCFLAGS@
-ASM =             @ASM@
 DEBUG =           @DEBUG@
 EFENCE =          @EFENCE@
 PTHREAD =         @PTHREAD@
@@ -64,13 +63,6 @@ else
 	SNPRINTF_MODE = "using Mark Martinec's implementation"
 endif
 
-ifeq ($(ASM),yes)
-	ASM_NAMES = glouglou monster spread
-	ASM_OPTIONS = -DASM
-else
-	ASM_NAMES =
-	ASM_OPTIONS =
-endif
 
 OBJ_NAMES = \
 	about \
@@ -78,7 +70,6 @@ OBJ_NAMES = \
 	alleg2 \
 	area \
 	army \
-	asm \
 	autoplay \
 	back \
 	backport \
@@ -175,7 +166,6 @@ OBJ_NAMES = \
 	wwwcli \
 	x11icon \
 	$(SNPRINTF_NAMES) \
-	$(ASM_NAMES)
 
 OBJ_NAMES_SRV = \
 	basicopt \
@@ -247,13 +237,12 @@ CONFIG_OPTIONS = \
 	-DCONFIG_UNIX_SRV=\"$(GAMEDIR)/liquidwar-server\" \
 	-DCONFIG_UNIX_GEN=\"$(GAMEDIR)/liquidwar-mapgen\"
 
-CMD_CC = $(CC) $(CFLAGS) $(ALCFLAGS) -c $(DEBUG_FLAGS) -Wall -W $(HOST_CPU_CC) $(CONFIG_OPTIONS) $(DEBUG_OPTIONS) $(SPRINTF_OPTIONS) $(ASM_OPTIONS) $(GP2X_OPTIONS) -DUNIX -D_THREAD_SAFE
-CMD_AS = $(AS) $(ASFLAGS) --32
+CMD_CC = $(CC) $(CFLAGS) $(ALCFLAGS) -c $(DEBUG_FLAGS) -Wall -W $(HOST_CPU_CC) $(CONFIG_OPTIONS) $(DEBUG_OPTIONS) $(SPRINTF_OPTIONS) $(GP2X_OPTIONS) -DUNIX -D_THREAD_SAFE
 
 all: $(EXE_FILES)
 
 liquidwar: $(OBJ_FILES)
-	@echo "Linking $@ (host=$(HOST), debug=$(DEBUG), static=$(STATIC), asm=$(ASM))"
+	@echo "Linking $@ (host=$(HOST), debug=$(DEBUG), static=$(STATIC))"
 	@$(CC) $(LDFLAGS) $(LINK_OPTIONS) -o $@ $(OBJ_FILES) $(PTHREAD) $(EXTERN_LIBS)
 
 liquidwar-server: $(OBJ_FILES_SRV)
@@ -281,14 +270,11 @@ distclean:
 	@rm -f Makefile Makefile.dep
 
 %.o: %.c
-	@echo "Compiling $< (cpu=$(HOST_CPU), debug=$(DEBUG), asm=$(ASM))"
+	@echo "Compiling $< (cpu=$(HOST_CPU), debug=$(DEBUG))"
 	@$(CMD_CC) $< -o $@
 
-%.o: %.s
-	@echo "Assembling" $<
-	@$(CMD_AS) $< -o $@
 
-config: print_config print_cmd_cc print_cmd_as print_cmd_ld
+config: print_config print_cmd_cc print_cmd_ld
 	@true
 
 check:
@@ -306,16 +292,12 @@ print_config:
 	@echo "Host        :" $(HOST)
 	@echo "Debug       :" $(DEBUG)
 	@echo "Static link :" $(STATIC)
-	@echo "Assembly    :" $(ASM)
-	@echo "Snprintf    :" $(SNPRINTF_MODE)
+		@echo "Snprintf    :" $(SNPRINTF_MODE)
 
 print_cmd_cc:
 	@echo "The command line to compile .c files in this directory is:"
 	@echo $(CMD_CC)
 
-print_cmd_as:
-	@echo "The command line to compile .s files in this directory is:"
-	@echo $(CMD_AS)
 
 print_cmd_ld:
 	@echo "The command line to link .o files in this directory is:"

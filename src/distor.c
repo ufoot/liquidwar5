@@ -61,7 +61,6 @@
 #include "config.h"
 #include "distor.h"
 #include "gfxmode.h"
-#include "glouglou.h"
 #include "profile.h"
 #include "startup.h"
 #include "time.h"
