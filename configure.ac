@@ -20,7 +20,7 @@
 
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT()
+AC_INIT
 
 AC_PROG_CC
 
@@ -507,7 +507,7 @@ AC_SUBST(VERSION_WIN32)
 
 
 dnl Create the files for good
-AC_OUTPUT( \
+AC_CONFIG_FILES([\
 	   Makefile \
 	   src/Makefile \
 	   src/Makefile.dep \
@@ -534,7 +534,8 @@ AC_OUTPUT( \
 	   misc/docker/Dockerfile-build \
 	   misc/docker/Dockerfile-server \
 	   misc/docker/Dockerfile-metaserver \
-	   liquidwar.spec)
+	   liquidwar.spec])
+AC_OUTPUT
 
 dnl Change the liquidward attribute
 chmod 755 misc/liquidward
