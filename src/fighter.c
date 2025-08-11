@@ -56,6 +56,7 @@
 #include <math.h>
 
 #include "army.h"
+#include "backport.h"
 #include "config.h"
 #include "cursor.h"
 #include "decal.h"
@@ -128,18 +129,17 @@ int FIGHTER_MOVE_Y[NB_SENS_MOVE][NB_DIRS][NB_TRY_MOVE];
 static void
 erase_fighter (FIGHTER * f)
 {
-  al_put_pixel (CURRENT_AREA_DISP, f->x, f->y,
-            al_get_pixel (CURRENT_AREA_BACK, f->x, f->y));
+  putpixel (CURRENT_AREA_DISP, f->x, f->y,
+            getpixel (CURRENT_AREA_BACK, f->x, f->y));
 }
 
 /*------------------------------------------------------------------*/
 static void
 disp_fighter (FIGHTER * f)
 {
-  al_put_pixel (CURRENT_AREA_DISP, f->x, f->y,
-            al_map_rgb_f(1.0, 1.0, 1.0)); /* TODO white/black pixel bug: Convert palette color to RGB */
-            /* COLOR_FIRST_ENTRY[(int) (f->team)]
-            + (f->health * COLORS_PER_TEAM) / MAX_FIGHTER_HEALTH */
+  putpixel (CURRENT_AREA_DISP, f->x, f->y,
+            COLOR_FIRST_ENTRY[(int) (f->team)]
+            + (f->health * COLORS_PER_TEAM) / MAX_FIGHTER_HEALTH);
 }
 
 /*------------------------------------------------------------------*/

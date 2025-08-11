@@ -94,6 +94,7 @@ liquidwar5/
 
 ### Allegro 4 to Allegro 5 Migration
 - `backport.h` and `backport.c` - **Backward compatibility module** containing functions that disappeared in Allegro 5 and need to be reimplemented. This includes GUI functions, input handling, and other utilities that Liquid War 5 requires. It implements only what LW5 needs from the deprecated Allegro 4 API.
+- **Pixel functions**: Use `putpixel()` and `getpixel()` from the backport layer instead of `al_put_pixel()` and `al_get_pixel()`. The backport functions work identically to the original Allegro 4 functions and should be favored for compatibility.
 
 ## Game Features
 
