@@ -520,7 +520,8 @@ lw_srvcont_wait_teams (LW_SRVCONT * cont,
     {
       log_print_str ("Unable to bind socket on port ");
       log_print_int (port);
-      log_println ("!");
+      log_print_str ("!");
+      log_println ();
 
       /*
        * We consider this a fatal error and quit the program

@@ -430,7 +430,7 @@ main (int argc, char **argv)
             {
               if (FLAG_BACKUP)
                 save_backup (FILENAMES[i]);
-              convert_bitmap (FILENAMES[i]);
+              convert_bitmap ();
               save_file (FILENAMES[i]);
             }
         }
