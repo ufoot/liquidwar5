@@ -32,3 +32,4 @@ doc/tex/*.tex
 doc/tex/*.toc
 doc/texi/*.texi
 doc/txt/*.txt
+allegro-4*
