@@ -53,12 +53,14 @@
 /*==================================================================*/
 
 #include <string.h>
+#include <allegro5/allegro.h>
 
 #include "dialog.h"
 #include "error.h"
 #include "help.h"
 #include "base.h"
 #include "lang.h"
+#include "alleg2.h"
 
 /*==================================================================*/
 /* variables globales                                               */
@@ -99,7 +101,7 @@ standard_error (char *str)
   d[1].dp = return_d_close;
   d[1].key = ' ';
   d[1].d1 = ALLEGRO_KEY_ENTER;
-  d[1].d2 = ALLEGRO_KEY_ESC;
+  d[1].d2 = ALLEGRO_KEY_ESCAPE;
 
   d[2].proc = NULL;
 

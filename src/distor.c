@@ -52,7 +52,11 @@
 /* includes                                                         */
 /*==================================================================*/
 
+#include <allegro5/allegro.h>
+#include <math.h>
+
 #include "alleg2.h"
+#include "backport.h"
 #include "area.h"
 #include "config.h"
 #include "distor.h"
@@ -100,16 +104,16 @@ init_distorsion_target (void)
 {
   if (DISTORSION_TARGET == NULL)
     {
-      DISTORSION_TARGET = my_create_bitmap (NEXT_SCREEN->w, NEXT_SCREEN->h);
+      DISTORSION_TARGET = my_create_bitmap (al_get_bitmap_width(NEXT_SCREEN), al_get_bitmap_height(NEXT_SCREEN));
     }
   else
     {
-      if (DISTORSION_TARGET->w != NEXT_SCREEN->w ||
-          DISTORSION_TARGET->h != NEXT_SCREEN->h)
+      if (al_get_bitmap_width(DISTORSION_TARGET) != al_get_bitmap_width(NEXT_SCREEN) ||
+          al_get_bitmap_height(DISTORSION_TARGET) != al_get_bitmap_height(NEXT_SCREEN))
         {
-          destroy_bitmap (DISTORSION_TARGET);
-          DISTORSION_TARGET = my_create_bitmap (NEXT_SCREEN->w,
-                                                NEXT_SCREEN->h);
+          al_destroy_bitmap (DISTORSION_TARGET);
+          DISTORSION_TARGET = my_create_bitmap (al_get_bitmap_width(NEXT_SCREEN),
+                                                al_get_bitmap_height(NEXT_SCREEN));
         }
     }
 }
@@ -122,8 +126,8 @@ init_distorsion_displayer (void)
 
   init_distorsion_target ();
 
-  w = DISTORSION_TARGET->w;
-  h = DISTORSION_TARGET->h;
+  w = al_get_bitmap_width(DISTORSION_TARGET);
+  h = al_get_bitmap_height(DISTORSION_TARGET);
 
   DISTORSION_W = (CONFIG_WAVE_AMPLI[0] + CONFIG_WAVE_AMPLI[3])
     / WAVE_SIZE_SCALE + 1;
@@ -194,17 +198,17 @@ create_wave_line (int *buffer,
       cycle_tmp /= 2;
       speed--;
     }
-  cycle_tmp = fixsqrt (fixsqrt (cycle_tmp)) / 2;
+  cycle_tmp = (int)(sqrt(sqrt(cycle_tmp)) / 2);
   cycle_tmp /= SCREEN_W;
   cycle_tmp *= period;
   if (cycle_tmp <= 0)
     {
       cycle_tmp = 1;
     }
-  cycle_coef = sens * 256 * (itofix (GLOBAL_TICKER % cycle_tmp) / cycle_tmp);
+  cycle_coef = sens * 256 * ((GLOBAL_TICKER % cycle_tmp) * 65536 / cycle_tmp);
 
-  f0 = fixsin (cycle_coef + freq_coef * period2);
-  fp0x0 = (PI_1024 * fixcos (cycle_coef + freq_coef * period2)) / 1024;
+  f0 = (int)(sin((cycle_coef + freq_coef * period2) / 65536.0 * 2 * M_PI) * 65536);
+  fp0x0 = (PI_1024 * (int)(cos((cycle_coef + freq_coef * period2) / 65536.0 * 2 * M_PI) * 65536)) / (1024 * 65536);
 
   alphax03 = (ampli_cst / 256) * ((fp0x0 - 2 * f0) / 256);
   betax02 = (ampli_cst / 256) * ((-fp0x0 + 3 * f0) / 256);
@@ -218,7 +222,7 @@ create_wave_line (int *buffer,
   for (i = period2; i < real_length - period2; ++i)
     {
       temp =
-        ((ampli_cos) / 256) * (fixcos (cycle_coef + freq_coef * i) / 256);
+        ((ampli_cos) / 256) * ((int)(cos((cycle_coef + freq_coef * i) / 65536.0 * 2 * M_PI) * 65536) / 256);
       buffer2[i] = temp / WAVE_SIZE_SCALE;
     }
 
@@ -245,8 +249,8 @@ prepare_wave_shapes (void)
 {
   int w, h, x, y, i;
 
-  w = DISTORSION_TARGET->w;
-  h = DISTORSION_TARGET->h;
+  w = al_get_bitmap_width(DISTORSION_TARGET);
+  h = al_get_bitmap_height(DISTORSION_TARGET);
 
   create_wave_line (WAVE_SHAPE_WX, w,
                     CONFIG_WAVE_NUMBER[0],
@@ -289,26 +293,16 @@ prepare_wave_shapes (void)
 void
 disp_distorted_area (void)
 {
-  char *src;
   int x, y, w, h, lim_w, lim_h, init_w, init_h;
   int *y_corres;
   int fp_x, fp_y, fp_y0, ip_y0;
   int fp_x0[MAX_W_DISPLAY];
   int reste_x;
-#ifdef ASM
-  int ip_x, ip_y;
-  int temp = 0;
-  int bmp_color_depth;
-  int bmp_linear;
-  int bmp_memory;
+  int src_x, src_y;
+  ALLEGRO_COLOR pixel_color;
 
-  bmp_color_depth = bitmap_color_depth (DISTORSION_TARGET);
-  bmp_linear = is_linear_bitmap (DISTORSION_TARGET);
-  bmp_memory = is_memory_bitmap (DISTORSION_TARGET);
-#endif
-
-  w = DISTORSION_TARGET->w;
-  h = DISTORSION_TARGET->h;
+  w = al_get_bitmap_width(DISTORSION_TARGET);
+  h = al_get_bitmap_height(DISTORSION_TARGET);
   lim_w = DISTORSION_PRECISION * w;
   lim_h = DISTORSION_PRECISION * h;
   init_w = (CURRENT_AREA_W * DISTORSION_PRECISION) / 2;
@@ -320,68 +314,55 @@ disp_distorted_area (void)
 
   fp_y0 = init_h;
   ip_y0 = 0;
+  
+  // Lock bitmaps for pixel access
+  al_set_target_bitmap(DISTORSION_TARGET);
+  
   for (y = 0; y < h; ++y)
     {
       fp_y = fp_y0;
       fp_x = init_w;
-      src = (char *) CURRENT_AREA_DISP->dat + ip_y0 * CURRENT_AREA_W;
+      src_x = init_w / DISTORSION_PRECISION;
+      src_y = ip_y0;
       y_corres = WAVE_SHAPE_Y_CORRES[y];
 
-#ifdef ASM
-      ip_x = 0;
-      ip_y = ip_y0;
-      /*
-       * draw_distor_line works on memory 8-bit bitmaps only
-       */
-      if (STARTUP_ASM && bmp_memory && bmp_linear && bmp_color_depth == 8)
+      for (x = 0; x < w; ++x)
         {
-          draw_distor_line (DISTORSION_TARGET,
-                            CURRENT_AREA_W,
-                            w,
-                            y,
-                            fp_x,
-                            ip_x,
-                            fp_y,
-                            ip_y,
-                            lim_w,
-                            lim_h,
-                            fp_x0,
-                            y_corres,
-                            WAVE_SHAPE_WX,
-                            WAVE_SHAPE_X_CORRES,
-                            src, temp, temp, temp, temp, temp);
-        }
-      else
-#endif
-        for (x = 0; x < w; ++x)
-          {
-            putpixel (DISTORSION_TARGET, x, y, *src);
-
-            reste_x = fp_x0[x] += WAVE_SHAPE_X_CORRES[x][y];
-            fp_x += WAVE_SHAPE_WX[x];
-            while (reste_x < -fp_x)
-              {
-                fp_x += lim_w;
-                src--;
-              }
-            while (reste_x + fp_x >= lim_w)
-              {
-                fp_x -= lim_w;
-                src++;
-              }
-
-            fp_y += y_corres[x];
-            while (fp_y < 0)
-              {
-                fp_y += lim_h;
-                src -= CURRENT_AREA_W;
-              }
-            while (fp_y >= lim_h)
-              {
-                fp_y -= lim_h;
-                src += CURRENT_AREA_W;
-              }
+          // Get pixel from source area
+          if (src_x >= 0 && src_x < CURRENT_AREA_W && 
+              src_y >= 0 && src_y < CURRENT_AREA_H) {
+            pixel_color = al_get_pixel(CURRENT_AREA_DISP, src_x, src_y);
+          } else {
+            pixel_color = al_map_rgb(0, 0, 0);  // Black for out-of-bounds
           }
+          
+          al_put_pixel(x, y, pixel_color);
+
+          reste_x = fp_x0[x] += WAVE_SHAPE_X_CORRES[x][y];
+          fp_x += WAVE_SHAPE_WX[x];
+          while (reste_x < -fp_x)
+            {
+              fp_x += lim_w;
+              src_x--;
+            }
+          while (reste_x + fp_x >= lim_w)
+            {
+              fp_x -= lim_w;
+              src_x++;
+            }
+
+          fp_y += y_corres[x];
+          while (fp_y < 0)
+            {
+              fp_y += lim_h;
+              src_y--;
+            }
+          while (fp_y >= lim_h)
+            {
+              fp_y -= lim_h;
+              src_y++;
+            }
+        }
 
       fp_y0 += WAVE_SHAPE_HY[y];
       while (fp_y0 >= lim_h)
@@ -392,5 +373,5 @@ disp_distorted_area (void)
     }
 
   blit (DISTORSION_TARGET, NEXT_SCREEN, 0, 0, 0, 0,
-        DISTORSION_TARGET->w, DISTORSION_TARGET->h);
+        al_get_bitmap_width(DISTORSION_TARGET), al_get_bitmap_height(DISTORSION_TARGET));
 }
