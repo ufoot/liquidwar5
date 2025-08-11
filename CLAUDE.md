@@ -92,6 +92,9 @@ liquidwar5/
 - `mutx*.c` - Mutex implementations per platform
 - `thrd*.c` - Threading abstractions
 
+### Allegro 4 to Allegro 5 Migration
+- `backport.h` and `backport.c` - **Backward compatibility module** containing functions that disappeared in Allegro 5 and need to be reimplemented. This includes GUI functions, input handling, and other utilities that Liquid War 5 requires. It implements only what LW5 needs from the deprecated Allegro 4 API.
+
 ## Game Features
 
 ### Core Gameplay

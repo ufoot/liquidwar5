@@ -53,6 +53,7 @@
 /*==================================================================*/
 
 #include <allegro5/allegro.h>
+#include <math.h>
 
 #include "army.h"
 #include "config.h"
@@ -127,17 +128,18 @@ int FIGHTER_MOVE_Y[NB_SENS_MOVE][NB_DIRS][NB_TRY_MOVE];
 static void
 erase_fighter (FIGHTER * f)
 {
-  putpixel (CURRENT_AREA_DISP, f->x, f->y,
-            getpixel (CURRENT_AREA_BACK, f->x, f->y));
+  al_put_pixel (CURRENT_AREA_DISP, f->x, f->y,
+            al_get_pixel (CURRENT_AREA_BACK, f->x, f->y));
 }
 
 /*------------------------------------------------------------------*/
 static void
 disp_fighter (FIGHTER * f)
 {
-  putpixel (CURRENT_AREA_DISP, f->x, f->y,
-            COLOR_FIRST_ENTRY[(int) (f->team)]
-            + (f->health * COLORS_PER_TEAM) / MAX_FIGHTER_HEALTH);
+  al_put_pixel (CURRENT_AREA_DISP, f->x, f->y,
+            al_map_rgb_f(1.0, 1.0, 1.0)); /* TODO white/black pixel bug: Convert palette color to RGB */
+            /* COLOR_FIRST_ENTRY[(int) (f->team)]
+            + (f->health * COLORS_PER_TEAM) / MAX_FIGHTER_HEALTH */
 }
 
 /*------------------------------------------------------------------*/
@@ -333,30 +335,30 @@ move_fighters (void)
       coef += 256;
 
       attack[i] = (coef *
-                   fixsqrt (fixsqrt
-                            (1 <<
+                   (int)(sqrt (sqrt
+                            ((double)(1 <<
                              (LW_CONFIG_CURRENT_RULES.fighter_attack +
-                              cpu_influence[i])))) / (256 * 8);
+                              cpu_influence[i])))))) / (256 * 8);
       if (attack[i] >= MAX_FIGHTER_HEALTH)
         attack[i] = MAX_FIGHTER_HEALTH - 1;
       if (attack[i] < 1)
         attack[i] = 1;
 
       defense[i] = (coef *
-                    fixsqrt (fixsqrt
-                             (1 <<
+                    (int)(sqrt (sqrt
+                             ((double)(1 <<
                               (LW_CONFIG_CURRENT_RULES.fighter_defense +
-                               cpu_influence[i])))) / (256 * 256);
+                               cpu_influence[i])))))) / (256 * 256);
       if (defense[i] >= MAX_FIGHTER_HEALTH)
         defense[i] = MAX_FIGHTER_HEALTH - 1;
       if (defense[i] < 1)
         defense[i] = 1;
 
       new_health[i] = (coef *
-                       fixsqrt (fixsqrt
-                                (1 <<
+                       (int)(sqrt (sqrt
+                                ((double)(1 <<
                                  (LW_CONFIG_CURRENT_RULES.fighter_new_health +
-                                  cpu_influence[i])))) / (256 * 4);
+                                  cpu_influence[i])))))) / (256 * 4);
       if (new_health[i] >= MAX_FIGHTER_HEALTH)
         new_health[i] = MAX_FIGHTER_HEALTH - 1;
       if (new_health[i] < 1)
