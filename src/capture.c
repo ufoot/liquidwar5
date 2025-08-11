@@ -188,15 +188,15 @@ lw_capture_dump_game ()
        * Create a sub-bitmap with the right size
        */
       screenshot =
-        create_sub_bitmap (screen, 0, PAGE_FLIP_H, SCREEN_W, SCREEN_H);
+        al_create_sub_bitmap (screen, 0, PAGE_FLIP_H, SCREEN_W, SCREEN_H);
 
       if (screenshot)
         {
           /*
            * Write to disk
            */
-          result = !save_bitmap (buffer, screenshot, GLOBAL_PALETTE);
-          destroy_bitmap (screenshot);
+          result = !al_save_bitmap (buffer, screenshot);
+          al_destroy_bitmap (screenshot);
         }
       else
         {

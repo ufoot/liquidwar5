@@ -284,7 +284,7 @@ graphic_options (void)
       else
         dp = my_init_dialog (d, choix);
 
-      show_mouse (screen);
+      lw_mouse_show ();
       while ((menu_res_changed == 0) &&
              (game_res_changed == 0) && my_update_dialog (dp))
         ;

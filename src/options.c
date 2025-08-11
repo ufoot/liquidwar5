@@ -126,7 +126,7 @@ options (void)
           dp = my_init_dialog (d, choix);
         }
 
-      show_mouse (screen);
+      lw_mouse_show ();
       while (my_update_dialog (dp))
         ;
       choix = shutdown_dialog (dp);
