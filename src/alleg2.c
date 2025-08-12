@@ -119,7 +119,6 @@ my_draw_textbox (char *thetext, int *listsize, int draw, int offset,
                  int disabled, int fore, int deselect, int disable)
 {
   ALLEGRO_BITMAP *gui_bmp = gui_get_screen ();
-  int fg = fore;
   int y1 = y + 4;
   int x1;
   int len;
@@ -155,17 +154,10 @@ my_draw_textbox (char *thetext, int *listsize, int draw, int offset,
       rectfill (gui_bmp, x + 2, y + 2, x + w - 3, y1 - 1, deselect);
     }
 
-  /* choose the text color */
-  if (disabled)
-    fg = disable;
-
-  if (fg)
-    {
-      /*
-       * Not elegant, but test above here just to get
-       * rid of compiler warning about fg not being used.
-       */
-    }
+  /* Suppress unused parameter warnings */
+  (void)disabled;
+  (void)fore;
+  (void)disable;
 
   /* loop over the entire string */
   while (1)
@@ -965,7 +957,6 @@ my_edit_proc (int msg, DIALOG * d, int c)
   static int ignore_next_uchar = FALSE;
   ALLEGRO_BITMAP *gui_bmp;
   int f, l, p, w, x, b, scroll;
-  int fg;
   char buf[16];
   char *s;
   ALLEGRO_ASSERT (d);
@@ -1016,7 +1007,6 @@ my_edit_proc (int msg, DIALOG * d, int c)
       break;
 
     case MSG_DRAW:
-      fg = (d->flags & D_DISABLED) ? gui_mg_color : d->fg;
       x = 0;
 
       if (scroll)
@@ -1146,14 +1136,6 @@ my_edit_proc (int msg, DIALOG * d, int c)
           return D_USED_CHAR;
         }
       break;
-    }
-
-  if (fg)
-    {
-      /*
-       * Not elegant, but test above here just to get
-       * rid of compiler warning about fg not being used.
-       */
     }
 
   return D_O_K;
@@ -1353,7 +1335,6 @@ my_draw_listbox (DIALOG * d)
   ALLEGRO_BITMAP *gui_bmp = gui_get_screen ();
   int height, listsize, i, len, bar, x, y, w;
   int fg_color, bg;
-  int fg;
   char *sel = d->dp2;
   char s[1024];
 
@@ -1372,28 +1353,23 @@ my_draw_listbox (DIALOG * d)
             {
               if ((sel[d->d2 + i]) && (d->d2 + i == d->d1))
                 {
-                  fg = d->bg;
                   bg = fg_color;
                 }
               else if (sel[d->d2 + i])
                 {
-                  fg = d->bg;
                   bg = gui_mg_color;
                 }
               else
                 {
-                  fg = fg_color;
                   bg = d->bg;
                 }
             }
           else if (d->d2 + i == d->d1)
             {
-              fg = d->bg;
               bg = fg_color;
             }
           else
             {
-              fg = fg_color;
               bg = d->bg;
             }
           LW_MACRO_STRNCPY (s,
@@ -1432,14 +1408,6 @@ my_draw_listbox (DIALOG * d)
 
   /* draw frame, maybe with scrollbar */
   _draw_scrollable_frame (d, listsize, d->d2, height, fg_color, d->bg);
-
-  if (fg)
-    {
-      /*
-       * Not elegant, but test above here just to get
-       * rid of compiler warning about fg not being used.
-       */
-    }
 }
 
 

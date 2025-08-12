@@ -1365,3 +1365,51 @@ int exists(const char *filename) {
   }
   return 0;
 }
+
+/*------------------------------------------------------------------*/
+// Graphics mode compatibility functions
+
+// Dummy graphics driver for compatibility
+static char dummy_driver_name[] = "Allegro 5 Display";
+static struct {
+  char *ascii_name;
+} dummy_gfx_driver = { dummy_driver_name };
+
+struct { char *ascii_name; } *gfx_driver = &dummy_gfx_driver;
+
+// Black palette for compatibility
+static PALETTE black_palette_data;
+void *black_palette = &black_palette_data;
+
+/*------------------------------------------------------------------*/
+int set_gfx_mode(int card, int w, int h, int v_w, int v_h) {
+  // In Allegro 5, graphics mode setup is handled differently
+  // This is a compatibility stub that returns success
+  // Real display creation should be handled at a higher level
+  (void)card;
+  (void)w;
+  (void)h;
+  (void)v_w;
+  (void)v_h;
+  return 0; // Success in Allegro 4 convention
+}
+
+/*------------------------------------------------------------------*/
+void set_palette(void *palette) {
+  // Update the global palette with the provided palette
+  if (palette) {
+    PALETTE *pal = (PALETTE *)palette;
+    for (int i = 0; i < PALETTE_SIZE; i++) {
+      GLOBAL_PALETTE[i] = (*pal)[i];
+    }
+  }
+}
+
+/*------------------------------------------------------------------*/
+void set_window_title(const char *title) {
+  // Get the current display and set its title
+  ALLEGRO_DISPLAY *display = al_get_current_display();
+  if (display && title) {
+    al_set_window_title(display, title);
+  }
+}

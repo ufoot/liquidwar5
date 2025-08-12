@@ -261,4 +261,21 @@ void flush_config_file();
 
 int exists(const char *filename);
 
+// Graphics mode constants (Allegro 4 compatibility)
+#define GFX_AUTODETECT_FULLSCREEN 1
+#define GFX_AUTODETECT_WINDOWED 2
+#define GFX_DIRECTX 3
+#define GFX_DIRECTX_WIN 4
+#define GFX_MODEX 5
+#define GFX_VESA2L 6
+
+// Graphics mode functions
+int set_gfx_mode(int card, int w, int h, int v_w, int v_h);
+void set_palette(void *palette);
+void set_window_title(const char *title);
+
+// Graphics driver info
+extern struct { char *ascii_name; } *gfx_driver;
+extern void *black_palette;
+
 #endif // LIQUID_WAR_INCLUDE_BACKPORT

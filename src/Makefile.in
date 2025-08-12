@@ -14,7 +14,6 @@ ALCFLAGS =        @ALCFLAGS@
 DEBUG =           @DEBUG@
 EFENCE =          @EFENCE@
 PTHREAD =         @PTHREAD@
-GP2X =            @GP2X@
 ALLIBS =	      @ALLIBS@
 
 ifeq ($(HOST_OPT),yes)
@@ -45,12 +44,6 @@ ifeq ($(EFENCE),yes)
 	EFENCE_LIBRARY = -lefence
 else
 	EFENCE_LIBRARY =
-endif
-
-ifeq ($(GP2X),yes)
-	GP2X_OPTIONS = -DGP2X
-else
-	GP2X_OPTIONS =
 endif
 
 ifeq ($(SNPRINTF),yes)
@@ -237,7 +230,7 @@ CONFIG_OPTIONS = \
 	-DCONFIG_UNIX_SRV=\"$(GAMEDIR)/liquidwar-server\" \
 	-DCONFIG_UNIX_GEN=\"$(GAMEDIR)/liquidwar-mapgen\"
 
-CMD_CC = $(CC) $(CFLAGS) $(ALCFLAGS) -c $(DEBUG_FLAGS) -Wall -W $(HOST_CPU_CC) $(CONFIG_OPTIONS) $(DEBUG_OPTIONS) $(SPRINTF_OPTIONS) $(GP2X_OPTIONS) -DUNIX -D_THREAD_SAFE
+CMD_CC = $(CC) $(CFLAGS) $(ALCFLAGS) -c $(DEBUG_FLAGS) -Wall -W $(HOST_CPU_CC) $(CONFIG_OPTIONS) $(DEBUG_OPTIONS) $(SPRINTF_OPTIONS) -DUNIX -D_THREAD_SAFE
 
 all: $(EXE_FILES)
 

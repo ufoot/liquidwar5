@@ -58,6 +58,7 @@
 #endif
 #include <allegro5/allegro.h>
 
+#include "backport.h"
 #include "area.h"
 #include "autoplay.h"
 #include "back.h"
@@ -118,15 +119,13 @@ int LW_GAME_RUNNING = 0;
 void
 calc_playing_teams (void)
 {
-  int i;
-
   PLAYING_TEAMS = 0;
 
   /*
    * loop for all the possible teams, that's to say each of the
    * 6 areas in the "teams" menu
    */
-  for (i = 0; i < NB_TEAMS; ++i)
+  for (int i = 0; i < NB_TEAMS; ++i)
     {
       if (LW_NETWORK_ON)
         {
@@ -233,7 +232,7 @@ check_loose_team (void)
        */
       play_loose ();
       /*
-       * remove the team from the info bar, so that room if freed for 
+       * remove the team from the info bar, so that room if freed for
        * other teams
        */
       free_info_bar ();
@@ -254,7 +253,6 @@ check_loose_team (void)
 char *
 init_game (void)
 {
-  int i;
   int big_data;
   int max_mem_reached = 0;
   int last_try = 0;
@@ -304,7 +302,7 @@ init_game (void)
 
   if (!message)
     {
-      for (i = 0; !max_mem_reached && !ok; ++i)
+      while (!max_mem_reached && !ok)
         {
           message = NULL;
           reset_big_data ();
@@ -387,7 +385,7 @@ init_game (void)
   if (!message)
     {
       /*
-       * these are basically initialization which need to be done 
+       * these are basically initialization which need to be done
        * and should never fail
        * check each function to know what it does!!!
        */
@@ -434,7 +432,7 @@ free_game_memory (void)
    */
   if (CURRENT_AREA_DISP)
     {
-      destroy_bitmap (CURRENT_AREA_DISP);
+      al_destroy_bitmap (CURRENT_AREA_DISP);
       CURRENT_AREA_DISP = 0;
     }
   /*
@@ -442,7 +440,7 @@ free_game_memory (void)
    */
   if (CURRENT_AREA_BACK)
     {
-      destroy_bitmap (CURRENT_AREA_BACK);
+      al_destroy_bitmap (CURRENT_AREA_BACK);
       CURRENT_AREA_BACK = 0;
     }
 }
@@ -640,7 +638,7 @@ display (void)
 {
   /*
    * the watchdog waits for secret codes to be entered
-   * 
+   *
    * It's also very important to call this for it will call
    * keypressed() and so will also automatically call poll_keyboard()
    * if needed.
@@ -670,7 +668,7 @@ display (void)
 
   /*
    * updates some time values, telling how many weeks this tremendous
-   * liquid war session has been running 8-) 
+   * liquid war session has been running 8-)
    */
   update_play_time ();
 
@@ -683,7 +681,7 @@ display (void)
       /*
        * We're in capture mode: we display info before the dump
        * for we want it to be there but we display the messages
-       * after the dump since they are ugly and useless in a 
+       * after the dump since they are ugly and useless in a
        * video capture.
        */
       display_info ();
@@ -760,7 +758,7 @@ game (void)
        * - there are less than 2 teams playing, ie there's a winner
        * - the game time is elapsed
        */
-      while ((!WATCHDOG_SCANCODE[ALLEGRO_KEY_ESC])
+      while ((!WATCHDOG_SCANCODE[ALLEGRO_KEY_ESCAPE])
              && (PLAYING_TEAMS >= 2)
              && (TIME_LEFT > 0) && (!LW_NETWORK_ERROR_DETECTED))
         {
@@ -812,7 +810,7 @@ game (void)
              * if CONFIG_FPS_LIMIT is 0 we stop right away, ie
              * there will be one logic() operation for each display()
              * if it is 1, we keep going until we exceed the
-             * CONFIG_FPS_LIMIT value. this way we avoid drawing 
+             * CONFIG_FPS_LIMIT value. this way we avoid drawing
              * 300 frames / second, which is useless
              * this method speeds the game on powerfull machines
              * for one can limit the display to 20 frames / seconds
@@ -828,7 +826,7 @@ game (void)
           update_logic_rate (lr);
 
           /*
-           * we get the information "when has the last call to display() 
+           * we get the information "when has the last call to display()
            * been done"
            */
           last_display_time = get_ticker ();

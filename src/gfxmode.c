@@ -54,6 +54,7 @@
 
 #include <allegro5/allegro.h>
 
+#include "backport.h"
 #include "base.h"
 #include "disk.h"
 #include "log.h"
@@ -79,13 +80,8 @@ int GFX_MODE_H[5] = { 240, 384, 480, 600, 768 };
 #endif
 
 #ifdef UNIX
-#ifdef GP2X
-int GFX_MODE_W[5] = { 320, 320, 320, 320, 320 };
-int GFX_MODE_H[5] = { 240, 240, 240, 240, 240 };
-#else
 int GFX_MODE_W[5] = { 320, 512, 640, 800, 1024 };
 int GFX_MODE_H[5] = { 240, 384, 480, 600, 768 };
-#endif
 #endif
 
 #ifdef DOS
@@ -121,21 +117,6 @@ static int GFX_MODE_TYPE_WINDOWED[] = { GFX_DIRECTX_WIN,
 #endif
 
 #ifdef UNIX
-#ifdef GP2X
-static int GFX_MODE_TYPE_FULLSCREEN[] = { GFX_GP2X,
-  GFX_GP2X,
-  GFX_GP2X,
-  GFX_GP2X,
-  GFX_GP2X
-};
-
-static int GFX_MODE_TYPE_WINDOWED[] = { GFX_GP2X,
-  GFX_GP2X,
-  GFX_GP2X,
-  GFX_GP2X,
-  GFX_GP2X
-};
-#else
 static int GFX_MODE_TYPE_FULLSCREEN[] = { GFX_AUTODETECT_FULLSCREEN,
   GFX_AUTODETECT_FULLSCREEN,
   GFX_AUTODETECT_FULLSCREEN,
@@ -149,6 +130,26 @@ static int GFX_MODE_TYPE_WINDOWED[] = { GFX_AUTODETECT_WINDOWED,
   GFX_AUTODETECT_WINDOWED,
   GFX_AUTODETECT_WINDOWED
 };
+#endif
+
+#ifndef DOS
+#ifndef WIN32
+#ifndef UNIX
+// Default fallback graphics mode types
+static int GFX_MODE_TYPE_FULLSCREEN[] = { GFX_AUTODETECT_FULLSCREEN,
+  GFX_AUTODETECT_FULLSCREEN,
+  GFX_AUTODETECT_FULLSCREEN,
+  GFX_AUTODETECT_FULLSCREEN,
+  GFX_AUTODETECT_FULLSCREEN
+};
+
+static int GFX_MODE_TYPE_WINDOWED[] = { GFX_AUTODETECT_WINDOWED,
+  GFX_AUTODETECT_WINDOWED,
+  GFX_AUTODETECT_WINDOWED,
+  GFX_AUTODETECT_WINDOWED,
+  GFX_AUTODETECT_WINDOWED
+};
+#endif
 #endif
 #endif
 
@@ -213,10 +214,6 @@ set_resolution (int res, int flip, int fullscreen, int *flip_enabled)
   int ret = -1;
   int toggle;
   int i;
-
-#ifdef GP2X
-  fullscreen = 1;
-#endif
 
   if (flip_enabled)
     {

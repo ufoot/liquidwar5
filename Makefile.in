@@ -99,8 +99,6 @@ PACKAGE_MACOSX_TAR = liquidwar-$(VERSION)-macosx.tar
 PACKAGE_MACOSX_TGZ = liquidwar-$(VERSION)-macosx.tgz
 PACKAGE_MACOSX_DMG = liquidwar-$(VERSION).dmg
 
-PACKAGE_GP2X_DIR = liquidwar-$(VERSION)-gp2x
-PACKAGE_GP2X_ZIP = liquidwar-$(VERSION)-gp2x.zip
 
 PACKAGE_TMP = /tmp/liquidwar-$(VERSION).tmp
 
@@ -109,7 +107,7 @@ all: build_bin build_data build_doc
 	@echo "Build complete."
 	@echo "Type \"$(GMAKE) install\" to install Liquid War $(VERSION)."
 
-world: clean world_clean all package_source package_win32 package_dos package_binary package_source_rpm package_binary_rpm package_gp2x
+world: clean world_clean all package_source package_win32 package_dos package_binary package_source_rpm package_binary_rpm
 
 build_bin:
 	@$(GMAKE) -C $(MAKE_BIN_DIR)
@@ -250,7 +248,6 @@ world_clean:
 	@rm -f $(PACKAGE_NSIS_EXE)
 	@rm -f $(PACKAGE_MACOSX_TGZ)
 	@rm -f $(PACKAGE_MACOSX_DMG)
-	@rm -f $(PACKAGE_GP2X_ZIP)
 
 # used when preparing packages
 packageclean: clean world_clean
@@ -525,36 +522,6 @@ $(PACKAGE_MACOSX_DMG): $(PACKAGE_MACOSX_TGZ)
 	@echo "Creating disk image."
 	@rm -f $@ && if which hdiutil ; then hdiutil create -srcfolder "$(PACKAGE_TMP)" $@ ; fi
 	@echo "Deleting temporary directory."
-	@rm -rf $(PACKAGE_TMP) 
-
-package_gp2x: $(PACKAGE_GP2X_ZIP)
-
-$(PACKAGE_GP2X_ZIP): $(PACKAGE_SOURCE_TARGZ)
-	@echo "Compiling dat file."
-	@$(GMAKE) -C data
-	@echo "Creating temporary directory."
-	@rm -rf $(PACKAGE_TMP)
-	@install -d $(PACKAGE_TMP)
-	@echo "Preparing source."
-	@cp $(PACKAGE_SOURCE_TARGZ) $(PACKAGE_TMP)
-	@cd $(PACKAGE_TMP) && tar xzf $(PACKAGE_SOURCE_TARGZ)
-	@echo "Compiling binary."
-	@cd $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR) && sh -c ". /opt/open2x/bin/env-apps.sh && ./configure --prefix=/opt --build=x86_64-pc-linux-gnu --host=arm-open2x-linux && make -C src"
-	@install -d $(PACKAGE_TMP)/$(PACKAGE_GP2X_DIR)
-	@cp $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/src/liquidwar* $(PACKAGE_TMP)/$(PACKAGE_GP2X_DIR)/
-	@cp data/liquidwar.dat $(PACKAGE_TMP)/$(PACKAGE_GP2X_DIR)/
-	@cp misc/liquidwar.gpe $(PACKAGE_TMP)/$(PACKAGE_GP2X_DIR)/
-	@cp COPYING $(PACKAGE_TMP)/$(PACKAGE_GP2X_DIR)/license.txt
-	@cp ChangeLog $(PACKAGE_TMP)/$(PACKAGE_GP2X_DIR)/changes.txt
-	@cp README.md $(PACKAGE_TMP)/$(PACKAGE_GP2X_DIR)/readme.txt
-	@cp README.fr $(PACKAGE_TMP)/$(PACKAGE_GP2X_DIR)/readmefr.txt
-	@cp README.de $(PACKAGE_TMP)/$(PACKAGE_GP2X_DIR)/readmede.txt
-	@cp README.dk $(PACKAGE_TMP)/$(PACKAGE_GP2X_DIR)/readmedk.txt
-	@cp README.pl $(PACKAGE_TMP)/$(PACKAGE_GP2X_DIR)/readmepl.txt
-	@cp -r doc/html $(PACKAGE_TMP)/$(PACKAGE_GP2X_DIR)/doc
-	@find $(PACKAGE_TMP)/$(PACKAGE_GP2X_DIR) -name .cvsignore -o -name CVS -o -name .arch-ids -o -name "{arch}" -o -name DUMMY -o -name "*.inc" -o -name "*.in" | xargs rm -rf
-	@cd $(PACKAGE_TMP) && zip -r $(PACKAGE_GP2X_ZIP) $(PACKAGE_GP2X_DIR)
-	@cp $(PACKAGE_TMP)/$(PACKAGE_GP2X_ZIP) .
 	@rm -rf $(PACKAGE_TMP) 
 
 $(PACKAGE_DOCKER_SOURCE_TARGZ): $(PACKAGE_SOURCE_TARGZ)

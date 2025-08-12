@@ -237,9 +237,6 @@ log_println_int (int i)
 void
 log_flush ()
 {
-#ifdef GP2X
-  usleep (100);
-#endif
 #ifndef WIN32
   fflush (stdout);
 #endif
