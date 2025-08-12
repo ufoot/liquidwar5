@@ -61,7 +61,6 @@ liquidwar5/
 3. **Install**: `make install`
 
 **Configuration Options:**
-- `--disable-asm` - Disable assembly optimizations
 - `--enable-debug` - Debug build
 - `--enable-static` - Static linking
 - `--disable-doc-*` - Disable specific documentation formats

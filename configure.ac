@@ -104,11 +104,6 @@ AC_SUBST(PTHREAD)
 
 
 
-dnl now checking if the GNU assembler is available
-AC_CHECK_PROG(GNU_AS,as,yes,no)
-
-
-
 dnl Various checks which will enable/disable some of the doc targets
 AC_CHECK_PROG(PYTHON,python,yes,no)
 AC_CHECK_PROG(GZIP,gzip,yes,no)
@@ -132,33 +127,6 @@ OSX="no"
 if echo "$host_os" | grep "arwin"; then
   OSX="yes"
 fi
-
-ASM_POSSIBLE="\"$GNU_AS\" = \"yes\" -a \"$I386\" = \"yes\" -a \"OSX\" = \"no\""
-
-dnl Assembly
-AC_MSG_CHECKING(for assembly)
-AC_ARG_ENABLE(asm,[  --disable-asm           Disable assembly code],
-[
-  if test "$enableval" != "no" -a $ASM_POSSIBLE ; then
-    ASM=yes
-    AC_MSG_RESULT([enabled])
-  else
-    ASM=no
-    AC_MSG_RESULT([disabled])
-  fi
-],
-[
-  if test $ASM_POSSIBLE ; then
-    ASM=yes
-    AC_MSG_RESULT([enabled])
-  else
-    ASM=no
-    AC_MSG_RESULT([disabled])
-  fi
-])
-AC_SUBST(ASM)
-
-
 
 dnl Now we do a bunch of checks to see what kind of documentation
 dnl formats we should generate. This is quite boring but can be
