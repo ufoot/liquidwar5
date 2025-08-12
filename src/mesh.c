@@ -52,6 +52,7 @@
 /* includes                                                         */
 /*==================================================================*/
 
+#include "backport.h"
 #include "bigdata.h"
 #include "config.h"
 #include "map.h"
@@ -105,8 +106,8 @@ create_first_mesher (ALLEGRO_BITMAP * map)
   MESHER *result;
   int x, y, h, w, size, i, j;
 
-  w = map->w;
-  h = map->h;
+  w = al_get_bitmap_width (map);
+  h = al_get_bitmap_height (map);
   size = h * w;
   result = malloc_in_big_data_top (size * sizeof (MESHER));
   if (result != NULL)
@@ -169,8 +170,8 @@ group_mesher (MESHER * mesher, ALLEGRO_BITMAP * map, int step)
   int x, y, w, h, i, j, k;
   MESHER *ne, *se, *sw, *nw, *test;
 
-  w = map->w;
-  h = map->h;
+  w = al_get_bitmap_width (map);
+  h = al_get_bitmap_height (map);
 
   for (y = 0; y < h - step; y += step * 2)
     for (x = 0; x < w - step; x += step * 2)
@@ -243,8 +244,8 @@ mesher_to_mesh (MESHER * mesher, ALLEGRO_BITMAP * map, int *size, int *w,
   MESHER *temp;
   int mesher_size, i, j, k;
 
-  (*w) = map->w;
-  (*h) = map->h;
+  (*w) = al_get_bitmap_width (map);
+  (*h) = al_get_bitmap_height (map);
   mesher_size = (*h) * (*w);
 
   *size = 0;

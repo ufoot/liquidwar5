@@ -634,7 +634,7 @@ logic (void)
  * everything which is not directly linked to a game cycle
  */
 static void
-display (void)
+display_game (void)
 {
   /*
    * the watchdog waits for secret codes to be entered
@@ -834,7 +834,7 @@ game (void)
           /*
            * now we really display stuff, (takes time...)
            */
-          display ();
+          display_game ();
 
           /*
            * Now we check if the "Close" button has been clicked

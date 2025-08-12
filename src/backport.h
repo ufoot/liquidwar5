@@ -169,6 +169,7 @@ typedef struct JOYSTICK_INFO
 /*==================================================================*/
 
 extern ALLEGRO_BITMAP *screen;
+extern ALLEGRO_DISPLAY *allegro_display;
 extern int SCREEN_W;
 extern int SCREEN_H;
 extern ALLEGRO_FONT *font;
@@ -189,6 +190,9 @@ extern volatile char key[];
 void scare_mouse ();
 void scare_mouse_area (int x, int y, int w, int h);
 void unscare_mouse ();
+void position_mouse (int x, int y);
+void set_mouse_sprite (ALLEGRO_BITMAP *sprite);
+void show_mouse (ALLEGRO_BITMAP *bmp);
 int poll_mouse (void);
 int mouse_needs_poll (void);
 
@@ -245,6 +249,7 @@ void stretch_blit (ALLEGRO_BITMAP * source, ALLEGRO_BITMAP * dest,
                    int source_x, int source_y, int source_width,
                    int source_height, int dest_x, int dest_y, int dest_width,
                    int dest_height);
+ALLEGRO_BITMAP *load_bitmap (const char *filename, PALETTE pal);
 
 void acquire_bitmap (ALLEGRO_BITMAP * bmp);
 void acquire_screen ();

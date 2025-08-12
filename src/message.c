@@ -52,7 +52,7 @@
 /* includes                                                         */
 /*==================================================================*/
 
-#include <allegro5/allegro.h>
+#include "backport.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -115,8 +115,8 @@ display_message (void)
   //text_mode (-1); deprecated
   for (i = 0; i < MESSAGE_NB; ++i)
     textout_ex (NEXT_SCREEN, font, MESSAGE[i],
-                NEXT_SCREEN->w - text_length (font, MESSAGE[i]),
-                NEXT_SCREEN->h - (MESSAGE_NB - i) * h, -1, -1);
+                al_get_bitmap_width (NEXT_SCREEN) - text_length (font, MESSAGE[i]),
+                al_get_bitmap_height (NEXT_SCREEN) - (MESSAGE_NB - i) * h, -1, -1);
 }
 
 /*------------------------------------------------------------------*/

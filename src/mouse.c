@@ -52,8 +52,7 @@
 /* includes                                                         */
 /*==================================================================*/
 
-#include <allegro5/allegro.h>
-
+#include "backport.h"
 #include "config.h"
 #include "mouse.h"
 #include "disk.h"

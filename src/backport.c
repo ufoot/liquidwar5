@@ -96,6 +96,7 @@ static char *_config_file = NULL;
 static ALLEGRO_CONFIG *_config = NULL;
 
 ALLEGRO_BITMAP *screen = NULL;
+ALLEGRO_DISPLAY *allegro_display = NULL;
 int SCREEN_W = 0;
 int SCREEN_H = 0;
 ALLEGRO_FONT *font = NULL;
@@ -188,6 +189,36 @@ mouse_needs_poll (void)
    * remove or change all that polling logic.
    */
   return 1;
+}
+
+/*------------------------------------------------------------------*/
+void
+position_mouse (int x, int y)
+{
+  // https://liballeg.org/stabledocs/en/alleg004.html#position_mouse
+  al_set_mouse_xy (allegro_display, x, y);
+  mouse_x = x;
+  mouse_y = y;
+}
+
+/*------------------------------------------------------------------*/
+void
+set_mouse_sprite (ALLEGRO_BITMAP *sprite)
+{
+  // https://liballeg.org/stabledocs/en/alleg004.html#set_mouse_sprite
+  if (sprite)
+    {
+      al_set_mouse_cursor (allegro_display, al_create_mouse_cursor (sprite, 0, 0));
+    }
+}
+
+/*------------------------------------------------------------------*/
+void
+show_mouse (ALLEGRO_BITMAP *bmp)
+{
+  // https://liballeg.org/stabledocs/en/alleg004.html#show_mouse
+  (void) bmp; // Ignore bitmap parameter since Allegro 5 handles cursor display differently
+  al_show_mouse_cursor (allegro_display);
 }
 
 /*------------------------------------------------------------------*/
@@ -1068,6 +1099,18 @@ stretch_blit (ALLEGRO_BITMAP * source, ALLEGRO_BITMAP * dest,
   al_draw_scaled_bitmap (source, source_x, source_y, source_width,
                          source_height, dest_x, dest_y, dest_width,
                          dest_height, 0);
+}
+
+/*------------------------------------------------------------------*/
+ALLEGRO_BITMAP *
+load_bitmap (const char *filename, PALETTE pal)
+{
+  // https://liballeg.org/stabledocs/en/alleg014.html#load_bitmap
+  ALLEGRO_BITMAP *bmp;
+  (void) pal; // Ignore palette parameter since Allegro 5 handles palettes differently
+  
+  bmp = al_load_bitmap (filename);
+  return bmp;
 }
 
 /*------------------------------------------------------------------*/
