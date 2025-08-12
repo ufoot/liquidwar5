@@ -282,4 +282,35 @@ typedef struct {
 extern LW_GFX_DRIVER_INFO *gfx_driver;
 extern void *black_palette;
 
+// Allegro 4 compatibility constants
+#define U_ASCII 0
+#define SYSTEM_NONE 0
+#define COLORCONV_REDUCE_TO_256 0
+
+// Audio constants
+#define DIGI_NONE 0
+#define MIDI_NONE 0
+
+// Driver info structures (Allegro 4 compatibility)
+extern LW_GFX_DRIVER_INFO *timer_driver;
+extern LW_GFX_DRIVER_INFO *keyboard_driver;
+extern LW_GFX_DRIVER_INFO *mouse_driver;
+extern LW_GFX_DRIVER_INFO *digi_driver;
+extern LW_GFX_DRIVER_INFO *midi_driver;
+extern LW_GFX_DRIVER_INFO *joystick_driver;
+
+// Allegro initialization functions
+int allegro_init(void);
+int install_allegro(int system_id, int *errno_ptr, int (*atexit_ptr)());
+int install_keyboard(void);
+int install_mouse(void);
+int install_sound(int digi_card, int midi_card, const char *cfg_path);
+void set_uformat(int format);
+void set_color_depth(int depth);
+void set_color_conversion(int flags);
+void set_close_button_callback(void (*callback)(void));
+
+// Global variables for compatibility
+extern char *allegro_id;
+
 #endif // LIQUID_WAR_INCLUDE_BACKPORT

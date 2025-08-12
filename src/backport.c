@@ -54,6 +54,9 @@
 
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_font.h>
+#include <allegro5/allegro_audio.h>
+#include <allegro5/allegro_acodec.h>
+#include <allegro5/allegro_image.h>
 
 #include "backport.h"
 #include "palette.h"
@@ -1410,4 +1413,131 @@ void set_window_title(const char *title) {
   if (display && title) {
     al_set_window_title(display, title);
   }
+}
+
+/*------------------------------------------------------------------*/
+// Global variables for Allegro 4 compatibility
+char *allegro_id = "Allegro 5.x";
+
+// Driver info structures (stubs for compatibility)
+static LW_GFX_DRIVER_INFO timer_driver_info = {"Allegro 5 Timer"};
+static LW_GFX_DRIVER_INFO keyboard_driver_info = {"Allegro 5 Keyboard"};
+static LW_GFX_DRIVER_INFO mouse_driver_info = {"Allegro 5 Mouse"};
+static LW_GFX_DRIVER_INFO digi_driver_info = {"Allegro 5 Audio"};
+static LW_GFX_DRIVER_INFO midi_driver_info = {"Allegro 5 MIDI"};
+static LW_GFX_DRIVER_INFO joystick_driver_info = {"Allegro 5 Joystick"};
+
+LW_GFX_DRIVER_INFO *timer_driver = &timer_driver_info;
+LW_GFX_DRIVER_INFO *keyboard_driver = &keyboard_driver_info;
+LW_GFX_DRIVER_INFO *mouse_driver = &mouse_driver_info;
+LW_GFX_DRIVER_INFO *digi_driver = &digi_driver_info;
+LW_GFX_DRIVER_INFO *midi_driver = &midi_driver_info;
+LW_GFX_DRIVER_INFO *joystick_driver = &joystick_driver_info;
+
+/*------------------------------------------------------------------*/
+int install_allegro(int system_id, int *errno_ptr, int (*atexit_ptr)()) {
+  // Allegro 4 install_allegro function compatibility
+  (void)system_id;
+  (void)errno_ptr;
+  (void)atexit_ptr;
+  
+  return allegro_init();
+}
+
+/*------------------------------------------------------------------*/
+int allegro_init(void) {
+  // Initialize Allegro 5 core system
+  if (!al_install_system(ALLEGRO_VERSION_INT, NULL)) {
+    return -1; // Allegro 4 returns non-zero on failure
+  }
+
+  // Initialize subsystems that the game expects to be available
+  // These correspond to the various install_* functions in Allegro 4
+  
+  // Keyboard support
+  if (!al_install_keyboard()) {
+    return -1;
+  }
+
+  // Mouse support  
+  if (!al_install_mouse()) {
+    return -1;
+  }
+
+  // Joystick support (optional, but try to install it)
+  al_install_joystick();
+
+  // Audio support (optional)
+  al_install_audio();
+  al_init_acodec_addon();
+
+  // Image loading support
+  if (!al_init_image_addon()) {
+    return -1;
+  }
+
+  // Font support
+  if (!al_init_font_addon()) {
+    return -1;
+  }
+
+  // Primitives for drawing operations
+  if (!al_init_primitives_addon()) {
+    return -1;
+  }
+
+  return 0; // Success in Allegro 4 style (0 = success)
+}
+
+/*------------------------------------------------------------------*/
+void set_uformat(int format) {
+  // Allegro 5 doesn't require setting unicode format like Allegro 4
+  // This is a stub for compatibility
+  (void)format; // Suppress unused parameter warning
+}
+
+/*------------------------------------------------------------------*/
+void set_color_depth(int depth) {
+  // In Allegro 5, color depth is set when creating the display
+  // This is stored for later use in graphics mode setup
+  (void)depth; // Suppress unused parameter warning
+}
+
+/*------------------------------------------------------------------*/
+void set_color_conversion(int flags) {
+  // Allegro 5 handles color conversion automatically
+  // This is a stub for compatibility
+  (void)flags; // Suppress unused parameter warning
+}
+
+/*------------------------------------------------------------------*/
+int install_keyboard(void) {
+  // This is called from init.c but keyboard is already initialized in allegro_init
+  // Return success (0 in Allegro 4 style)
+  return al_is_keyboard_installed() ? 0 : -1;
+}
+
+/*------------------------------------------------------------------*/
+int install_mouse(void) {
+  // This is called from init.c but mouse is already initialized in allegro_init
+  // Return success (not -1 in Allegro 4 style)
+  return al_is_mouse_installed() ? 1 : -1;
+}
+
+/*------------------------------------------------------------------*/
+int install_sound(int digi_card, int midi_card, const char *cfg_path) {
+  // Audio is already initialized in allegro_init
+  // These parameters are for Allegro 4 compatibility
+  (void)digi_card;
+  (void)midi_card;
+  (void)cfg_path;
+  
+  return al_is_audio_installed() ? 0 : -1;
+}
+
+/*------------------------------------------------------------------*/
+void set_close_button_callback(void (*callback)(void)) {
+  // In Allegro 5, this would be handled through event handling
+  // For now, store the callback for potential future use
+  (void)callback; // Stub for compatibility
 }

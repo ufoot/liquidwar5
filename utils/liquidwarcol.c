@@ -62,7 +62,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <allegro.h>
+#include <allegro5/allegro.h>
+#include "../src/backport.h"
 
 /*=================================================================*/
 /* constants                                                       */

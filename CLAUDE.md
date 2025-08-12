@@ -138,6 +138,11 @@ make -C doc
 - Check `liquidwar --help` for command-line options
 - Test network functionality with `liquidwar-server`
 
+### Building Individual Files
+- Use `make -C src/ filename.o` to build individual object files from the src directory
+- Example: `make -C src/ backport.o` or `make -C src/ init.o`
+- This is useful for testing compilation of specific modules during development
+
 ## Platform-Specific Notes
 
 ### Linux/Unix

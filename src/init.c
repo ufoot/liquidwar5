@@ -59,6 +59,7 @@
 #include <dos.h>
 #endif
 
+#include "backport.h"
 #include "base.h"
 #include "config.h"
 #include "gfxmode.h"
@@ -112,7 +113,7 @@ int
 init_all ()
 {
   int result = 0;
-  int graphics = 1, assembly = 1, config = 1, timer = 1, keyboard = 1,
+  int graphics = 1, config = 1, timer = 1, keyboard = 1,
     mouse = 1, sound = 1, joystick = 1, network = 1;
 
   /*
@@ -143,11 +144,6 @@ init_all ()
 
       set_color_depth (8);
       set_color_conversion (COLORCONV_REDUCE_TO_256);
-
-      /*
-       * We check for potential struct size errors
-       */
-      assembly = lw_asm_check_struct_align ();
 
       log_print_str ("Loading config options from \"");
       log_print_str (STARTUP_CFG_PATH);
@@ -246,7 +242,6 @@ init_all ()
     }
 
   result = graphics
-    && (assembly || !STARTUP_CHECK)
     && timer
     && keyboard
     && mouse && (sound || !STARTUP_CHECK) && (joystick || !STARTUP_CHECK);
