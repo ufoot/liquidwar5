@@ -54,6 +54,7 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include "backport.h"
 #include "back.h"
 #include "base.h"
 #include "config.h"
@@ -214,7 +215,7 @@ connect_on_server_start (int *sock, char *address, int port)
    */
   while (connect_data->running && !esc_pressed)
     {
-      if (key[ALLEGRO_KEY_ESC])
+      if (key[ALLEGRO_KEY_ESCAPE])
         {
           esc_pressed = 1;
         }

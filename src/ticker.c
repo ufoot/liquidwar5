@@ -52,20 +52,14 @@
 /* includes                                                         */
 /*==================================================================*/
 
-#include <allegro5/allegro.h>
-
+#include "backport.h"
 #include "ticker.h"
 
 /*==================================================================*/
 /* variables globales                                               */
 /*==================================================================*/
 
-#ifdef DOS
-#define TICKER_STEP 5
-#else
-#define TICKER_STEP 10
-#endif
-static int TICKER_VALUE = 0;
+static double ticker_start_time = 0.0;
 
 /*==================================================================*/
 /* fonctions                                                        */
@@ -77,44 +71,31 @@ static int TICKER_VALUE = 0;
 /*------------------------------------------------------------------*/
 
 /*------------------------------------------------------------------*/
-static void
-ticker_handler (void)
-{
-  TICKER_VALUE += TICKER_STEP;
-}
-
-END_OF_FUNCTION (ticker_handler);
-
-/*------------------------------------------------------------------*/
 int
 start_ticker (void)
 {
-  int result = 0;
-  //#ifdef DOS
-  LOCK_FUNCTION (ticker_handler);
-  LOCK_VARIABLE (TICKER_VALUE);
-
-  result = install_int_ex (ticker_handler, MSEC_TO_TIMER (TICKER_STEP));
-  //#endif
-  return result;
+  // Initialize ticker with current time
+  ticker_start_time = al_get_time();
+  return 0; // Always succeeds with Allegro 5
 }
 
 /*------------------------------------------------------------------*/
 void
 stop_ticker (void)
 {
-  //#ifdef DOS
-  remove_int (ticker_handler);
-  //#endif
+  // No cleanup needed with Allegro 5's al_get_time()
+  // Just reset the start time
+  ticker_start_time = 0.0;
 }
 
 /*------------------------------------------------------------------*/
 int
 get_ticker (void)
 {
-  //#ifdef DOS
-  return TICKER_VALUE;
-  //#else
-  //return ++TICKER_VALUE;
-  //#endif
+  // Return elapsed time in milliseconds since start_ticker() was called
+  double current_time = al_get_time();
+  double elapsed_seconds = current_time - ticker_start_time;
+  
+  // Convert to milliseconds and return as integer
+  return (int)(elapsed_seconds * 1000.0);
 }

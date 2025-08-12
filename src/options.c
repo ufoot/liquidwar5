@@ -54,6 +54,7 @@
 
 #include <string.h>
 
+#include "backport.h"
 #include "back.h"
 #include "base.h"
 #include "config.h"
@@ -72,6 +73,7 @@
 #include "controls.h"
 #include "lang.h"
 #include "gfxmode.h"
+#include "mouse.h"
 
 /*==================================================================*/
 /* variables globales                                               */

@@ -56,6 +56,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "backport.h"
 #include "netconf.h"
 #include "sock2gen.h"
 #include "log.h"
@@ -144,12 +145,11 @@ lw_netconf_send (int *sock, LW_NETCONF * config)
                                                      config->cpu_vs_human);
                                   if (lw_sock_send_str (sock, buffer))
                                     {
-                                          LW_MACRO_SPRINTF1 (buffer, "%d",
-                                                             config->min_map_res);
-                                          if (lw_sock_send_str (sock, buffer))
-                                            {
-                                              result = 1;
-                                            }
+                                      LW_MACRO_SPRINTF1 (buffer, "%d",
+                                                         config->min_map_res);
+                                      if (lw_sock_send_str (sock, buffer))
+                                        {
+                                          result = 1;
                                         }
                                     }
                                 }

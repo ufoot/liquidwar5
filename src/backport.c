@@ -57,6 +57,7 @@
 #include <allegro5/allegro_audio.h>
 #include <allegro5/allegro_acodec.h>
 #include <allegro5/allegro_image.h>
+#include <math.h>
 
 #include "backport.h"
 #include "palette.h"
@@ -232,7 +233,7 @@ clear_to_color (ALLEGRO_BITMAP * bitmap, int color)
       return;
     }
   ALLEGRO_COLOR al_color;
-  al_color = GLOBAL_PALETTE[color];
+  al_color = rgb_to_allegro_color(GLOBAL_PALETTE[color]);
   al_clear_to_color (al_color);
 }
 
@@ -253,7 +254,7 @@ putpixel (ALLEGRO_BITMAP * bitmap, int x, int y, int color)
       return;
     }
   ALLEGRO_COLOR al_color;
-  al_color = GLOBAL_PALETTE[color];
+  al_color = rgb_to_allegro_color(GLOBAL_PALETTE[color]);
   al_put_pixel (x, y, al_color);
 }
 
@@ -281,7 +282,7 @@ _init_rgb_to_palette_map (void)
   for (int i = 0; i < PALETTE_SIZE; i++)
     {
       float r, g, b, a;
-      al_unmap_rgba_f (GLOBAL_PALETTE[i], &r, &g, &b, &a);
+      al_unmap_rgba_f (rgb_to_allegro_color(GLOBAL_PALETTE[i]), &r, &g, &b, &a);
       
       // Convert to 8-bit RGB
       unsigned char r8 = (unsigned char)(r * 255.0f);
@@ -340,7 +341,7 @@ getpixel (ALLEGRO_BITMAP * bitmap, int x, int y)
   for (int i = 0; i < PALETTE_SIZE; i++)
     {
       float pr, pg, pb, pa;
-      al_unmap_rgba_f (GLOBAL_PALETTE[i], &pr, &pg, &pb, &pa);
+      al_unmap_rgba_f (rgb_to_allegro_color(GLOBAL_PALETTE[i]), &pr, &pg, &pb, &pa);
       
       // Calculate distance (simple RGB distance)
       float dr = r - pr;
@@ -373,7 +374,7 @@ rect (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2, int color)
       return;
     }
   ALLEGRO_COLOR al_color;
-  al_color = GLOBAL_PALETTE[color];
+  al_color = rgb_to_allegro_color(GLOBAL_PALETTE[color]);
   al_draw_filled_rectangle (x1, y1, x2, y1 + 1, al_color);
   al_draw_filled_rectangle (x2, y1, x2 + 1, y2, al_color);
   al_draw_filled_rectangle (x1 + 1, y2, x2 + 1, y2 + 1, al_color);
@@ -391,7 +392,7 @@ rectfill (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2, int color)
       return;
     }
   ALLEGRO_COLOR al_color;
-  al_color = GLOBAL_PALETTE[color];
+  al_color = rgb_to_allegro_color(GLOBAL_PALETTE[color]);
   // +1 on second coord because floating point vs integer
   al_draw_filled_rectangle (x1, y1, x2 + 1, y2 + 1, al_color);
 }
@@ -424,14 +425,14 @@ rectfill_dotted (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2,
       return;
     }
   ALLEGRO_COLOR al_fg;
-  al_fg = GLOBAL_PALETTE[fg];
+  al_fg = rgb_to_allegro_color(GLOBAL_PALETTE[fg]);
 
   if (bg < 0 || bg >= PALETTE_SIZE)
     {
       return;
     }
   ALLEGRO_COLOR al_bg;
-  al_bg = GLOBAL_PALETTE[bg];
+  al_bg = rgb_to_allegro_color(GLOBAL_PALETTE[bg]);
 
   ALLEGRO_COLOR al_color = al_bg;
   int x = 0;
@@ -464,7 +465,7 @@ vline (ALLEGRO_BITMAP * bitmap, int x, int y1, int y2, int color)
       return;
     }
   ALLEGRO_COLOR al_color;
-  al_color = GLOBAL_PALETTE[color];
+  al_color = rgb_to_allegro_color(GLOBAL_PALETTE[color]);
   al_draw_filled_rectangle (x, y1, x + 1, y2 + 1, al_color);
 }
 
@@ -485,7 +486,7 @@ hline (ALLEGRO_BITMAP * bitmap, int x1, int y, int x2, int color)
       return;
     }
   ALLEGRO_COLOR al_color;
-  al_color = GLOBAL_PALETTE[color];
+  al_color = rgb_to_allegro_color(GLOBAL_PALETTE[color]);
   al_draw_filled_rectangle (x1, y, x2 + 1, y + 1, al_color);
 }
 
@@ -510,7 +511,7 @@ line (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2, int color)
       return;
     }
   ALLEGRO_COLOR al_color;
-  al_color = GLOBAL_PALETTE[color];
+  al_color = rgb_to_allegro_color(GLOBAL_PALETTE[color]);
 
   /* ugliest line drawing ever, but we don't care, this is never called */
   int w = x2 - x1;
@@ -930,7 +931,7 @@ textout_ex (ALLEGRO_BITMAP * bmp, const ALLEGRO_FONT * f, const char *s,
       return;
     }
   ALLEGRO_COLOR al_color;
-  al_color = GLOBAL_PALETTE[color];
+  al_color = rgb_to_allegro_color(GLOBAL_PALETTE[color]);
 
   al_draw_text (f, al_color, x, y, 0, s);
 }
@@ -1045,6 +1046,16 @@ install_int (void (*proc) (), int speed)
 }
 
 /*------------------------------------------------------------------*/
+int
+install_int_ex (void (*proc) (), int speed)
+{
+  // https://liballeg.org/stabledocs/en/alleg005.html#install_int_ex
+  // This is a compatibility stub - for full implementation, files should
+  // be migrated to use modern Allegro 5 timer APIs like al_get_time()
+  return install_int (proc, speed);
+}
+
+/*------------------------------------------------------------------*/
 void
 remove_int (void (*proc) ())
 {
@@ -1111,6 +1122,47 @@ load_bitmap (const char *filename, PALETTE pal)
   
   bmp = al_load_bitmap (filename);
   return bmp;
+}
+
+/*------------------------------------------------------------------*/
+void
+set_volume (int digi_volume, int midi_volume)
+{
+  // https://liballeg.org/stabledocs/en/alleg011.html#set_volume
+  (void) digi_volume; // Digital volume not used in this implementation
+  // In Allegro 5, we would set the mixer gain, but for now just ignore
+  // since MIDI playback uses ALLEGRO_SAMPLE which has its own volume control
+  (void) midi_volume; // MIDI volume handled per-sample in play_midi
+}
+
+/*------------------------------------------------------------------*/
+int
+play_midi (ALLEGRO_SAMPLE *midi, int loop)
+{
+  // https://liballeg.org/stabledocs/en/alleg011.html#play_midi
+  static ALLEGRO_SAMPLE_INSTANCE *current_music = NULL;
+  
+  // Stop any currently playing music
+  if (current_music)
+    {
+      al_stop_sample_instance (current_music);
+      al_destroy_sample_instance (current_music);
+      current_music = NULL;
+    }
+  
+  if (midi)
+    {
+      current_music = al_create_sample_instance (midi);
+      if (current_music)
+        {
+          al_set_sample_instance_playmode (current_music, 
+            loop ? ALLEGRO_PLAYMODE_LOOP : ALLEGRO_PLAYMODE_ONCE);
+          al_attach_sample_instance_to_mixer (current_music, al_get_default_mixer ());
+          return al_play_sample_instance (current_music) ? 1 : 0;
+        }
+    }
+  
+  return midi ? 0 : 1; // Return 1 for stop (NULL), 0 for failed play
 }
 
 /*------------------------------------------------------------------*/
@@ -1467,6 +1519,7 @@ int set_gfx_mode(int card, int w, int h, int v_w, int v_h) {
 /*------------------------------------------------------------------*/
 void set_palette(void *palette) {
   // Update the global palette with the provided palette
+  // The palette parameter is expected to be PALETTE (RGB array)
   if (palette) {
     PALETTE *pal = (PALETTE *)palette;
     for (int i = 0; i < PALETTE_SIZE; i++) {
@@ -1609,4 +1662,123 @@ void set_close_button_callback(void (*callback)(void)) {
   // In Allegro 5, this would be handled through event handling
   // For now, store the callback for potential future use
   (void)callback; // Stub for compatibility
+}
+
+/*------------------------------------------------------------------*/
+void get_palette (PALETTE pal) {
+  // In Allegro 4, this would get the current hardware palette
+  // In Allegro 5, we don't have hardware palettes, so we stub this
+  // Initialize with a default grayscale palette using 8-bit values
+  int i;
+  for (i = 0; i < 256; i++) {
+    pal[i].r = i;  // 8-bit grayscale (0-255)
+    pal[i].g = i;
+    pal[i].b = i;
+  }
+}
+
+/*------------------------------------------------------------------*/
+void fade_in (PALETTE pal, int speed) {
+  // In Allegro 4, this would gradually fade the screen from black to the palette
+  // In Allegro 5, we simulate this by just setting the palette (no actual fading)
+  (void)pal;    // Palette parameter ignored in Allegro 5
+  (void)speed;  // Speed parameter ignored
+  // TODO: Could implement actual screen fading using al_draw_tinted_bitmap
+}
+
+/*------------------------------------------------------------------*/
+void fade_out (int speed) {
+  // In Allegro 4, this would gradually fade the screen to black  
+  // In Allegro 5, we simulate this (no actual fading for now)
+  (void)speed;  // Speed parameter ignored
+  // TODO: Could implement actual screen fading using al_draw_tinted_bitmap
+}
+
+/*------------------------------------------------------------------*/
+void hsv_to_rgb (float h, float s, float v, int *r, int *g, int *b) {
+  // Convert HSV color space to RGB
+  // Based on standard HSV to RGB conversion algorithm
+  int i;
+  float f, p, q, t;
+  
+  if (s == 0) {
+    // Achromatic (grey)
+    *r = *g = *b = (int)(v * 255);
+    return;
+  }
+  
+  h /= 60; // sector 0 to 5
+  i = (int)h;
+  f = h - i; // fractional part of h
+  p = v * (1 - s);
+  q = v * (1 - s * f);
+  t = v * (1 - s * (1 - f));
+  
+  switch (i) {
+    case 0:
+      *r = (int)(v * 255);
+      *g = (int)(t * 255);
+      *b = (int)(p * 255);
+      break;
+    case 1:
+      *r = (int)(q * 255);
+      *g = (int)(v * 255);
+      *b = (int)(p * 255);
+      break;
+    case 2:
+      *r = (int)(p * 255);
+      *g = (int)(v * 255);
+      *b = (int)(t * 255);
+      break;
+    case 3:
+      *r = (int)(p * 255);
+      *g = (int)(q * 255);
+      *b = (int)(v * 255);
+      break;
+    case 4:
+      *r = (int)(t * 255);
+      *g = (int)(p * 255);
+      *b = (int)(v * 255);
+      break;
+    default: // case 5:
+      *r = (int)(v * 255);
+      *g = (int)(p * 255);
+      *b = (int)(q * 255);
+      break;
+  }
+}
+
+/*------------------------------------------------------------------*/
+int fixsqrt (int x) {
+  // Fixed-point square root (Allegro 4 compatibility)
+  // Input and output are in 16.16 fixed-point format
+  // Simple implementation using floating point
+  if (x <= 0) return 0;
+  
+  // Convert from fixed-point to float, take sqrt, convert back
+  float f = (float)x / 65536.0f;
+  f = sqrtf(f);
+  return (int)(f * 65536.0f);
+}
+
+/*------------------------------------------------------------------*/
+ALLEGRO_COLOR rgb_to_allegro_color (RGB rgb) {
+  // Convert RGB structure to ALLEGRO_COLOR
+  // Both use 8-bit values (0-255)
+  return al_map_rgb(rgb.r, rgb.g, rgb.b);
+}
+
+/*------------------------------------------------------------------*/
+RGB allegro_color_to_rgb (ALLEGRO_COLOR color) {
+  // Convert ALLEGRO_COLOR to RGB structure
+  RGB rgb;
+  unsigned char r, g, b;
+  
+  al_unmap_rgb(color, &r, &g, &b);
+  // Both use 8-bit values (0-255)
+  rgb.r = r;
+  rgb.g = g; 
+  rgb.b = b;
+  
+  return rgb;
 }

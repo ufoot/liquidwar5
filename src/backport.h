@@ -56,6 +56,7 @@
 /*==================================================================*/
 
 #include <allegro5/allegro.h>
+#include <allegro5/allegro_audio.h>
 #include <allegro5/allegro_font.h>
 
 /*==================================================================*/
@@ -112,7 +113,13 @@
 /*==================================================================*/
 
 #define PALETTE_SIZE 256
-typedef ALLEGRO_COLOR PALETTE[PALETTE_SIZE];
+
+typedef struct RGB {
+  unsigned char r, g, b;
+} RGB;
+
+typedef RGB PALETTE[PALETTE_SIZE];
+typedef RGB RGB_PALETTE[PALETTE_SIZE]; // Keep for compatibility
 
 #define MAX_JOYSTICKS            8
 #define MAX_JOYSTICK_AXIS        3
@@ -233,12 +240,27 @@ int text_height (const ALLEGRO_FONT * f);
 void textout_ex (ALLEGRO_BITMAP * bmp, const ALLEGRO_FONT * f, const char *s,
                  int x, int y, int color, int bg);
 
+void set_volume (int digi_volume, int midi_volume);
+int play_midi (ALLEGRO_SAMPLE *midi, int loop);
+
+void get_palette (PALETTE pal);
+void fade_in (PALETTE pal, int speed);
+void fade_out (int speed);
+void hsv_to_rgb (float h, float s, float v, int *r, int *g, int *b);
+int fixsqrt (int x);
+
+ALLEGRO_COLOR rgb_to_allegro_color (RGB rgb);
+RGB allegro_color_to_rgb (ALLEGRO_COLOR color);
+
 void rest_callback (unsigned int time, void (*callback) (void));
 void rest (unsigned int time);
 int install_timer ();
 void remove_timer ();
 int install_int (void (*proc) (), int speed);
 void remove_int (void (*proc) ());
+int install_int_ex (void (*proc) (), int speed);
+
+#define MSEC_TO_TIMER(x) (x)
 
 void draw_sprite (ALLEGRO_BITMAP * bmp, ALLEGRO_BITMAP * sprite, int x,
                   int y);
