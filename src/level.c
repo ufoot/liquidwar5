@@ -55,6 +55,8 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "backport.h"
+#include "backportgui.h"
 #include "back.h"
 #include "config.h"
 #include "dialog.h"
@@ -187,8 +189,8 @@ display_chosen_level (void)
     {
       max_w = menu_real_x (MENU_W_SAMPLE);
       max_h = menu_real_y (MENU_H_SAMPLE);
-      bmp_w = pour_voir->w;
-      bmp_h = pour_voir->h;
+      bmp_w = al_get_bitmap_width (pour_voir);
+      bmp_h = al_get_bitmap_height (pour_voir);
       if (max_w * bmp_h < max_h * bmp_w)
 
         {
@@ -222,7 +224,7 @@ display_chosen_level (void)
       if (pour_voir)
 
         {
-          stretch_blit (pour_voir, screen, 0, 0, pour_voir->w, pour_voir->h,
+          stretch_blit (pour_voir, screen, 0, 0, al_get_bitmap_width (pour_voir), al_get_bitmap_height (pour_voir),
                         menu_real_x (x1), menu_real_x (y1),
                         menu_real_x (MENU_W_LEVEL),
                         menu_real_x (MENU_W_LEVEL));
@@ -243,7 +245,7 @@ display_chosen_level (void)
       if (pour_voir)
 
         {
-          stretch_blit (pour_voir, screen, 0, 0, pour_voir->w, pour_voir->h,
+          stretch_blit (pour_voir, screen, 0, 0, al_get_bitmap_width (pour_voir), al_get_bitmap_height (pour_voir),
                         menu_real_x (x8), menu_real_x (y1),
                         menu_real_x (MENU_W_LEVEL),
                         menu_real_x (MENU_W_LEVEL));

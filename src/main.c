@@ -52,8 +52,7 @@
 /* includes                                                         */
 /*==================================================================*/
 
-#include <allegro5/allegro.h>
-
+#include "backport.h"
 #include "bigdata.h"
 #include "config.h"
 #include "disk.h"
@@ -126,10 +125,3 @@ main (int argc, char **argv)
 
   return 0;
 }
-
-#ifdef WIN32
-END_OF_MAIN ()
-#endif
-#ifdef UNIX
-  END_OF_MAIN ();
-#endif
