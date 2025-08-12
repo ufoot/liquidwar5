@@ -20,7 +20,7 @@ BEGIN
             VALUE "FileDescription", "Liquid War 5.7.0 for Microsoft Windows\0"
             VALUE "FileVersion", "5.7.0-1\0"
             VALUE "InternalName", "liquidwar\0"
-            VALUE "LegalCopyright", "Copyright (C) 1998-2020 Christian Mauduit\0"
+            VALUE "LegalCopyright", "Copyright (C) 1998-2025 Christian Mauduit\0"
             VALUE "OriginalFilename", "lwwin.exe\0"
             VALUE "ProductName", "Liquid War\0"
             VALUE "ProductVersion", "5.7.0\0"
