@@ -54,6 +54,7 @@
 
 #include <allegro5/allegro.h>
 
+#include "backport.h"
 #include "alleg2.h"
 #include "army.h"
 #include "back.h"
@@ -100,7 +101,7 @@ init_info_bar (int w, int h, int epaisseur)
   ALLEGRO_BITMAP *front, *back;
 
   if (INFO_BAR)
-    destroy_bitmap (INFO_BAR);
+    al_destroy_bitmap (INFO_BAR);
   INFO_BAR = my_create_bitmap (w, h);
   INFO_BAR_BACK = my_create_bitmap (w, h);
 
@@ -120,8 +121,8 @@ init_info_bar (int w, int h, int epaisseur)
                                  LW_NETWORK_ON, LW_RANDOM_ON,
                                  CONFIG_USE_DEFAULT_TEXTURE);
 
-          for (y = 0; y < h; y += front->h)
-            for (x = epaisseur + 1; x < w; x += front->w)
+          for (y = 0; y < h; y += al_get_bitmap_height(front))
+            for (x = epaisseur + 1; x < w; x += al_get_bitmap_width(front))
               draw_sprite (INFO_BAR, front, x, y);
 
           INFO_BAR_POS_W = w - epaisseur - 5;
@@ -139,12 +140,12 @@ init_info_bar (int w, int h, int epaisseur)
                      x < INFO_BAR_POS_X[i] + INFO_BAR_POS_W; x++)
                   putpixel (INFO_BAR, x, y,
                             getpixel (back,
-                                      (x - epaisseur - 1) % back->w,
-                                      y % back->h));
+                                      (x - epaisseur - 1) % al_get_bitmap_width(back),
+                                      y % al_get_bitmap_height(back)));
             }
 
-          destroy_bitmap (back);
-          destroy_bitmap (front);
+          al_destroy_bitmap (back);
+          al_destroy_bitmap (front);
         }
       else
         {
@@ -160,8 +161,8 @@ init_info_bar (int w, int h, int epaisseur)
                                  LW_NETWORK_ON, LW_RANDOM_ON,
                                  CONFIG_USE_DEFAULT_TEXTURE);
 
-          for (y = epaisseur + 1; y < h; y += front->h)
-            for (x = 0; x < w; x += front->w)
+          for (y = epaisseur + 1; y < h; y += al_get_bitmap_height(front))
+            for (x = 0; x < w; x += al_get_bitmap_width(front))
               draw_sprite (INFO_BAR, front, x, y);
 
           INFO_BAR_POS_W = (w - 1) / PLAYING_TEAMS - 1;
@@ -179,12 +180,12 @@ init_info_bar (int w, int h, int epaisseur)
                      x < INFO_BAR_POS_X[i] + INFO_BAR_POS_W; x++)
                   putpixel (INFO_BAR, x, y,
                             getpixel (back,
-                                      x % back->w,
-                                      (y - epaisseur - 1) % back->h));
+                                      x % al_get_bitmap_width(back),
+                                      (y - epaisseur - 1) % al_get_bitmap_height(back)));
             }
 
-          destroy_bitmap (back);
-          destroy_bitmap (front);
+          al_destroy_bitmap (back);
+          al_destroy_bitmap (front);
         }
       draw_sprite (INFO_BAR_BACK, INFO_BAR, 0, 0);
     }
@@ -197,12 +198,12 @@ free_info_bar (void)
 {
   if (INFO_BAR)
     {
-      destroy_bitmap (INFO_BAR);
+      al_destroy_bitmap (INFO_BAR);
       INFO_BAR = NULL;
     }
   if (INFO_BAR_BACK)
     {
-      destroy_bitmap (INFO_BAR_BACK);
+      al_destroy_bitmap (INFO_BAR_BACK);
       INFO_BAR_BACK = NULL;
     }
 }

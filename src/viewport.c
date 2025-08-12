@@ -159,7 +159,7 @@ page_flip (void)
     {
       if (NEXT_SCREEN)
         {
-          destroy_bitmap (NEXT_SCREEN);
+          al_destroy_bitmap (NEXT_SCREEN);
         }
 
       lw_info_get_room_for_viewport (&x, &y, &w, &h);
@@ -222,7 +222,7 @@ last_flip (void)
             PAGE_FLIP_H = 0;
         }
 
-      destroy_bitmap (NEXT_SCREEN);
+      al_destroy_bitmap (NEXT_SCREEN);
       NEXT_SCREEN = NULL;
     }
 }

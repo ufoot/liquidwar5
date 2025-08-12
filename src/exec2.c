@@ -71,10 +71,10 @@ lw_exec2_run (char *file, char *commandline)
   int result = 0;
 
   /*
-   * Dummy code to get rid of warnings...
+   * Suppress unused parameter warnings for conditional compilation
    */
-  file = file;
-  commandline = commandline;
+  (void)file;
+  (void)commandline;
 
 #ifdef UNIX
   {

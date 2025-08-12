@@ -394,9 +394,9 @@ lw_map_archive_raw_bmp (ALLEGRO_BITMAP * bmp, PALETTE pal,
               if (temp)
                 convert_to_buffer (sub_bmp, temp, &size, &bg_size);
             }
-          destroy_bitmap (sub_bmp);
+          al_destroy_bitmap (sub_bmp);
         }
-      destroy_bitmap (bmp);
+      al_destroy_bitmap (bmp);
     }
 
   if (temp)
@@ -581,7 +581,7 @@ lw_map_create_bicolor (int num, int fg, int bg,
           log_println_str ("Error: unplayable map!");
         }
 
-      destroy_bitmap (temp);
+      al_destroy_bitmap (temp);
     }
 
   return result;
@@ -645,10 +645,10 @@ lw_map_create_textured (int num, int fg, int bg,
     }
 
   if (bg_tex)
-    destroy_bitmap (bg_tex);
+    al_destroy_bitmap (bg_tex);
 
   if (fg_tex)
-    destroy_bitmap (fg_tex);
+    al_destroy_bitmap (fg_tex);
 
   return result;
 }

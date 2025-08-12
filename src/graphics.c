@@ -63,6 +63,7 @@
 #include "graphics.h"
 #include "help.h"
 #include "menu.h"
+#include "mouse.h"
 #include "sound.h"
 #include "wave.h"
 #include "lang.h"

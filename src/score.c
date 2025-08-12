@@ -441,7 +441,7 @@ display_scores (void)
     }
 
   for (i = 0; i < 3; ++i)
-    destroy_bitmap (eprouvette[i]);
+    al_destroy_bitmap (eprouvette[i]);
   if (retour > 0)
     retour--;
 

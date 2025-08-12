@@ -375,7 +375,7 @@ create_mesh (void)
                                          &CURRENT_AREA_W, &CURRENT_AREA_H);
           free_last_big_data_top ();
         }
-      destroy_bitmap (map);
+      al_destroy_bitmap (map);
     }
   if (CURRENT_MESH == NULL)
     retour = -1;                /* pas assez de memoire */

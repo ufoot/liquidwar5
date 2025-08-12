@@ -305,7 +305,7 @@ lw_texture_archive_raw (const char *filename)
               texture_8to5 (bmp, pal, temp, 0, TEXTURE_COLOR_NUMBER, f);
             }
         }
-      destroy_bitmap (bmp);
+      al_destroy_bitmap (bmp);
     }
   if (temp)
     {

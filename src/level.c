@@ -206,7 +206,7 @@ display_chosen_level (void)
       sample_y = menu_real_y (y1) + (max_h - sample_h) / 2;
       stretch_blit (pour_voir, screen, 0, 0, bmp_w, bmp_h, sample_x,
                     sample_y, sample_w, sample_h);
-      destroy_bitmap (pour_voir);
+      al_destroy_bitmap (pour_voir);
     }
   if (!lw_maptex_is_custom_texture_used
       (CONFIG_LEVEL_MAP, CONFIG_LEVEL_FG, 0, LW_RANDOM_ON,
@@ -226,7 +226,7 @@ display_chosen_level (void)
                         menu_real_x (x1), menu_real_x (y1),
                         menu_real_x (MENU_W_LEVEL),
                         menu_real_x (MENU_W_LEVEL));
-          destroy_bitmap (pour_voir);
+          al_destroy_bitmap (pour_voir);
         }
     }
   if (!lw_maptex_is_custom_texture_used
@@ -247,7 +247,7 @@ display_chosen_level (void)
                         menu_real_x (x8), menu_real_x (y1),
                         menu_real_x (MENU_W_LEVEL),
                         menu_real_x (MENU_W_LEVEL));
-          destroy_bitmap (pour_voir);
+          al_destroy_bitmap (pour_voir);
         }
     }
 }
