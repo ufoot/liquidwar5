@@ -1371,11 +1371,9 @@ int exists(const char *filename) {
 
 // Dummy graphics driver for compatibility
 static char dummy_driver_name[] = "Allegro 5 Display";
-static struct {
-  char *ascii_name;
-} dummy_gfx_driver = { dummy_driver_name };
+static LW_GFX_DRIVER_INFO dummy_gfx_driver = { dummy_driver_name };
 
-struct { char *ascii_name; } *gfx_driver = &dummy_gfx_driver;
+LW_GFX_DRIVER_INFO *gfx_driver = &dummy_gfx_driver;
 
 // Black palette for compatibility
 static PALETTE black_palette_data;

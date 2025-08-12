@@ -275,7 +275,11 @@ void set_palette(void *palette);
 void set_window_title(const char *title);
 
 // Graphics driver info
-extern struct { char *ascii_name; } *gfx_driver;
+typedef struct {
+  char *ascii_name;
+} LW_GFX_DRIVER_INFO;
+
+extern LW_GFX_DRIVER_INFO *gfx_driver;
 extern void *black_palette;
 
 #endif // LIQUID_WAR_INCLUDE_BACKPORT
