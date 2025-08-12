@@ -55,9 +55,14 @@
 /* includes                                                         */
 /*==================================================================*/
 
+#ifndef ALLEGRO_NO_MAIN
+#define ALLEGRO_NO_MAIN
+#endif
+
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_audio.h>
 #include <allegro5/allegro_font.h>
+#include <stdbool.h>
 
 /*==================================================================*/
 /* defines                                                          */
@@ -120,6 +125,9 @@ typedef struct RGB {
 
 typedef RGB PALETTE[PALETTE_SIZE];
 typedef RGB RGB_PALETTE[PALETTE_SIZE]; // Keep for compatibility
+
+// Allegro 4 compatibility - BITMAP is now ALLEGRO_BITMAP
+typedef ALLEGRO_BITMAP BITMAP;
 
 #define MAX_JOYSTICKS            8
 #define MAX_JOYSTICK_AXIS        3
@@ -191,6 +199,11 @@ extern int num_joysticks;
 extern char empty_string[];
 extern volatile char key[];
 
+// GUI color variables for Allegro 4 compatibility
+extern int gui_bg_color;
+extern int gui_fg_color;
+extern int gui_mg_color;
+
 /*==================================================================*/
 /* fonctions globales                                               */
 /*==================================================================*/
@@ -219,6 +232,8 @@ void line (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2,
            int color);
 void ellipse (ALLEGRO_BITMAP * bitmap, int x, int y, int rx, int ry, int color);
 void ellipsefill (ALLEGRO_BITMAP * bitmap, int x, int y, int rx, int ry, int color);
+void circlefill (ALLEGRO_BITMAP * bitmap, int x, int y, int radius, int color);
+void polygon (ALLEGRO_BITMAP * bitmap, int vertices, const int *points, int color);
 
 int usetc (char *s, int c);
 int ugetc (const char *s);
@@ -277,7 +292,9 @@ void stretch_blit (ALLEGRO_BITMAP * source, ALLEGRO_BITMAP * dest,
                    int source_height, int dest_x, int dest_y, int dest_width,
                    int dest_height);
 ALLEGRO_BITMAP *load_bitmap (const char *filename, PALETTE pal);
+int save_bitmap (const char *filename, ALLEGRO_BITMAP *bmp, PALETTE pal);
 ALLEGRO_BITMAP *my_create_bitmap (int w, int h);
+ALLEGRO_BITMAP *create_bitmap_ex (int color_depth, int w, int h);
 ALLEGRO_BITMAP *create_sub_bitmap (ALLEGRO_BITMAP *parent, int x, int y, int w, int h);
 void scroll_screen (int x, int y);
 
@@ -360,6 +377,10 @@ void set_uformat(int format);
 void set_color_depth(int depth);
 void set_color_conversion(int flags);
 void set_close_button_callback(void (*callback)(void));
+
+// Allegro addon functions (stubs if not available)
+bool al_init_acodec_addon(void);
+bool al_init_image_addon(void);
 
 // Global variables for compatibility
 extern char *allegro_id;

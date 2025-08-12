@@ -52,6 +52,7 @@
 /* includes                                                         */
 /*==================================================================*/
 
+#define ALLEGRO_NO_MAIN
 #include "backport.h"
 #include "bigdata.h"
 #include "config.h"
@@ -70,7 +71,7 @@
 /* functions                                                        */
 /*==================================================================*/
 /*------------------------------------------------------------------*/
-  int
+int
 main (int argc, char **argv)
 {
   int init_success = 0;

@@ -124,7 +124,7 @@ init_all ()
   lw_lang_init ();
   set_uformat (U_ASCII);
 
-  log_print_str ("Starting Allegro (http://www.talula.demon.co.uk/allegro)");
+  log_print_str ("Starting Allegro (https://liballeg.org/)");
   display_success (graphics = !allegro_init ());
   log_println ();
 

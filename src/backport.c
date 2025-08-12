@@ -66,6 +66,7 @@
 #include "mutxgen.h"
 #include "thrdgen.h"
 #include "log.h"
+#include "init.h"
 
 /*==================================================================*/
 /* defines                                                          */
@@ -107,6 +108,11 @@ volatile int mouse_x = 0;
 volatile int mouse_y = 0;
 volatile int mouse_z = 0;
 volatile int mouse_b = 0;
+
+// GUI color variables for Allegro 4 compatibility
+int gui_bg_color = 0;
+int gui_fg_color = 15;
+int gui_mg_color = 8;
 int *allegro_errno = &_allegro_errno;
 volatile JOYSTICK_INFO joy[MAX_JOYSTICKS];
 int num_joysticks = 0;
@@ -265,37 +271,37 @@ static void
 _init_rgb_to_palette_map (void)
 {
   // Initialize the 24-bit RGB to palette index lookup table
-  if (_rgb_map_initialized) 
+  if (_rgb_map_initialized)
     {
       return;
     }
-  
+
   // Allocate 16MB for 24-bit RGB space (2^24 = 16,777,216 bytes)
   _rgb_to_palette_map = malloc(16777216);
   if (_rgb_to_palette_map == NULL)
     {
       return;  // Fall back to slow lookup if allocation fails
     }
-  
+
   // Initialize all entries to 255 (invalid palette index)
   memset(_rgb_to_palette_map, 255, 16777216);
-  
+
   // Fill the map with palette colors
   for (int i = 0; i < PALETTE_SIZE; i++)
     {
       float r, g, b, a;
       al_unmap_rgba_f (rgb_to_allegro_color(GLOBAL_PALETTE[i]), &r, &g, &b, &a);
-      
+
       // Convert to 8-bit RGB
       unsigned char r8 = (unsigned char)(r * 255.0f);
       unsigned char g8 = (unsigned char)(g * 255.0f);
       unsigned char b8 = (unsigned char)(b * 255.0f);
-      
+
       // Calculate 24-bit RGB index
       int rgb_index = (r8 << 16) | (g8 << 8) | b8;
       _rgb_to_palette_map[rgb_index] = (unsigned char)i;
     }
-  
+
   _rgb_map_initialized = 1;
 }
 
@@ -310,54 +316,54 @@ getpixel (ALLEGRO_BITMAP * bitmap, int x, int y)
    */
   al_set_target_bitmap (bitmap);
   ALLEGRO_COLOR pixel_color = al_get_pixel (bitmap, x, y);
-  
+
   // Convert to RGB
   float r, g, b, a;
   al_unmap_rgba_f (pixel_color, &r, &g, &b, &a);
   unsigned char r8 = (unsigned char)(r * 255.0f);
   unsigned char g8 = (unsigned char)(g * 255.0f);
   unsigned char b8 = (unsigned char)(b * 255.0f);
-  
+
   // Initialize lookup table if needed
   if (!_rgb_map_initialized)
     {
       _init_rgb_to_palette_map();
     }
-  
+
   // Fast lookup if map is available
   if (_rgb_to_palette_map != NULL)
     {
       int rgb_index = (r8 << 16) | (g8 << 8) | b8;
       unsigned char palette_index = _rgb_to_palette_map[rgb_index];
-      
+
       if (palette_index != 255)  // Found exact match
         {
           return (int)palette_index;
         }
     }
-  
+
   // Fallback: find closest palette color by distance
   int best_match = 0;
   float best_distance = 9999999.0f;
-  
+
   for (int i = 0; i < PALETTE_SIZE; i++)
     {
       float pr, pg, pb, pa;
       al_unmap_rgba_f (rgb_to_allegro_color(GLOBAL_PALETTE[i]), &pr, &pg, &pb, &pa);
-      
+
       // Calculate distance (simple RGB distance)
       float dr = r - pr;
       float dg = g - pg;
       float db = b - pb;
       float distance = dr * dr + dg * dg + db * db;
-      
+
       if (distance < best_distance)
         {
           best_distance = distance;
           best_match = i;
         }
     }
-  
+
   return best_match;
 }
 
@@ -1121,7 +1127,7 @@ load_bitmap (const char *filename, PALETTE pal)
   // https://liballeg.org/stabledocs/en/alleg014.html#load_bitmap
   ALLEGRO_BITMAP *bmp;
   (void) pal; // Ignore palette parameter since Allegro 5 handles palettes differently
-  
+
   bmp = al_load_bitmap (filename);
   return bmp;
 }
@@ -1143,7 +1149,7 @@ play_midi (ALLEGRO_SAMPLE *midi, int loop)
 {
   // https://liballeg.org/stabledocs/en/alleg011.html#play_midi
   static ALLEGRO_SAMPLE_INSTANCE *current_music = NULL;
-  
+
   // Stop any currently playing music
   if (current_music)
     {
@@ -1151,19 +1157,19 @@ play_midi (ALLEGRO_SAMPLE *midi, int loop)
       al_destroy_sample_instance (current_music);
       current_music = NULL;
     }
-  
+
   if (midi)
     {
       current_music = al_create_sample_instance (midi);
       if (current_music)
         {
-          al_set_sample_instance_playmode (current_music, 
+          al_set_sample_instance_playmode (current_music,
             loop ? ALLEGRO_PLAYMODE_LOOP : ALLEGRO_PLAYMODE_ONCE);
           al_attach_sample_instance_to_mixer (current_music, al_get_default_mixer ());
           return al_play_sample_instance (current_music) ? 1 : 0;
         }
     }
-  
+
   return midi ? 0 : 1; // Return 1 for stop (NULL), 0 for failed play
 }
 
@@ -1174,35 +1180,35 @@ play_sample (ALLEGRO_SAMPLE *spl, int vol, int pan, int freq, int loop)
   // https://liballeg.org/stabledocs/en/alleg011.html#play_sample
   // Allegro 4: play_sample(sample, vol, pan, freq, loop)
   // vol: 0-255, pan: 0-255 (128=center), freq: 1000=normal, loop: 0=once, 1=loop
-  
+
   if (!spl) {
     return -1;
   }
-  
+
   ALLEGRO_SAMPLE_INSTANCE *instance = al_create_sample_instance(spl);
   if (!instance) {
     return -1;
   }
-  
+
   // Set volume (0-255 -> 0.0-1.0)
   float al_vol = (float)vol / 255.0f;
   al_set_sample_instance_gain(instance, al_vol);
-  
+
   // Set pan (0-255 -> -1.0 to 1.0, where 128 = 0.0 center)
   float al_pan = ((float)pan - 128.0f) / 128.0f;
   al_set_sample_instance_pan(instance, al_pan);
-  
+
   // Set frequency/speed (1000 = normal speed)
   float speed = (float)freq / 1000.0f;
   al_set_sample_instance_speed(instance, speed);
-  
+
   // Set looping
   ALLEGRO_PLAYMODE playmode = loop ? ALLEGRO_PLAYMODE_LOOP : ALLEGRO_PLAYMODE_ONCE;
   al_set_sample_instance_playmode(instance, playmode);
-  
+
   // Attach to default mixer and play
   al_attach_sample_instance_to_mixer(instance, al_get_default_mixer());
-  
+
   if (al_play_sample_instance(instance)) {
     // In Allegro 4, play_sample returned the voice number (positive)
     // We'll return 1 to indicate success (can't return actual voice)
@@ -1293,14 +1299,14 @@ int
 install_joystick (int type)
 {
   // https://liballeg.org/stabledocs/en/alleg007.html#install_joystick
-  
+
   (void) type; // Ignore type parameter since Allegro 5 auto-detects
-  
+
   if (!al_install_joystick ())
     {
       return -1;
     }
-  
+
   num_joysticks = al_get_num_joysticks ();
   return 0;
 }
@@ -1558,12 +1564,12 @@ int set_gfx_mode(int card, int w, int h, int v_w, int v_h) {
   // Real display creation should be handled at a higher level
   (void)card;
   (void)v_w; // Virtual width not used in current implementation
-  
+
   // Set the global screen dimensions for compatibility
   SCREEN_W = w;
   SCREEN_H = h;
   VIRTUAL_H = v_h ? v_h : h * 2; // Set virtual height for page flipping
-  
+
   return 0; // Success in Allegro 4 convention
 }
 
@@ -1613,26 +1619,40 @@ int install_allegro(int system_id, int *errno_ptr, int (*atexit_ptr)()) {
   (void)system_id;
   (void)errno_ptr;
   (void)atexit_ptr;
-  
+
   return allegro_init();
 }
 
 /*------------------------------------------------------------------*/
 int allegro_init(void) {
   // Initialize Allegro 5 core system
-  if (!al_install_system(ALLEGRO_VERSION_INT, NULL)) {
+  log_print_str(".");
+  int core=  al_init ();
+  if (!core) {
     return -1; // Allegro 4 returns non-zero on failure
   }
 
   // Initialize subsystems that the game expects to be available
   // These correspond to the various install_* functions in Allegro 4
-  
-  // Keyboard support
-  if (!al_install_keyboard()) {
+
+  // Display support
+  log_print_str(".");
+  allegro_display=al_create_display(640,480); // [TODO] handle different res here
+  bool display_ok=allegro_display!=NULL;
+  if (!display_ok) {
     return -1;
   }
 
-  // Mouse support  
+  // Keyboard support
+  log_print_str(".");
+  int keyboard=al_install_keyboard();
+  if (!keyboard) {
+    return -1;
+  }
+
+  // Mouse support
+  log_print_str(".");
+  int mouse=al_install_mouse();
   if (!al_install_mouse()) {
     return -1;
   }
@@ -1641,23 +1661,35 @@ int allegro_init(void) {
   // al_install_joystick(); - removed, now handled by install_joystick() function
 
   // Audio support (optional)
+  log_print_str(".");
   al_install_audio();
+  log_print_str(".");
   al_init_acodec_addon();
 
   // Image loading support
+  log_print_str(".");
   if (!al_init_image_addon()) {
     return -1;
   }
 
   // Font support
+  log_print_str(".");
   if (!al_init_font_addon()) {
     return -1;
   }
 
   // Primitives for drawing operations
+  log_print_str(".");
   if (!al_init_primitives_addon()) {
     return -1;
   }
+
+#ifdef ALLEGRO_ANDROID
+  log_print_str(".");
+  al_install_touch_input();
+  log_print_str(".");
+  al_android_set_apk_file_interface();
+#endif
 
   return 0; // Success in Allegro 4 style (0 = success)
 }
@@ -1704,7 +1736,7 @@ int install_sound(int digi_card, int midi_card, const char *cfg_path) {
   (void)digi_card;
   (void)midi_card;
   (void)cfg_path;
-  
+
   return al_is_audio_installed() ? 0 : -1;
 }
 
@@ -1739,7 +1771,7 @@ void fade_in (PALETTE pal, int speed) {
 
 /*------------------------------------------------------------------*/
 void fade_out (int speed) {
-  // In Allegro 4, this would gradually fade the screen to black  
+  // In Allegro 4, this would gradually fade the screen to black
   // In Allegro 5, we simulate this (no actual fading for now)
   (void)speed;  // Speed parameter ignored
   // TODO: Could implement actual screen fading using al_draw_tinted_bitmap
@@ -1751,20 +1783,20 @@ void hsv_to_rgb (float h, float s, float v, int *r, int *g, int *b) {
   // Based on standard HSV to RGB conversion algorithm
   int i;
   float f, p, q, t;
-  
+
   if (s == 0) {
     // Achromatic (grey)
     *r = *g = *b = (int)(v * 255);
     return;
   }
-  
+
   h /= 60; // sector 0 to 5
   i = (int)h;
   f = h - i; // fractional part of h
   p = v * (1 - s);
   q = v * (1 - s * f);
   t = v * (1 - s * (1 - f));
-  
+
   switch (i) {
     case 0:
       *r = (int)(v * 255);
@@ -1805,7 +1837,7 @@ int fixsqrt (int x) {
   // Input and output are in 16.16 fixed-point format
   // Simple implementation using floating point
   if (x <= 0) return 0;
-  
+
   // Convert from fixed-point to float, take sqrt, convert back
   float f = (float)x / 65536.0f;
   f = sqrtf(f);
@@ -1824,13 +1856,13 @@ RGB allegro_color_to_rgb (ALLEGRO_COLOR color) {
   // Convert ALLEGRO_COLOR to RGB structure
   RGB rgb;
   unsigned char r, g, b;
-  
+
   al_unmap_rgb(color, &r, &g, &b);
   // Both use 8-bit values (0-255)
   rgb.r = r;
-  rgb.g = g; 
+  rgb.g = g;
   rgb.b = b;
-  
+
   return rgb;
 }
 
@@ -1850,7 +1882,7 @@ void ellipse (ALLEGRO_BITMAP * bitmap, int x, int y, int rx, int ry, int color) 
     return;
   }
   ALLEGRO_COLOR al_color = rgb_to_allegro_color(GLOBAL_PALETTE[color]);
-  
+
   ALLEGRO_BITMAP *old_target = al_get_target_bitmap();
   al_set_target_bitmap(bitmap);
   al_draw_ellipse(x, y, rx, ry, al_color, 1.0);
@@ -1864,11 +1896,49 @@ void ellipsefill (ALLEGRO_BITMAP * bitmap, int x, int y, int rx, int ry, int col
     return;
   }
   ALLEGRO_COLOR al_color = rgb_to_allegro_color(GLOBAL_PALETTE[color]);
-  
+
   ALLEGRO_BITMAP *old_target = al_get_target_bitmap();
   al_set_target_bitmap(bitmap);
   al_draw_filled_ellipse(x, y, rx, ry, al_color);
   al_set_target_bitmap(old_target);
+}
+
+/*------------------------------------------------------------------*/
+void circlefill (ALLEGRO_BITMAP * bitmap, int x, int y, int radius, int color) {
+  // Draw filled circle - Allegro 4 compatibility
+  if (color < 0 || color >= PALETTE_SIZE) {
+    return;
+  }
+  ALLEGRO_COLOR al_color = rgb_to_allegro_color(GLOBAL_PALETTE[color]);
+
+  ALLEGRO_BITMAP *old_target = al_get_target_bitmap();
+  al_set_target_bitmap(bitmap);
+  al_draw_filled_circle(x, y, radius, al_color);
+  al_set_target_bitmap(old_target);
+}
+
+/*------------------------------------------------------------------*/
+void polygon (ALLEGRO_BITMAP * bitmap, int vertices, const int *points, int color) {
+  // Draw polygon - Allegro 4 compatibility
+  if (color < 0 || color >= PALETTE_SIZE || vertices < 3) {
+    return;
+  }
+  ALLEGRO_COLOR al_color = rgb_to_allegro_color(GLOBAL_PALETTE[color]);
+
+  // Convert int array to float array for Allegro 5
+  float *float_points = malloc(vertices * 2 * sizeof(float));
+  if (!float_points) return;
+
+  for (int i = 0; i < vertices * 2; i++) {
+    float_points[i] = (float)points[i];
+  }
+
+  ALLEGRO_BITMAP *old_target = al_get_target_bitmap();
+  al_set_target_bitmap(bitmap);
+  al_draw_polygon(float_points, vertices, ALLEGRO_LINE_JOIN_NONE, al_color, 1.0, 0);
+  al_set_target_bitmap(old_target);
+
+  free(float_points);
 }
 
 /*------------------------------------------------------------------*/
@@ -1900,26 +1970,37 @@ int bestfit_color(PALETTE pal, int r, int g, int b) {
   int best_index = 0;
   int best_distance = INT_MAX;
   int i;
-  
+
   for (i = 0; i < 256; i++) {
     int dr = r - pal[i].r;
     int dg = g - pal[i].g;
     int db = b - pal[i].b;
     int distance = dr*dr + dg*dg + db*db;
-    
+
     if (distance < best_distance) {
       best_distance = distance;
       best_index = i;
       if (distance == 0) break; // Exact match found
     }
   }
-  
+
   return best_index;
 }
 
+
 /*------------------------------------------------------------------*/
-ALLEGRO_BITMAP *my_create_bitmap(int w, int h) {
-  // Allegro 4 compatibility function - creates a bitmap
+int save_bitmap(const char *filename, ALLEGRO_BITMAP *bmp, PALETTE pal) {
+  // Allegro 4 compatibility function - saves a bitmap to file
+  // In Allegro 5, we use al_save_bitmap and ignore the palette parameter
+  (void)pal; // Palette ignored in Allegro 5
+  return al_save_bitmap(filename, bmp) ? 0 : -1; // Allegro 4 returns 0 on success
+}
+
+/*------------------------------------------------------------------*/
+ALLEGRO_BITMAP *create_bitmap_ex(int color_depth, int w, int h) {
+  // Allegro 4 compatibility function - creates a bitmap with specific color depth
+  // In Allegro 5, we ignore the color depth parameter and create a standard bitmap
+  (void)color_depth; // Ignore color depth - Allegro 5 handles this automatically
   return al_create_bitmap(w, h);
 }
 
@@ -1938,4 +2019,20 @@ void scroll_screen(int x, int y) {
   (void)y;
   // Note: This function was used for hardware scrolling in Allegro 4
   // Modern systems handle this through different mechanisms
+}
+
+/*------------------------------------------------------------------*/
+bool al_init_acodec_addon(void) {
+  // Allegro 5 audio codec addon initialization
+  // This should be provided by liballegro_acodec, but if not available
+  // we provide a stub that returns success
+  return true;
+}
+
+/*------------------------------------------------------------------*/
+bool al_init_image_addon(void) {
+  // Allegro 5 image addon initialization
+  // This should be provided by liballegro_image, but if not available
+  // we provide a stub that returns success
+  return true;
 }

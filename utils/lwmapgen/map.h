@@ -9,7 +9,7 @@
 #define LWMAPGEN_MAP_H
 
 
-#include <allegro.h>
+#include "../../src/backport.h"
 #include "func.h"
 #include "misc.h"
 
