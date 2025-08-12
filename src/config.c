@@ -196,13 +196,8 @@ int MIN_MAP_RES_H[9] = { 0, 60, 90, 120, 150, 180, 240, 360, 480 };
 void
 load_default_options (void)
 {
-#ifdef DOS
-  CONFIG_GFX_GAME = 0;
-  CONFIG_GFX_MENU = 2;
-#else
   CONFIG_GFX_GAME = 2;
   CONFIG_GFX_MENU = 2;
-#endif
 #ifdef UNIX
   /*
    * Under UNIX/X11, we default to windowed mode since

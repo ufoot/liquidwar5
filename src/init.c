@@ -55,9 +55,6 @@
 #include <allegro5/allegro.h>
 #include <stdlib.h>
 #include <time.h>
-#ifdef DOS
-#include <dos.h>
-#endif
 
 #include "backport.h"
 #include "base.h"
@@ -135,9 +132,6 @@ init_all ()
     {
       LW_INIT_ALLEGRO_OK = 1;
 
-#ifdef DOS
-      set_gfx_mode (GFX_TEXT, 0, 0, 0, 0);
-#endif
       log_print_str ("Allegro ID : ");
       log_println_str (allegro_id);
       log_println ();

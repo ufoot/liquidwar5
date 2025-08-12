@@ -116,7 +116,6 @@ lw_langfr_init ()
   LW_LANGFR_DATA[LW_LANG_STRING_MENU_OPTIONS] = "Options";
   LW_LANGFR_DATA[LW_LANG_STRING_MENU_ABOUT] = "A propos";
   LW_LANGFR_DATA[LW_LANG_STRING_MENU_EXIT] = "Quitter";
-  LW_LANGFR_DATA[LW_LANG_STRING_MENU_EXITDOS] = "Revenir a DOS";
   LW_LANGFR_DATA[LW_LANG_STRING_MENU_EXITWINDOWS] = "Quitter";
   LW_LANGFR_DATA[LW_LANG_STRING_MENU_EXITUNIX] = "Quitter";
   LW_LANGFR_DATA[LW_LANG_STRING_MENU_BACK] = "Retour a LW";
@@ -332,12 +331,12 @@ lw_langfr_init ()
   LW_LANGFR_DATA[LW_LANG_STRING_POPUP_INITFAIL] =
     "Echec lors de l'initialisation.";
   LW_LANGFR_DATA[LW_LANG_STRING_POPUP_MEMTROUBLE] =
-    "Pas assez de mémoire pour les bitmaps.";
-  LW_LANGFR_DATA[LW_LANG_STRING_POPUP_BIGDATA] = "Pas assez de mémoire.";
+    "Pas assez de mï¿½moire pour les bitmaps.";
+  LW_LANGFR_DATA[LW_LANG_STRING_POPUP_BIGDATA] = "Pas assez de mï¿½moire.";
   LW_LANGFR_DATA[LW_LANG_STRING_POPUP_LOADFAIL] =
-    "Impossible de charger le fichier de données. Etes-vous sûr que Liquid War est correctement installé?";
+    "Impossible de charger le fichier de donnï¿½es. Etes-vous sï¿½r que Liquid War est correctement installï¿½?";
   LW_LANGFR_DATA[LW_LANG_STRING_POPUP_CUSTOMFAIL] =
-    "Impossible de charger les fichiers de données utilisateur.";
+    "Impossible de charger les fichiers de donnï¿½es utilisateur.";
   LW_LANGFR_DATA[LW_LANG_STRING_POPUP_GRAPHICSFAIL] =
     "Impossible de passer en mode graphique.";
 

@@ -7,7 +7,7 @@
 - **License**: GPL v2
 - **Language**: C (with some assembly optimizations)
 - **Version**: 5.7.0
-- **Platform**: Cross-platform (Linux, Windows, macOS, DOS)
+- **Platform**: Cross-platform (Linux, Windows, macOS)
 - **Graphics**: Allegro 5 game library
 - **Homepage**: https://ufoot.org/liquidwar/v5
 
@@ -85,7 +85,7 @@ liquidwar5/
 ### Network System
 - `network.c`, `netgame.c`, `netplay.c` - Multiplayer networking
 - `server.c`, `protocol.c` - Server implementation
-- `sock*.c` - Socket abstraction (Unix/Windows/DOS)
+- `sock*.c` - Socket abstraction (Unix/Windows)
 
 ### Platform Support
 - `exec*.c` - Platform-specific execution
@@ -105,7 +105,7 @@ liquidwar5/
 - **Custom Content**: User maps, textures, and music
 
 ### Technical Features
-- **Cross-platform**: Linux, Windows, macOS, DOS support
+- **Cross-platform**: Linux, Windows, macOS support
 - **Assembly Optimizations**: i386 assembly for performance-critical code
 - **Flexible Graphics**: Multiple resolution support
 - **Modular Design**: Extensible map and texture system

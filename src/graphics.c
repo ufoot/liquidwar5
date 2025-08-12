@@ -252,16 +252,7 @@ graphic_options (void)
 
       d[11].proc = my_button_proc;
       d[11].dp = get_fullscreen_str ();
-#ifdef DOS
-      /*
-       * Under DOS, fullscreen or windowed makes no sense, so we simply
-       * remove the button to avoid confusion.
-       */
-      d[4].flags |= D_HIDDEN;
-      d[11].flags = D_EXIT | D_HIDDEN;
-#else
       d[11].flags = D_EXIT;
-#endif
 
       d[16].proc = my_button_proc;
       d[16].dp = get_page_flip_str ();
