@@ -128,7 +128,7 @@ advanced_options (void)
       standard_button (d + i + 12, 1, y_pos[i], 2, 8);
       d[i + 12].proc = my_slider_proc;
     }
-  d[17].proc = d[18].proc = d[19].proc = my_button_proc;
+  d[16].proc = d[17].proc = my_button_proc;
 
   quick_buttons (d);
   d[4].dp = lw_lang_string (LW_LANG_STRING_ADVANCED_ATTACK);

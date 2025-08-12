@@ -52,8 +52,7 @@
 /* includes                                                         */
 /*==================================================================*/
 
-#include <allegro5/allegro.h>
-
+#include "backport.h"
 #include "config.h"
 #include "joystick.h"
 #include "startup.h"
@@ -249,7 +248,7 @@ my_poll_joystick (void)
                 {
                   JOY2_MIN_X = MIN (joy[1].stick[0].axis[0].pos, JOY2_MIN_X);
                   JOY2_MAX_X = MAX (joy[1].stick[0].axis[0].pos, JOY2_MAX_X);
-                  JOY2_MID_Y = (JOY2_MIN_X + JOY2_MAX_X) / 2;
+                  JOY2_MID_X = (JOY2_MIN_X + JOY2_MAX_X) / 2;
                   JOY2_MIN_Y = MIN (joy[1].stick[0].axis[1].pos, JOY2_MIN_Y);
                   JOY2_MAX_Y = MAX (joy[1].stick[0].axis[1].pos, JOY2_MAX_Y);
                   JOY2_MID_Y = (JOY2_MIN_Y + JOY2_MAX_Y) / 2;
@@ -268,7 +267,7 @@ my_poll_joystick (void)
                      (JOY2_MIN_X + 2 * JOY2_MID_X) / 3) ? 1 : 0;
                 }
             }
-          if (joy[0].num_buttons >= 2)
+          if (joy[1].num_buttons >= 2)
             {
               JOYSTICK_CONTROL_JOY2_B1 = joy[1].button[0].b;
               JOYSTICK_CONTROL_JOY2_B2 = joy[1].button[1].b;

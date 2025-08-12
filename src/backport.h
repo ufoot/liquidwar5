@@ -119,6 +119,11 @@ typedef ALLEGRO_COLOR PALETTE[PALETTE_SIZE];
 #define MAX_JOYSTICK_STICKS      5
 #define MAX_JOYSTICK_BUTTONS     32
 
+#define JOY_TYPE_AUTODETECT      0
+#define JOY_TYPE_2PADS           1
+#define JOY_TYPE_4BUTTON         2
+#define JOY_TYPE_STANDARD        3
+
 /* information about a single joystick axis */
 typedef struct JOYSTICK_AXIS_INFO
 {
@@ -156,6 +161,9 @@ typedef struct JOYSTICK_INFO
 
 #define KEY_MAX 127
 
+#define KB_NORMAL    0x01
+#define KB_EXTENDED  0x02
+
 /*==================================================================*/
 /* variables globales                                               */
 /*==================================================================*/
@@ -170,6 +178,7 @@ extern volatile int mouse_z;
 extern volatile int mouse_b;
 extern int *allegro_errno;
 extern volatile JOYSTICK_INFO joy[MAX_JOYSTICKS];
+extern int num_joysticks;
 extern char empty_string[];
 extern volatile char key[];
 
@@ -243,6 +252,7 @@ void release_bitmap (ALLEGRO_BITMAP * bmp);
 void release_screen ();
 void set_clip_rect (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2);
 
+int install_joystick (int type);
 int poll_joystick ();
 
 int keypressed ();
@@ -303,6 +313,7 @@ extern LW_GFX_DRIVER_INFO *joystick_driver;
 int allegro_init(void);
 int install_allegro(int system_id, int *errno_ptr, int (*atexit_ptr)());
 int install_keyboard(void);
+void remove_keyboard(void);
 int install_mouse(void);
 int install_sound(int digi_card, int midi_card, const char *cfg_path);
 void set_uformat(int format);

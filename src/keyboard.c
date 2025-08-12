@@ -52,8 +52,7 @@
 /* includes                                                         */
 /*==================================================================*/
 
-#include <allegro5/allegro.h>
-
+#include "backport.h"
 #include "config.h"
 #include "joystick.h"
 #include "keyboard.h"
@@ -104,62 +103,62 @@ is_touched_key (int i)
   if (CONFIG_JOYSTICK_ON)
     switch (i)
       {
-      case ALLEGRO_KEY_JOY1_UP:
+      case KEY_JOY1_UP:
         found = 1;
         retval = JOYSTICK_CONTROL_JOY1_UP;
         break;
-      case ALLEGRO_KEY_JOY1_RIGHT:
+      case KEY_JOY1_RIGHT:
         found = 1;
         retval = JOYSTICK_CONTROL_JOY1_RIGHT;
         break;
-      case ALLEGRO_KEY_JOY1_DOWN:
+      case KEY_JOY1_DOWN:
         found = 1;
         retval = JOYSTICK_CONTROL_JOY1_DOWN;
         break;
-      case ALLEGRO_KEY_JOY1_LEFT:
+      case KEY_JOY1_LEFT:
         found = 1;
         retval = JOYSTICK_CONTROL_JOY1_LEFT;
         break;
 
-      case ALLEGRO_KEY_JOY1_B1:
+      case KEY_JOY1_B1:
         found = 1;
         retval = JOYSTICK_CONTROL_JOY1_B1;
         break;
-      case ALLEGRO_KEY_JOY1_B2:
+      case KEY_JOY1_B2:
         found = 1;
         retval = JOYSTICK_CONTROL_JOY1_B2;
         break;
-      case ALLEGRO_KEY_JOY1_B3:
+      case KEY_JOY1_B3:
         found = 1;
         retval = JOYSTICK_CONTROL_JOY1_B3;
         break;
-      case ALLEGRO_KEY_JOY1_B4:
+      case KEY_JOY1_B4:
         found = 1;
         retval = JOYSTICK_CONTROL_JOY1_B4;
         break;
 
-      case ALLEGRO_KEY_JOY2_UP:
+      case KEY_JOY2_UP:
         found = 1;
         retval = JOYSTICK_CONTROL_JOY2_UP;
         break;
-      case ALLEGRO_KEY_JOY2_RIGHT:
+      case KEY_JOY2_RIGHT:
         found = 1;
         retval = JOYSTICK_CONTROL_JOY2_RIGHT;
         break;
-      case ALLEGRO_KEY_JOY2_DOWN:
+      case KEY_JOY2_DOWN:
         found = 1;
         retval = JOYSTICK_CONTROL_JOY2_DOWN;
         break;
-      case ALLEGRO_KEY_JOY2_LEFT:
+      case KEY_JOY2_LEFT:
         found = 1;
         retval = JOYSTICK_CONTROL_JOY2_LEFT;
         break;
 
-      case ALLEGRO_KEY_JOY2_B1:
+      case KEY_JOY2_B1:
         found = 1;
         retval = JOYSTICK_CONTROL_JOY2_B1;
         break;
-      case ALLEGRO_KEY_JOY2_B2:
+      case KEY_JOY2_B2:
         found = 1;
         retval = JOYSTICK_CONTROL_JOY2_B2;
         break;

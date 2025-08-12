@@ -105,6 +105,7 @@ volatile int mouse_z = 0;
 volatile int mouse_b = 0;
 int *allegro_errno = &_allegro_errno;
 volatile JOYSTICK_INFO joy[MAX_JOYSTICKS];
+int num_joysticks = 0;
 char empty_string[] = { 0, 0, 0, 0 };
 volatile char key[KEY_MAX];
 
@@ -1146,12 +1147,29 @@ set_clip_rect (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2)
 
 /*------------------------------------------------------------------*/
 int
+install_joystick (int type)
+{
+  // https://liballeg.org/stabledocs/en/alleg007.html#install_joystick
+  
+  (void) type; // Ignore type parameter since Allegro 5 auto-detects
+  
+  if (!al_install_joystick ())
+    {
+      return -1;
+    }
+  
+  num_joysticks = al_get_num_joysticks ();
+  return 0;
+}
+
+/*------------------------------------------------------------------*/
+int
 poll_joystick ()
 {
   // https://liballeg.org/stabledocs/en/alleg007.html#poll_joystick
 
   memset ((void *) &joy[0], 0, sizeof (joy));
-  int num_joysticks = al_get_num_joysticks ();
+  num_joysticks = al_get_num_joysticks ();
   int j = 0;
   for (j = 0; j < num_joysticks && j < MAX_JOYSTICKS; j++)
     {
@@ -1294,6 +1312,14 @@ scancode_to_ascii (int scancode)
   free (name);
 
   return ascii;
+}
+
+/*------------------------------------------------------------------*/
+void
+remove_keyboard (void)
+{
+  // In Allegro 5, we don't need to explicitly remove keyboard
+  // This function is provided for compatibility and does nothing
 }
 
 /*------------------------------------------------------------------*/
@@ -1464,8 +1490,8 @@ int allegro_init(void) {
     return -1;
   }
 
-  // Joystick support (optional, but try to install it)
-  al_install_joystick();
+  // Joystick support (optional, will be initialized by install_joystick() when needed)
+  // al_install_joystick(); - removed, now handled by install_joystick() function
 
   // Audio support (optional)
   al_install_audio();
