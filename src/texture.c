@@ -53,7 +53,7 @@
 /*==================================================================*/
 
 #include "base.h"
-#include "alleg2.h"
+#include "backport.h"
 #include "bigdata.h"
 #include "texture.h"
 #include "disk.h"
@@ -113,8 +113,8 @@ recalculate_number_of_colors (int max_number, ALLEGRO_BITMAP * bmp,
   for (i = 0; i < 256; ++i)
     pal2[i] = color;
 
-  for (y = 0; y < bmp->h && n < max_number; ++y)
-    for (x = 0; x < bmp->w && n < max_number; ++x)
+  for (y = 0; y < al_get_bitmap_height(bmp) && n < max_number; ++y)
+    for (x = 0; x < al_get_bitmap_width(bmp) && n < max_number; ++x)
       {
         color = pal[getpixel (bmp, x, y)];
         if (!exist_color (pal2, color))
@@ -134,8 +134,8 @@ create_new_palette (PALETTE dst,
   int nb_retries = 0;
   RGB color;
 
-  x = random () % bmp->w;
-  y = random () % bmp->h;
+  x = random () % al_get_bitmap_width(bmp);
+  y = random () % al_get_bitmap_height(bmp);
   color = src[getpixel (bmp, x, y)];
 
   for (i = 0; i < 256; ++i)
@@ -143,8 +143,8 @@ create_new_palette (PALETTE dst,
 
   for (i = 1; i < number_of_colors;)
     {
-      x = random () % bmp->w;
-      y = random () % bmp->h;
+      x = random () % al_get_bitmap_width(bmp);
+      y = random () % al_get_bitmap_height(bmp);
       index = getpixel (bmp, x, y);
       color = src[index];
       if ((!exist_color (dst, color)) ||
@@ -191,8 +191,8 @@ create_converted_bitmap (ALLEGRO_BITMAP * bmp,
 
   for (i = 0; i < 256; ++i)
     corres[i] = bestfit_color (dst, src[i].r, src[i].g, src[i].b);
-  for (y = 0; y < bmp->h; ++y)
-    for (x = 0; x < bmp->w; ++x)
+  for (y = 0; y < al_get_bitmap_height(bmp); ++y)
+    for (x = 0; x < al_get_bitmap_width(bmp); ++x)
       {
         index = corres[getpixel (bmp, x, y)];
         index = (index < first_color ||
@@ -231,7 +231,7 @@ texture_8to5 (ALLEGRO_BITMAP * bmp, PALETTE pal, void *result,
   int coul;
   char system_name_buffer[LW_TEXTURE_SYSTEM_NAME_SIZE + 1];
 
-  lw_serial_set_texture_header (result, (short) bmp->w, (short) bmp->h);
+  lw_serial_set_texture_header (result, (short) al_get_bitmap_width(bmp), (short) al_get_bitmap_height(bmp));
 
   buffer = ((char *) result) + 2 * sizeof (short);
 
@@ -253,8 +253,8 @@ texture_8to5 (ALLEGRO_BITMAP * bmp, PALETTE pal, void *result,
   for (i = 0; i < 5; ++i)
     octet[i] = 0;
 
-  for (y = 0; y < bmp->h; ++y)
-    for (x = 0; x < bmp->w; ++x)
+  for (y = 0; y < al_get_bitmap_height(bmp); ++y)
+    for (x = 0; x < al_get_bitmap_width(bmp); ++x)
       {
         coul = getpixel (bmp, x, y) - first_color;
         toadd = 1 << pos8;
@@ -264,7 +264,7 @@ texture_8to5 (ALLEGRO_BITMAP * bmp, PALETTE pal, void *result,
         octet[3] |= (coul & 8) ? toadd : 0;
         octet[4] |= (coul & 16) ? toadd : 0;
 
-        if (pos8 == 7 || (y == bmp->h - 1 && x == bmp->w - 1))
+        if (pos8 == 7 || (y == al_get_bitmap_height(bmp) - 1 && x == al_get_bitmap_width(bmp) - 1))
           {
             for (i = 0; i < 5; ++i)
               {
@@ -291,8 +291,8 @@ lw_texture_archive_raw (const char *filename)
   bmp = load_bitmap (filename, pal);
   if (bmp)
     {
-      w = bmp->w;
-      h = bmp->h;
+      w = al_get_bitmap_width(bmp);
+      h = al_get_bitmap_height(bmp);
       if (w > 0 && h > 0)
         {
           temp = malloc (size =

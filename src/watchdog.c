@@ -52,9 +52,9 @@
 /* includes                                                         */
 /*==================================================================*/
 
-#include <allegro5/allegro.h>
 #include <string.h>
 
+#include "backport.h"
 #include "watchdog.h"
 #include "log.h"
 #include "macro.h"

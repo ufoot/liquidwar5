@@ -52,6 +52,7 @@
 /*==================================================================*/
 
 #include <pthread.h>
+#include <stdlib.h>
 
 #include "thrdgen.h"
 
@@ -72,6 +73,33 @@
 /*==================================================================*/
 
 /*------------------------------------------------------------------*/
+/* 
+ * Internal structure to pass both function and args to pthread wrapper
+ */
+typedef struct {
+  void (*func)(void *);
+  void *args;
+} lw_thread_wrapper_data;
+
+/*------------------------------------------------------------------*/
+/*
+ * Wrapper function that matches pthread signature and calls the original function
+ */
+static void *
+lw_thread_wrapper (void *data)
+{
+  lw_thread_wrapper_data *wrapper_data = (lw_thread_wrapper_data *) data;
+  
+  // Call the original function
+  wrapper_data->func (wrapper_data->args);
+  
+  // Clean up the wrapper data
+  free (wrapper_data);
+  
+  return NULL;
+}
+
+/*------------------------------------------------------------------*/
 /*
  * Starts a new thread using the given callback
  */
@@ -80,13 +108,35 @@ lw_thread_start (void (*func) (void *), void *args)
 {
   pthread_t thread;
   int result = 0;
+  lw_thread_wrapper_data *wrapper_data;
 
-  if (pthread_create (&thread, NULL, (void *(*)(void *)) func, args) == 0)
+  // Allocate wrapper data structure
+  wrapper_data = malloc (sizeof (lw_thread_wrapper_data));
+  if (wrapper_data == NULL)
+    {
+      return 0;
+    }
+
+  wrapper_data->func = func;
+  wrapper_data->args = args;
+
+  if (pthread_create (&thread, NULL, lw_thread_wrapper, wrapper_data) == 0)
     {
       if (pthread_detach (thread) == 0)
         {
           result = 1;
         }
+      else
+        {
+          // If detach fails, we should still clean up the wrapper data
+          // Note: this is a rare edge case, but we'll let the thread clean up
+          // since it was successfully created
+        }
+    }
+  else
+    {
+      // Thread creation failed, clean up wrapper data
+      free (wrapper_data);
     }
 
   return result;

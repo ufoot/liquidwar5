@@ -52,10 +52,10 @@
 /* includes                                                         */
 /*==================================================================*/
 
-#include <allegro5/allegro.h>
 #include <stdlib.h>
 #include <string.h>
 
+#include "backport.h"
 #include "parser.h"
 #include "startup.h"
 #include "server.h"

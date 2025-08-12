@@ -56,6 +56,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "backport.h"
 #include "army.h"
 #include "back.h"
 #include "base.h"
@@ -212,10 +213,10 @@ draw_score_bitmap (ALLEGRO_BITMAP * bitmap, int cursor, int ellipse_h,
   int y_rect1, y_rect2, x_mid;
   int to_be_filled, to_be_drawn;
 
-  w = bitmap->w;
+  w = al_get_bitmap_width(bitmap);
   if (!(w & 1))
     w -= 1;
-  h = bitmap->h;
+  h = al_get_bitmap_height(bitmap);
   y_rect1 = ellipse_h / 2;
   y_rect2 = h - y_rect1 - 1;
   x_mid = w / 2;

@@ -58,6 +58,7 @@
 #include <allegro5/allegro_acodec.h>
 #include <allegro5/allegro_image.h>
 #include <math.h>
+#include <limits.h>
 
 #include "backport.h"
 #include "palette.h"
@@ -100,6 +101,7 @@ ALLEGRO_BITMAP *screen = NULL;
 ALLEGRO_DISPLAY *allegro_display = NULL;
 int SCREEN_W = 0;
 int SCREEN_H = 0;
+int VIRTUAL_H = 0;
 ALLEGRO_FONT *font = NULL;
 volatile int mouse_x = 0;
 volatile int mouse_y = 0;
@@ -1166,6 +1168,52 @@ play_midi (ALLEGRO_SAMPLE *midi, int loop)
 }
 
 /*------------------------------------------------------------------*/
+int
+play_sample (ALLEGRO_SAMPLE *spl, int vol, int pan, int freq, int loop)
+{
+  // https://liballeg.org/stabledocs/en/alleg011.html#play_sample
+  // Allegro 4: play_sample(sample, vol, pan, freq, loop)
+  // vol: 0-255, pan: 0-255 (128=center), freq: 1000=normal, loop: 0=once, 1=loop
+  
+  if (!spl) {
+    return -1;
+  }
+  
+  ALLEGRO_SAMPLE_INSTANCE *instance = al_create_sample_instance(spl);
+  if (!instance) {
+    return -1;
+  }
+  
+  // Set volume (0-255 -> 0.0-1.0)
+  float al_vol = (float)vol / 255.0f;
+  al_set_sample_instance_gain(instance, al_vol);
+  
+  // Set pan (0-255 -> -1.0 to 1.0, where 128 = 0.0 center)
+  float al_pan = ((float)pan - 128.0f) / 128.0f;
+  al_set_sample_instance_pan(instance, al_pan);
+  
+  // Set frequency/speed (1000 = normal speed)
+  float speed = (float)freq / 1000.0f;
+  al_set_sample_instance_speed(instance, speed);
+  
+  // Set looping
+  ALLEGRO_PLAYMODE playmode = loop ? ALLEGRO_PLAYMODE_LOOP : ALLEGRO_PLAYMODE_ONCE;
+  al_set_sample_instance_playmode(instance, playmode);
+  
+  // Attach to default mixer and play
+  al_attach_sample_instance_to_mixer(instance, al_get_default_mixer());
+  
+  if (al_play_sample_instance(instance)) {
+    // In Allegro 4, play_sample returned the voice number (positive)
+    // We'll return 1 to indicate success (can't return actual voice)
+    return 1;
+  } else {
+    al_destroy_sample_instance(instance);
+    return -1;
+  }
+}
+
+/*------------------------------------------------------------------*/
 void
 acquire_bitmap (ALLEGRO_BITMAP * bmp)
 {
@@ -1509,10 +1557,13 @@ int set_gfx_mode(int card, int w, int h, int v_w, int v_h) {
   // This is a compatibility stub that returns success
   // Real display creation should be handled at a higher level
   (void)card;
-  (void)w;
-  (void)h;
-  (void)v_w;
-  (void)v_h;
+  (void)v_w; // Virtual width not used in current implementation
+  
+  // Set the global screen dimensions for compatibility
+  SCREEN_W = w;
+  SCREEN_H = h;
+  VIRTUAL_H = v_h ? v_h : h * 2; // Set virtual height for page flipping
+  
   return 0; // Success in Allegro 4 convention
 }
 
@@ -1781,4 +1832,110 @@ RGB allegro_color_to_rgb (ALLEGRO_COLOR color) {
   rgb.b = b;
   
   return rgb;
+}
+
+/*------------------------------------------------------------------*/
+void delete_file(const char *filename) {
+  // Delete a file - Allegro 4 compatibility function
+  // Maps directly to standard C remove() function
+  if (filename) {
+    remove(filename);
+  }
+}
+
+/*------------------------------------------------------------------*/
+void ellipse (ALLEGRO_BITMAP * bitmap, int x, int y, int rx, int ry, int color) {
+  // Draw ellipse outline - Allegro 4 compatibility
+  if (color < 0 || color >= PALETTE_SIZE) {
+    return;
+  }
+  ALLEGRO_COLOR al_color = rgb_to_allegro_color(GLOBAL_PALETTE[color]);
+  
+  ALLEGRO_BITMAP *old_target = al_get_target_bitmap();
+  al_set_target_bitmap(bitmap);
+  al_draw_ellipse(x, y, rx, ry, al_color, 1.0);
+  al_set_target_bitmap(old_target);
+}
+
+/*------------------------------------------------------------------*/
+void ellipsefill (ALLEGRO_BITMAP * bitmap, int x, int y, int rx, int ry, int color) {
+  // Draw filled ellipse - Allegro 4 compatibility
+  if (color < 0 || color >= PALETTE_SIZE) {
+    return;
+  }
+  ALLEGRO_COLOR al_color = rgb_to_allegro_color(GLOBAL_PALETTE[color]);
+  
+  ALLEGRO_BITMAP *old_target = al_get_target_bitmap();
+  al_set_target_bitmap(bitmap);
+  al_draw_filled_ellipse(x, y, rx, ry, al_color);
+  al_set_target_bitmap(old_target);
+}
+
+/*------------------------------------------------------------------*/
+void fix_filename_case(char *filename) {
+  // Allegro 4 compatibility function - converts filename to correct case
+  // On case-sensitive filesystems, this would try to find the correct case
+  // For now, just leave the filename as-is since most modern systems handle this
+  (void)filename; // Stub implementation - no changes needed on modern systems
+}
+
+/*------------------------------------------------------------------*/
+void fix_filename_slashes(char *filename) {
+  // Allegro 4 compatibility function - converts path separators
+  // Convert all backslashes to forward slashes for cross-platform compatibility
+  if (filename) {
+    char *p = filename;
+    while (*p) {
+      if (*p == '\\') {
+        *p = '/';
+      }
+      p++;
+    }
+  }
+}
+
+/*------------------------------------------------------------------*/
+int bestfit_color(PALETTE pal, int r, int g, int b) {
+  // Allegro 4 compatibility function - finds closest matching color in palette
+  int best_index = 0;
+  int best_distance = INT_MAX;
+  int i;
+  
+  for (i = 0; i < 256; i++) {
+    int dr = r - pal[i].r;
+    int dg = g - pal[i].g;
+    int db = b - pal[i].b;
+    int distance = dr*dr + dg*dg + db*db;
+    
+    if (distance < best_distance) {
+      best_distance = distance;
+      best_index = i;
+      if (distance == 0) break; // Exact match found
+    }
+  }
+  
+  return best_index;
+}
+
+/*------------------------------------------------------------------*/
+ALLEGRO_BITMAP *my_create_bitmap(int w, int h) {
+  // Allegro 4 compatibility function - creates a bitmap
+  return al_create_bitmap(w, h);
+}
+
+/*------------------------------------------------------------------*/
+ALLEGRO_BITMAP *create_sub_bitmap(ALLEGRO_BITMAP *parent, int x, int y, int w, int h) {
+  // Allegro 4 compatibility function - creates a sub-bitmap
+  return al_create_sub_bitmap(parent, x, y, w, h);
+}
+
+/*------------------------------------------------------------------*/
+void scroll_screen(int x, int y) {
+  // Allegro 4 compatibility function - scrolls the screen
+  // In Allegro 5, this is mainly used for page flipping effects
+  // For now, implement as a stub since modern page flipping works differently
+  (void)x;
+  (void)y;
+  // Note: This function was used for hardware scrolling in Allegro 4
+  // Modern systems handle this through different mechanisms
 }

@@ -52,10 +52,8 @@
 /* includes                                                         */
 /*==================================================================*/
 
-#include <allegro5/allegro.h>
-
 #include "area.h"
-#include "alleg2.h"
+#include "backport.h"
 #include "config.h"
 #include "gfxmode.h"
 #include "palette.h"

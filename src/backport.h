@@ -179,6 +179,7 @@ extern ALLEGRO_BITMAP *screen;
 extern ALLEGRO_DISPLAY *allegro_display;
 extern int SCREEN_W;
 extern int SCREEN_H;
+extern int VIRTUAL_H;
 extern ALLEGRO_FONT *font;
 extern volatile int mouse_x;
 extern volatile int mouse_y;
@@ -216,6 +217,8 @@ void vline (ALLEGRO_BITMAP * bitmap, int x, int y1, int y2, int color);
 void hline (ALLEGRO_BITMAP * bitmap, int x1, int y, int x2, int color);
 void line (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2,
            int color);
+void ellipse (ALLEGRO_BITMAP * bitmap, int x, int y, int rx, int ry, int color);
+void ellipsefill (ALLEGRO_BITMAP * bitmap, int x, int y, int rx, int ry, int color);
 
 int usetc (char *s, int c);
 int ugetc (const char *s);
@@ -242,12 +245,14 @@ void textout_ex (ALLEGRO_BITMAP * bmp, const ALLEGRO_FONT * f, const char *s,
 
 void set_volume (int digi_volume, int midi_volume);
 int play_midi (ALLEGRO_SAMPLE *midi, int loop);
+int play_sample (ALLEGRO_SAMPLE *spl, int vol, int pan, int freq, int loop);
 
 void get_palette (PALETTE pal);
 void fade_in (PALETTE pal, int speed);
 void fade_out (int speed);
 void hsv_to_rgb (float h, float s, float v, int *r, int *g, int *b);
 int fixsqrt (int x);
+int bestfit_color (PALETTE pal, int r, int g, int b);
 
 ALLEGRO_COLOR rgb_to_allegro_color (RGB rgb);
 RGB allegro_color_to_rgb (ALLEGRO_COLOR color);
@@ -272,6 +277,9 @@ void stretch_blit (ALLEGRO_BITMAP * source, ALLEGRO_BITMAP * dest,
                    int source_height, int dest_x, int dest_y, int dest_width,
                    int dest_height);
 ALLEGRO_BITMAP *load_bitmap (const char *filename, PALETTE pal);
+ALLEGRO_BITMAP *my_create_bitmap (int w, int h);
+ALLEGRO_BITMAP *create_sub_bitmap (ALLEGRO_BITMAP *parent, int x, int y, int w, int h);
+void scroll_screen (int x, int y);
 
 void acquire_bitmap (ALLEGRO_BITMAP * bmp);
 void acquire_screen ();
@@ -297,6 +305,9 @@ void set_config_string(const char *section, const char *key, const char *value);
 void flush_config_file();
 
 int exists(const char *filename);
+void delete_file(const char *filename);
+void fix_filename_case(char *filename);
+void fix_filename_slashes(char *filename);
 
 // Graphics mode constants (Allegro 4 compatibility)
 #define GFX_AUTODETECT_FULLSCREEN 1
@@ -327,6 +338,8 @@ extern void *black_palette;
 // Audio constants
 #define DIGI_NONE 0
 #define MIDI_NONE 0
+#define DIGI_AUTODETECT -1
+#define MIDI_AUTODETECT -1
 
 // Driver info structures (Allegro 4 compatibility)
 extern LW_GFX_DRIVER_INFO *timer_driver;

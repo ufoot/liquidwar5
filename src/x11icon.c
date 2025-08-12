@@ -1,4 +1,6 @@
 #include <allegro5/allegro.h>
+
+#if defined ALLEGRO_WITH_XWINDOWS && defined ALLEGRO_USE_CONSTRUCTOR
 /* XPM */
 static const char *allegico_xpm[] = {
 /* columns rows colors chars-per-pixel */
@@ -288,8 +290,6 @@ static const char *allegico_xpm[] = {
   "vXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvX",
   "vXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvXvX"
 };
-
-#if defined ALLEGRO_WITH_XWINDOWS && defined ALLEGRO_USE_CONSTRUCTOR
 extern void *allegro_icon;
 CONSTRUCTOR_FUNCTION (static void _set_allegro_icon (void));
 static void

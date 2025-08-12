@@ -51,6 +51,7 @@
 /* includes                                                         */
 /*==================================================================*/
 
+#include "backport.h"
 #include "config.h"
 #include "disk.h"
 #include "sound.h"
@@ -107,7 +108,7 @@ water_handler (void)
     }
 }
 
-END_OF_FUNCTION (water_handler);
+// END_OF_FUNCTION removed - not needed in Allegro 5
 
 /*------------------------------------------------------------------*/
 int
@@ -123,17 +124,8 @@ start_water (void)
     {
       WATER_VOLUME = CONFIG_WATER_VOLUME_MENU;
 
-      LOCK_FUNCTION (water_handler);
-      LOCK_VARIABLE (HASARD_INDEX);
-      LOCK_VARIABLE (HASARD_VALUE);
-      LOCK_VARIABLE (SAMPLE_WATER);
-      LOCK_VARIABLE (WATER_VOLUME);
-      LOCK_VARIABLE (SOUND_VOLUME_VALUES);
-
-#ifdef DOS
-      _go32_dpmi_lock_data (HASARD_VALUE, HASARD_SIZE * sizeof (int));
-      _go32_dpmi_lock_data (SOUND_VOLUME_VALUES, 17 * sizeof (int));
-#endif
+      // LOCK macros removed - not needed in Allegro 5
+      // DOS-specific dpmi code removed - not needed in modern systems
 
       result = install_int_ex (water_handler, MSEC_TO_TIMER (WATER_DELAY));
       water_handler ();
