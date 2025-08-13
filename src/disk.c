@@ -180,7 +180,7 @@ read_water_dat ()
   };
   int num_files = sizeof(water_files) / sizeof(water_files[0]);
   int i;
-  
+
   SAMPLE_WATER_NUMBER = 0;
   for (i = 0; i < num_files && i < SAMPLE_WATER_MAX_NUMBER; ++i)
     {
@@ -215,7 +215,7 @@ read_texture_dat ()
   };
   int num_files = sizeof(texture_files) / sizeof(texture_files[0]);
   int i;
-  
+
   RAW_TEXTURE_NUMBER = 0;
   for (i = 0; i < num_files && i < RAW_TEXTURE_MAX_NUMBER; ++i)
     {
@@ -237,20 +237,20 @@ static bool
 read_maptex_dat ()
 {
   RAW_MAPTEX_NUMBER = 0;
-  
+
   char * maptex_path = lw_path_join2(STARTUP_DAT_PATH, "maptex");
   if (maptex_path == NULL) {
     return false;
   }
-  
+
   ALLEGRO_FS_ENTRY *dir = al_create_fs_entry(maptex_path);
   free(maptex_path);
-  
+
   if (!dir || !al_open_directory(dir)) {
     if (dir) al_destroy_fs_entry(dir);
     return false;
   }
-  
+
   ALLEGRO_FS_ENTRY *entry;
   while ((entry = al_read_directory(dir)) != NULL && RAW_MAPTEX_NUMBER < RAW_TEXTURE_MAX_NUMBER) {
     if (al_get_fs_entry_mode(entry) & ALLEGRO_FILEMODE_ISFILE) {
@@ -263,7 +263,7 @@ read_maptex_dat ()
     }
     al_destroy_fs_entry(entry);
   }
-  
+
   al_close_directory(dir);
   al_destroy_fs_entry(dir);
   return RAW_MAPTEX_NUMBER > 0;
@@ -274,20 +274,20 @@ static bool
 read_map_dat ()
 {
   RAW_MAP_NUMBER = 0;
-  
+
   char * map_path = lw_path_join2(STARTUP_DAT_PATH, "map");
   if (map_path == NULL) {
     return false;
   }
-  
+
   ALLEGRO_FS_ENTRY *dir = al_create_fs_entry(map_path);
   free(map_path);
-  
+
   if (!dir || !al_open_directory(dir)) {
     if (dir) al_destroy_fs_entry(dir);
     return false;
   }
-  
+
   ALLEGRO_FS_ENTRY *entry;
   while ((entry = al_read_directory(dir)) != NULL && RAW_MAP_NUMBER < RAW_MAP_MAX_NUMBER) {
     if (al_get_fs_entry_mode(entry) & ALLEGRO_FILEMODE_ISFILE) {
@@ -303,7 +303,7 @@ read_map_dat ()
     }
     al_destroy_fs_entry(entry);
   }
-  
+
   al_close_directory(dir);
   al_destroy_fs_entry(dir);
   return RAW_MAP_NUMBER > 0;
@@ -317,14 +317,17 @@ read_back_dat ()
   if (path == NULL) {
     return false;
   }
-  
+
+  log_println();
+  log_print_str(path);
+  log_println();
   BACK_IMAGE = al_load_bitmap(path);
   free(path);
-  
+
   if (BACK_IMAGE == NULL) {
     return false;
   }
-  
+
   return true;
 }
 
@@ -337,25 +340,25 @@ read_font_dat ()
   char * small_cursor_path = lw_path_join3(STARTUP_DAT_PATH, "font", "mouse20.pcx");
   char * big_cursor_path = lw_path_join3(STARTUP_DAT_PATH, "font", "mouse40.pcx");
   char * void_cursor_path = lw_path_join3(STARTUP_DAT_PATH, "font", "void1.pcx");
-  
+
   bool success = true;
-  
+
   if (small_font_path) {
-    SMALL_FONT = al_load_font(small_font_path, 0, 0);
+    SMALL_FONT = al_load_bitmap_font(small_font_path);
     free(small_font_path);
     if (!SMALL_FONT) success = false;
   } else {
     success = false;
   }
-  
+
   if (big_font_path) {
-    BIG_FONT = al_load_font(big_font_path, 0, 0);
+    BIG_FONT = al_load_bitmap_font(big_font_path);
     free(big_font_path);
     if (!BIG_FONT) success = false;
   } else {
     success = false;
   }
-  
+
   if (small_cursor_path) {
     SMALL_MOUSE_CURSOR = al_load_bitmap(small_cursor_path);
     free(small_cursor_path);
@@ -363,7 +366,7 @@ read_font_dat ()
   } else {
     success = false;
   }
-  
+
   if (big_cursor_path) {
     BIG_MOUSE_CURSOR = al_load_bitmap(big_cursor_path);
     free(big_cursor_path);
@@ -371,7 +374,7 @@ read_font_dat ()
   } else {
     success = false;
   }
-  
+
   if (void_cursor_path) {
     INVISIBLE_MOUSE_CURSOR = al_load_bitmap(void_cursor_path);
     free(void_cursor_path);
@@ -379,7 +382,7 @@ read_font_dat ()
   } else {
     success = false;
   }
-  
+
   return success;
 }
 
@@ -396,12 +399,8 @@ read_music_dat ()
 /*------------------------------------------------------------------*/
 static int check_loadable() {
   int loadable = 0;
-  
-#ifdef DOS
-  loadable = 1;
-#else
+
   loadable = exists (STARTUP_DAT_PATH);
-#endif
 
   // Checking for the existence of this file, to quickly spot whether
   // this is a genuine data folder. If that text file is not there, we
@@ -423,13 +422,22 @@ load_dat (void)
   int result = 1;
   int loadable = 0;
 
-  log_print_str ("Loading data from \"");
+  log_print_str ("Searching for data in \"");
   log_print_str (STARTUP_DAT_PATH);
   log_print_str ("\"");
+  log_flush ();
 
   loadable = check_loadable();
   display_success (loadable);
 
+  if (loadable && STARTUP_BACK_STATE)
+    {
+      log_print_str ("Loading background bitmap");
+      log_flush ();
+      LOADED_BACK = read_back_dat();
+      display_success(LOADED_BACK);
+      result &= LOADED_BACK;
+    }
   if (loadable)
     {
       log_print_str ("Loading fonts");
@@ -445,14 +453,6 @@ load_dat (void)
       LOADED_MAP = read_map_dat ();
       display_success (LOADED_MAP);
       result &= LOADED_MAP;
-    }
-  if (loadable && STARTUP_BACK_STATE)
-    {
-      log_print_str ("Loading background bitmap");
-      log_flush ();
-      LOADED_BACK = read_back_dat();
-      display_success(LOADED_BACK);
-      result &= LOADED_BACK;
     }
 
   if (loadable && STARTUP_SFX_STATE)
@@ -548,13 +548,13 @@ static int
 load_custom_texture (void)
 {
   CUSTOM_TEXTURE_OK = 0;
-  
+
   ALLEGRO_FS_ENTRY *dir = al_create_fs_entry(STARTUP_TEX_PATH);
   if (!dir || !al_open_directory(dir)) {
     if (dir) al_destroy_fs_entry(dir);
     return 0;
   }
-  
+
   ALLEGRO_FS_ENTRY *entry;
   while ((entry = al_read_directory(dir)) != NULL && RAW_TEXTURE_NUMBER < RAW_TEXTURE_MAX_NUMBER) {
     if (al_get_fs_entry_mode(entry) & ALLEGRO_FILEMODE_ISFILE) {
@@ -563,7 +563,7 @@ load_custom_texture (void)
     }
     al_destroy_fs_entry(entry);
   }
-  
+
   al_close_directory(dir);
   al_destroy_fs_entry(dir);
   return CUSTOM_TEXTURE_OK;
@@ -597,13 +597,13 @@ static int
 load_custom_map (void)
 {
   CUSTOM_MAP_OK = 0;
-  
+
   ALLEGRO_FS_ENTRY *dir = al_create_fs_entry(STARTUP_MAP_PATH);
   if (!dir || !al_open_directory(dir)) {
     if (dir) al_destroy_fs_entry(dir);
     return 0;
   }
-  
+
   ALLEGRO_FS_ENTRY *entry;
   while ((entry = al_read_directory(dir)) != NULL && RAW_MAP_NUMBER < RAW_MAP_MAX_NUMBER) {
     if (al_get_fs_entry_mode(entry) & ALLEGRO_FILEMODE_ISFILE) {
@@ -612,7 +612,7 @@ load_custom_map (void)
     }
     al_destroy_fs_entry(entry);
   }
-  
+
   al_close_directory(dir);
   al_destroy_fs_entry(dir);
   return CUSTOM_MAP_OK;
@@ -638,13 +638,13 @@ static int
 load_custom_music (void)
 {
   CUSTOM_MUSIC_OK = 0;
-  
+
   ALLEGRO_FS_ENTRY *dir = al_create_fs_entry(STARTUP_MID_PATH);
   if (!dir || !al_open_directory(dir)) {
     if (dir) al_destroy_fs_entry(dir);
     return 0;
   }
-  
+
   ALLEGRO_FS_ENTRY *entry;
   while ((entry = al_read_directory(dir)) != NULL && MIDI_MUSIC_NUMBER < MIDI_MUSIC_MAX_NUMBER) {
     if (al_get_fs_entry_mode(entry) & ALLEGRO_FILEMODE_ISFILE) {
@@ -653,7 +653,7 @@ load_custom_music (void)
     }
     al_destroy_fs_entry(entry);
   }
-  
+
   al_close_directory(dir);
   al_destroy_fs_entry(dir);
   return CUSTOM_MUSIC_OK;

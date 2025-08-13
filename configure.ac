@@ -47,7 +47,7 @@ PKG_CHECK_MODULES([ALLEGRO5],
 echo "using allegro-$ALLEGRO5_VERSION"
 
 ALCFLAGS=$(pkg-config --cflags allegro-$ALLEGRO5_VERSION allegro_primitives-$ALLEGRO5_VERSION allegro_audio-$ALLEGRO5_VERSION allegro_font-$ALLEGRO5_VERSION)
-ALLIBS=$(pkg-config --libs --debug allegro-$ALLEGRO5_VERSION allegro_primitives-$ALLEGRO5_VERSION allegro_audio-$ALLEGRO5_VERSION allegro_font-$ALLEGRO5_VERSION)
+ALLIBS=$(pkg-config --libs allegro-$ALLEGRO5_VERSION allegro_primitives-$ALLEGRO5_VERSION allegro_audio-$ALLEGRO5_VERSION allegro_font-$ALLEGRO5_VERSION allegro_main-$ALLEGRO5_VERSION)
 ALVERSION=$(pkg-config --modversion allegro-$ALLEGRO5_VERSION)
 
 ALDVERSION=$(echo ALVERSION | awk 'BEGIN { FS = "."; } { printf "%d",($1 * 1000 + $2) * 1000 + $3;}')

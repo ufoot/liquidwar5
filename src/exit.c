@@ -109,7 +109,7 @@ exit_all (void)
 
       log_println ();
       log_println_str
-        ("Leaving Allegro (http://www.talula.demon.co.uk/allegro)");
+        ("Leaving Allegro (https://liballeg.org/)");
       save_config_options ();
       stop_water ();
       stop_ticker ();

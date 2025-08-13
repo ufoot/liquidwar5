@@ -76,10 +76,12 @@ init_test_environment()
     // Initialize a basic palette for testing
     // This is a simplified palette initialization
     for (int i = 0; i < PALETTE_SIZE; i++) {
-        float r = ((i >> 5) & 0x07) / 7.0f;  // 3 bits red
-        float g = ((i >> 2) & 0x07) / 7.0f;  // 3 bits green  
-        float b = (i & 0x03) / 3.0f;         // 2 bits blue
-        GLOBAL_PALETTE[i] = al_map_rgb_f(r, g, b);
+        unsigned char r = ((i >> 5) & 0x07) * 255 / 7;  // 3 bits red
+        unsigned char g = ((i >> 2) & 0x07) * 255 / 7;  // 3 bits green  
+        unsigned char b = (i & 0x03) * 255 / 3;         // 2 bits blue
+        GLOBAL_PALETTE[i].r = r;
+        GLOBAL_PALETTE[i].g = g;
+        GLOBAL_PALETTE[i].b = b;
     }
 }
 

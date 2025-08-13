@@ -223,10 +223,10 @@ endif
 
 CONFIG_OPTIONS = \
 	-DCONFIG_UNIX_CFG=\".liquidwarrc\" \
-	-DCONFIG_UNIX_DAT=\"$(DATADIR)/liquidwar.dat\" \
-	-DCONFIG_UNIX_MAP=\"$(DATADIR)/map/\" \
-	-DCONFIG_UNIX_TEX=\"$(DATADIR)/texture/\" \
-	-DCONFIG_UNIX_MID=\"$(DATADIR)/music/\" \
+	-DCONFIG_UNIX_DAT=\"$(DATADIR)/data\" \
+	-DCONFIG_UNIX_MAP=\"$(DATADIR)/data/map/\" \
+	-DCONFIG_UNIX_TEX=\"$(DATADIR)/data/texture/\" \
+	-DCONFIG_UNIX_MID=\"$(DATADIR)/data/music/\" \
 	-DCONFIG_UNIX_SRV=\"$(GAMEDIR)/liquidwar-server\" \
 	-DCONFIG_UNIX_GEN=\"$(GAMEDIR)/liquidwar-mapgen\"
 
@@ -270,13 +270,18 @@ distclean:
 config: print_config print_cmd_cc print_cmd_ld
 	@true
 
-test_backport_pixel: test_backport_pixel.o backport.o palette.o
+test_backport_pixel: test_backport_pixel.o $(OBJ_FILES)
 	@echo "Building pixel test"
 	@$(CC) $(LDFLAGS) $(LINK_OPTIONS) -o $@ $^ $(PTHREAD) $(EXTERN_LIBS)
 
-check: test_backport_pixel
+test_path: test_path.o $(OBJ_FILES)
+	@echo "Building path test"
+	@$(CC) $(LDFLAGS) $(LINK_OPTIONS) -o $@ $^ $(PTHREAD) $(EXTERN_LIBS)
+
+check: test_backport_pixel test_path
 	@echo "Running unit tests..."
 	@./test_backport_pixel
+	@./test_path
 
 indent:
 	@find . -name "*.[c|h]" -a ! -path "*32*" -exec indent -nut {} \;

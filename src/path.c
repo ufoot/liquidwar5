@@ -151,7 +151,7 @@ lw_path_join3(const char *begin, const char *middle, const char *end) {
   memset(joined, 0, joined_len+3);
   memcpy(joined, begin, begin_len);
   joined[begin_len] = _SEP;
-  memcpy(joined+middle_len+1, middle, middle_len);
+  memcpy(joined+begin_len+1, middle, middle_len);
   joined[begin_len+middle_len+1] = _SEP;
   memcpy(joined+begin_len+middle_len+2, end, end_len);
   return joined;

@@ -984,7 +984,7 @@ install_timer ()
   memset (_backport_timers, 0, sizeof (_backport_timers));
   memset (&_backport_timer_mutex, 0, sizeof (_backport_timer_mutex));
 
-  return (lw_mutex_init (&_backport_timer_mutex) == 0) ? 0 : -1;
+  return (lw_mutex_init (&_backport_timer_mutex) == 0) ? -1 : 0;
 }
 
 /*------------------------------------------------------------------*/
@@ -1472,12 +1472,22 @@ remove_keyboard (void)
 }
 
 /*------------------------------------------------------------------*/
+void create_if_not_exist(char *filename) {
+  FILE* f=fopen (filename, "a");
+  if (f==NULL) {
+    log_println_str("could not create file");
+    return;
+  }
+  fclose(f);
+}
+
+/*------------------------------------------------------------------*/
 void set_config_file(char *filename) {
+  create_if_not_exist(filename);
+
   _config_file = filename;
   _config = al_load_config_file(filename);
-  if (_config != NULL) {
-    log_println_str("loaded config");
-  } else {
+  if (_config == NULL) {
     log_println_str("could not load config");
   }
 }

@@ -24,6 +24,8 @@ liquidwarcol
 liquidwarmap
 liquidwartex
 *.dat
+.#*
+*.bak
 /misc/docker/tables.sql
 doc/tex/*.aux
 doc/tex/*.dvi

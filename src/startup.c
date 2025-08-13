@@ -125,10 +125,10 @@ static char *DEFAULT_CFG_PATH = CONFIG_UNIX_CFG;
 static char *DEFAULT_LOG_PATH = "";
 static char *DEFAULT_SRV_PATH = "./liquidwar-server";
 static char *DEFAULT_GEN_PATH = "./liquidwar-mapgen";
-static char *DEFAULT_DAT_PATH = "../Resources/data/liquidwar.dat";
-static char *DEFAULT_MAP_PATH = "../Resources/custom/map/";
-static char *DEFAULT_TEX_PATH = "../Resources/custom/texture/";
-static char *DEFAULT_MID_PATH = "../Resources/custom/music/";
+static char *DEFAULT_DAT_PATH = "./data/";
+static char *DEFAULT_MAP_PATH = "./custom/map/";
+static char *DEFAULT_TEX_PATH = "./custom/texture/";
+static char *DEFAULT_MID_PATH = "./custom/music/";
 #else
 static char *DEFAULT_CFG_PATH = CONFIG_UNIX_CFG;
 static char *DEFAULT_LOG_PATH = "";
