@@ -126,6 +126,9 @@ lw_path_get_system_name (const char *filename)
  */
 char *
 lw_path_join2(const char *begin, const char *end) {
+  while (*end==_SEP) {
+    end++;
+  }
   int begin_len = strlen(begin);
   int end_len = strlen(end);
   int joined_len = begin_len + end_len;
@@ -143,6 +146,12 @@ lw_path_join2(const char *begin, const char *end) {
  */
 char *
 lw_path_join3(const char *begin, const char *middle, const char *end) {
+  while (*middle==_SEP) {
+    middle++;
+  }
+  while (*end==_SEP) {
+    end++;
+  }
   int begin_len = strlen(begin);
   int middle_len = strlen(middle);
   int end_len = strlen(end);
