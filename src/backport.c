@@ -1850,7 +1850,7 @@ int fixsqrt (int x) {
 
   // Convert from fixed-point to float, take sqrt, convert back
   float f = (float)x / 65536.0f;
-  f = sqrtf(f);
+  f = sqrt(f);
   return (int)(f * 65536.0f);
 }
 

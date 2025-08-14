@@ -59,8 +59,8 @@
 /* variables globales                                               */
 /*==================================================================*/
 
-int FIGHTER_MOVE_X[2][NB_DIRS][5];
-int FIGHTER_MOVE_Y[2][NB_DIRS][5];
+extern int FIGHTER_MOVE_X[2][NB_DIRS][5];
+extern int FIGHTER_MOVE_Y[2][NB_DIRS][5];
 
 /*==================================================================*/
 /* fonctions globales                                               */

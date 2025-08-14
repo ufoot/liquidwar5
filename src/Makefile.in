@@ -215,10 +215,10 @@ EXE_FILES = liquidwar liquidwar-server liquidwar-mapgen
 
 ifeq ($(STATIC),yes)
     LINK_OPTIONS = --static
-    EXTERN_LIBS = $(ALLIBS) $(EFENCE_LIBRARY)
+    EXTERN_LIBS = -lm $(ALLIBS) $(EFENCE_LIBRARY)
 else
     LINK_OPTIONS =
-    EXTERN_LIBS = $(ALLIBS) $(EFENCE_LIBRARY)
+    EXTERN_LIBS = -lm $(ALLIBS) $(EFENCE_LIBRARY)
 endif
 
 CONFIG_OPTIONS = \
