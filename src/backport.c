@@ -1663,7 +1663,7 @@ int allegro_init(void) {
   // Mouse support
   log_print_str(".");
   int mouse=al_install_mouse();
-  if (!al_install_mouse()) {
+  if (!mouse) {
     return -1;
   }
 
