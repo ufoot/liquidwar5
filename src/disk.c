@@ -54,7 +54,9 @@
 
 #include <string.h>
 #include <allegro5/allegro.h>
-#include <allegro5/allegro_physfs.h>
+#include <allegro5/allegro_image.h>
+   #include <allegro5/allegro_primitives.h>
+   #include <allegro5/allegro_font.h>
 
 #include "alleg2.h"
 #include "init.h"
@@ -313,17 +315,18 @@ read_map_dat ()
 static bool
 read_back_dat ()
 {
+  int errno;
+
   char * path = lw_path_join3(STARTUP_DAT_PATH, "back", "lw5back.pcx");
   if (path == NULL) {
     return false;
   }
+  if (!exists(path)) {
+    return false;
+  }
 
-  log_println();
-  log_print_str(path);
-  log_println();
   BACK_IMAGE = al_load_bitmap(path);
   free(path);
-
   if (BACK_IMAGE == NULL) {
     return false;
   }

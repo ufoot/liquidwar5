@@ -36,18 +36,18 @@ echo -n "checking for Allegro 5... "
 PKG_PROG_PKG_CONFIG([0.25])
 
 PKG_CHECK_MODULES([ALLEGRO5],
-   [allegro-5,allegro_primitives-5,allegro_audio-5,allegro_font-5],
+   [allegro-5,allegro_primitives-5,allegro_audio-5,allegro_font-5,allegro_image-5,allegro_color-5,allegro_acodec-5],
    [ALLEGRO5_VERSION=5],
    [PKG_CHECK_MODULES([ALLEGRO50],
-      [allegro-5.0,allegro_primitives-5.0,allegro_audio-5.0,allegro_font-5.0],
+      [allegro-5.0,allegro_primitives-5.0,allegro_audio-5.0,allegro_font-5.0,allegro_image-5.0,allegro_color-5.0,allegro_acodec-5.0],
       [ALLEGRO5_VERSION=5.0]
     )]
 )
 
 echo "using allegro-$ALLEGRO5_VERSION"
 
-ALCFLAGS=$(pkg-config --cflags allegro-$ALLEGRO5_VERSION allegro_primitives-$ALLEGRO5_VERSION allegro_audio-$ALLEGRO5_VERSION allegro_font-$ALLEGRO5_VERSION allegro_image-$ALLEGRO5_VERSION allegro_color-$ALLEGRO5_VERSION)
-ALLIBS=$(pkg-config --libs allegro-$ALLEGRO5_VERSION allegro_primitives-$ALLEGRO5_VERSION allegro_audio-$ALLEGRO5_VERSION allegro_font-$ALLEGRO5_VERSION allegro_image-$ALLEGRO5_VERSION allegro_color-$ALLEGRO5_VERSION allegro_main-$ALLEGRO5_VERSION)
+ALCFLAGS=$(pkg-config --cflags allegro-$ALLEGRO5_VERSION allegro_primitives-$ALLEGRO5_VERSION allegro_audio-$ALLEGRO5_VERSION allegro_font-$ALLEGRO5_VERSION allegro_image-$ALLEGRO5_VERSION allegro_color-$ALLEGRO5_VERSION allegro_acodec-$ALLEGRO5_VERSION)
+ALLIBS=$(pkg-config --libs allegro-$ALLEGRO5_VERSION allegro_primitives-$ALLEGRO5_VERSION allegro_audio-$ALLEGRO5_VERSION allegro_font-$ALLEGRO5_VERSION allegro_image-$ALLEGRO5_VERSION allegro_color-$ALLEGRO5_VERSION allegro_acodec-$ALLEGRO5_VERSION allegro_main-$ALLEGRO5_VERSION)
 ALVERSION=$(pkg-config --modversion allegro-$ALLEGRO5_VERSION)
 
 ALDVERSION=$(echo ALVERSION | awk 'BEGIN { FS = "."; } { printf "%d",($1 * 1000 + $2) * 1000 + $3;}')

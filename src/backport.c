@@ -1672,9 +1672,14 @@ int allegro_init(void) {
 
   // Audio support (optional)
   log_print_str(".");
-  al_install_audio();
+  if (!al_install_audio()) {
+    return -1;
+  }
+
   log_print_str(".");
-  al_init_acodec_addon();
+  if (!al_init_acodec_addon()) {
+    return -1;
+  }
 
   // Image loading support
   log_print_str(".");
@@ -2029,20 +2034,4 @@ void scroll_screen(int x, int y) {
   (void)y;
   // Note: This function was used for hardware scrolling in Allegro 4
   // Modern systems handle this through different mechanisms
-}
-
-/*------------------------------------------------------------------*/
-bool al_init_acodec_addon(void) {
-  // Allegro 5 audio codec addon initialization
-  // This should be provided by liballegro_acodec, but if not available
-  // we provide a stub that returns success
-  return true;
-}
-
-/*------------------------------------------------------------------*/
-bool al_init_image_addon(void) {
-  // Allegro 5 image addon initialization
-  // This should be provided by liballegro_image, but if not available
-  // we provide a stub that returns success
-  return true;
 }
