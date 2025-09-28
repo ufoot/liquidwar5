@@ -72,8 +72,8 @@
 /*==================================================================*/
 
 #define LIGHT_OR_DARK_TRESHOLD 315
-#define CONSIDERED_AS_DARK 0
-#define CONSIDERED_AS_LIGHT 2
+#define CONSIDERED_AS_DARK 0x000000   /* Black RGB */
+#define CONSIDERED_AS_LIGHT 0xFFFFFF  /* White RGB */
 #define PLAYABLE_AREA 1
 #define MINI_SIDE_SIZE 4
 #define MINI_PLAYABLE_AREA 1024
@@ -106,20 +106,39 @@ calc_zoom_factor (int w, int h, int min_w, int min_h)
 static void
 sort_light_and_dark (ALLEGRO_BITMAP * bmp, PALETTE pal)
 {
-  char table[256];
-  int i, x, y;
+  int x, y;
+  ALLEGRO_COLOR pixel_color;
+  float r, g, b, a;
+  int brightness;
+  ALLEGRO_COLOR light_color, dark_color;
 
-  for (i = 0; i < 256; ++i)
-    {
-      if (6 * pal[i].r + 3 * pal[i].g + pal[i].b > LIGHT_OR_DARK_TRESHOLD)
-        table[i] = CONSIDERED_AS_LIGHT;
-      else
-        table[i] = CONSIDERED_AS_DARK;
-    }
+  (void) pal; /* Unused for RGB bitmaps */
+
+  /* Create actual RGB colors from constants */
+  light_color = al_map_rgb((CONSIDERED_AS_LIGHT >> 16) & 0xFF,
+                          (CONSIDERED_AS_LIGHT >> 8) & 0xFF,
+                          CONSIDERED_AS_LIGHT & 0xFF);
+  dark_color = al_map_rgb((CONSIDERED_AS_DARK >> 16) & 0xFF,
+                         (CONSIDERED_AS_DARK >> 8) & 0xFF,
+                         CONSIDERED_AS_DARK & 0xFF);
+
+  /* Set target bitmap once for efficiency */
+  al_set_target_bitmap (bmp);
 
   for (y = 0; y < al_get_bitmap_height (bmp); ++y)
     for (x = 0; x < al_get_bitmap_width (bmp); ++x)
-      putpixel (bmp, x, y, table[getpixel (bmp, x, y)]);
+      {
+        pixel_color = al_get_pixel (bmp, x, y);
+        al_unmap_rgba_f (pixel_color, &r, &g, &b, &a);
+
+        /* Apply weighted brightness formula with 0-255 scaling */
+        brightness = (int)(6 * (r * 255) + 3 * (g * 255) + (b * 255));
+
+        if (brightness > LIGHT_OR_DARK_TRESHOLD)
+          al_put_pixel (x, y, light_color);
+        else
+          al_put_pixel (x, y, dark_color);
+      }
 }
 
 /*------------------------------------------------------------------*/

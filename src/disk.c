@@ -55,8 +55,8 @@
 #include <string.h>
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
-   #include <allegro5/allegro_primitives.h>
-   #include <allegro5/allegro_font.h>
+#include <allegro5/allegro_primitives.h>
+#include <allegro5/allegro_font.h>
 
 #include "alleg2.h"
 #include "init.h"
@@ -146,6 +146,7 @@ static ALLEGRO_SAMPLE *read_sfx(const char *filename) {
   if (path == NULL) {
     return NULL;
   }
+  log_print_str(".");
   ret = al_load_sample(path);
   free(path);
   return ret;
@@ -188,6 +189,7 @@ read_water_dat ()
     {
       char * path = lw_path_join3(STARTUP_DAT_PATH, "water", water_files[i]);
       if (path != NULL) {
+      log_print_str(".");
         SAMPLE_WATER[i] = al_load_sample(path);
         if (SAMPLE_WATER[i] != NULL) {
           lock_sound (SAMPLE_WATER[i]);
@@ -208,12 +210,12 @@ static bool
 read_texture_dat ()
 {
   char texture_files[][32] = {
-    "amethyst.gimp.pcx", "bricks.gimp.pcx", "crash1.gimp.pcx",
-    "electricblue.gimp.pcx", "granite2.gimp.pcx", "greenmess.gimp.pcx",
-    "lumps.gimp.pcx", "marble3.gimp.pcx", "pebbles.gimp.pcx",
-    "pine.gimp.pcx", "poolbottom.gimp.pcx", "qbert.gimp.pcx",
-    "redcubes.gimp.pcx", "smallsquares.gimp.pcx", "terra.gimp.pcx",
-    "wood2.gimp.pcx"
+    "amethyst.bmp", "bricks.bmp", "crash1.bmp",
+    "electricblue.bmp", "granite2.bmp", "greenmess.bmp",
+    "lumps.bmp", "marble3.bmp", "pebbles.bmp",
+    "pine.bmp", "poolbottom.bmp", "qbert.bmp",
+    "redcubes.bmp", "smallsquares.bmp", "terra.bmp",
+    "wood2.bmp"
   };
   int num_files = sizeof(texture_files) / sizeof(texture_files[0]);
   int i;
@@ -221,6 +223,7 @@ read_texture_dat ()
   RAW_TEXTURE_NUMBER = 0;
   for (i = 0; i < num_files && i < RAW_TEXTURE_MAX_NUMBER; ++i)
     {
+    log_print_str(".");
       char * path = lw_path_join3(STARTUP_DAT_PATH, "texture", texture_files[i]);
       if (path != NULL) {
         void *texture = lw_texture_archive_raw(path);
@@ -255,6 +258,7 @@ read_maptex_dat ()
 
   ALLEGRO_FS_ENTRY *entry;
   while ((entry = al_read_directory(dir)) != NULL && RAW_MAPTEX_NUMBER < RAW_TEXTURE_MAX_NUMBER) {
+    log_print_str(".");
     if (al_get_fs_entry_mode(entry) & ALLEGRO_FILEMODE_ISFILE) {
       const char *filename = al_get_fs_entry_name(entry);
       void *maptex = lw_texture_archive_raw(filename);
@@ -292,10 +296,11 @@ read_map_dat ()
 
   ALLEGRO_FS_ENTRY *entry;
   while ((entry = al_read_directory(dir)) != NULL && RAW_MAP_NUMBER < RAW_MAP_MAX_NUMBER) {
+    log_print_str(".");
     if (al_get_fs_entry_mode(entry) & ALLEGRO_FILEMODE_ISFILE) {
       const char *filename = al_get_fs_entry_name(entry);
       const char *ext = strrchr(filename, '.');
-      if (ext && (strcmp(ext, ".pcx") == 0 || strcmp(ext, ".bmp") == 0)) {
+      if (ext && (strcmp(ext, ".bmp") == 0)) {
         void *map = lw_map_archive_raw(filename);
         if (map != NULL) {
           RAW_MAP[RAW_MAP_NUMBER] = map;
@@ -317,7 +322,7 @@ read_back_dat ()
 {
   int errno;
 
-  char * path = lw_path_join3(STARTUP_DAT_PATH, "back", "lw5back.pcx");
+  char * path = lw_path_join3(STARTUP_DAT_PATH, "back", "lw5back.bmp");
   if (path == NULL) {
     return false;
   }
@@ -325,6 +330,7 @@ read_back_dat ()
     return false;
   }
 
+    log_print_str(".");
   BACK_IMAGE = al_load_bitmap(path);
   free(path);
   if (BACK_IMAGE == NULL) {
@@ -338,15 +344,16 @@ read_back_dat ()
 static bool
 read_font_dat ()
 {
-  char * small_font_path = lw_path_join3(STARTUP_DAT_PATH, "font", "degrad10.pcx");
-  char * big_font_path = lw_path_join3(STARTUP_DAT_PATH, "font", "degrad20.pcx");
-  char * small_cursor_path = lw_path_join3(STARTUP_DAT_PATH, "font", "mouse20.pcx");
-  char * big_cursor_path = lw_path_join3(STARTUP_DAT_PATH, "font", "mouse40.pcx");
-  char * void_cursor_path = lw_path_join3(STARTUP_DAT_PATH, "font", "void1.pcx");
+  char * small_font_path = lw_path_join3(STARTUP_DAT_PATH, "font", "degrad10.bmp");
+  char * big_font_path = lw_path_join3(STARTUP_DAT_PATH, "font", "degrad20.bmp");
+  char * small_cursor_path = lw_path_join3(STARTUP_DAT_PATH, "font", "mouse20.bmp");
+  char * big_cursor_path = lw_path_join3(STARTUP_DAT_PATH, "font", "mouse40.bmp");
+  char * void_cursor_path = lw_path_join3(STARTUP_DAT_PATH, "font", "void1.bmp");
 
   bool success = true;
 
   if (small_font_path) {
+    log_print_str(".");
     SMALL_FONT = al_load_bitmap_font(small_font_path);
     free(small_font_path);
     if (!SMALL_FONT) success = false;
@@ -355,6 +362,7 @@ read_font_dat ()
   }
 
   if (big_font_path) {
+    log_print_str(".");
     BIG_FONT = al_load_bitmap_font(big_font_path);
     free(big_font_path);
     if (!BIG_FONT) success = false;
@@ -363,6 +371,7 @@ read_font_dat ()
   }
 
   if (small_cursor_path) {
+    log_print_str(".");
     SMALL_MOUSE_CURSOR = al_load_bitmap(small_cursor_path);
     free(small_cursor_path);
     if (!SMALL_MOUSE_CURSOR) success = false;
@@ -371,6 +380,7 @@ read_font_dat ()
   }
 
   if (big_cursor_path) {
+    log_print_str(".");
     BIG_MOUSE_CURSOR = al_load_bitmap(big_cursor_path);
     free(big_cursor_path);
     if (!BIG_MOUSE_CURSOR) success = false;
@@ -379,6 +389,7 @@ read_font_dat ()
   }
 
   if (void_cursor_path) {
+    log_print_str(".");
     INVISIBLE_MOUSE_CURSOR = al_load_bitmap(void_cursor_path);
     free(void_cursor_path);
     if (!INVISIBLE_MOUSE_CURSOR) success = false;

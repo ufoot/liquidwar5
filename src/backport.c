@@ -1128,7 +1128,8 @@ load_bitmap (const char *filename, PALETTE pal)
   ALLEGRO_BITMAP *bmp;
   (void) pal; // Ignore palette parameter since Allegro 5 handles palettes differently
 
-  bmp = al_load_bitmap (filename);
+  // Try using flags to optimize loading performance
+  bmp = al_load_bitmap_flags(filename, ALLEGRO_MEMORY_BITMAP);
   return bmp;
 }
 
