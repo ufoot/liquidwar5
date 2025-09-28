@@ -483,14 +483,6 @@ AC_CONFIG_FILES([\
 	   src/lwwin.rc \
 	   utils/Makefile \
 	   data/Makefile \
-	   data/back/Makefile \
-	   data/font/Makefile \
-	   data/map/Makefile \
-	   data/sfx/Makefile \
-	   data/texture/Makefile \
-	   data/maptex/Makefile \
-	   data/water/Makefile \
-	   data/music/Makefile \
 	   doc/Makefile \
 	   doc/html/index.html \
 	   doc/tex/liquidwar.tex \

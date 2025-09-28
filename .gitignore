@@ -34,5 +34,11 @@ doc/tex/*.tex
 doc/tex/*.toc
 doc/texi/*.texi
 doc/txt/*.txt
+doc/html/*.html
+doc/man/*.man
+doc/man/*.6
+doc/man/*.6.gz
 allegro-4*
 allegro-5*
+__pycache__
+*.pyc
