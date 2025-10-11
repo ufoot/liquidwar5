@@ -223,7 +223,7 @@ check_free_memory (void)
 {
   ALLEGRO_BITMAP *result;
 
-  result = my_create_bitmap (MEMORY_TO_LEAVE / 2, 1024);
+  result = my_create_memory_bitmap (MEMORY_TO_LEAVE / 2, 1024);
   if (result)
     al_destroy_bitmap (result);
 

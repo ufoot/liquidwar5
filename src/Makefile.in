@@ -33,7 +33,7 @@ endif
 
 
 ifeq ($(DEBUG),yes)
-	DEBUG_FLAGS =   -g3
+	DEBUG_FLAGS =   -g3 -O0
 	DEBUG_OPTIONS = -DDEBUG
 else
 	DEBUG_FLAGS =   -O2 -fomit-frame-pointer
@@ -236,15 +236,19 @@ all: $(EXE_FILES)
 
 liquidwar: $(OBJ_FILES)
 	@echo "Linking $@ (host=$(HOST), debug=$(DEBUG), static=$(STATIC))"
-	@$(CC) $(LDFLAGS) $(LINK_OPTIONS) -o $@ $(OBJ_FILES) $(PTHREAD) $(EXTERN_LIBS)
+	@$(CC) $(LDFLAGS) $(DEBUG_FLAGS) $(LINK_OPTIONS) -o $@ $(OBJ_FILES) $(PTHREAD) $(EXTERN_LIBS)
+	@if [ "$(DEBUG)" = "yes" ] && [ "$$(uname -s)" = "Darwin" ]; then \
+		echo "Generating dSYM for debugging..."; \
+		dsymutil $@; \
+	fi
 
 liquidwar-server: $(OBJ_FILES_SRV)
 	@echo "Linking $@ (host=$(HOST), debug=$(DEBUG), static=$(STATIC))"
-	@$(CC) $(LDFLAGS) $(LINK_OPTIONS) -o $@ $(OBJ_FILES_SRV) $(PTHREAD)
+	@$(CC) $(LDFLAGS) $(DEBUG_FLAGS) $(LINK_OPTIONS) -o $@ $(OBJ_FILES_SRV) $(PTHREAD)
 
 liquidwar-mapgen: $(OBJ_FILES_MAPGEN)
 	@echo "Linking $@ (host=$(HOST), debug=$(DEBUG), static=$(STATIC))"
-	@$(CC) $(LDFLAGS) $(LINK_OPTIONS) -o $@ $(OBJ_FILES_MAPGEN) -lm $(PTHREAD) $(EXTERN_LIBS)
+	@$(CC) $(LDFLAGS) $(DEBUG_FLAGS) $(LINK_OPTIONS) -o $@ $(OBJ_FILES_MAPGEN) -lm $(PTHREAD) $(EXTERN_LIBS)
 
 dep:
 	@find . \
@@ -304,6 +308,6 @@ print_cmd_cc:
 
 print_cmd_ld:
 	@echo "The command line to link .o files in this directory is:"
-	@echo $(CC) $(LDFLAGS) $(LINK_OPTIONS) $(PTHREAD) $(EXTERN_LIBS)
+	@echo $(CC) $(LDFLAGS) $(DEBUG_FLAGS) $(LINK_OPTIONS) $(PTHREAD) $(EXTERN_LIBS)
 
 include Makefile.dep

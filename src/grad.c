@@ -80,10 +80,11 @@ create_gradient_bitmap (int team)
   int x, y, i, color;
   MESH *temp;
 
-  result = my_create_bitmap (CURRENT_AREA_W, CURRENT_AREA_H);
+  result = my_create_memory_bitmap (CURRENT_AREA_W, CURRENT_AREA_H);
 
   if (result)
     {
+      al_set_target_bitmap (result);
       i = 0;
       for (y = 0; y < CURRENT_AREA_H; ++y)
         for (x = 0; x < CURRENT_AREA_W; ++x)
@@ -92,10 +93,10 @@ create_gradient_bitmap (int team)
               {
                 color = (temp->info[team].state.grad
                          + AREA_START_GRADIENT) % COLORS_PER_TEAM;
-                putpixel (result, x, y, color + COLOR_FIRST_ENTRY[team]);
+                putpixel_fast (x, y, color + COLOR_FIRST_ENTRY[team]);
               }
             else
-              putpixel (result, x, y, MENU_BG);
+              putpixel_fast (x, y, MENU_BG);
           }
     }
 
@@ -110,14 +111,15 @@ create_dir_bitmap (int team)
   int x, y, i;
   MESH *temp;
 
-  result = my_create_bitmap (CURRENT_AREA_W, CURRENT_AREA_H);
+  result = my_create_memory_bitmap (CURRENT_AREA_W, CURRENT_AREA_H);
 
+  al_set_target_bitmap (result);
   i = 0;
   for (y = 0; y < CURRENT_AREA_H; ++y)
     for (x = 0; x < CURRENT_AREA_W; ++x)
       {
         if ((temp = CURRENT_AREA[i++].mesh) != NULL)
-          putpixel (result, x, y, 134
+          putpixel_fast (x, y, 134
                     + (temp->info[team].state.dir / 4) * 42
                     + (temp->info[team].state.dir % 4) * 10);
       }

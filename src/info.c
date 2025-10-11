@@ -102,8 +102,8 @@ init_info_bar (int w, int h, int epaisseur)
 
   if (INFO_BAR)
     al_destroy_bitmap (INFO_BAR);
-  INFO_BAR = my_create_bitmap (w, h);
-  INFO_BAR_BACK = my_create_bitmap (w, h);
+  INFO_BAR = my_create_memory_bitmap (w, h);
+  INFO_BAR_BACK = my_create_memory_bitmap (w, h);
 
   if (INFO_BAR && INFO_BAR_BACK)
     {
@@ -127,6 +127,7 @@ init_info_bar (int w, int h, int epaisseur)
 
           INFO_BAR_POS_W = w - epaisseur - 5;
           INFO_BAR_POS_H = (h - 1) / PLAYING_TEAMS - 1;
+          al_set_target_bitmap (INFO_BAR);
           for (i = 0; i < PLAYING_TEAMS; ++i)
             {
               INFO_BAR_POS_X[i] = epaisseur + 3;
@@ -138,7 +139,7 @@ init_info_bar (int w, int h, int epaisseur)
                    y < INFO_BAR_POS_Y[i] + INFO_BAR_POS_H; y++)
                 for (x = INFO_BAR_POS_X[i];
                      x < INFO_BAR_POS_X[i] + INFO_BAR_POS_W; x++)
-                  putpixel (INFO_BAR, x, y,
+                  putpixel_fast (x, y,
                             getpixel (back,
                                       (x - epaisseur - 1) % al_get_bitmap_width(back),
                                       y % al_get_bitmap_height(back)));
@@ -167,6 +168,7 @@ init_info_bar (int w, int h, int epaisseur)
 
           INFO_BAR_POS_W = (w - 1) / PLAYING_TEAMS - 1;
           INFO_BAR_POS_H = h - epaisseur - 5;
+          al_set_target_bitmap (INFO_BAR);
           for (i = 0; i < PLAYING_TEAMS; ++i)
             {
               INFO_BAR_POS_X[i] = (w + 1 - PLAYING_TEAMS
@@ -178,7 +180,7 @@ init_info_bar (int w, int h, int epaisseur)
                    y < INFO_BAR_POS_Y[i] + INFO_BAR_POS_H; y++)
                 for (x = INFO_BAR_POS_X[i];
                      x < INFO_BAR_POS_X[i] + INFO_BAR_POS_W; x++)
-                  putpixel (INFO_BAR, x, y,
+                  putpixel_fast (x, y,
                             getpixel (back,
                                       x % al_get_bitmap_width(back),
                                       (y - epaisseur - 1) % al_get_bitmap_height(back)));

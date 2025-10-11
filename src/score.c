@@ -335,7 +335,7 @@ display_scores (void)
       done[i] = 0;
       write_score (cursor[i], buf[i], 0);
       buf_old[i][0] = '\0';
-      eprouvette[i] = my_create_bitmap (w, h[i]);
+      eprouvette[i] = my_create_memory_bitmap (w, h[i]);
     }
 
   d[MENU_QUICK_QUIT].flags = D_HIDDEN;

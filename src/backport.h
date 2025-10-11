@@ -219,6 +219,7 @@ int mouse_needs_poll (void);
 
 void clear_to_color (ALLEGRO_BITMAP * bitmap, int color);
 void putpixel (ALLEGRO_BITMAP * bitmap, int x, int y, int color);
+void putpixel_fast (int x, int y, int color);
 int getpixel (ALLEGRO_BITMAP * bitmap, int x, int y);
 void rect (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2,
            int color);
@@ -294,6 +295,8 @@ void stretch_blit (ALLEGRO_BITMAP * source, ALLEGRO_BITMAP * dest,
 ALLEGRO_BITMAP *load_bitmap (const char *filename, PALETTE pal);
 int save_bitmap (const char *filename, ALLEGRO_BITMAP *bmp, PALETTE pal);
 ALLEGRO_BITMAP *my_create_bitmap (int w, int h);
+ALLEGRO_BITMAP *my_create_memory_bitmap (int w, int h);
+ALLEGRO_BITMAP *my_create_video_bitmap (int w, int h);
 ALLEGRO_BITMAP *create_bitmap_ex (int color_depth, int w, int h);
 ALLEGRO_BITMAP *create_sub_bitmap (ALLEGRO_BITMAP *parent, int x, int y, int w, int h);
 void scroll_screen (int x, int y);

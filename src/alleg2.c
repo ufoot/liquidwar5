@@ -1576,8 +1576,34 @@ my_list_proc (int msg, DIALOG * d, int c)
 ALLEGRO_BITMAP *
 my_create_bitmap (int w, int h)
 {
-  ALLEGRO_BITMAP *bmp;
+  /*
+   * Default to memory bitmaps for backward compatibility and performance.
+   * Most bitmaps in the codebase are used for pixel-by-pixel operations
+   * which are much faster with memory bitmaps.
+   */
+  return my_create_memory_bitmap (w, h);
+}
 
+/*------------------------------------------------------------------*/
+ALLEGRO_BITMAP *
+my_create_memory_bitmap (int w, int h)
+{
+  ALLEGRO_BITMAP *bmp;
+  al_set_new_bitmap_flags (ALLEGRO_MEMORY_BITMAP);
+  bmp = al_create_bitmap (w, h);
+  al_set_new_bitmap_flags (ALLEGRO_VIDEO_BITMAP);
+  if (bmp == NULL)
+    my_exit (EXIT_CODE_MEM_TROUBLE);
+
+  return bmp;
+}
+
+/*------------------------------------------------------------------*/
+ALLEGRO_BITMAP *
+my_create_video_bitmap (int w, int h)
+{
+  ALLEGRO_BITMAP *bmp;
+  al_set_new_bitmap_flags (ALLEGRO_VIDEO_BITMAP);
   bmp = al_create_bitmap (w, h);
   if (bmp == NULL)
     my_exit (EXIT_CODE_MEM_TROUBLE);

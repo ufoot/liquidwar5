@@ -191,6 +191,7 @@ create_converted_bitmap (ALLEGRO_BITMAP * bmp,
 
   for (i = 0; i < 256; ++i)
     corres[i] = bestfit_color (dst, src[i].r, src[i].g, src[i].b);
+  al_set_target_bitmap (bmp);
   for (y = 0; y < al_get_bitmap_height(bmp); ++y)
     for (x = 0; x < al_get_bitmap_width(bmp); ++x)
       {
@@ -198,7 +199,7 @@ create_converted_bitmap (ALLEGRO_BITMAP * bmp,
         index = (index < first_color ||
                  index >= first_color + number_of_colors) ?
           first_color : index;
-        putpixel (bmp, x, y, index);
+        putpixel_fast (x, y, index);
       }
 }
 
@@ -336,25 +337,28 @@ create_raw_texture (void *ptr, int first)
   lw_serial_get_texture_header (data, &w, &h);
   data += 2 * sizeof (short) + LW_TEXTURE_SYSTEM_NAME_SIZE + 3 * 32;
 
-  result = my_create_bitmap (w, h);
+  result = my_create_memory_bitmap (w, h);
   if (result)
-    for (y = 0; y < h; ++y)
-      for (x = 0; x < w; ++x)
-        {
-          totest = 1 << pos8;
-          color = first + ((data[0] & totest) ? 1 : 0)
-            + ((data[1] & totest) ? 2 : 0)
-            + ((data[2] & totest) ? 4 : 0)
-            + ((data[3] & totest) ? 8 : 0) + ((data[4] & totest) ? 16 : 0);
-          putpixel (result, x, y, color);
-          if (pos8 == 7)
-            {
-              data += 5;
-              pos8 = 0;
-            }
-          else
-            pos8++;
-        }
+    {
+      al_set_target_bitmap (result);
+      for (y = 0; y < h; ++y)
+        for (x = 0; x < w; ++x)
+          {
+            totest = 1 << pos8;
+            color = first + ((data[0] & totest) ? 1 : 0)
+              + ((data[1] & totest) ? 2 : 0)
+              + ((data[2] & totest) ? 4 : 0)
+              + ((data[3] & totest) ? 8 : 0) + ((data[4] & totest) ? 16 : 0);
+            putpixel_fast (x, y, color);
+            if (pos8 == 7)
+              {
+                data += 5;
+                pos8 = 0;
+              }
+            else
+              pos8++;
+          }
+    }
   return result;
 }
 
@@ -389,7 +393,7 @@ create_mono_texture (int first)
 {
   ALLEGRO_BITMAP *result;
 
-  result = my_create_bitmap (1, 1);
+  result = my_create_memory_bitmap (1, 1);
   putpixel (result, 0, 0, first);
   return result;
 }

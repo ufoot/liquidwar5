@@ -175,7 +175,7 @@ extract_significant_part (ALLEGRO_BITMAP * src)
     result = NULL;
   else
     {
-      result = my_create_bitmap (dst_w, dst_h);
+      result = my_create_memory_bitmap (dst_w, dst_h);
       if (result)
         blit (src, result, dst_x, dst_y, 0, 0, dst_w, dst_h);
     }
@@ -189,6 +189,7 @@ spread_color_down (ALLEGRO_BITMAP * bmp, int color1, int color2)
 {
   int x, y, x1, y1, x2, y2, found = 0;
 
+  al_set_target_bitmap (bmp);
   for (y = 0; y < al_get_bitmap_height (bmp); ++y)
     for (x = 0; x < al_get_bitmap_width (bmp); ++x)
       if (getpixel (bmp, x, y) == color2)
@@ -208,22 +209,22 @@ spread_color_down (ALLEGRO_BITMAP * bmp, int color1, int color2)
 
           if (getpixel (bmp, x2, y) == color1)
             {
-              putpixel (bmp, x2, y, color2);
+              putpixel_fast (x2, y, color2);
               found++;
             }
           if (getpixel (bmp, x2, y2) == color1)
             {
-              putpixel (bmp, x2, y2, color2);
+              putpixel_fast (x2, y2, color2);
               found++;
             }
           if (getpixel (bmp, x, y2) == color1)
             {
-              putpixel (bmp, x, y2, color2);
+              putpixel_fast (x, y2, color2);
               found++;
             }
           if (getpixel (bmp, x1, y2) == color1)
             {
-              putpixel (bmp, x1, y2, color2);
+              putpixel_fast (x1, y2, color2);
               found++;
             }
         }
@@ -237,6 +238,7 @@ spread_color_up (ALLEGRO_BITMAP * bmp, int color1, int color2)
 {
   int x, y, x1, y1, x2, y2, found = 0;
 
+  al_set_target_bitmap (bmp);
   for (y = al_get_bitmap_height (bmp) - 1; y >= 0; --y)
     for (x = al_get_bitmap_width (bmp) - 1; x >= 0; --x)
       if (getpixel (bmp, x, y) == color2)
@@ -256,22 +258,22 @@ spread_color_up (ALLEGRO_BITMAP * bmp, int color1, int color2)
 
           if (getpixel (bmp, x1, y) == color1)
             {
-              putpixel (bmp, x1, y, color2);
+              putpixel_fast (x1, y, color2);
               found++;
             }
           if (getpixel (bmp, x1, y1) == color1)
             {
-              putpixel (bmp, x1, y1, color2);
+              putpixel_fast (x1, y1, color2);
               found++;
             }
           if (getpixel (bmp, x, y1) == color1)
             {
-              putpixel (bmp, x, y1, color2);
+              putpixel_fast (x, y1, color2);
               found++;
             }
           if (getpixel (bmp, x2, y1) == color1)
             {
-              putpixel (bmp, x2, y1, color2);
+              putpixel_fast (x2, y1, color2);
               found++;
             }
         }
@@ -336,11 +338,12 @@ fill_with_fg_and_bg (ALLEGRO_BITMAP * bmp, int fg, int bg)
    * We set up the real fg and bg color instead of the
    * CONSIDERED_AS_... constants.
    */
+  al_set_target_bitmap (bmp);
   for (y = 0; y < al_get_bitmap_height (bmp); ++y)
     {
       for (x = 0; x < al_get_bitmap_width (bmp); ++x)
         {
-          putpixel (bmp, x, y,
+          putpixel_fast (x, y,
                     getpixel (bmp, x, y) == PLAYABLE_AREA ? bg : fg);
         }
     }
@@ -547,7 +550,7 @@ lw_map_create_bicolor (int num, int fg, int bg,
   *zoom_factor = calc_zoom_factor (w, h, min_w, min_h);
 
   pos_src = pos_dst = 0;
-  temp = my_create_bitmap (w, h);
+  temp = my_create_memory_bitmap (w, h);
 
   if (temp)
     {
@@ -573,7 +576,7 @@ lw_map_create_bicolor (int num, int fg, int bg,
         {
           fill_with_fg_and_bg (temp, fg, bg);
 
-          result = my_create_bitmap (w * (*zoom_factor), h * (*zoom_factor));
+          result = my_create_memory_bitmap (w * (*zoom_factor), h * (*zoom_factor));
 
           if (result)
             {
@@ -581,6 +584,7 @@ lw_map_create_bicolor (int num, int fg, int bg,
                * Not we magnify the map if needed, so that very small
                * maps are interesting to play on fast fancy computers
                */
+              al_set_target_bitmap (result);
               for (y = 0; y < h; ++y)
                 for (x = 0; x < w; ++x)
                   {
@@ -588,8 +592,7 @@ lw_map_create_bicolor (int num, int fg, int bg,
                     for (i = 0; i < *zoom_factor; ++i)
                       for (j = 0; j < *zoom_factor; ++j)
                         {
-                          putpixel (result,
-                                    x * *zoom_factor + j,
+                          putpixel_fast (x * *zoom_factor + j,
                                     y * *zoom_factor + i, color);
                         }
                   }
@@ -643,6 +646,7 @@ lw_map_create_textured (int num, int fg, int bg,
             {
               zoom_factor_bg = 1;
             }
+          al_set_target_bitmap (result);
           for (y = 0; y < h; ++y)
             for (x = 0; x < w; ++x)
               {
@@ -658,7 +662,7 @@ lw_map_create_textured (int num, int fg, int bg,
                       getpixel (bg_tex, (x / zoom_factor_bg) % bg_w,
                                 (y / zoom_factor_bg) % bg_h);
                   }
-                putpixel (result, x, y, color);
+                putpixel_fast (x, y, color);
               }
         }
     }

@@ -42,3 +42,4 @@ allegro-4*
 allegro-5*
 __pycache__
 *.pyc
+src/liquidwar.dSYM

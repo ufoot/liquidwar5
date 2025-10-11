@@ -250,19 +250,32 @@ void
 putpixel (ALLEGRO_BITMAP * bitmap, int x, int y, int color)
 {
   // https://liballeg.org/stabledocs/en/alleg013.html#putpixel
-  /*
-   * Very likely, this is totally sub-efficient as we call set_target_bitmap
-   * on *EVERY* putpixel call. Also, we emulate PALETTE code, which is ugly.
-   * However, at least, it's safe transition code.
-   * [TODO:ufoot] optimize that crap.
-   */
-  al_set_target_bitmap (bitmap);
   if (color < 0 || color >= PALETTE_SIZE)
     {
       return;
     }
-  ALLEGRO_COLOR al_color;
-  al_color = rgb_to_allegro_color(GLOBAL_PALETTE[color]);
+
+  RGB rgb = GLOBAL_PALETTE[color];
+  ALLEGRO_COLOR al_color = al_map_rgb(rgb.r, rgb.g, rgb.b);
+
+  al_set_target_bitmap (bitmap);
+  al_put_pixel (x, y, al_color);
+}
+
+/*------------------------------------------------------------------*/
+void
+putpixel_fast (int x, int y, int color)
+{
+  // Optimized version that assumes target bitmap is already set
+  // Use al_set_target_bitmap() before calling this in a loop
+  if (color < 0 || color >= PALETTE_SIZE)
+    {
+      return;
+    }
+
+  RGB rgb = GLOBAL_PALETTE[color];
+  ALLEGRO_COLOR al_color = al_map_rgb(rgb.r, rgb.g, rgb.b);
+
   al_put_pixel (x, y, al_color);
 }
 
@@ -312,10 +325,11 @@ getpixel (ALLEGRO_BITMAP * bitmap, int x, int y)
   // https://liballeg.org/stabledocs/en/alleg013.html#getpixel
   /*
    * Fast palette lookup using 24-bit RGB to palette index map.
-   * Falls back to distance calculation if color not found in map.
+   * al_get_pixel takes bitmap as parameter, no need to set target.
    */
-  al_set_target_bitmap (bitmap);
-  ALLEGRO_COLOR pixel_color = al_get_pixel (bitmap, x, y);
+  ALLEGRO_COLOR pixel_color;
+
+  pixel_color = al_get_pixel (bitmap, x, y);
 
   // Convert to RGB
   float r, g, b, a;
@@ -426,8 +440,6 @@ rectfill_dotted (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2,
    * Rather than implemeting generic pattern handling, this is quicker to implement.
    * and suits our limited need.
    */
-  al_set_target_bitmap (bitmap);
-
   if (fg < 0 || fg >= PALETTE_SIZE)
     {
       return;
@@ -446,6 +458,7 @@ rectfill_dotted (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2,
   int x = 0;
   int y = 0;
 
+  al_set_target_bitmap (bitmap);
   for (y = y1; y <= y2; y++)
     {
       for (x = x1; x <= x2; x++)

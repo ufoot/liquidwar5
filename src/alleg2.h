@@ -76,5 +76,7 @@ int my_slider_proc (int msg, DIALOG * d, int c);
 int my_edit_proc (int msg, DIALOG * d, int c);
 int my_list_proc (int msg, DIALOG * d, int c);
 ALLEGRO_BITMAP *my_create_bitmap (int w, int h);
+ALLEGRO_BITMAP *my_create_memory_bitmap (int w, int h);
+ALLEGRO_BITMAP *my_create_video_bitmap (int w, int h);
 
 #endif

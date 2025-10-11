@@ -880,7 +880,7 @@ popup_dialog (DIALOG * dialog, int focus_obj)
   int ret;
   ALLEGRO_ASSERT (dialog);
 
-  bmp = my_create_bitmap (dialog->w, dialog->h);
+  bmp = my_create_memory_bitmap (dialog->w, dialog->h);
   gui_bmp = gui_get_screen ();
   if (bmp)
     {
@@ -1962,7 +1962,7 @@ init_single_menu (MENU * menu, MENU_PLAYER * parent, DIALOG * dialog, int bar,
     scare_mouse_area (player->x, player->y, player->w, player->h);
 
   /* save screen under the menu */
-  player->saved = my_create_bitmap (player->w, player->h);
+  player->saved = my_create_memory_bitmap (player->w, player->h);
 
   if (player->saved)
     blit (gui_bmp, player->saved, player->x, player->y, 0, 0, player->w,

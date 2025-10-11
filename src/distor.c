@@ -103,7 +103,7 @@ init_distorsion_target (void)
 {
   if (DISTORSION_TARGET == NULL)
     {
-      DISTORSION_TARGET = my_create_bitmap (al_get_bitmap_width(NEXT_SCREEN), al_get_bitmap_height(NEXT_SCREEN));
+      DISTORSION_TARGET = my_create_memory_bitmap (al_get_bitmap_width(NEXT_SCREEN), al_get_bitmap_height(NEXT_SCREEN));
     }
   else
     {
@@ -111,7 +111,7 @@ init_distorsion_target (void)
           al_get_bitmap_height(DISTORSION_TARGET) != al_get_bitmap_height(NEXT_SCREEN))
         {
           al_destroy_bitmap (DISTORSION_TARGET);
-          DISTORSION_TARGET = my_create_bitmap (al_get_bitmap_width(NEXT_SCREEN),
+          DISTORSION_TARGET = my_create_memory_bitmap (al_get_bitmap_width(NEXT_SCREEN),
                                                 al_get_bitmap_height(NEXT_SCREEN));
         }
     }
