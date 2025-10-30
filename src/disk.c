@@ -52,6 +52,7 @@
 /* includes                                                         */
 /*==================================================================*/
 
+#include <stdlib.h>
 #include <string.h>
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
@@ -67,6 +68,7 @@
 #include "texture.h"
 #include "macro.h"
 #include "path.h"
+#include "thrdgen.h"
 
 /*==================================================================*/
 /* defines                                                          */
@@ -276,6 +278,30 @@ read_maptex_dat ()
 }
 
 /*------------------------------------------------------------------*/
+/* Structure to pass map loading task to worker thread */
+typedef struct {
+  char *filename;
+  int index;
+} map_load_task;
+
+/*------------------------------------------------------------------*/
+/* Worker thread function to load a single map */
+static void
+map_load_worker(void *arg)
+{
+  map_load_task *task = (map_load_task *)arg;
+
+  if (task && task->filename) {
+    void *map = lw_map_archive_raw(task->filename);
+    if (map != NULL) {
+      RAW_MAP[task->index] = map;
+    }
+    free(task->filename);
+  }
+  free(task);
+}
+
+/*------------------------------------------------------------------*/
 static bool
 read_map_dat ()
 {
@@ -294,17 +320,19 @@ read_map_dat ()
     return false;
   }
 
+  /* First pass: collect all filenames */
+  char *filenames[RAW_MAP_MAX_NUMBER];
+  int file_count = 0;
+
   ALLEGRO_FS_ENTRY *entry;
-  while ((entry = al_read_directory(dir)) != NULL && RAW_MAP_NUMBER < RAW_MAP_MAX_NUMBER) {
-    log_print_str(".");
+  while ((entry = al_read_directory(dir)) != NULL && file_count < RAW_MAP_MAX_NUMBER) {
     if (al_get_fs_entry_mode(entry) & ALLEGRO_FILEMODE_ISFILE) {
       const char *filename = al_get_fs_entry_name(entry);
       const char *ext = strrchr(filename, '.');
       if (ext && (strcmp(ext, ".bmp") == 0)) {
-        void *map = lw_map_archive_raw(filename);
-        if (map != NULL) {
-          RAW_MAP[RAW_MAP_NUMBER] = map;
-          RAW_MAP_NUMBER++;
+        filenames[file_count] = strdup(filename);
+        if (filenames[file_count]) {
+          file_count++;
         }
       }
     }
@@ -313,6 +341,54 @@ read_map_dat ()
 
   al_close_directory(dir);
   al_destroy_fs_entry(dir);
+
+  if (file_count == 0) {
+    return false;
+  }
+
+  /* Second pass: launch worker threads to load maps in parallel */
+  LW_THREAD_HANDLE *threads = malloc(sizeof(LW_THREAD_HANDLE) * file_count);
+  if (!threads) {
+    /* Cleanup filenames */
+    for (int i = 0; i < file_count; i++) {
+      free(filenames[i]);
+    }
+    return false;
+  }
+
+  /* Launch all worker threads */
+  int threads_created = 0;
+  for (int i = 0; i < file_count; i++) {
+    log_print_str(".");
+    map_load_task *task = malloc(sizeof(map_load_task));
+    if (task) {
+      task->filename = filenames[i];
+      task->index = i;
+
+      if (lw_thread_create(&threads[threads_created], map_load_worker, task)) {
+        threads_created++;
+      } else {
+        /* Thread creation failed, fall back to synchronous load */
+        map_load_worker(task);
+      }
+    }
+  }
+
+  /* Wait for all threads to complete */
+  for (int i = 0; i < threads_created; i++) {
+    lw_thread_join(&threads[i]);
+  }
+
+  free(threads);
+
+  /* Count successfully loaded maps */
+  RAW_MAP_NUMBER = 0;
+  for (int i = 0; i < file_count; i++) {
+    if (RAW_MAP[i] != NULL) {
+      RAW_MAP_NUMBER++;
+    }
+  }
+
   return RAW_MAP_NUMBER > 0;
 }
 

@@ -101,7 +101,76 @@ lw_thread_wrapper (void *data)
 
 /*------------------------------------------------------------------*/
 /*
- * Starts a new thread using the given callback
+ * Creates a joinable thread and returns a handle
+ */
+int
+lw_thread_create (LW_THREAD_HANDLE * handle, void (*func) (void *), void *args)
+{
+  pthread_t *thread;
+  int result = 0;
+  lw_thread_wrapper_data *wrapper_data;
+
+  // Allocate thread handle
+  thread = malloc (sizeof (pthread_t));
+  if (thread == NULL)
+    {
+      return 0;
+    }
+
+  // Allocate wrapper data structure
+  wrapper_data = malloc (sizeof (lw_thread_wrapper_data));
+  if (wrapper_data == NULL)
+    {
+      free (thread);
+      return 0;
+    }
+
+  wrapper_data->func = func;
+  wrapper_data->args = args;
+
+  // Create joinable thread (default behavior when attr is NULL)
+  if (pthread_create (thread, NULL, lw_thread_wrapper, wrapper_data) == 0)
+    {
+      handle->data = thread;
+      result = 1;
+    }
+  else
+    {
+      // Thread creation failed, clean up
+      free (wrapper_data);
+      free (thread);
+    }
+
+  return result;
+}
+
+/*------------------------------------------------------------------*/
+/*
+ * Waits for a thread to complete
+ */
+int
+lw_thread_join (LW_THREAD_HANDLE * handle)
+{
+  pthread_t *thread;
+  int result = 0;
+
+  if (handle && handle->data)
+    {
+      thread = (pthread_t *) handle->data;
+      if (pthread_join (*thread, NULL) == 0)
+        {
+          result = 1;
+        }
+      free (thread);
+      handle->data = NULL;
+    }
+
+  return result;
+}
+
+/*------------------------------------------------------------------*/
+/*
+ * Starts a new thread using the given callback (detached)
  */
 int
 lw_thread_start (void (*func) (void *), void *args)

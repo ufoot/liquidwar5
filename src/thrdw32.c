@@ -53,6 +53,7 @@
 
 #ifdef WIN32
 #include <process.h>
+#include <windows.h>
 #endif
 
 #include "thrdgen.h"
@@ -75,7 +76,62 @@
 
 /*------------------------------------------------------------------*/
 /*
- * Starts a new thread using the given callback
+ * Creates a joinable thread and returns a handle
+ */
+int
+lw_thread_create (LW_THREAD_HANDLE * handle, void (*func) (void *), void *args)
+{
+#ifdef WIN32
+  uintptr_t thread_handle;
+  int result = 0;
+
+  // Use _beginthreadex which returns a handle we can wait on
+  // Unlike _beginthread, this doesn't auto-close the handle
+  thread_handle = _beginthreadex (NULL, 0, (unsigned (__stdcall *)(void *))func, args, 0, NULL);
+
+  if (thread_handle != 0)
+    {
+      handle->data = (void *)thread_handle;
+      result = 1;
+    }
+
+  return result;
+#else
+  // Not on Windows, shouldn't happen but return failure
+  return 0;
+#endif
+}
+
+/*------------------------------------------------------------------*/
+/*
+ * Waits for a thread to complete
+ */
+int
+lw_thread_join (LW_THREAD_HANDLE * handle)
+{
+#ifdef WIN32
+  int result = 0;
+
+  if (handle && handle->data)
+    {
+      // Wait for thread to complete
+      WaitForSingleObject ((HANDLE)handle->data, INFINITE);
+      // Close the thread handle
+      CloseHandle ((HANDLE)handle->data);
+      handle->data = NULL;
+      result = 1;
+    }
+
+  return result;
+#else
+  // Not on Windows, shouldn't happen but return failure
+  return 0;
+#endif
+}
+
+/*------------------------------------------------------------------*/
+/*
+ * Starts a new thread using the given callback (detached)
  */
 int
 lw_thread_start (void (*func) (void *), void *args)
