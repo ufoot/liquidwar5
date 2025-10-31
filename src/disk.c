@@ -278,27 +278,70 @@ read_maptex_dat ()
 }
 
 /*------------------------------------------------------------------*/
-/* Structure to pass map loading task to worker thread */
+/* Structure to hold map file info for load balancing */
 typedef struct {
   char *filename;
+  off_t size;
   int index;
-} map_load_task;
+} map_file_info;
 
 /*------------------------------------------------------------------*/
-/* Worker thread function to load a single map */
+/* Structure for worker's job list */
+typedef struct {
+  map_file_info **files;  /* Array of pointers to files to process */
+  int file_count;         /* Number of files assigned to this worker */
+  off_t total_size;       /* Total bytes to process */
+} worker_job;
+
+/*------------------------------------------------------------------*/
+/* Worker thread function to load multiple maps */
 static void
 map_load_worker(void *arg)
 {
-  map_load_task *task = (map_load_task *)arg;
+  worker_job *job = (worker_job *)arg;
 
-  if (task && task->filename) {
-    void *map = lw_map_archive_raw(task->filename);
-    if (map != NULL) {
-      RAW_MAP[task->index] = map;
+  if (job && job->files) {
+    for (int i = 0; i < job->file_count; i++) {
+      map_file_info *file = job->files[i];
+      if (file && file->filename) {
+        log_print_str(".");
+        void *map = lw_map_archive_raw(file->filename);
+        if (map != NULL) {
+          RAW_MAP[file->index] = map;
+        }
+      }
     }
-    free(task->filename);
+    free(job->files);
   }
-  free(task);
+  /* Note: job itself is part of jobs[] array, freed by main thread */
+}
+
+/*------------------------------------------------------------------*/
+/* Comparison function for qsort - sort by size descending */
+static int
+compare_map_size(const void *a, const void *b)
+{
+  const map_file_info *fa = (const map_file_info *)a;
+  const map_file_info *fb = (const map_file_info *)b;
+
+  /* Sort descending (largest first) */
+  if (fa->size > fb->size) return -1;
+  if (fa->size < fb->size) return 1;
+  return 0;
+}
+
+/*------------------------------------------------------------------*/
+/* Simple integer square root for worker count calculation */
+static int
+isqrt(int n)
+{
+  int x = n;
+  int y = (x + 1) / 2;
+  while (y < x) {
+    x = y;
+    y = (x + n / x) / 2;
+  }
+  return x;
 }
 
 /*------------------------------------------------------------------*/
@@ -320,8 +363,8 @@ read_map_dat ()
     return false;
   }
 
-  /* First pass: collect all filenames */
-  char *filenames[RAW_MAP_MAX_NUMBER];
+  /* First pass: collect all filenames and their sizes */
+  map_file_info files[RAW_MAP_MAX_NUMBER];
   int file_count = 0;
 
   ALLEGRO_FS_ENTRY *entry;
@@ -330,8 +373,10 @@ read_map_dat ()
       const char *filename = al_get_fs_entry_name(entry);
       const char *ext = strrchr(filename, '.');
       if (ext && (strcmp(ext, ".bmp") == 0)) {
-        filenames[file_count] = strdup(filename);
-        if (filenames[file_count]) {
+        files[file_count].filename = strdup(filename);
+        if (files[file_count].filename) {
+          files[file_count].size = al_get_fs_entry_size(entry);
+          files[file_count].index = file_count;
           file_count++;
         }
       }
@@ -346,31 +391,81 @@ read_map_dat ()
     return false;
   }
 
-  /* Second pass: launch worker threads to load maps in parallel */
-  LW_THREAD_HANDLE *threads = malloc(sizeof(LW_THREAD_HANDLE) * file_count);
-  if (!threads) {
+  /* Sort files by size (largest first) for better load balancing */
+  qsort(files, file_count, sizeof(map_file_info), compare_map_size);
+
+  /* Calculate optimal worker count: sqrt(file_count), min 1, max file_count */
+  int worker_count = isqrt(file_count);
+  if (worker_count < 1) worker_count = 1;
+  if (worker_count > file_count) worker_count = file_count;
+
+  /* Allocate worker job structures */
+  worker_job *jobs = calloc(worker_count, sizeof(worker_job));
+  if (!jobs) {
     /* Cleanup filenames */
     for (int i = 0; i < file_count; i++) {
-      free(filenames[i]);
+      free(files[i].filename);
     }
     return false;
   }
 
-  /* Launch all worker threads */
-  int threads_created = 0;
-  for (int i = 0; i < file_count; i++) {
-    log_print_str(".");
-    map_load_task *task = malloc(sizeof(map_load_task));
-    if (task) {
-      task->filename = filenames[i];
-      task->index = i;
-
-      if (lw_thread_create(&threads[threads_created], map_load_worker, task)) {
-        threads_created++;
-      } else {
-        /* Thread creation failed, fall back to synchronous load */
-        map_load_worker(task);
+  /* Allocate file lists for each worker */
+  for (int i = 0; i < worker_count; i++) {
+    jobs[i].files = malloc(sizeof(map_file_info *) * file_count);
+    if (!jobs[i].files) {
+      /* Cleanup on allocation failure */
+      for (int j = 0; j < i; j++) {
+        free(jobs[j].files);
       }
+      free(jobs);
+      for (int j = 0; j < file_count; j++) {
+        free(files[j].filename);
+      }
+      return false;
+    }
+    jobs[i].file_count = 0;
+    jobs[i].total_size = 0;
+  }
+
+  /* Greedy bin-packing: assign each file to worker with smallest current load */
+  for (int i = 0; i < file_count; i++) {
+    /* Find worker with minimum load */
+    int min_worker = 0;
+    off_t min_size = jobs[0].total_size;
+    for (int w = 1; w < worker_count; w++) {
+      if (jobs[w].total_size < min_size) {
+        min_size = jobs[w].total_size;
+        min_worker = w;
+      }
+    }
+
+    /* Assign this file to the least loaded worker */
+    jobs[min_worker].files[jobs[min_worker].file_count] = &files[i];
+    jobs[min_worker].file_count++;
+    jobs[min_worker].total_size += files[i].size;
+  }
+
+  /* Launch worker threads */
+  LW_THREAD_HANDLE *threads = malloc(sizeof(LW_THREAD_HANDLE) * worker_count);
+  if (!threads) {
+    /* Cleanup */
+    for (int i = 0; i < worker_count; i++) {
+      free(jobs[i].files);
+    }
+    free(jobs);
+    for (int i = 0; i < file_count; i++) {
+      free(files[i].filename);
+    }
+    return false;
+  }
+
+  int threads_created = 0;
+  for (int i = 0; i < worker_count; i++) {
+    if (lw_thread_create(&threads[threads_created], map_load_worker, &jobs[i])) {
+      threads_created++;
+    } else {
+      /* Thread creation failed, fall back to synchronous processing */
+      map_load_worker(&jobs[i]);
     }
   }
 
@@ -380,6 +475,14 @@ read_map_dat ()
   }
 
   free(threads);
+
+  /* Workers free their own job->files, but free jobs array */
+  free(jobs);
+
+  /* Free filenames */
+  for (int i = 0; i < file_count; i++) {
+    free(files[i].filename);
+  }
 
   /* Count successfully loaded maps */
   RAW_MAP_NUMBER = 0;
