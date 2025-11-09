@@ -24,7 +24,7 @@ U-Foot
 Status
 ------
 
-[![Build](https://github.com/ufoot/liquidwar5/workflows/build-full.svg)](https://github.com/ufoot/liquidwar5/actions)
+[![Build](https://github.com/ufoot/liquidwar5/actions/workflows/build-full.yml/badge.svg)](https://github.com/ufoot/liquidwar5/actions)
 
 Liquid War 5 is now (at least) 20 years old. Some files probably
 remained unchanged through all those years but yet, apparently,
