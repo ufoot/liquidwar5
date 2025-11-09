@@ -409,6 +409,24 @@ jobs:
         make -j2
         make install
 
+        # Debug: Search for Allegro DLL files
+        echo "=== DEBUG: Searching for alleg*.dll files ==="
+        echo "Searching in /mingw32:"
+        find /mingw32 -name "alleg*.dll" -ls 2>/dev/null || echo "No alleg*.dll in /mingw32"
+        echo ""
+        echo "Searching in build directory:"
+        find . -name "alleg*.dll" -ls 2>/dev/null || echo "No alleg*.dll in build directory"
+        echo ""
+        echo "Searching in /msys64:"
+        find /msys64 -name "alleg*.dll" -ls 2>/dev/null | head -20 || echo "No alleg*.dll in /msys64"
+        echo ""
+        echo "Contents of /mingw32/bin (Allegro related):"
+        ls -la /mingw32/bin/*alleg* 2>/dev/null || echo "No Allegro files in /mingw32/bin"
+        echo ""
+        echo "Contents of /mingw32/lib (Allegro related):"
+        ls -la /mingw32/lib/*alleg* 2>/dev/null || echo "No Allegro files in /mingw32/lib"
+        echo "=== END DEBUG ==="
+
         # Verify installation
         echo "Checking for dat tool:"
         ls -la /mingw32/bin/dat* || echo "dat not found in /mingw32/bin"
@@ -507,6 +525,25 @@ jobs:
         ls -lh lib/djgpp/liballeg.a || ( echo "ERROR: Allegro library not created" && exit 1 )
         cd ..
 
+    - name: Download CWSDPMI for DOS runtime
+      run: |
+        echo "=== DEBUG: Downloading CWSDPMI.EXE ==="
+        # CWSDPMI is the DOS Protected Mode Interface server needed to run DJGPP programs
+        # Try multiple mirrors
+        wget http://www.delorie.com/pub/djgpp/current/v2misc/csdpmi7b.zip -O csdpmi7b.zip || \
+          wget https://www.mirrorservice.org/sites/ftp.delorie.com/pub/djgpp/current/v2misc/csdpmi7b.zip -O csdpmi7b.zip || \
+          ( echo "ERROR: Failed to download CWSDPMI" && exit 1 )
+
+        unzip csdpmi7b.zip
+        ls -la cwsdpmi.exe || ls -la CWSDPMI.EXE || ls -la bin/cwsdpmi.exe || find . -name "*cwsdpmi*" -o -name "*CWSDPMI*"
+
+        # Find and copy to root directory
+        find . -iname "cwsdpmi.exe" -exec cp {} ./cwsdpmi.exe \;
+
+        echo "CWSDPMI location:"
+        ls -la cwsdpmi.exe || echo "ERROR: cwsdpmi.exe not found after extraction"
+        echo "=== END DEBUG ==="
+
     - name: Build Liquid War for DOS
       run: |
         export PATH="/usr/local/djgpp/bin:$PATH"
@@ -543,7 +580,9 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: liquidwar-dos-binaries
-        path: lwdos*.exe
+        path: |
+          lwdos*.exe
+          cwsdpmi.exe
         retention-days: 61
 
   build-source:
