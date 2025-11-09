@@ -368,9 +368,6 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v5
-      with:
-        # Ensure Unix line endings (LF) are used, not Windows CRLF
-        autocrlf: false
 
     - name: Setup MSYS2 with MinGW32
       uses: msys2/setup-msys2@v2
