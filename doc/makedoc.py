@@ -16,14 +16,14 @@ import re
 def remove_duplicate_blanks(text):
     result=text
 
-    result=string.replace(result,"\t"," ")
-    result=string.replace(result,"\n"," ")
+    result=result.replace("\t"," ")
+    result=result.replace("\n"," ")
 
     if (result!=""):
         temp=""
         while temp!=result:
             temp=result
-            result=string.replace(result,"  "," ")
+            result=result.replace("  "," ")
 
     return result
 
@@ -63,10 +63,10 @@ def format_text(text,left_col,right_col):
 def format_email_and_url(text):
     result=text	
 
-    email=re.compile('"([\w\-\.]+@[\w\-\.]+)"')
+    email=re.compile(r'"([\w\-\.]+@[\w\-\.]+)"')
     result=email.sub(r'\1',result);
 
-    url=re.compile('"http://([\w\-\.\~/]+)"', re.I)
+    url=re.compile(r'"http://([\w\-\.\~/]+)"', re.I)
     result=url.sub(r'http://\1',result);
 
     return result
@@ -74,11 +74,11 @@ def format_email_and_url(text):
 def format_html(text):
     result=text
 
-    result=string.replace(result,"<","ufoot_html_lt")
-    result=string.replace(result,">","ufoot_html_gt")
-    result=string.replace(result,"&","&amp;")
-    result=string.replace(result,"ufoot_html_lt","&lt;")
-    result=string.replace(result,"ufoot_html_gt","&gt;")    
+    result=result.replace("<","ufoot_html_lt")
+    result=result.replace(">","ufoot_html_gt")
+    result=result.replace("&","&amp;")
+    result=result.replace("ufoot_html_lt","&lt;")
+    result=result.replace("ufoot_html_gt","&gt;")    
 
     # Uncomment this to make mailing list adresses look like "xxx at xxx"
     # instead of "xxx@xxx". This can prevent spammers from harvesting
@@ -86,10 +86,10 @@ def format_html(text):
     # fakeemail=re.compile('"([\w\.]+\-user)@([\w\-\.]+)"')
     # result=fakeemail.sub(r'<A HREF="mailto:\1 at \2">\1 at \2</A> (replace "at" by "@")',result);
 
-    email=re.compile('"([\w\-\.]+@[\w\-\.]+)"')
+    email=re.compile(r'"([\w\-\.]+@[\w\-\.]+)"')
     result=email.sub(r'<A HREF="mailto:\1">\1</A>',result);
 
-    url=re.compile('"http://([\w\-\.\~/]+)"', re.I)
+    url=re.compile(r'"http://([\w\-\.\~/]+)"', re.I)
     result=url.sub(r'<A HREF="http://\1">\1</A>',result);
     
     return result
@@ -97,31 +97,31 @@ def format_html(text):
 def format_tex(text):
     result=text
 
-    result=string.replace(result,"\\","$\\backslash$")
-    result=string.replace(result,"_","\\_")
-    result=string.replace(result,"#","\\#")
-    result=string.replace(result,"%","\\%")
-    result=string.replace(result,"}","\\}")
-    result=string.replace(result,"<","$<$")
-    result=string.replace(result,">","$>$")
-    result=string.replace(result,"~","$\\tilde{}$")
-    
+    result=result.replace("\\","$\\backslash$")
+    result=result.replace("_","\\_")
+    result=result.replace("#","\\#")
+    result=result.replace("%","\\%")
+    result=result.replace("}","\\}")
+    result=result.replace("<","$<$")
+    result=result.replace(">","$>$")
+    result=result.replace("~","$\\tilde{}$")
+
     return result
 
 def format_texi(text):
     result=text
 
-    result=string.replace(result,"@","@@")
-    result=string.replace(result,"}","@}")
-    result=string.replace(result,"{","@{")
+    result=result.replace("@","@@")
+    result=result.replace("}","@}")
+    result=result.replace("{","@{")
 
     return result
 
 def format_uwc(text):
     result=text
 
-    result=string.replace(result,"]","]")
-    result=string.replace(result,"[","[[")
+    result=result.replace("]","]")
+    result=result.replace("[","[[")
 
     return result
 
@@ -139,8 +139,8 @@ def format_uwc_elem(text):
     result=text
 
     result=format_uwc(result)
-    result=string.replace(result,"\n"," ")
-    result=string.replace(result,"\r"," ")
+    result=result.replace("\n"," ")
+    result=result.replace("\r"," ")
     result=remove_duplicate_blanks(result)
 
     return result
@@ -208,7 +208,7 @@ class XMLToX(xml.sax.ContentHandler):
         if tag=="code":
             self.start_code()
     def endElement(self,tag):
-        data=string.strip(self.charbuf)
+        data=self.charbuf.strip()
         if (data!=""):
             self.write(self.translate(data,self.stack[-1]))
         self.charbuf=""
@@ -366,7 +366,7 @@ class XMLToTeX(XMLToX):
         self.write("\n\\end{verbatim}\n")
     def translate(self,data,tag):
         result=data
-	result=format_email_and_url(result)
+        result=format_email_and_url(result)
         if (tag!="code"):
             result=format_tex(result)
         return result
@@ -405,12 +405,12 @@ class XMLToMan(XMLToX):
         self.write("\n")
     def translate(self,data,tag):
         result=data
-	result=format_email_and_url(result)
-        result=string.replace(result,"\\","\\\\")
-        result=string.replace(result,".","\.")
-        result=string.replace(result,"-","\-")
+        result=format_email_and_url(result)
+        result=result.replace("\\","\\\\")
+        result=result.replace(".",r"\.")
+        result=result.replace("-",r"\-")
         if (tag=="code"):
-            result=string.replace(result,"\n","\n.br\n")
+            result=result.replace("\n","\n.br\n")
         else:
             result=remove_duplicate_blanks(result)
         return result
@@ -460,10 +460,10 @@ class XMLToTxt(XMLToX):
         self.write("\n")
     def translate(self,data,tag):
         result=data
-	result=format_email_and_url(result)
+        result=format_email_and_url(result)
         if (tag=="code"):
             result=" "*self.indent+\
-                    string.replace(result,"\n","\n"+" "*self.indent)
+                    result.replace("\n","\n"+" "*self.indent)
         else:
             result=format_text(result,self.indent,80)
             if (tag=="elem"):
@@ -505,7 +505,7 @@ class XMLToTexi(XMLToX):
         self.write("\n@end example\n")
     def translate(self,data,tag):
         result=data
-	result=format_email_and_url(result)
+        result=format_email_and_url(result)
 
         if (tag!="code"):
             result=remove_duplicate_blanks(result)
@@ -548,7 +548,7 @@ class XMLToUWC(XMLToX):
         self.write("\n")
     def translate(self,data,tag):
         result=data
-	result=format_email_and_url(result)
+        result=format_email_and_url(result)
 
         if (tag=="code"):
             result=format_uwc_code(result)
@@ -560,14 +560,14 @@ class XMLToUWC(XMLToX):
         return result
 
 def run_parser(handler,dst,src):
-    dst_file=open(dst,"w")
+    dst_file=open(dst,"w",encoding="iso-8859-1")
     src_file=open(src,"r")
     #src_code=src_file.read()
     parser=xml.sax.make_parser()
     parser.setContentHandler(handler)
     parser.parse(src_file)
     dst_code=handler.translated
-    dst_file.write(dst_code.encode("iso-8859-1"))
+    dst_file.write(dst_code)
     src_file.close()
     dst_file.close()
         
@@ -602,8 +602,8 @@ def make_txt(txt_file,xml_file,header):
     run_parser(handler,txt_file,xml_file)
 
 def make_texi(texi_file,xml_file):
-    node=string.replace(xml_file,".xml","")
-    node=string.replace(node,"xml/","")
+    node=xml_file.replace(".xml","")
+    node=node.replace("xml/","")
     parser=xml.sax.make_parser()
     handler=XMLToTexi(node)
     run_parser(handler,texi_file,xml_file)

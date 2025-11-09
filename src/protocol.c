@@ -22,7 +22,7 @@
 
 /*****************************************************************************/
 /* Liquid War is a multiplayer wargame                                       */
-/* Copyright (C) 1998-2018 Christian Mauduit                                 */
+/* Copyright (C) 1998-2025 Christian Mauduit                                 */
 /*                                                                           */
 /* This program is free software; you can redistribute it and/or modify      */
 /* it under the terms of the GNU General Public License as published by      */
@@ -290,6 +290,7 @@ lw_protocol_ask_who (int *sock, int num, LW_WHO * who)
                    * the LOCAL and NETWORK messages is that the network
                    * flag is set to 1 in the "NETWORK" case.
                    */
+                  /* fall through */
                 case LW_NETMESS_CODE_LOCAL:
                   if (netmess->argc == 3)
                     {

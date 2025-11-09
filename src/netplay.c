@@ -22,7 +22,7 @@
 
 /*****************************************************************************/
 /* Liquid War is a multiplayer wargame                                       */
-/* Copyright (C) 1998-2018 Christian Mauduit                                 */
+/* Copyright (C) 1998-2025 Christian Mauduit                                 */
 /*                                                                           */
 /* This program is free software; you can redistribute it and/or modify      */
 /* it under the terms of the GNU General Public License as published by      */
@@ -117,7 +117,7 @@ static int connect_on_server_finish (int sock);
 /*------------------------------------------------------------------*/
 /*
  * The equivalent of play_sequence, but for a network game.
- * Basically, this is the function called when you press "play" 
+ * Basically, this is the function called when you press "play"
  * to launch a network game.
  */
 int
@@ -179,7 +179,15 @@ connect_on_server_start (int *sock, char *address, int port)
     }
 
   connect_data->sock = -1;
-  strncpy (connect_data->address, address, sizeof (connect_data->address));
+  /* Intentional truncation - address may be longer than buffer, null terminator is set explicitly */
+#ifdef __clang__
+  strncpy (connect_data->address, address, sizeof (connect_data->address) - 1);
+#else
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstringop-truncation"
+  strncpy (connect_data->address, address, sizeof (connect_data->address) - 1);
+#pragma GCC diagnostic pop
+#endif
   connect_data->address[sizeof (connect_data->address) - 1] = '\0';
   connect_data->port = port;
   connect_data->running = 0;

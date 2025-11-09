@@ -24,7 +24,7 @@ U-Foot
 Status
 ------
 
-[![Build Status](https://travis-ci.org/ufoot/liquidwar5.svg?branch=master)](https://travis-ci.org/ufoot/liquidwar5/branches)
+[![Build](https://github.com/ufoot/liquidwar5/workflows/build-full.svg)](https://github.com/ufoot/liquidwar5/actions)
 
 Liquid War 5 is now (at least) 20 years old. Some files probably
 remained unchanged through all those years but yet, apparently,
@@ -70,7 +70,7 @@ License
 -------
 
 Liquid War is a multiplayer wargame.
-Copyright (C) 1998-2018 Christian Mauduit (ufoot@ufoot.org)
+Copyright (C) 1998-2025 Christian Mauduit (ufoot@ufoot.org)
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License

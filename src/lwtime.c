@@ -22,7 +22,7 @@
 
 /*****************************************************************************/
 /* Liquid War is a multiplayer wargame                                       */
-/* Copyright (C) 1998-2018 Christian Mauduit                                 */
+/* Copyright (C) 1998-2025 Christian Mauduit                                 */
 /*                                                                           */
 /* This program is free software; you can redistribute it and/or modify      */
 /* it under the terms of the GNU General Public License as published by      */
@@ -43,17 +43,20 @@
 /*****************************************************************************/
 
 /********************************************************************/
-/* nom           : time.h                                           */
+/* nom           : time.c                                           */
 /* contenu       : gestion du temps de jeu                          */
 /* date de modif : 3 mai 98                                         */
 /********************************************************************/
 
-#ifndef LIQUID_WAR_INCLUDE_TIME
-#define LIQUID_WAR_INCLUDE_TIME
+/*==================================================================*/
+/* includes                                                         */
+/*==================================================================*/
 
-/*==================================================================*/
-/* constantes                                                       */
-/*==================================================================*/
+#include "code.h"
+#include "config.h"
+#include "sound.h"
+#include "ticker.h"
+#include "lwtime.h"
 
 /*==================================================================*/
 /* types                                                            */
@@ -63,17 +66,84 @@
 /* variables globales                                               */
 /*==================================================================*/
 
-extern int TIME_ELAPSED;
-extern int TIME_LEFT;
-extern int GLOBAL_TICKER;
-extern int GLOBAL_CLOCK;
+static int TIME_TABLE[17] = { 15, 30, 45, 60,
+  90, 120, 150, 180,
+  240, 300, 360, 480,
+  600, 900, 1200, 1800,
+  3600
+};
+
+static int TICKER_PAUSED;
+static int TICKER_START;
+static int TICKER_PAUSE_START;
+static int BELL_RINGING;
+
+int TIME_ELAPSED;
+int TIME_LEFT;
+int GLOBAL_TICKER;
+int GLOBAL_CLOCK = 0;
 
 /*==================================================================*/
-/* fonctions globales                                               */
+/* fonctions                                                        */
 /*==================================================================*/
 
-void update_play_time (void);
-void start_play_time (void);
-void write_time (int time, char *buffer);
+/*------------------------------------------------------------------*/
+void
+update_play_time (void)
+{
+  GLOBAL_TICKER = get_ticker () - TICKER_START;
+  if (PAUSE_ON)
+    {
+      if (TICKER_PAUSE_START == 0)
+        TICKER_PAUSE_START = get_ticker ();
+    }
+  else
+    {
+      if (TICKER_PAUSE_START != 0)
+        {
+          TICKER_PAUSED += get_ticker () - TICKER_PAUSE_START;
+          TICKER_PAUSE_START = 0;
+        }
+      else
+        TIME_ELAPSED = (get_ticker () - TICKER_START - TICKER_PAUSED) / 1000;
+    }
+  TIME_LEFT = TIME_TABLE[LW_CONFIG_CURRENT_RULES.game_time] - TIME_ELAPSED;
 
-#endif
+  if (TIME_LEFT < 0)
+    TIME_LEFT = 0;
+  if (TIME_LEFT <= 5 && BELL_RINGING == 0)
+    {
+      BELL_RINGING = 1;
+      play_time ();
+    }
+}
+
+/*------------------------------------------------------------------*/
+void
+start_play_time (void)
+{
+  GLOBAL_CLOCK = 2;
+  TICKER_START = get_ticker ();
+  TICKER_PAUSED = 0;
+  TICKER_PAUSE_START = 0;
+  TIME_ELAPSED = 0;
+  TIME_LEFT = TIME_TABLE[LW_CONFIG_CURRENT_RULES.game_time] + 1;
+  BELL_RINGING = 0;
+  update_play_time ();
+}
+
+/*------------------------------------------------------------------*/
+void
+write_time (int time, char *buffer)
+{
+  int min, sec;
+
+  min = time / 60;
+  sec = time % 60;
+  buffer[0] = '0' + min / 10;
+  buffer[1] = '0' + min % 10;
+  buffer[2] = ':';
+  buffer[3] = '0' + sec / 10;
+  buffer[4] = '0' + sec % 10;
+  buffer[5] = 0;
+}

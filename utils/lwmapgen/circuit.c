@@ -119,6 +119,7 @@ connect_rows ()
       if (count[r] < 2)
         continue;
 
+      fromc = -1;
       /* find first c... */
       for (c = 0; c < map.num_col; c++)
         {
@@ -129,6 +130,7 @@ connect_rows ()
             }
         }
 
+      toc = -1;
       /* find last c... */
       for (c++; c < map.num_col; c++)
         {
@@ -136,7 +138,9 @@ connect_rows ()
             toc = c;
         }
 
-      draw_pipe (r, fromc, r, toc, 0);
+      /* Defensive check: ensure we found valid wells */
+      if (fromc >= 0 && toc >= 0)
+        draw_pipe (r, fromc, r, toc, 0);
     }
 
 
@@ -163,6 +167,7 @@ connect_front ()
         continue;
 
       fromr = r;
+      fromc = -1;
       /* find first well */
       for (c = 0; c < map.num_col; c++)
         {
@@ -173,8 +178,7 @@ connect_front ()
             }
         }
 
-
-      /* tor = -1; */
+      tor = -1;
       /* find next row with a well */
       for (r++; r < map.num_row; r++)
         {
@@ -188,6 +192,7 @@ connect_front ()
       if (r == map.num_row)
         break;
 
+      toc = -1;
       /* find first well on to row */
       for (c = 0; c < map.num_col; c++)
         {
@@ -198,8 +203,12 @@ connect_front ()
             }
         }
 
-      draw_pipe (fromr, fromc, tor, toc, 0);
-      printf ("FRONT: %d, %d ---- %d, %d\n", fromr, fromc, tor, toc);
+      /* Defensive check: ensure we found valid wells */
+      if (fromc >= 0 && tor >= 0 && toc >= 0)
+        {
+          draw_pipe (fromr, fromc, tor, toc, 0);
+          printf ("FRONT: %d, %d ---- %d, %d\n", fromr, fromc, tor, toc);
+        }
       r = tor - 1;
     }
 
@@ -227,6 +236,7 @@ connect_back ()
         continue;
 
       fromr = r;
+      fromc = -1;
       /* find last well */
       for (c = map.num_col - 1; c >= 0; c--)
         {
@@ -237,7 +247,7 @@ connect_back ()
             }
         }
 
-      /* tor = -1; */
+      tor = -1;
       /* find next row with well */
       for (r++; r < map.num_row; r++)
         {
@@ -251,6 +261,7 @@ connect_back ()
       if (r == map.num_row)
         break;
 
+      toc = -1;
       /* find last well */
       for (c = map.num_col - 1; c >= 0; c--)
         {
@@ -261,8 +272,12 @@ connect_back ()
             }
         }
 
-      draw_pipe (fromr, fromc, tor, toc, 1);
-      printf ("BACK: %d, %d ---- %d, %d\n", fromr, fromc, tor, toc);
+      /* Defensive check: ensure we found valid wells */
+      if (fromc >= 0 && tor >= 0 && toc >= 0)
+        {
+          draw_pipe (fromr, fromc, tor, toc, 1);
+          printf ("BACK: %d, %d ---- %d, %d\n", fromr, fromc, tor, toc);
+        }
       r = tor - 1;
     }
 
@@ -291,6 +306,7 @@ connect_mid ()
 
       fromr = r;
 
+      fromc = -1;
       /* find first middle well */
       mid = count[fromr] / 2;
       i = 0;
@@ -305,8 +321,7 @@ connect_mid ()
             }
         }
 
-
-      /* tor = -1; */
+      tor = -1;
       /* find to row */
       for (r++; r < map.num_row; r++)
         {
@@ -320,7 +335,7 @@ connect_mid ()
       if (r == map.num_row)
         break;
 
-
+      toc = -1;
       /* find first middle well */
       mid = count[tor] / 2;
       i = 0;
@@ -336,8 +351,12 @@ connect_mid ()
             }
         }
 
-      draw_pipe (fromr, fromc, tor, toc, 0);
-      printf ("pipe= %d, %d --- %d, %d\n", fromr, fromc, tor, toc);
+      /* Defensive check: ensure we found valid wells */
+      if (fromc >= 0 && tor >= 0 && toc >= 0)
+        {
+          draw_pipe (fromr, fromc, tor, toc, 0);
+          printf ("pipe= %d, %d --- %d, %d\n", fromr, fromc, tor, toc);
+        }
       r = tor - 1;
     }
 }

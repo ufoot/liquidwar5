@@ -22,7 +22,7 @@
 
 /*****************************************************************************/
 /* Liquid War is a multiplayer wargame                                       */
-/* Copyright (C) 1998-2018 Christian Mauduit                                 */
+/* Copyright (C) 1998-2025 Christian Mauduit                                 */
 /*                                                                           */
 /* This program is free software; you can redistribute it and/or modify      */
 /* it under the terms of the GNU General Public License as published by      */
@@ -63,7 +63,7 @@
 #include "mesh.h"
 #include "mouse.h"
 #include "move.h"
-#include "time.h"
+#include "lwtime.h"
 #include "keyexch.h"
 #include "network.h"
 #include "checksum.h"

@@ -64,7 +64,7 @@ main (int argc, char **argv)
 
   do_args (argc, argv);
 
-  printf ("filename = %s\n", filename);
+  printf ("filename = %s\n", filename ? filename : default_filename);
 
   map_generator (filename, size, grid_size, func_id);
 
@@ -98,7 +98,7 @@ do_args (int argc, char **argv)
               exit (EXIT_FAILURE);
             }
           int len = strlen (argv[++i]);
-          filename = malloc (sizeof (char) * len);
+          filename = malloc (sizeof (char) * (len + 1));
           if (filename == NULL)
             {
               fprintf (stderr,

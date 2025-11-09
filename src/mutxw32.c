@@ -22,7 +22,7 @@
 
 /*****************************************************************************/
 /* Liquid War is a multiplayer wargame                                       */
-/* Copyright (C) 1998-2018 Christian Mauduit                                 */
+/* Copyright (C) 1998-2025 Christian Mauduit                                 */
 /*                                                                           */
 /* This program is free software; you can redistribute it and/or modify      */
 /* it under the terms of the GNU General Public License as published by      */
@@ -93,7 +93,7 @@ lw_mutex_init (LW_MUTEX_DATA * mutex)
         }
       else
         {
-          log_println ("Error: can't create mutex...");
+          log_println_str ("Error: can't create mutex...");
           free (mutex->data);
           mutex->data = NULL;
         }

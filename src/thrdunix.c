@@ -22,7 +22,7 @@
 
 /*****************************************************************************/
 /* Liquid War is a multiplayer wargame                                       */
-/* Copyright (C) 1998-2018 Christian Mauduit                                 */
+/* Copyright (C) 1998-2025 Christian Mauduit                                 */
 /*                                                                           */
 /* This program is free software; you can redistribute it and/or modify      */
 /* it under the terms of the GNU General Public License as published by      */
@@ -51,6 +51,7 @@
 /* includes                                                         */
 /*==================================================================*/
 
+#include <stdlib.h>
 #include <pthread.h>
 
 #include "thrdgen.h"
@@ -73,6 +74,30 @@
 
 /*------------------------------------------------------------------*/
 /*
+ * Wrapper structure to pass function and args together
+ */
+typedef struct
+{
+  void (*func) (void *);
+  void *args;
+} lw_thread_wrapper_data;
+
+/*
+ * Wrapper function to adapt void-returning functions to pthread's signature
+ */
+static void *
+lw_thread_wrapper (void *arg)
+{
+  lw_thread_wrapper_data *data = (lw_thread_wrapper_data *) arg;
+  void (*func) (void *) = data->func;
+  void *args = data->args;
+
+  free (data);
+  func (args);
+  return NULL;
+}
+
+/*
  * Starts a new thread using the given callback
  */
 int
@@ -80,12 +105,29 @@ lw_thread_start (void (*func) (void *), void *args)
 {
   pthread_t thread;
   int result = 0;
+  lw_thread_wrapper_data *data;
 
-  if (pthread_create (&thread, NULL, (void *(*)(void *)) func, args) == 0)
+  data = (lw_thread_wrapper_data *) malloc (sizeof (lw_thread_wrapper_data));
+  if (data != NULL)
     {
-      if (pthread_detach (thread) == 0)
+      data->func = func;
+      data->args = args;
+
+      if (pthread_create (&thread, NULL, lw_thread_wrapper, data) == 0)
         {
-          result = 1;
+          if (pthread_detach (thread) == 0)
+            {
+              result = 1;
+            }
+          else
+            {
+              /* Detach failed, but thread is running - data will be freed by wrapper */
+            }
+        }
+      else
+        {
+          /* Thread creation failed, free the wrapper data */
+          free (data);
         }
     }
 

@@ -1,5 +1,5 @@
 # Liquid War is a multiplayer wargame
-# Copyright (C) 1998-2018 Christian Mauduit
+# Copyright (C) 1998-2025 Christian Mauduit
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -78,14 +78,12 @@ PACKAGE_BINARY_TGZ = liquidwar-$(VERSION).$(HOST).tgz
 PACKAGE_DOS_DIR = LW5
 PACKAGE_DOS_EXE = lwdos.exe lwdosmap.exe
 PACKAGE_DOS_ZIP = lw$(VERSION_COMPACT)d.zip
-# the following line should be edited to match your configuration
-PACKAGE_DOS_CWSDPMI = /storage/download/liquidwar/v5/allegro/cwsdpmi.exe
+PACKAGE_DOS_CWSDPMI = cwsdpmi.exe
 
 PACKAGE_WIN32_DIR = LW5
 PACKAGE_WIN32_EXE = lwwin.exe lwwinsrv.exe lwwinmap.exe
 PACKAGE_WIN32_ZIP = lw$(VERSION_COMPACT)w.zip
-# the following line should be edited to match your configuration
-PACKAGE_WIN32_ALLEGDLL = /storage/download/liquidwar/v5/allegro/alleg42.dll
+PACKAGE_WIN32_ALLEGDLL = alleg44.dll
 
 PACKAGE_NSIS_EXE = lw$(VERSION_COMPACT).exe
 
@@ -118,7 +116,7 @@ build_data:
 	@$(GMAKE) -C $(MAKE_UTILS_DIR)
 	@$(GMAKE) -C $(MAKE_DATA_DIR)
 
-build_doc:	
+build_doc:
 	@$(GMAKE) -C $(MAKE_DOC_DIR)
 
 install: install_link install_nolink
@@ -126,7 +124,7 @@ install: install_link install_nolink
 # the install_nolink is for distribs where $(prefix)/games is in the PATH,
 # for instance Debian, where a link in $(prefix)/bin is pretty much useless
 install_nolink: install_bin install_data install_custom_map install_custom_texture install_custom_music install_icon install_doc install_gpl install_desktop install_readme
-	@echo 
+	@echo
 	@echo "Install of Liquid War $(VERSION) completed, seems that you are ready to play ;)"
 	@echo "Have a good day!"
 	@echo "                            U-Foot (ufoot@ufoot.org)"
@@ -155,19 +153,19 @@ install_data: data/liquidwar.dat
 	@install -d $(DESTDIR)$(DATADIR)
 	@install -c -m 0644 data/liquidwar.dat $(DESTDIR)$(DATADIR)
 
-install_custom_map: 
+install_custom_map:
 	@echo "Installing liquidwar custom maps in $(DATADIR)/map."
 	@install -d $(DESTDIR)$(DATADIR)
 	@install -d $(DESTDIR)$(DATADIR)/map
 	@install -c -m 0644 custom/map/*.* $(DESTDIR)$(DATADIR)/map
 
-install_custom_texture: 
+install_custom_texture:
 	@echo "Installing liquidwar custom textures in $(DATADIR)/texture."
 	@install -d $(DESTDIR)$(DATADIR)
 	@install -d $(DESTDIR)$(DATADIR)/texture
 	@install -c -m 0644 custom/texture/*.* $(DESTDIR)$(DATADIR)/texture
 
-install_custom_music: 
+install_custom_music:
 	@echo "Installing liquidwar custom musics in $(DATADIR)/music."
 	@install -d $(DESTDIR)$(DATADIR)
 	@install -d $(DESTDIR)$(DATADIR)/music
@@ -263,6 +261,7 @@ packageclean: clean world_clean
 	@rm -rf LW5 lwdos*exe lwwin*exe _tmpfile.arg *.log vc60.* *.idb *.pch
 	@rm -rf data/lwwin* data/lwdos*
 	@rm -rf starter
+	@rm -rf .github
 	@for d in $(MAKE_DIRS); do $(GMAKE) -C $$d distclean; done
 
 distclean: packageclean
@@ -288,7 +287,7 @@ dep:
 # - a source rpm
 # - a binary rpm
 #
-# These scripts are far from perfect, but they help me building 
+# These scripts are far from perfect, but they help me building
 # the files I upload to my website. Still, you're free to use them
 # yourself 8-)
 # ----------------------------------------------------------------------
@@ -297,7 +296,7 @@ dist: package_source
 
 package_source: $(PACKAGE_SOURCE_TARGZ)
 
-$(PACKAGE_SOURCE_TARGZ): 
+$(PACKAGE_SOURCE_TARGZ):
 	@echo "Creating temporary directory."
 	@rm -rf $(PACKAGE_TMP)
 	@install -d $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)
@@ -307,14 +306,14 @@ $(PACKAGE_SOURCE_TARGZ):
 	@$(GMAKE) -C $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR) packageclean
 	@touch $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/.cvsignore
 	@find $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR) -name .cvsignore -o -name CVS -o -name .arch-ids -o -name "{arch}" -o -name ".git" -o -name ".gitignore" | xargs rm -rf
-	@cd $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR) 
+	@cd $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)
 	@echo "Creating tarball."
 	@cd $(PACKAGE_TMP) && tar cf $(PACKAGE_SOURCE_TAR) $(PACKAGE_SOURCE_DIR)
 	@echo "Compressing."
 	@gzip -9 $(PACKAGE_TMP)/$(PACKAGE_SOURCE_TAR)
 	@mv $(PACKAGE_TMP)/$(PACKAGE_SOURCE_TARGZ) .
 	@echo "Deleting temporary directory."
-	@rm -rf $(PACKAGE_TMP) 
+	@rm -rf $(PACKAGE_TMP)
 
 package_dos: $(PACKAGE_DOS_ZIP)
 
@@ -349,12 +348,12 @@ $(PACKAGE_DOS_ZIP): $(PACKAGE_DOS_EXE) $(PACKAGE_DOS_CWSDPMI)
 	@touch $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR)/.cvsignore
 	@find $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR) -name .cvsignore -o -name CVS -o -name .arch-ids -o -name "{arch}" -o -name DUMMY -o -name "*.inc" -o -name "*.in" | xargs rm -rf
 	@cp fix.sh $(PACKAGE_TMP)
-	@cd $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR) && $(PACKAGE_TMP)/fix.sh dos 
+	@cd $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR) && $(PACKAGE_TMP)/fix.sh dos
 	@echo "Zipping."
 	@cd $(PACKAGE_TMP) && zip -r -9 $(PACKAGE_DOS_ZIP) $(PACKAGE_DOS_DIR)
 	@mv $(PACKAGE_TMP)/$(PACKAGE_DOS_ZIP) .
 	@echo "Deleting temporary directory."
-	@rm -rf $(PACKAGE_TMP) 
+	@rm -rf $(PACKAGE_TMP)
 
 package_win32: $(PACKAGE_WIN32_ZIP)
 
@@ -390,12 +389,12 @@ $(PACKAGE_WIN32_ZIP): $(PACKAGE_WIN32_EXE) $(PACKAGE_WIN32_ALLEGDLL)
 	@touch $(PACKAGE_TMP)/$(PACKAGE_WIN32_DIR)/.cvsignore
 	@find $(PACKAGE_TMP)/$(PACKAGE_WIN32_DIR) -name .cvsignore -o -name CVS -o -name .arch-ids -o -name "{arch}" -o -name DUMMY -o -name "*.inc" -o -name "*.in" | xargs rm -rf
 	@cp fix.sh $(PACKAGE_TMP)
-	@cd $(PACKAGE_TMP)/$(PACKAGE_WIN32_DIR) && $(PACKAGE_TMP)/fix.sh dos 
+	@cd $(PACKAGE_TMP)/$(PACKAGE_WIN32_DIR) && $(PACKAGE_TMP)/fix.sh dos
 	@echo "Zipping."
 	@cd $(PACKAGE_TMP) && zip -r -9 $(PACKAGE_WIN32_ZIP) $(PACKAGE_WIN32_DIR)
 	@mv $(PACKAGE_TMP)/$(PACKAGE_WIN32_ZIP) .
 	@echo "Deleting temporary directory."
-	@rm -rf $(PACKAGE_TMP) 
+	@rm -rf $(PACKAGE_TMP)
 
 package_nsis: $(PACKAGE_NSIS_EXE)
 
@@ -434,7 +433,7 @@ $(PACKAGE_BINARY_TGZ): $(PACKAGE_SOURCE_TARGZ)
 	@echo "Cleaning up install directories."
 	@$(GMAKE) -C $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR) uninstall
 	@echo "Deleting temporary directory."
-	@rm -rf $(PACKAGE_TMP) 
+	@rm -rf $(PACKAGE_TMP)
 
 package_source_rpm: $(PACKAGE_SOURCE_RPM)
 
@@ -510,7 +509,7 @@ $(PACKAGE_MACOSX_TGZ): $(PACKAGE_SOURCE_TARGZ)
 	@echo "Compressing."
 	@gzip -c -9 $(PACKAGE_TMP)/$(PACKAGE_MACOSX_TAR) > $(PACKAGE_MACOSX_TGZ)
 	@echo "Deleting temporary directory."
-	@rm -rf $(PACKAGE_TMP) 
+	@rm -rf $(PACKAGE_TMP)
 
 package_macosx_dmg: $(PACKAGE_MACOSX_DMG)
 
@@ -525,7 +524,7 @@ $(PACKAGE_MACOSX_DMG): $(PACKAGE_MACOSX_TGZ)
 	@echo "Creating disk image."
 	@rm -f $@ && if which hdiutil ; then hdiutil create -srcfolder "$(PACKAGE_TMP)" $@ ; fi
 	@echo "Deleting temporary directory."
-	@rm -rf $(PACKAGE_TMP) 
+	@rm -rf $(PACKAGE_TMP)
 
 package_gp2x: $(PACKAGE_GP2X_ZIP)
 
@@ -555,7 +554,7 @@ $(PACKAGE_GP2X_ZIP): $(PACKAGE_SOURCE_TARGZ)
 	@find $(PACKAGE_TMP)/$(PACKAGE_GP2X_DIR) -name .cvsignore -o -name CVS -o -name .arch-ids -o -name "{arch}" -o -name DUMMY -o -name "*.inc" -o -name "*.in" | xargs rm -rf
 	@cd $(PACKAGE_TMP) && zip -r $(PACKAGE_GP2X_ZIP) $(PACKAGE_GP2X_DIR)
 	@cp $(PACKAGE_TMP)/$(PACKAGE_GP2X_ZIP) .
-	@rm -rf $(PACKAGE_TMP) 
+	@rm -rf $(PACKAGE_TMP)
 
 $(PACKAGE_DOCKER_SOURCE_TARGZ): $(PACKAGE_SOURCE_TARGZ)
 	@cp $< $@
@@ -580,4 +579,3 @@ docker-server: $(PACKAGE_DOCKER_SOURCE_TARGZ)
 docker-metaserver: $(PACKAGE_DOCKER_METASERVER_TARGZ) $(PACKAGE_DOCKER_TABLES_SQL)
 	@cd $(DOCKER_DIR) && docker build -f Dockerfile-metaserver -t ufoot/liquidwar-metaserver:$(VERSION) .
 	@cd $(DOCKER_DIR) && docker build -f Dockerfile-metaserver -t ufoot/liquidwar-metaserver:latest .
-

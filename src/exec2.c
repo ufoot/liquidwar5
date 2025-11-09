@@ -22,7 +22,7 @@
 
 /*****************************************************************************/
 /* Liquid War is a multiplayer wargame                                       */
-/* Copyright (C) 1998-2018 Christian Mauduit                                 */
+/* Copyright (C) 1998-2025 Christian Mauduit                                 */
 /*                                                                           */
 /* This program is free software; you can redistribute it and/or modify      */
 /* it under the terms of the GNU General Public License as published by      */
@@ -71,10 +71,10 @@ lw_exec2_run (char *file, char *commandline)
   int result = 0;
 
   /*
-   * Dummy code to get rid of warnings...
+   * Suppress unused parameter warnings
    */
-  file = file;
-  commandline = commandline;
+  (void)file;
+  (void)commandline;
 
 #ifdef UNIX
   {

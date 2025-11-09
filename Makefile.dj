@@ -1,5 +1,5 @@
 # Liquid War is a multiplayer wargame
-# Copyright (C) 1998-2018 Christian Mauduit
+# Copyright (C) 1998-2025 Christian Mauduit
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -93,6 +93,7 @@ help \
 httputil \
 info \
 init \
+initrand \
 internet \
 joystick \
 keyboard \
@@ -147,7 +148,7 @@ team \
 texture \
 thrddos \
 ticker \
-time \
+lwtime \
 viewport \
 volume \
 watchdog \
@@ -156,7 +157,7 @@ wwwcli \
 glouglou \
 monster \
 spread \
-../utils/snprintf/snprintf
+vbeafex
 
 OBJ_NAMES_MAPGEN=\
 ../utils/lwmapgen/big_quad \
@@ -182,9 +183,11 @@ OBJ_NAMES_MAPGEN=\
 OBJ_FILES=$(addprefix $(OBJ_PATH),$(addsuffix $(OBJ_EXT),$(OBJ_NAMES)))
 OBJ_FILES_MAPGEN=$(addprefix $(OBJ_PATH),$(addsuffix $(OBJ_EXT),$(OBJ_NAMES_MAPGEN)))
 
-C_FLAGS=-O2 -fomit-frame-pointer -Wall -I$(H_PATH)
-C_COMPILE=gcc -c $< -o $@ $(C_FLAGS) -DDOS -DASM -DSNPRINTF
-ASM_COMPILE=gcc -c $< -o $@
+CC?=gcc
+C_FLAGS=-O2 -fomit-frame-pointer -Wall -Werror -I$(H_PATH)
+LDFLAGS?=
+C_COMPILE=$(CC) -c $< -o $@ $(C_FLAGS) -DDOS -DASM
+ASM_COMPILE=$(CC) -x assembler-with-cpp -c $< -o $@
 
 all: lwdos.exe lwdosmap.exe
 
@@ -195,8 +198,24 @@ $(OBJ_PATH)%$(OBJ_EXT): $(ASM_PATH)%.s
 	$(ASM_COMPILE)
 
 lwdos.exe: $(OBJ_FILES)
-	gcc -o $@ $(OBJ_FILES) -lalleg
+	@rm -f lwdos.rsp
+	@$(foreach obj,$(OBJ_FILES),echo $(obj) >> lwdos.rsp;)
+	@echo $(LDFLAGS) >> lwdos.rsp
+	@echo -lalleg >> lwdos.rsp
+	@echo "=== Contents of lwdos.rsp ==="
+	@cat lwdos.rsp
+	@echo "=== End of lwdos.rsp ==="
+	$(CC) -o $@ @lwdos.rsp
+	@rm -f lwdos.rsp
 
 lwdosmap.exe: $(OBJ_FILES_MAPGEN)
-	gcc -o $@ $(OBJ_FILES_MAPGEN) -lalleg
+	@rm -f lwdosmap.rsp
+	@$(foreach obj,$(OBJ_FILES_MAPGEN),echo $(obj) >> lwdosmap.rsp;)
+	@echo $(LDFLAGS) >> lwdosmap.rsp
+	@echo -lalleg >> lwdosmap.rsp
+	@echo "=== Contents of lwdosmap.rsp ==="
+	@cat lwdosmap.rsp
+	@echo "=== End of lwdosmap.rsp ==="
+	$(CC) -o $@ @lwdosmap.rsp
+	@rm -f lwdosmap.rsp
 

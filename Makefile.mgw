@@ -1,5 +1,5 @@
 # Liquid War is a multiplayer wargame
-# Copyright (C) 1998-2018 Christian Mauduit
+# Copyright (C) 1998-2025 Christian Mauduit
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -80,6 +80,7 @@ graphics \
 help \
 info \
 init \
+initrand \
 internet \
 joystick \
 keyboard \
@@ -136,7 +137,7 @@ team \
 texture \
 thrdw32 \
 ticker \
-time \
+lwtime \
 viewport \
 volume \
 watchdog \
@@ -199,7 +200,7 @@ OBJ_FILES_SRV=$(addprefix $(OBJ_PATH),$(addsuffix $(OBJ_EXT),$(OBJ_NAMES_SRV)))
 
 OBJ_FILES_MAPGEN=$(addprefix $(OBJ_PATH),$(addsuffix $(OBJ_EXT),$(OBJ_NAMES_MAPGEN)))
 
-C_FLAGS=-O2 -fomit-frame-pointer -Wall -I$(H_PATH)
+C_FLAGS=-O2 -fomit-frame-pointer -Wall -Werror -I$(H_PATH)
 C_COMPILE=gcc $(C_FLAGS) -o $@ -c $< -DWIN32 -DASM
 ASM_COMPILE=gcc $(C_FLAGS) -o $@ -c $<
 RC_COMPILE=windres -o $@ -i $<
@@ -217,13 +218,13 @@ $(OBJ_PATH)%$(OBJ_EXT): $(RC_PATH)%.rc
 
 
 lwwin.exe: $(OBJ_FILES)
-	gcc -Wl,--subsystem,windows -o $@ $(OBJ_FILES) -lalleg -lws2_32
+	gcc -Wl,--subsystem,windows -o $@ $(OBJ_FILES) -lalleg44 -lws2_32
 
 lwwinsrv.exe: $(OBJ_FILES_SRV)
 	gcc -Wl,--subsystem,console -o $@ $(OBJ_FILES_SRV) -lws2_32
 
 lwwinmap.exe: $(OBJ_FILES_MAPGEN)
-	gcc -Wl,--subsystem,console -o $@ $(OBJ_FILES_MAPGEN) -lalleg
+	gcc -Wl,--subsystem,console -o $@ $(OBJ_FILES_MAPGEN) -lalleg44
 
 
 

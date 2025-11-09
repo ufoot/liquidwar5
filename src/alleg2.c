@@ -22,7 +22,7 @@
 
 /*****************************************************************************/
 /* Liquid War is a multiplayer wargame                                       */
-/* Copyright (C) 1998-2018 Christian Mauduit                                 */
+/* Copyright (C) 1998-2025 Christian Mauduit                                 */
 /*                                                                           */
 /* This program is free software; you can redistribute it and/or modify      */
 /* it under the terms of the GNU General Public License as published by      */
@@ -967,7 +967,7 @@ my_edit_proc (int msg, DIALOG * d, int c)
   BITMAP *gui_bmp;
   int last_was_space, new_pos, i, k;
   int f, l, p, w, x, b, scroll;
-  int fg;
+  int fg = 0;
   char buf[16];
   char *s, *t;
   ASSERT (d);

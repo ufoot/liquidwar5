@@ -22,7 +22,7 @@
 
 /*****************************************************************************/
 /* Liquid War is a multiplayer wargame                                       */
-/* Copyright (C) 1998-2018 Christian Mauduit                                 */
+/* Copyright (C) 1998-2025 Christian Mauduit                                 */
 /*                                                                           */
 /* This program is free software; you can redistribute it and/or modify      */
 /* it under the terms of the GNU General Public License as published by      */
@@ -77,7 +77,7 @@
 static void
 handler_sigchld (int sig)
 {
-  sig = sig;                    // useless parameter
+  (void)sig;                    // useless parameter
   wait (NULL);
   return;
 }
