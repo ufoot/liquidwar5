@@ -410,22 +410,8 @@ jobs:
         make install
 
         # Debug: Search for Allegro DLL files
-        echo "=== DEBUG: Searching for alleg*.dll files ==="
-        echo "Searching in /mingw32:"
+        echo "Searching Allegro DLL files in /mingw32:"
         find /mingw32 -name "alleg*.dll" -ls 2>/dev/null || echo "No alleg*.dll in /mingw32"
-        echo ""
-        echo "Searching in build directory:"
-        find . -name "alleg*.dll" -ls 2>/dev/null || echo "No alleg*.dll in build directory"
-        echo ""
-        echo "Searching in /msys64:"
-        find /msys64 -name "alleg*.dll" -ls 2>/dev/null | head -20 || echo "No alleg*.dll in /msys64"
-        echo ""
-        echo "Contents of /mingw32/bin (Allegro related):"
-        ls -la /mingw32/bin/*alleg* 2>/dev/null || echo "No Allegro files in /mingw32/bin"
-        echo ""
-        echo "Contents of /mingw32/lib (Allegro related):"
-        ls -la /mingw32/lib/*alleg* 2>/dev/null || echo "No Allegro files in /mingw32/lib"
-        echo "=== END DEBUG ==="
 
         # Verify installation
         echo "Checking for dat tool:"
@@ -452,7 +438,8 @@ jobs:
 
     - name: Check Windows binary created
       run: |
-        if [ -f "lwwin.exe" ] && [ -f "lwwinsrv.exe" ] && [ -f "lwwinmap.exe" ] ; then
+        cp /mingw32/bin/alleg44.dll .
+        if [ -f "lwwin.exe" ] && [ -f "lwwinsrv.exe" ] && [ -f "lwwinmap.exe" ] && [ -f "alleg44.dll" ] ; then
           echo "SUCCESS: Windows .exe files created"
           ls -lh lwwin*.exe
         else
@@ -464,7 +451,9 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: liquidwar-windows-binaries
-        path: lwwin*.exe
+        path: |
+          lwwin*.exe
+          alleg44.dll
         retention-days: 61
 
   build-dos:
@@ -527,7 +516,6 @@ jobs:
 
     - name: Download CWSDPMI for DOS runtime
       run: |
-        echo "=== DEBUG: Downloading CWSDPMI.EXE ==="
         # CWSDPMI is the DOS Protected Mode Interface server needed to run DJGPP programs
         # Try multiple mirrors
         wget http://www.delorie.com/pub/djgpp/current/v2misc/csdpmi7b.zip -O csdpmi7b.zip || \
@@ -535,14 +523,12 @@ jobs:
           ( echo "ERROR: Failed to download CWSDPMI" && exit 1 )
 
         unzip csdpmi7b.zip
-        ls -la cwsdpmi.exe || ls -la CWSDPMI.EXE || ls -la bin/cwsdpmi.exe || find . -name "*cwsdpmi*" -o -name "*CWSDPMI*"
 
         # Find and copy to root directory
         find . -iname "cwsdpmi.exe" -exec cp {} ./cwsdpmi.exe \;
 
         echo "CWSDPMI location:"
-        ls -la cwsdpmi.exe || echo "ERROR: cwsdpmi.exe not found after extraction"
-        echo "=== END DEBUG ==="
+        ls -la cwsdpmi.exe || ( echo "ERROR: cwsdpmi.exe not found after extraction" && exit 1 )
 
     - name: Build Liquid War for DOS
       run: |
