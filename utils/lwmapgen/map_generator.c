@@ -31,12 +31,36 @@ map_generator (char *filename, int size, int grid_size, int func_id)
 {
   char *fname;
 
+  /* Validate parameters to prevent out-of-bounds array access */
+  if (size < MIN_MAP_SIZE || size >= MAX_MAP_SIZE)
+    {
+      fprintf (stderr, "fatal error: invalid size %d, must be %d-%d\n",
+               size, MIN_MAP_SIZE, MAX_MAP_SIZE - 1);
+      exit (EXIT_FAILURE);
+    }
+
+  if (grid_size != RANDOM_MAP_GRID_SIZE &&
+      (grid_size < MIN_MAP_GRID_SIZE || grid_size >= MAX_MAP_GRID_SIZE))
+    {
+      fprintf (stderr, "fatal error: invalid grid_size %d, must be %d-%d or %d\n",
+               grid_size, MIN_MAP_GRID_SIZE, MAX_MAP_GRID_SIZE - 1,
+               RANDOM_MAP_GRID_SIZE);
+      exit (EXIT_FAILURE);
+    }
+
+  if (func_id < MIN_FUNC || func_id >= MAX_FUNC)
+    {
+      fprintf (stderr, "fatal error: invalid func_id %d, must be %d-%d\n",
+               func_id, MIN_FUNC, MAX_FUNC - 1);
+      exit (EXIT_FAILURE);
+    }
+
   if (filename == NULL)
     fname = default_filename;
   else
     fname = filename;
 
-  map.filename = malloc (sizeof (char) * strlen (fname));
+  map.filename = malloc (sizeof (char) * (strlen (fname) + 1));
   if (map.filename == NULL)
     {
       fprintf (stderr, "fatal error: can't malloc space for map filename.\n");
