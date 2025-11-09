@@ -56,7 +56,7 @@
 #include "mesh.h"
 #include "army.h"
 #include "decal.h"
-#include "time.h"
+#include "lwtime.h"
 #include "log.h"
 
 /*==================================================================*/

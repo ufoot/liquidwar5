@@ -60,7 +60,7 @@
 #include "fighter.h"
 #include "mesh.h"
 #include "move.h"
-#include "time.h"
+#include "lwtime.h"
 #include "config.h"
 
 /*==================================================================*/

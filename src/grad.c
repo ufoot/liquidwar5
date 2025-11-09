@@ -60,7 +60,7 @@
 #include "palette.h"
 #include "spread.h"
 #include "startup.h"
-#include "time.h"
+#include "lwtime.h"
 #include "config.h"
 
 /*==================================================================*/

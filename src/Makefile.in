@@ -110,6 +110,7 @@ OBJ_NAMES = \
 	httputil \
 	info \
 	init \
+	initrand \
 	internet \
 	joystick \
 	keyboard \
@@ -165,7 +166,7 @@ OBJ_NAMES = \
 	texture \
 	thrdunix \
 	ticker \
-	time \
+	lwtime \
 	viewport \
 	volume \
 	watchdog \
@@ -245,7 +246,7 @@ CONFIG_OPTIONS = \
 	-DCONFIG_UNIX_SRV=\"$(GAMEDIR)/liquidwar-server\" \
 	-DCONFIG_UNIX_GEN=\"$(GAMEDIR)/liquidwar-mapgen\"
 
-CMD_CC = $(CC) $(CFLAGS) $(ALCFLAGS) -c $(DEBUG_FLAGS) -Wall -W $(HOST_CPU_CC) $(CONFIG_OPTIONS) $(DEBUG_OPTIONS) $(SPRINTF_OPTIONS) $(ASM_OPTIONS) $(GP2X_OPTIONS) -DUNIX -D_THREAD_SAFE
+CMD_CC = $(CC) $(CFLAGS) $(ALCFLAGS) -c $(DEBUG_FLAGS) -Wall -W -Werror $(HOST_CPU_CC) $(CONFIG_OPTIONS) $(DEBUG_OPTIONS) $(SPRINTF_OPTIONS) $(ASM_OPTIONS) $(GP2X_OPTIONS) -DUNIX -D_THREAD_SAFE
 CMD_AS = $(AS) $(ASFLAGS) --32
 
 all: $(EXE_FILES)

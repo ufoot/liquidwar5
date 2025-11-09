@@ -54,12 +54,12 @@
 
 #include <allegro.h>
 #include <stdlib.h>
-#include <time.h>
 #ifdef DOS
 #include <dos.h>
 #endif
 
 #include "base.h"
+#include "initrand.h"
 #include "config.h"
 #include "gfxmode.h"
 #include "init.h"
@@ -117,10 +117,9 @@ init_all ()
     mouse = 1, sound = 1, joystick = 1, network = 1;
 
   /*
-   * we use srand to garantee that random() won't return the same values
-   * each time the game is run
+   * Initialize random number generator with current time
    */
-  srandom (time (NULL));
+  lw_random_init ();
 
   set_startup ();
   log_init ();

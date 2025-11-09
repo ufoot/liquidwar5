@@ -53,9 +53,11 @@
 
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <allegro.h>
 
 #include "random.h"
+#include "base.h"
 #include "alleg2.h"
 #include "map.h"
 #include "config.h"

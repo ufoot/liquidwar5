@@ -64,7 +64,7 @@
 #include "monster.h"
 #include "palette.h"
 #include "startup.h"
-#include "time.h"
+#include "lwtime.h"
 
 /*==================================================================*/
 /* variables globales                                               */

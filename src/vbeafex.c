@@ -43,93 +43,32 @@
 /*****************************************************************************/
 
 /********************************************************************/
-/* name          : thrdunix.c                                       */
-/* content       : provides basic thread support under unix         */
+/* nom           : vbeafex.c                                        */
+/* contenu       : workaround for Allegro VBE/AF saved_ds symbol    */
 /********************************************************************/
 
-/*==================================================================*/
-/* includes                                                         */
-/*==================================================================*/
-
-#include <stdlib.h>
-#include <pthread.h>
-
-#include "thrdgen.h"
-
-/*==================================================================*/
-/* defines                                                          */
-/*==================================================================*/
-
-/*==================================================================*/
-/* macros                                                           */
-/*==================================================================*/
-
-/*==================================================================*/
-/* globals                                                          */
-/*==================================================================*/
-
-/*==================================================================*/
-/* fonctions                                                        */
-/*==================================================================*/
-
-/*------------------------------------------------------------------*/
 /*
- * Wrapper structure to pass function and args together
+ * This file exists solely to work around a linking issue when building
+ * for DOS with DJGPP cross-compiler and modern GCC versions.
+ *
+ * PROBLEM:
+ * Allegro 4.2.3.1's src/misc/vbeafex.c declares:
+ *   static unsigned short saved_ds = 0;
+ * and then references it from inline assembly as "_saved_ds".
+ *
+ * With modern GCC (>= 5.0), the "static" keyword prevents the symbol
+ * from being exported in a way that inline assembly can reference it,
+ * even with -fgnu89-inline. This causes:
+ *   undefined reference to `saved_ds'
+ *
+ * SOLUTION:
+ * We provide our own non-static definition of saved_ds here, which will
+ * be linked into the final executable and satisfy the reference from
+ * Allegro's inline assembly in vbeafex.c (via vbeafs.s).
+ *
+ * This file is ONLY compiled for DOS builds (Makefile.dj) and is not
+ * used by Linux, Windows, or macOS builds.
  */
-typedef struct
-{
-  void (*func) (void *);
-  void *args;
-} lw_thread_wrapper_data;
 
-/*
- * Wrapper function to adapt void-returning functions to pthread's signature
- */
-static void *
-lw_thread_wrapper (void *arg)
-{
-  lw_thread_wrapper_data *data = (lw_thread_wrapper_data *) arg;
-  void (*func) (void *) = data->func;
-  void *args = data->args;
-
-  free (data);
-  func (args);
-  return NULL;
-}
-
-/*
- * Starts a new thread using the given callback
- */
-int
-lw_thread_start (void (*func) (void *), void *args)
-{
-  pthread_t thread;
-  int result = 0;
-  lw_thread_wrapper_data *data;
-
-  data = (lw_thread_wrapper_data *) malloc (sizeof (lw_thread_wrapper_data));
-  if (data != NULL)
-    {
-      data->func = func;
-      data->args = args;
-
-      if (pthread_create (&thread, NULL, lw_thread_wrapper, data) == 0)
-        {
-          if (pthread_detach (thread) == 0)
-            {
-              result = 1;
-            }
-          else
-            {
-              /* Detach failed, but thread is running - data will be freed by wrapper */
-            }
-        }
-      else
-        {
-          /* Thread creation failed, free the wrapper data */
-          free (data);
-        }
-    }
-
-  return result;
-}
+/* Provide the saved_ds symbol that Allegro's VBE/AF code needs */
+unsigned short saved_ds = 0;

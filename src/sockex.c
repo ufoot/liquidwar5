@@ -555,11 +555,12 @@ lw_sock_send_buffer_ex (int *sock, char *buffer, int len)
             {
               if (result)
                 {
-                  LW_MACRO_STRNCPY (trace, buffer, len);
-                  trace[len] = '\0';
+                  int safe_len = (len > 0 && len < LW_SOCK_MESSAGE_SIZE) ? len : LW_SOCK_MESSAGE_SIZE - 1;
+                  LW_MACRO_STRNCPY (trace, buffer, safe_len);
+                  trace[safe_len] = '\0';
                   log_print_int (sock_copy);
                   log_print_str (" > [");
-                  clean_buffer (trace, len);
+                  clean_buffer (trace, safe_len);
                   log_print_str (trace);
                   log_print_str ("]");
                   log_println ();
@@ -669,11 +670,12 @@ lw_sock_recv_buffer_ex (int *sock, char *buffer, int len)
             {
               if (result)
                 {
-                  LW_MACRO_STRNCPY (trace, buffer, len);
-                  trace[len] = '\0';
+                  int safe_len = (len > 0 && len < LW_SOCK_MESSAGE_SIZE) ? len : LW_SOCK_MESSAGE_SIZE - 1;
+                  LW_MACRO_STRNCPY (trace, buffer, safe_len);
+                  trace[safe_len] = '\0';
                   log_print_int (sock_copy);
                   log_print_str (" < [");
-                  clean_buffer (trace, len);
+                  clean_buffer (trace, safe_len);
                   log_print_str (trace);
                   log_print_str ("]");
                   log_println ();

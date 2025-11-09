@@ -60,7 +60,7 @@
 #include "glouglou.h"
 #include "profile.h"
 #include "startup.h"
-#include "time.h"
+#include "lwtime.h"
 #include "viewport.h"
 #include "log.h"
 

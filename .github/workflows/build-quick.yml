@@ -1,0 +1,32 @@
+name: build-quick
+
+on:
+  push:
+    branches: [ "**" ]
+  workflow_dispatch:
+
+jobs:
+  build-default:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v5
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+          liballegro4-dev \
+          autoconf \
+          automake \
+          build-essential
+
+    - name: Generate configure script
+      run: autoconf
+
+    - name: Configure
+      run: ./configure
+
+    - name: Build
+      run: make

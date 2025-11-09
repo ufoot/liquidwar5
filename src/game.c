@@ -83,7 +83,7 @@
 #include "code.h"
 #include "sound.h"
 #include "ticker.h"
-#include "time.h"
+#include "lwtime.h"
 #include "viewport.h"
 #include "watchdog.h"
 #include "network.h"
@@ -306,6 +306,7 @@ init_game (void)
     {
       for (i = 0; !max_mem_reached && !ok; ++i)
         {
+          (void)i;  /* Loop counter not currently used, suppress warning */
           message = NULL;
           reset_big_data ();
 

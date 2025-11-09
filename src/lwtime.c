@@ -56,7 +56,7 @@
 #include "config.h"
 #include "sound.h"
 #include "ticker.h"
-#include "time.h"
+#include "lwtime.h"
 
 /*==================================================================*/
 /* types                                                            */

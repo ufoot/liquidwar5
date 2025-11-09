@@ -62,7 +62,7 @@
 #include "menu.h"
 #include "rules.h"
 #include "sound.h"
-#include "time.h"
+#include "lwtime.h"
 #include "lang.h"
 #include "macro.h"
 

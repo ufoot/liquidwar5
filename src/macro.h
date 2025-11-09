@@ -67,7 +67,22 @@
 
 #define LW_MACRO_MEMSET0(BUFFER) { memset((BUFFER),0,sizeof(BUFFER)); }
 
-#define LW_MACRO_STRNCPY(DST,SRC,SIZE) { memset((DST),0,(SIZE)); strncpy((DST),(SRC),(SIZE)); (DST)[(SIZE)-1]='\0'; }
+#ifdef __clang__
+#define LW_MACRO_STRNCPY(DST,SRC,SIZE) { \
+  memset((DST),0,(SIZE)); \
+  strncpy((DST),(SRC),(SIZE)-1); \
+  (DST)[(SIZE)-1]='\0'; \
+}
+#else
+#define LW_MACRO_STRNCPY(DST,SRC,SIZE) { \
+  memset((DST),0,(SIZE)); \
+  _Pragma("GCC diagnostic push") \
+  _Pragma("GCC diagnostic ignored \"-Wstringop-truncation\"") \
+  strncpy((DST),(SRC),(SIZE)-1); \
+  _Pragma("GCC diagnostic pop") \
+  (DST)[(SIZE)-1]='\0'; \
+}
+#endif
 #define LW_MACRO_STRCPY(DST,SRC) { LW_MACRO_STRNCPY((DST),(SRC),sizeof(DST)); }
 
 #define LW_MACRO_STRNCAT(DST,SRC,SIZE) { int len,pos; pos=strlen(DST); len=(SIZE)-1-pos; if (len>0) { int end; strncat((DST),(SRC),len); end = pos+strlen(SRC); if (end<(int) ((SIZE)-1)) { (DST)[end]='\0'; } } (DST)[(SIZE)-1]='\0'; }

@@ -53,7 +53,7 @@
 
 #include "mesh.h"
 #include "area.h"
-#include "time.h"
+#include "lwtime.h"
 #include "log.h"
 
 /*==================================================================*/

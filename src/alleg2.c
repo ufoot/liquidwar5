@@ -967,7 +967,7 @@ my_edit_proc (int msg, DIALOG * d, int c)
   BITMAP *gui_bmp;
   int last_was_space, new_pos, i, k;
   int f, l, p, w, x, b, scroll;
-  int fg;
+  int fg = 0;
   char buf[16];
   char *s, *t;
   ASSERT (d);

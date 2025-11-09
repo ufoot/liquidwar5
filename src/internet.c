@@ -239,6 +239,10 @@ internet_find (void)
         }
     }
 
+  /* Clear static pointers to avoid dangling references */
+  list_data = NULL;
+  list_size = NULL;
+
   if (retour > 0)
     retour--;
 

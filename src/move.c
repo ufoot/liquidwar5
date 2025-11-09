@@ -63,7 +63,7 @@
 #include "mesh.h"
 #include "mouse.h"
 #include "move.h"
-#include "time.h"
+#include "lwtime.h"
 #include "keyexch.h"
 #include "network.h"
 #include "checksum.h"

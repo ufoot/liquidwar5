@@ -290,6 +290,7 @@ lw_protocol_ask_who (int *sock, int num, LW_WHO * who)
                    * the LOCAL and NETWORK messages is that the network
                    * flag is set to 1 in the "NETWORK" case.
                    */
+                  /* fall through */
                 case LW_NETMESS_CODE_LOCAL:
                   if (netmess->argc == 3)
                     {

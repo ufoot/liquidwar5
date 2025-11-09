@@ -263,6 +263,7 @@ packageclean: clean world_clean
 	@rm -rf LW5 lwdos*exe lwwin*exe _tmpfile.arg *.log vc60.* *.idb *.pch
 	@rm -rf data/lwwin* data/lwdos*
 	@rm -rf starter
+	@rm -rf .github
 	@for d in $(MAKE_DIRS); do $(GMAKE) -C $$d distclean; done
 
 distclean: packageclean

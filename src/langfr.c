@@ -332,12 +332,12 @@ lw_langfr_init ()
   LW_LANGFR_DATA[LW_LANG_STRING_POPUP_INITFAIL] =
     "Echec lors de l'initialisation.";
   LW_LANGFR_DATA[LW_LANG_STRING_POPUP_MEMTROUBLE] =
-    "Pas assez de mémoire pour les bitmaps.";
-  LW_LANGFR_DATA[LW_LANG_STRING_POPUP_BIGDATA] = "Pas assez de mémoire.";
+    "Pas assez de memoire pour les bitmaps.";
+  LW_LANGFR_DATA[LW_LANG_STRING_POPUP_BIGDATA] = "Pas assez de memoire.";
   LW_LANGFR_DATA[LW_LANG_STRING_POPUP_LOADFAIL] =
-    "Impossible de charger le fichier de données. Etes-vous sûr que Liquid War est correctement installé?";
+    "Impossible de charger le fichier de donnees. Etes-vous sur que Liquid War est correctement installe?";
   LW_LANGFR_DATA[LW_LANG_STRING_POPUP_CUSTOMFAIL] =
-    "Impossible de charger les fichiers de données utilisateur.";
+    "Impossible de charger les fichiers de donnees utilisateur.";
   LW_LANGFR_DATA[LW_LANG_STRING_POPUP_GRAPHICSFAIL] =
     "Impossible de passer en mode graphique.";
 

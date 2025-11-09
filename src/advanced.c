@@ -59,7 +59,7 @@
 #include "dialog.h"
 #include "disk.h"
 #include "help.h"
-#include "time.h"
+#include "lwtime.h"
 #include "menu.h"
 #include "log.h"
 #include "lang.h"

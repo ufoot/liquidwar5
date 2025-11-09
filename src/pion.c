@@ -62,7 +62,7 @@
 #include "palette.h"
 #include "viewport.h"
 #include "pion.h"
-#include "time.h"
+#include "lwtime.h"
 
 /*==================================================================*/
 /* definitions de types                                             */

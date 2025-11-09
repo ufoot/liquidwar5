@@ -63,7 +63,7 @@
 #include "palette.h"
 #include "maptex.h"
 #include "texture.h"
-#include "time.h"
+#include "lwtime.h"
 #include "viewport.h"
 #include "watchdog.h"
 #include "macro.h"

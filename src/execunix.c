@@ -77,7 +77,7 @@
 static void
 handler_sigchld (int sig)
 {
-  sig = sig;                    // useless parameter
+  (void)sig;                    // useless parameter
   wait (NULL);
   return;
 }

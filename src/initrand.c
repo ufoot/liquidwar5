@@ -43,8 +43,8 @@
 /*****************************************************************************/
 
 /********************************************************************/
-/* name          : thrdunix.c                                       */
-/* content       : provides basic thread support under unix         */
+/* name          : initrand.c                                       */
+/* content       : random number generator initialization           */
 /********************************************************************/
 
 /*==================================================================*/
@@ -52,21 +52,10 @@
 /*==================================================================*/
 
 #include <stdlib.h>
-#include <pthread.h>
+#include <time.h>
 
-#include "thrdgen.h"
-
-/*==================================================================*/
-/* defines                                                          */
-/*==================================================================*/
-
-/*==================================================================*/
-/* macros                                                           */
-/*==================================================================*/
-
-/*==================================================================*/
-/* globals                                                          */
-/*==================================================================*/
+#include "base.h"
+#include "initrand.h"
 
 /*==================================================================*/
 /* fonctions                                                        */
@@ -74,62 +63,15 @@
 
 /*------------------------------------------------------------------*/
 /*
- * Wrapper structure to pass function and args together
+ * Initializes the random number generator with current time
  */
-typedef struct
+void
+lw_random_init ()
 {
-  void (*func) (void *);
-  void *args;
-} lw_thread_wrapper_data;
-
-/*
- * Wrapper function to adapt void-returning functions to pthread's signature
- */
-static void *
-lw_thread_wrapper (void *arg)
-{
-  lw_thread_wrapper_data *data = (lw_thread_wrapper_data *) arg;
-  void (*func) (void *) = data->func;
-  void *args = data->args;
-
-  free (data);
-  func (args);
-  return NULL;
-}
-
-/*
- * Starts a new thread using the given callback
- */
-int
-lw_thread_start (void (*func) (void *), void *args)
-{
-  pthread_t thread;
-  int result = 0;
-  lw_thread_wrapper_data *data;
-
-  data = (lw_thread_wrapper_data *) malloc (sizeof (lw_thread_wrapper_data));
-  if (data != NULL)
-    {
-      data->func = func;
-      data->args = args;
-
-      if (pthread_create (&thread, NULL, lw_thread_wrapper, data) == 0)
-        {
-          if (pthread_detach (thread) == 0)
-            {
-              result = 1;
-            }
-          else
-            {
-              /* Detach failed, but thread is running - data will be freed by wrapper */
-            }
-        }
-      else
-        {
-          /* Thread creation failed, free the wrapper data */
-          free (data);
-        }
-    }
-
-  return result;
+  /*
+   * We use srandom (which is aliased to srand on WIN32 in base.h)
+   * to guarantee that random() won't return the same values
+   * every time the program is started.
+   */
+  srandom (time (NULL));
 }
