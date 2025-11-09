@@ -1,0 +1,66 @@
+name: Build Test
+
+on:
+  push:
+    branches: [ master, christian/liquidwar-mapgen-segfault-fixes ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build-ubuntu:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+          liballegro4-dev \
+          autoconf \
+          automake \
+          build-essential
+
+    - name: Run autoconf
+      run: autoconf
+
+    - name: Configure
+      run: ./configure --prefix=$HOME/lw5
+
+    - name: Build
+      run: make
+
+    - name: Install
+      run: make install
+
+    - name: Check binary exists and is executable
+      run: |
+        if [ ! -x "$HOME/lw5/bin/liquidwar" ]; then
+          echo "ERROR: $HOME/lw5/bin/liquidwar is not executable"
+          exit 1
+        fi
+        echo "SUCCESS: liquidwar binary is executable"
+
+    - name: Check version starts with 5
+      run: |
+        VERSION_OUTPUT=$($HOME/lw5/bin/liquidwar --version)
+        echo "Version output: $VERSION_OUTPUT"
+
+        if echo "$VERSION_OUTPUT" | head -n1 | grep -q '^5'; then
+          echo "SUCCESS: Version starts with 5"
+        else
+          echo "ERROR: Version does not start with 5"
+          echo "Got: $VERSION_OUTPUT"
+          exit 1
+        fi
+
+    - name: Test liquidwar-mapgen binary
+      run: |
+        if [ -x "$HOME/lw5/bin/liquidwar-mapgen" ]; then
+          echo "liquidwar-mapgen is executable"
+          $HOME/lw5/bin/liquidwar-mapgen --version || true
+        else
+          echo "WARNING: liquidwar-mapgen not found or not executable"
+        fi
