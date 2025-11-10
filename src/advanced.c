@@ -118,15 +118,15 @@ advanced_options (void)
 
   memset (d, 0, sizeof (d));
 
-  for (i = 0; i < 8; ++i)
+  for (i = 0; i < 7; ++i)
     {
       standard_button (d + i + 4, 0, y_pos[i], 2, 8);
       d[i + 4].proc = my_textbox_proc;
     }
-  for (i = 0; i < 8; ++i)
+  for (i = 0; i < 7; ++i)
     {
-      standard_button (d + i + 12, 1, y_pos[i], 2, 8);
-      d[i + 12].proc = my_slider_proc;
+      standard_button (d + i + 11, 1, y_pos[i], 2, 8);
+      d[i + 11].proc = my_slider_proc;
     }
   d[16].proc = d[17].proc = my_button_proc;
 
