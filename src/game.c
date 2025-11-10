@@ -304,7 +304,6 @@ init_game (void)
     {
       while (!max_mem_reached && !ok)
         {
-          (void)i;  /* Loop counter not currently used, suppress warning */
           message = NULL;
           reset_big_data ();
 

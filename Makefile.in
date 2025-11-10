@@ -249,8 +249,8 @@ packageclean: clean world_clean
 	@find . -name "*.tar.gz" -o -name "*.tgz" -o -name "*.zip" -o -name "*.rpm" -o -name "*.deb" -o -name "*.tgz" | xargs rm -f
 	@find . -name ".xvpics" | xargs rm -rf
 	@find . -name "lwmap.bmp" | xargs rm -f
-	@rm -rf LW5 lwdos*exe lwwin*exe _tmpfile.arg *.log vc60.* *.idb *.pch
-	@rm -rf data/lwwin* data/lwdos*
+	@rm -rf LW5 lwwin*exe _tmpfile.arg *.log vc60.* *.idb *.pch
+	@rm -rf data/lwwin*
 	@rm -rf starter
 	@rm -rf .github
 	@for d in $(MAKE_DIRS); do $(GMAKE) -C $$d distclean; done
@@ -274,7 +274,6 @@ dep:
 # - a source tarball
 # - a static binary stored in a .tar.gz
 # - a win32 binary
-# - a dos binary
 # - a source rpm
 # - a binary rpm
 #
@@ -305,49 +304,6 @@ $(PACKAGE_SOURCE_TARGZ):
 	@mv $(PACKAGE_TMP)/$(PACKAGE_SOURCE_TARGZ) .
 	@echo "Deleting temporary directory."
 	@rm -rf $(PACKAGE_TMP)
-
-<<<<<<< HEAD
-package_dos: $(PACKAGE_DOS_ZIP)
-
-$(PACKAGE_DOS_ZIP): $(PACKAGE_DOS_EXE) $(PACKAGE_DOS_CWSDPMI)
-	@echo "Building data."
-	@$(GMAKE) -C data
-	@echo "Building doc."
-	@$(GMAKE) -C doc
-	@echo "Creating temporary directory."
-	@rm -rf $(PACKAGE_TMP)
-	@install -d $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR)
-	@echo "Copying files."
-	@cp $(PACKAGE_DOS_EXE) $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR)
-	@cp $(PACKAGE_DOS_CWSDPMI) $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR)
-	@cp README.md $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR)/readme.txt
-	@cp README.fr $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR)/readmefr.txt
-	@cp README.de $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR)/readmede.txt
-	@cp README.dk $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR)/readmedk.txt
-	@cp README.pl $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR)/readmepl.txt
-	@cp COPYING $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR)/license.txt
-	@cp ChangeLog $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR)/changes.txt
-	@cp misc/liquidwar.ico $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR)/lw.ico
-	@install -d $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR)/data
-	@cp data/liquidwar.dat $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR)/data/lw.dat
-	@install -d $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR)/custom
-	@cp -r custom/map $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR)/custom
-	@cp -r custom/texture $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR)/custom
-	@cp -r custom/music $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR)/custom
-	@install -d $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR)/doc
-	@cp -r doc/txt $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR)/doc
-	@echo "Cleaning up."
-	@touch $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR)/.cvsignore
-	@find $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR) -name .cvsignore -o -name CVS -o -name .arch-ids -o -name "{arch}" -o -name DUMMY -o -name "*.inc" -o -name "*.in" | xargs rm -rf
-	@cp fix.sh $(PACKAGE_TMP)
-	@cd $(PACKAGE_TMP)/$(PACKAGE_DOS_DIR) && $(PACKAGE_TMP)/fix.sh dos
-	@echo "Zipping."
-	@cd $(PACKAGE_TMP) && zip -r -9 $(PACKAGE_DOS_ZIP) $(PACKAGE_DOS_DIR)
-	@mv $(PACKAGE_TMP)/$(PACKAGE_DOS_ZIP) .
-	@echo "Deleting temporary directory."
-	@rm -rf $(PACKAGE_TMP)
-=======
->>>>>>> 0836880 ([dos] removed support)
 
 package_win32: $(PACKAGE_WIN32_ZIP)
 
@@ -520,39 +476,6 @@ $(PACKAGE_MACOSX_DMG): $(PACKAGE_MACOSX_TGZ)
 	@echo "Deleting temporary directory."
 	@rm -rf $(PACKAGE_TMP)
 
-<<<<<<< HEAD
-package_gp2x: $(PACKAGE_GP2X_ZIP)
-
-$(PACKAGE_GP2X_ZIP): $(PACKAGE_SOURCE_TARGZ)
-	@echo "Compiling dat file."
-	@$(GMAKE) -C data
-	@echo "Creating temporary directory."
-	@rm -rf $(PACKAGE_TMP)
-	@install -d $(PACKAGE_TMP)
-	@echo "Preparing source."
-	@cp $(PACKAGE_SOURCE_TARGZ) $(PACKAGE_TMP)
-	@cd $(PACKAGE_TMP) && tar xzf $(PACKAGE_SOURCE_TARGZ)
-	@echo "Compiling binary."
-	@cd $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR) && sh -c ". /opt/open2x/bin/env-apps.sh && ./configure --prefix=/opt --build=x86_64-pc-linux-gnu --host=arm-open2x-linux && make -C src"
-	@install -d $(PACKAGE_TMP)/$(PACKAGE_GP2X_DIR)
-	@cp $(PACKAGE_TMP)/$(PACKAGE_SOURCE_DIR)/src/liquidwar* $(PACKAGE_TMP)/$(PACKAGE_GP2X_DIR)/
-	@cp data/liquidwar.dat $(PACKAGE_TMP)/$(PACKAGE_GP2X_DIR)/
-	@cp misc/liquidwar.gpe $(PACKAGE_TMP)/$(PACKAGE_GP2X_DIR)/
-	@cp COPYING $(PACKAGE_TMP)/$(PACKAGE_GP2X_DIR)/license.txt
-	@cp ChangeLog $(PACKAGE_TMP)/$(PACKAGE_GP2X_DIR)/changes.txt
-	@cp README.md $(PACKAGE_TMP)/$(PACKAGE_GP2X_DIR)/readme.txt
-	@cp README.fr $(PACKAGE_TMP)/$(PACKAGE_GP2X_DIR)/readmefr.txt
-	@cp README.de $(PACKAGE_TMP)/$(PACKAGE_GP2X_DIR)/readmede.txt
-	@cp README.dk $(PACKAGE_TMP)/$(PACKAGE_GP2X_DIR)/readmedk.txt
-	@cp README.pl $(PACKAGE_TMP)/$(PACKAGE_GP2X_DIR)/readmepl.txt
-	@cp -r doc/html $(PACKAGE_TMP)/$(PACKAGE_GP2X_DIR)/doc
-	@find $(PACKAGE_TMP)/$(PACKAGE_GP2X_DIR) -name .cvsignore -o -name CVS -o -name .arch-ids -o -name "{arch}" -o -name DUMMY -o -name "*.inc" -o -name "*.in" | xargs rm -rf
-	@cd $(PACKAGE_TMP) && zip -r $(PACKAGE_GP2X_ZIP) $(PACKAGE_GP2X_DIR)
-	@cp $(PACKAGE_TMP)/$(PACKAGE_GP2X_ZIP) .
-	@rm -rf $(PACKAGE_TMP)
-
-=======
->>>>>>> fc68ac4 ([backport] removed GP2X support)
 $(PACKAGE_DOCKER_SOURCE_TARGZ): $(PACKAGE_SOURCE_TARGZ)
 	@cp $< $@
 

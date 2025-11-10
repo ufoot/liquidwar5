@@ -192,30 +192,13 @@ lw_thread_start (void (*func) (void *), void *args)
 
   if (pthread_create (&thread, NULL, lw_thread_wrapper, wrapper_data) == 0)
     {
-      data->func = func;
-      data->args = args;
-
-      if (pthread_create (&thread, NULL, lw_thread_wrapper, data) == 0)
+      if (pthread_detach (thread) == 0)
         {
-          if (pthread_detach (thread) == 0)
-            {
-              result = 1;
-            }
-          else
-            {
-              /* Detach failed, but thread is running - data will be freed by wrapper */
-            }
+          result = 1;
         }
       else
         {
-          /* Thread creation failed, free the wrapper data */
-          free (data);
-        }
-      else
-        {
-          // If detach fails, we should still clean up the wrapper data
-          // Note: this is a rare edge case, but we'll let the thread clean up
-          // since it was successfully created
+          /* Detach failed, but thread is running - data will be freed by wrapper */
         }
     }
   else

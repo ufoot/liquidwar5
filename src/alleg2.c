@@ -957,7 +957,6 @@ my_edit_proc (int msg, DIALOG * d, int c)
   static int ignore_next_uchar = FALSE;
   ALLEGRO_BITMAP *gui_bmp;
   int f, l, p, w, x, b, scroll;
-  int fg = 0;
   char buf[16];
   char *s;
   ALLEGRO_ASSERT (d);

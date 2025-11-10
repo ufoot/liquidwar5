@@ -188,6 +188,8 @@ OBJ_NAMES_SRV = \
 	$(SNPRINTF_NAMES)
 
 OBJ_NAMES_MAPGEN = \
+	backport \
+	mapgen_stubs \
 	../utils/lwmapgen/big_quad \
 	../utils/lwmapgen/boxes \
 	../utils/lwmapgen/bubbles \
