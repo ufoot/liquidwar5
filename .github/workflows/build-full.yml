@@ -19,11 +19,16 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y \
-          liballegro4-dev \
+          liballegro5-dev \
+          liballegro-acodec5-dev \
+          liballegro-audio5-dev \
+          liballegro-image5-dev \
+          liballegro-physfs5-dev \
           autoconf \
           automake \
           build-essential \
-          clang
+          clang \
+          pkg-config
 
     - name: Run autoconf
       run: autoconf
@@ -94,11 +99,16 @@ jobs:
       run: |
         apt-get update
         apt-get install -y \
-          liballegro4-dev \
+          liballegro5-dev \
+          liballegro-acodec5-dev \
+          liballegro-audio5-dev \
+          liballegro-image5-dev \
+          liballegro-physfs5-dev \
           autoconf \
           automake \
           build-essential \
-          clang
+          clang \
+          pkg-config
 
     - name: Run autoconf
       run: autoconf
@@ -168,8 +178,7 @@ jobs:
     - name: Install dependencies
       run: |
         dnf install -y \
-          allegro-devel \
-          allegro-tools \
+          allegro5-devel \
           autoconf \
           automake \
           make \
@@ -247,7 +256,7 @@ jobs:
       run: |
         pacman -Syu --noconfirm
         pacman -S --noconfirm \
-          allegro4 \
+          allegro \
           autoconf \
           automake \
           make \
@@ -312,268 +321,9 @@ jobs:
     - name: Clean
       run: make clean
 
-  build-freebsd:
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v5
-
-    - name: Build on FreeBSD
-      uses: vmactions/freebsd-vm@v1
-      with:
-        usesh: true
-        prepare: |
-          pkg install -y allegro autoconf automake gmake pkgconf
-        run: |
-          autoconf
-          ./configure --prefix=$HOME/lw5
-          gmake
-          gmake install
-          gmake package_source
-
-          # Check binary exists and is executable
-          if [ ! -x "$HOME/lw5/bin/liquidwar" ]; then
-            echo "ERROR: $HOME/lw5/bin/liquidwar is not executable"
-            exit 1
-          fi
-          echo "SUCCESS: liquidwar binary is executable"
-
-          # Check version starts with 5
-          VERSION_OUTPUT=$($HOME/lw5/bin/liquidwar --version)
-          echo "Version output: $VERSION_OUTPUT"
-
-          if echo "$VERSION_OUTPUT" | head -n1 | grep -q '^5'; then
-            echo "SUCCESS: Version starts with 5"
-          else
-            echo "ERROR: Version does not start with 5"
-            echo "Got: $VERSION_OUTPUT"
-            exit 1
-          fi
-
-          # Test liquidwar-mapgen binary
-          if [ -x "$HOME/lw5/bin/liquidwar-mapgen" ]; then
-            echo "liquidwar-mapgen is executable"
-            $HOME/lw5/bin/liquidwar-mapgen --version || true
-          else
-            echo "WARNING: liquidwar-mapgen not found or not executable"
-          fi
-
-  build-windows:
-    runs-on: windows-latest
-    defaults:
-      run:
-        shell: msys2 {0}
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v5
-
-    - name: Setup MSYS2 with MinGW32
-      uses: msys2/setup-msys2@v2
-      with:
-        msystem: MINGW32
-        update: true
-        install: >-
-          mingw-w64-i686-toolchain
-          mingw-w64-i686-cmake
-          autoconf
-          automake
-          make
-          dos2unix
-          wget
-          unzip
-
-    - name: Build and install Allegro 4.4
-      run: |
-        # Download Allegro 4.4.3.1 source
-        wget https://github.com/liballeg/allegro5/releases/download/4.4.3.1/allegro-4.4.3.1.zip
-        unzip allegro-4.4.3.1.zip
-        cd allegro
-
-        # List files to debug
-        ls -la
-
-        # Build Allegro 4 for MinGW using cmake
-        mkdir build
-        cd build
-        cmake .. \
-          -G "MSYS Makefiles" \
-          -DCMAKE_INSTALL_PREFIX=/mingw32 \
-          -DCMAKE_BUILD_TYPE=Release \
-          -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
-          -DWANT_DOCS=OFF \
-          -DWANT_TESTS=OFF \
-          -DWANT_EXAMPLES=OFF \
-          -DWANT_TOOLS=ON
-        make -j2
-        make install
-
-        # Debug: Search for Allegro DLL files
-        echo "Searching Allegro DLL files in /mingw32:"
-        find /mingw32 -name "alleg*.dll" -ls 2>/dev/null || echo "No alleg*.dll in /mingw32"
-
-        # Verify installation
-        echo "Checking for dat tool:"
-        ls -la /mingw32/bin/dat* || echo "dat not found in /mingw32/bin"
-
-        cd ../..
-
-    - name: Build Liquid War with Makefile.mgw
-      run: |
-        # Ensure /mingw32/bin is in PATH for Allegro
-        export PATH="/mingw32/bin:$PATH"
-
-        # Check if dat tool exists
-        echo "Checking for required tools:"
-        which dat || echo "WARNING: dat not found"
-        ls -la /mingw32/bin/dat* || ( echo "dat not in /mingw32/bin" && exit 1)
-
-        # Debug: Check what Allegro libraries are available
-        echo "Libraries in /mingw32/lib:"
-        ls -la /mingw32/lib/liballeg* || ( echo "No Allegro libraries" && exit 1)
-
-        # Build using MinGW Makefile
-        make -f Makefile.mgw
-
-    - name: Check Windows binary created
-      run: |
-        cp /mingw32/bin/alleg44.dll .
-        if [ -f "lwwin.exe" ] && [ -f "lwwinsrv.exe" ] && [ -f "lwwinmap.exe" ] && [ -f "alleg44.dll" ] ; then
-          echo "SUCCESS: Windows .exe files created"
-          ls -lh lwwin*.exe
-        else
-          echo "ERROR: Windows .exe files not found"
-          exit 1
-        fi
-
-    - name: Upload Windows binaries
-      uses: actions/upload-artifact@v4
-      with:
-        name: liquidwar-windows-binaries
-        path: |
-          lwwin*.exe
-          alleg44.dll
-        retention-days: 61
-
-  build-dos:
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v5
-
-    - name: Install DJGPP cross-compiler
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y wget bzip2 make gcc g++ unzip flex
-
-        # Download and setup DJGPP cross-compiler
-        cd /tmp
-        wget https://github.com/andrewwutw/build-djgpp/releases/download/v3.4/djgpp-linux64-gcc1220.tar.bz2
-        sudo tar xjf djgpp-linux64-gcc1220.tar.bz2 -C /usr/local
-        export PATH="/usr/local/djgpp/bin:$PATH"
-
-        echo "DJGPP cross-compiler installed:"
-        i586-pc-msdosdjgpp-gcc --version
-
-    - name: Setup Allegro 4.2.3.1 for DOS
-      run: |
-        export PATH="/usr/local/djgpp/bin:$PATH"
-        export DJGPP_PREFIX=i586-pc-msdosdjgpp
-
-        # Download Allegro 4.2.3.1 source for headers
-        wget https://github.com/liballeg/allegro5/releases/download/v4-2-3-1/all4231.zip
-        unzip all4231.zip
-
-        # Use Allegro's actual build system
-        cd allegro
-
-        # Set up cross-compilation environment variables (as per docs/build/djgpp.txt)
-        export CROSSCOMPILE=1
-        export DJDIR=/usr/local/djgpp
-        export NATIVEPATH=$PATH
-        export PATH=/usr/local/djgpp/bin:$PATH
-
-        # Configure for DJGPP
-        echo "Configuring Allegro for DJGPP..."
-        bash fix.sh djgpp
-
-        # Build using Allegro's Makefile with cross-compiler
-        # Must override CC since makefile.dj defaults to 'gcc'
-        # Only build the library, not utilities like setup.exe
-        # Add -fgnu89-inline to handle extern __inline__ in headers correctly
-        # Try without ALLEGRO_USE_C=1 to let assembly files compile
-        echo "Building Allegro with DJGPP cross-compiler..."
-        make lib \
-             CC=${DJGPP_PREFIX}-gcc \
-             CROSSCOMPILE=1 \
-             TARGET_OPTS="-O2 -funroll-loops -ffast-math -fgnu89-inline"
-
-        echo "Allegro build complete. Checking library..."
-        ls -lh lib/djgpp/liballeg.a || ( echo "ERROR: Allegro library not created" && exit 1 )
-        cd ..
-
-    - name: Download CWSDPMI for DOS runtime
-      run: |
-        # CWSDPMI is the DOS Protected Mode Interface server needed to run DJGPP programs
-        # Try multiple mirrors
-        wget http://www.delorie.com/pub/djgpp/current/v2misc/csdpmi7b.zip -O csdpmi7b.zip || \
-          wget https://www.mirrorservice.org/sites/ftp.delorie.com/pub/djgpp/current/v2misc/csdpmi7b.zip -O csdpmi7b.zip || \
-          ( echo "ERROR: Failed to download CWSDPMI" && exit 1 )
-
-        unzip csdpmi7b.zip
-
-        # Find and copy to root directory
-        find . -iname "cwsdpmi.exe" -exec cp {} ./cwsdpmi.exe \;
-
-        echo "CWSDPMI location:"
-        ls -la cwsdpmi.exe || ( echo "ERROR: cwsdpmi.exe not found after extraction" && exit 1 )
-
-    - name: Build Liquid War for DOS
-      run: |
-        export PATH="/usr/local/djgpp/bin:$PATH"
-
-        # Debug: Show Allegro library location
-        echo "Current directory: $PWD"
-        echo "Allegro library path: $PWD/allegro/lib/djgpp"
-        ls -lh $PWD/allegro/lib/djgpp/liballeg.a || echo "Allegro library not found!"
-
-        # Build using DJGPP cross-compiler with explicit Allegro paths
-        # Need -fgnu89-inline to match Allegro's build for extern __inline__ functions
-        echo "Building with LDFLAGS=-L$PWD/allegro/lib/djgpp"
-        make -f Makefile.dj \
-          CC=i586-pc-msdosdjgpp-gcc \
-          C_FLAGS="-O2 -fomit-frame-pointer -Wall -Werror -I./src/ -I$PWD/allegro/include -DALLEGRO_STATICLINK -fgnu89-inline" \
-          LDFLAGS="-L$PWD/allegro/lib/djgpp" || ( echo "Build failed" && exit 1 )
-
-        echo "Checking if executable was created:"
-        ls -lh src/*.exe 2>/dev/null || ls -lh lwdos*.exe 2>/dev/null || ls -lh *.exe 2>/dev/null || echo "No .exe found"
-        find . -name "*.exe" -type f
-
-    - name: Check DOS executable created
-      run: |
-        if [ -f "lwdos.exe" ] ; then
-          echo "SUCCESS: DOS executable created"
-          ls -lh *.exe src/*.exe 2>/dev/null || true
-        else
-          echo "ERROR: No DOS executable found"
-          find . -name "*.exe"
-          exit 1
-        fi
-
-    - name: Upload DOS binaries
-      uses: actions/upload-artifact@v4
-      with:
-        name: liquidwar-dos-binaries
-        path: |
-          lwdos*.exe
-          cwsdpmi.exe
-        retention-days: 61
-
   build-source:
     runs-on: ubuntu-latest
-    needs: [build-fedora, build-ubuntu, build-debian, build-arch, build-freebsd, build-windows, build-dos]
+    needs: [build-fedora, build-ubuntu, build-debian, build-arch]
 
     steps:
     - name: Checkout code
@@ -583,10 +333,15 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y \
-          liballegro4-dev \
+          liballegro5-dev \
+          liballegro-acodec5-dev \
+          liballegro-audio5-dev \
+          liballegro-image5-dev \
+          liballegro-physfs5-dev \
           autoconf \
           automake \
-          build-essential
+          build-essential \
+          pkg-config
 
     - name: Generate configure script
       run: autoconf

@@ -17,10 +17,15 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y \
-          liballegro4-dev \
+          liballegro5-dev \
+          liballegro-acodec5-dev \
+          liballegro-audio5-dev \
+          liballegro-image5-dev \
+          liballegro-physfs5-dev \
           autoconf \
           automake \
-          build-essential
+          build-essential \
+          pkg-config
 
     - name: Generate configure script
       run: autoconf
