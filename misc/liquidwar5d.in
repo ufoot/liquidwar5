@@ -28,11 +28,11 @@
 # are started automatically when you boot your computer.
 #
 # Keep in mind that Liquid War is a *game* so its code might not be
-# 100% exploit proof, and anyway, since Liquid War comes with 
-# NO WARRANTY at all, you simply run it at your own risks. 
+# 100% exploit proof, and anyway, since Liquid War comes with
+# NO WARRANTY at all, you simply run it at your own risks.
 # This is not to scare you, but rather to insist on the fact that
 # you should never run Liquid War servers as root. Run it under a
-# "basic" user, which has very few rights, since the only rights the 
+# "basic" user, which has very few rights, since the only rights the
 # Liquid War daemon needs are:
 # - be able to bind on a socket > 1024
 # - be able to append stuff to a log file
@@ -43,7 +43,7 @@
 # will make the Liquid War server you run on your computer register
 # itself on the meta-server on www.ufoot.org. So people will be aware
 # that you have a Liquid War server on your machine. While this is good
-# for people who try to automatically find other online fellows, 
+# for people who try to automatically find other online fellows,
 # you might find this behaviour somewhat intrusive. Change the $PRIVACY
 # value if the default behaviour does not match your needs.
 
@@ -52,11 +52,11 @@ unset `env | sed s/=.*//`
 
 prefix=@prefix@
 
-NAME=liquidward
+NAME=liquidwar5d
 PATH=/bin:/usr/bin:/sbin:/usr/sbin
-DAEMON=$prefix/games/liquidwar-server
-PIDFILE=/var/games/liquidwar/$NAME.pid
-LOGFILE=/var/games/liquidwar/$NAME.log
+DAEMON=$prefix/games/liquidwar5-server
+PIDFILE=/var/games/liquidwar5/$NAME.pid
+LOGFILE=/var/games/liquidwar5/$NAME.log
 
 # As start-stop-daemon seems to be a quite Debian-specific utility,
 # this script is in a way designed for Debian. If you want to run it
@@ -83,7 +83,7 @@ PASSWORD=
 # the comment which will be associated to the server
 # by default, it contains the name of the machine, but you might
 # want to put your e-mail here for instance
-COMMENT="Public_Liquid_War_5_server_running_on_host_"`hostname` 
+COMMENT="Public_Liquid_War_5_server_running_on_host_"`hostname`
 
 # the user which should be used to start the daemon
 # by default, it is set to "nobody:games", this assumes that
@@ -95,9 +95,9 @@ USER=nobody:games
 
 # if you want the server to warn you whenever someone connects on it,
 # you might set up a callback script by uncommenting the line below.
-# You'll also need to edit and install the liquidwar_notify.sh script 
+# You'll also need to edit and install the liquidwar_notify.sh script
 # manually
-CALLBACK=$prefix/games/liquidwar_notify.sh
+CALLBACK=$prefix/games/liquidwar5_notify.sh
 
 OPTIONS=" -"$NBPLAYERS" -"$PRIVACY" -log "$LOGFILE" -password "$PASSWORD" -comment \""$COMMENT"\" -callback "$CALLBACK
 
@@ -130,4 +130,3 @@ case "$1" in
 esac
 
 exit 0
-

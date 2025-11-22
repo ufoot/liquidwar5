@@ -485,20 +485,20 @@ AC_CONFIG_FILES([\
 	   data/Makefile \
 	   doc/Makefile \
 	   doc/html/index.html \
-	   doc/tex/liquidwar.tex \
+	   doc/tex/liquidwar5.tex \
 	   doc/man/begin.man \
 	   doc/texi/begin.texi \
-	   misc/liquidward \
+	   misc/liquidwar5d \
 	   misc/macosx_info.plist \
-	   misc/liquidwar.nsi \
+	   misc/liquidwar5.nsi \
 	   misc/docker/Dockerfile-build \
 	   misc/docker/Dockerfile-server \
 	   misc/docker/Dockerfile-metaserver \
-	   liquidwar.spec])
+	   liquidwar5.spec])
 AC_OUTPUT
 
-dnl Change the liquidward attribute
-chmod 755 misc/liquidward
+dnl Change the liquidwar5d attribute
+chmod 755 misc/liquidwar5d
 
 
 

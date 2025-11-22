@@ -1,12 +1,12 @@
 Summary: A unique multiplayer wargame.
 Summary(fr): Un "wargame" multijoueur inédit.
 Summary(de): Ein einzigartiges Kriegspiel für mehrere Spieler.
-Name: liquidwar
-Version: 5.7.0
-Release: 1
+Name: liquidwar5
+Version: @VERSION@
+Release: @VERSION_REL@
 License: GPL
 Group: Amusements/Games
-Source: http://freesoftware.fsf.org/download/liquidwar/liquidwar-5.7.0.tar.gz
+Source: https://ufoot.org/download/liquidwar/v5/@VERSION@/liquidwar5-@VERSION@.tar.gz
 URL: https://ufoot.org/liquidwar/v5
 Vendor: Christian Mauduit <ufoot@ufoot.org>
 Packager: Christian Mauduit <ufoot@ufoot.org>
@@ -47,13 +47,13 @@ til multiplayer, og har netværks-support.
 
 # Building the package
 %build
-make 
+make
 
 # Installing the package
 # The "make uninstall" is important since it prevents rpm from
 # putting old unused files in the archive.
 %install
-export DESTDIR=%{buildroot} && make uninstall && make install 
+export DESTDIR=%{buildroot} && make uninstall && make install
 
 # Cleaning
 %clean
@@ -65,7 +65,7 @@ rm -rf %{buildroot}
 # Post-install script
 # It basically adds the info page to the Top info page.
 %post
-if which install-info; then if test -d %{_prefix}/info; then if test -f %{_prefix}/info/dir; then install-info --info-dir=%{_prefix}/info %{_prefix}/share/info/liquidwar.info.gz; fi; fi; fi
+if which install-info; then if test -d %{_prefix}/info; then if test -f %{_prefix}/info/dir; then install-info --info-dir=%{_prefix}/info %{_prefix}/share/info/liquidwar5.info.gz; fi; fi; fi
 
 # Pre-uninstall script
 %preun
@@ -73,26 +73,29 @@ if which install-info; then if test -d %{_prefix}/info; then if test -f %{_prefi
 # Post-uninstall script
 # It basically removes the info page to the Top info page.
 %postun
-if which install-info; then if test -d %{_prefix}/info; then if test -f %{_prefix}/info/dir; then install-info --info-dir=%{_prefix}/info --remove liquidwar; fi; fi; fi
+if which install-info; then if test -d %{_prefix}/info; then if test -f %{_prefix}/info/dir; then install-info --info-dir=%{_prefix}/info --remove liquidwar5; fi; fi; fi
 
 %files
 %defattr(-,root,root)
-%{_prefix}/games/liquidwar
-%{_prefix}/games/liquidwar-server
-%{_prefix}/games/liquidwar-mapgen
-%{_prefix}/bin/liquidwar
-%{_prefix}/bin/liquidwar-server
-%{_prefix}/bin/liquidwar-mapgen
-%{_prefix}/share/games/liquidwar/
-%{_prefix}/share/doc/liquidwar/
-%{_prefix}/share/man/man6/liquidwar.6*
-%{_prefix}/share/man/man6/liquidwar-server.6*
-%{_prefix}/share/man/man6/liquidwar-mapgen.6*
-%{_prefix}/share/info/liquidwar.info*
-%{_prefix}/share/pixmaps/liquidwar.xpm
-%{_prefix}/share/applications/liquidwar.desktop
+%{_prefix}/games/liquidwar5
+%{_prefix}/games/liquidwar5-server
+%{_prefix}/games/liquidwar5-mapgen
+%{_prefix}/bin/liquidwar5
+%{_prefix}/bin/liquidwar5-server
+%{_prefix}/bin/liquidwar5-mapgen
+%{_prefix}/share/games/liquidwar5/
+%{_prefix}/share/doc/liquidwar5/
+%{_prefix}/share/man/man6/liquidwar5.6*
+%{_prefix}/share/man/man6/liquidwar5-server.6*
+%{_prefix}/share/man/man6/liquidwar5-mapgen.6*
+%{_prefix}/share/info/liquidwar5.info*
+%{_prefix}/share/pixmaps/liquidwar5.xpm
+%{_prefix}/share/applications/liquidwar5.desktop
 
 %changelog
+
+* Sat Nov 22 2025 Christian Mauduit <ufoot@ufoot.org>
+- adapt to new Allegro 5 branch, call it liquidwar5
 
 * Thu Sep 27 2007 Christian Mauduit <ufoot@ufoot.org>
 - Added mapgen files, fixed deprecated RPM syntax.
@@ -110,15 +113,14 @@ if which install-info; then if test -d %{_prefix}/info; then if test -f %{_prefi
 - Fixed some buildroot bugs
 - Replaced install-info --infodir=... by --info-dir=...
 
-* Mon Mar 11 2002 Christian Mauduit <ufoot@ufoot.org> 
+* Mon Mar 11 2002 Christian Mauduit <ufoot@ufoot.org>
 - Recompiled with Allegro's rpm (fixes the error:
   "/usr/lib/liballeg.so.4.0: undefined symbol: _poly_scanline_gcol8")
 - Fixed the post-install script
 
-* Sat Feb 23 2002 Christian Mauduit <ufoot@ufoot.org> 
+* Sat Feb 23 2002 Christian Mauduit <ufoot@ufoot.org>
 - Added proper "--target" support.
 - Added info documentation with install and uninstall scripts
 
-* Thu Jan 28 2002 Christian Mauduit <ufoot@ufoot.org> 
+* Thu Jan 28 2002 Christian Mauduit <ufoot@ufoot.org>
 - My first rpm build of Liquid War
-

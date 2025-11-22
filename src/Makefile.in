@@ -4,7 +4,7 @@ exec_prefix =     @exec_prefix@
 datarootdir =     @datarootdir@
 datadir =         @datadir@
 
-DATADIR =         $(datadir)/games/liquidwar
+DATADIR =         $(datadir)/games/liquidwar5
 GAMEDIR =         $(exec_prefix)/games
 
 HOST_OPT =        @HOST_OPT@
@@ -213,7 +213,7 @@ OBJ_FILES = $(addsuffix .o, $(OBJ_NAMES))
 OBJ_FILES_SRV = $(addsuffix .o, $(OBJ_NAMES_SRV))
 OBJ_FILES_MAPGEN = $(addsuffix .o, $(OBJ_NAMES_MAPGEN))
 
-EXE_FILES = liquidwar liquidwar-server liquidwar-mapgen
+EXE_FILES = liquidwar5 liquidwar5-server liquidwar5-mapgen
 
 ifeq ($(STATIC),yes)
     LINK_OPTIONS = --static
@@ -224,19 +224,19 @@ else
 endif
 
 CONFIG_OPTIONS = \
-	-DCONFIG_UNIX_CFG=\".liquidwarrc\" \
+	-DCONFIG_UNIX_CFG=\".liquidwar5rc\" \
 	-DCONFIG_UNIX_DAT=\"$(DATADIR)/data\" \
 	-DCONFIG_UNIX_MAP=\"$(DATADIR)/data/map/\" \
 	-DCONFIG_UNIX_TEX=\"$(DATADIR)/data/texture/\" \
 	-DCONFIG_UNIX_MID=\"$(DATADIR)/data/music/\" \
-	-DCONFIG_UNIX_SRV=\"$(GAMEDIR)/liquidwar-server\" \
-	-DCONFIG_UNIX_GEN=\"$(GAMEDIR)/liquidwar-mapgen\"
+	-DCONFIG_UNIX_SRV=\"$(GAMEDIR)/liquidwar5-server\" \
+	-DCONFIG_UNIX_GEN=\"$(GAMEDIR)/liquidwar5-mapgen\"
 
 CMD_CC = $(CC) $(CFLAGS) $(ALCFLAGS) -c $(DEBUG_FLAGS) -Wall -W -Werror $(HOST_CPU_CC) $(CONFIG_OPTIONS) $(DEBUG_OPTIONS) $(SPRINTF_OPTIONS) -DUNIX -D_THREAD_SAFE
 
 all: $(EXE_FILES)
 
-liquidwar: $(OBJ_FILES)
+liquidwar5: $(OBJ_FILES)
 	@echo "Linking $@ (host=$(HOST), debug=$(DEBUG), static=$(STATIC))"
 	@$(CC) $(LDFLAGS) $(DEBUG_FLAGS) $(LINK_OPTIONS) -o $@ $(OBJ_FILES) $(PTHREAD) $(EXTERN_LIBS)
 	@if [ "$(DEBUG)" = "yes" ] && [ "$$(uname -s)" = "Darwin" ]; then \
@@ -244,11 +244,11 @@ liquidwar: $(OBJ_FILES)
 		dsymutil $@; \
 	fi
 
-liquidwar-server: $(OBJ_FILES_SRV)
+liquidwar5-server: $(OBJ_FILES_SRV)
 	@echo "Linking $@ (host=$(HOST), debug=$(DEBUG), static=$(STATIC))"
 	@$(CC) $(LDFLAGS) $(DEBUG_FLAGS) $(LINK_OPTIONS) -o $@ $(OBJ_FILES_SRV) $(PTHREAD)
 
-liquidwar-mapgen: $(OBJ_FILES_MAPGEN)
+liquidwar5-mapgen: $(OBJ_FILES_MAPGEN)
 	@echo "Linking $@ (host=$(HOST), debug=$(DEBUG), static=$(STATIC))"
 	@$(CC) $(LDFLAGS) $(DEBUG_FLAGS) $(LINK_OPTIONS) -o $@ $(OBJ_FILES_MAPGEN) -lm $(PTHREAD) $(EXTERN_LIBS)
 
