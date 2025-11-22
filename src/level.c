@@ -55,6 +55,8 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "backport.h"
+#include "backportgui.h"
 #include "back.h"
 #include "config.h"
 #include "dialog.h"
@@ -64,7 +66,6 @@
 #include "map.h"
 #include "maptex.h"
 #include "menu.h"
-#include "palette.h"
 #include "sound.h"
 #include "texture.h"
 #include "macro.h"
@@ -102,7 +103,11 @@ palette_128 (DIALOG * d, int x, int y, int w, int h)
       d[k].h = h2;
       d[k].fg = MENU_FG;
       d[k].flags = D_EXIT;
-      d[k].bg = k + 128;
+      // Map k (0-127) to a team color with intensity
+      // Divide into 6 teams with gradients for each
+      int team = k / (128 / 6);
+      int intensity = (k % (128 / 6)) * 255 / (128 / 6);
+      d[k].bg = lw_team_color(team, intensity);
     }
   k = 0;
   for (i = 0; i < 12; ++i)
@@ -167,7 +172,7 @@ display_chosen_level (void)
   int y1, y2, y3, y4, y5, y6, y7, y8;
   int sample_x, sample_y, sample_w, sample_h;
   int max_w, max_h, bmp_w, bmp_h;
-  BITMAP *pour_voir;
+  ALLEGRO_BITMAP *pour_voir;
   retrieve_choose_level_xy (&x1, &x2, &x3, &x4, &x5, &x6, &x7, &x8,
                             &y1, &y2, &y3, &y4, &y5, &y6, &y7, &y8);
   rectfill (screen, menu_real_x (x4), menu_real_y (y1),
@@ -177,7 +182,7 @@ display_chosen_level (void)
                             LW_RANDOM_ON, CONFIG_USE_DEFAULT_TEXTURE);
   lw_maptex_set_bg_palette (CONFIG_LEVEL_MAP, CONFIG_LEVEL_BG, 0,
                             LW_RANDOM_ON, CONFIG_USE_DEFAULT_TEXTURE);
-  my_set_palette ();
+  // my_set_palette (); // No longer needed in true color mode
   pour_voir = lw_maptex_create_map
     (CONFIG_LEVEL_MAP, CONFIG_LEVEL_FG, CONFIG_LEVEL_BG, 0, LW_RANDOM_ON,
      MIN_MAP_RES_W[CONFIG_MIN_MAP_RES], MIN_MAP_RES_H[CONFIG_MIN_MAP_RES],
@@ -187,8 +192,8 @@ display_chosen_level (void)
     {
       max_w = menu_real_x (MENU_W_SAMPLE);
       max_h = menu_real_y (MENU_H_SAMPLE);
-      bmp_w = pour_voir->w;
-      bmp_h = pour_voir->h;
+      bmp_w = al_get_bitmap_width (pour_voir);
+      bmp_h = al_get_bitmap_height (pour_voir);
       if (max_w * bmp_h < max_h * bmp_w)
 
         {
@@ -206,7 +211,7 @@ display_chosen_level (void)
       sample_y = menu_real_y (y1) + (max_h - sample_h) / 2;
       stretch_blit (pour_voir, screen, 0, 0, bmp_w, bmp_h, sample_x,
                     sample_y, sample_w, sample_h);
-      destroy_bitmap (pour_voir);
+      al_destroy_bitmap (pour_voir);
     }
   if (!lw_maptex_is_custom_texture_used
       (CONFIG_LEVEL_MAP, CONFIG_LEVEL_FG, 0, LW_RANDOM_ON,
@@ -222,11 +227,11 @@ display_chosen_level (void)
       if (pour_voir)
 
         {
-          stretch_blit (pour_voir, screen, 0, 0, pour_voir->w, pour_voir->h,
+          stretch_blit (pour_voir, screen, 0, 0, al_get_bitmap_width (pour_voir), al_get_bitmap_height (pour_voir),
                         menu_real_x (x1), menu_real_x (y1),
                         menu_real_x (MENU_W_LEVEL),
                         menu_real_x (MENU_W_LEVEL));
-          destroy_bitmap (pour_voir);
+          al_destroy_bitmap (pour_voir);
         }
     }
   if (!lw_maptex_is_custom_texture_used
@@ -243,11 +248,11 @@ display_chosen_level (void)
       if (pour_voir)
 
         {
-          stretch_blit (pour_voir, screen, 0, 0, pour_voir->w, pour_voir->h,
+          stretch_blit (pour_voir, screen, 0, 0, al_get_bitmap_width (pour_voir), al_get_bitmap_height (pour_voir),
                         menu_real_x (x8), menu_real_x (y1),
                         menu_real_x (MENU_W_LEVEL),
                         menu_real_x (MENU_W_LEVEL));
-          destroy_bitmap (pour_voir);
+          al_destroy_bitmap (pour_voir);
         }
     }
 }
@@ -604,7 +609,7 @@ choose_map (void)
   buf1[0] = 0;
   buf2[0] = 0;
   display_back_image ();
-  set_palette_for_choose_color ();
+  // set_palette_for_choose_color (); // No longer needed in true color mode
   quick_buttons (d);
   retrieve_choose_level_xy (&x1, &x2, &x3, &x4, &x5, &x6, &x7, &x8,
                             &y1, &y2, &y3, &y4, &y5, &y6, &y7, &y8);

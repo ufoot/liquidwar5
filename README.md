@@ -70,6 +70,7 @@ License
 -------
 
 Liquid War is a multiplayer wargame.
+
 Copyright (C) 1998-2025 Christian Mauduit (ufoot@ufoot.org)
 
 This program is free software; you can redistribute it and/or

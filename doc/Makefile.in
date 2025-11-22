@@ -46,15 +46,15 @@ all: txt_$(DOC_TXT) html_$(DOC_HTML) man_$(DOC_MAN) info_$(DOC_INFO) ps_$(DOC_PS
 
 txt_yes: $(TXT_FILES)
 
-html_yes: $(HTML_FILES) 
+html_yes: $(HTML_FILES)
 
-man_yes: man/liquidwar.6.gz
+man_yes: man/liquidwar5.6.gz
 
-info_yes: info/liquidwar.info.gz
+info_yes: info/liquidwar5.info.gz
 
-ps_yes: ps/liquidwar.ps
+ps_yes: ps/liquidwar5.ps
 
-pdf_yes: pdf/liquidwar.pdf 
+pdf_yes: pdf/liquidwar5.pdf
 
 php_yes: $(PHP_FILES)
 
@@ -76,35 +76,35 @@ php_no:
 
 uwc_no:
 
-pdf/liquidwar.pdf : ps/liquidwar.ps
+pdf/liquidwar5.pdf : ps/liquidwar5.ps
 	@echo "Building $@..."
-	@cd tex; pdflatex liquidwar.tex && cd .. || cd ..
-	@cd tex; pdflatex liquidwar.tex && cd .. || cd ..
-	@if [ -f tex/liquidwar.pdf ]; then mv tex/liquidwar.pdf $@; fi
+	@cd tex; pdflatex liquidwar5.tex && cd .. || cd ..
+	@cd tex; pdflatex liquidwar5.tex && cd .. || cd ..
+	@if [ -f tex/liquidwar5.pdf ]; then mv tex/liquidwar5.pdf $@; fi
 
-ps/liquidwar.ps : tex/liquidwar.dvi
+ps/liquidwar5.ps : tex/liquidwar5.dvi
 	@echo "Building $@..."
 	@dvips -q -o $@ $<
 
-tex/liquidwar.dvi : $(TEX_FILES) tex/liquidwar.tex
+tex/liquidwar5.dvi : $(TEX_FILES) tex/liquidwar5.tex
 	@echo "Building $@..."
-	@cd tex; latex liquidwar.tex && cd .. || cd ..
-	@cd tex; latex liquidwar.tex && cd .. || cd ..
+	@cd tex; latex liquidwar5.tex && cd .. || cd ..
+	@cd tex; latex liquidwar5.tex && cd .. || cd ..
 
-man/liquidwar.6 : man/liquidwar.man
+man/liquidwar5.6 : man/liquidwar5.man
 	@cp $< $@
 
-man/liquidwar.man : $(MAN_FILES) man/begin.man man/end.man
+man/liquidwar5.man : $(MAN_FILES) man/begin.man man/end.man
 	@echo "Building $@..."
 	@cat man/begin.man $(MAN_FILES) man/end.man > $@
 
-info/liquidwar.info.gz : texi/liquidwar.texi
+info/liquidwar5.info.gz : texi/liquidwar5.texi
 	@echo "Building $@..."
-	@rm -f info/liquidwar.info*
-	@makeinfo -o info/liquidwar.info $<
-	@gzip -9 info/liquidwar.info*
+	@rm -f info/liquidwar5.info*
+	@makeinfo -o info/liquidwar5.info $<
+	@gzip -9 info/liquidwar5.info*
 
-texi/liquidwar.texi : $(TEXI_FILES) texi/begin.texi texi/end.texi
+texi/liquidwar5.texi : $(TEXI_FILES) texi/begin.texi texi/end.texi
 	@echo "Building $@..."
 	@cat texi/begin.texi $(TEXI_FILES) texi/end.texi > $@
 
@@ -142,14 +142,14 @@ uwc/%.uwc: xml/%.xml makedoc.py
 dummy:
 
 clean:
-	@rm -f *~ */*~ 
+	@rm -f *~ */*~
 	@rm -f makedoc.pyc
 	@rm -f $(HTML_FILES) $(PHP_FILES) $(TEX_FILES) $(MAN_FILES) $(TXT_FILES) $(TEXI_FILES) $(UWC_FILES)
-	@rm -f tex/liquidwar.toc tex/liquidwar.log tex/liquidwar.dvi tex/liquidwar.aux ps/liquidwar.ps pdf/liquidwar.pdf man/liquidwar.6 man/liquidwar.6.gz man/liquidwar-server.6.gz man/liquidwar-mapgen.6.gz man/liquidwar.man info/liquidwar.info* texi/liquidwar.texi texi/liquidwar.info*
+	@rm -f tex/liquidwar5.toc tex/liquidwar5.log tex/liquidwar5.dvi tex/liquidwar5.aux ps/liquidwar5.ps pdf/liquidwar5.pdf man/liquidwar5.6 man/liquidwar5.6.gz man/liquidwar5-server.6.gz man/liquidwar5-mapgen.6.gz man/liquidwar5.man info/liquidwar5.info* texi/liquidwar5.texi texi/liquidwar5.info*
 
-distclean: 
+distclean:
 	@rm -f Makefile
-	@rm -f tex/liquidwar.tex man/begin.man texi/begin.texi html/index.html
+	@rm -f tex/liquidwar5.tex man/begin.man texi/begin.texi html/index.html
 
 config:
 
@@ -157,6 +157,3 @@ check:
 	@xmllint --valid --noout xml/*.xml
 
 dep:
-
-
-

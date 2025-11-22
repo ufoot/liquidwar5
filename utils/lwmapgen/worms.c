@@ -18,7 +18,7 @@
 
 
 int
-filled (int centerx, int centery, int rad, int startdeg, int col, int seg)
+filled (int centerx, int centery, int rad, int startdeg, ALLEGRO_COLOR col, int seg)
 {
   int deg;
   int result = 0;
@@ -38,10 +38,9 @@ filled (int centerx, int centery, int rad, int startdeg, int col, int seg)
   for (deg = startdeg - check_degrees; deg < startdeg + check_degrees;
        deg += 5)
     {
-
-      if (getpixel
-          (map.map, centerx + (rad * cos (M_PI * deg / 180)),
-           centery + (rad * sin (M_PI * deg / 180))) == col)
+      ALLEGRO_COLOR pixel = getpixel (map.map, centerx + (rad * cos (M_PI * deg / 180)),
+                                       centery + (rad * sin (M_PI * deg / 180)));
+      if (pixel.r == col.r && pixel.g == col.g && pixel.b == col.b)
         {
           result = 1;
           break;
@@ -82,9 +81,9 @@ worms ()
               centerx += radius * cos (M_PI * degree / 180);
               centery += radius * sin (M_PI * degree / 180);
 
-              if (filled (centerx, centery, radius + 1, degree, 0, segs) == 0)
+              if (filled (centerx, centery, radius + 1, degree, al_map_rgb(0, 0, 0), segs) == 0)
                 {
-                  circlefill (map.map, centerx, centery, radius, 0);
+                  circlefill (map.map, centerx, centery, radius, al_map_rgb(0, 0, 0));
                 }
               else
                 {

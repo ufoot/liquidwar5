@@ -52,7 +52,7 @@
 /* includes                                                         */
 /*==================================================================*/
 
-#include <allegro.h>
+#include <allegro5/allegro.h>
 
 #include "profile.h"
 #include "ticker.h"

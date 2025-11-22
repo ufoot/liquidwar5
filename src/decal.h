@@ -63,7 +63,7 @@
 
 extern int PLAYING_TEAMS;
 extern int ACTIVE_FIGHTERS[NB_TEAMS];
-extern int COLOR_FIRST_ENTRY[NB_TEAMS];
+// COLOR_FIRST_ENTRY removed - colors are now computed dynamically with lw_team_color()
 
 /*==================================================================*/
 /* fonctions globales                                               */

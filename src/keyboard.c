@@ -52,8 +52,7 @@
 /* includes                                                         */
 /*==================================================================*/
 
-#include <allegro.h>
-
+#include "backport.h"
 #include "config.h"
 #include "joystick.h"
 #include "keyboard.h"

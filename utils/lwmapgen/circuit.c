@@ -39,12 +39,12 @@ draw_pipe (int fromr, int fromc, int tor, int toc, int flip)
           /* go up/down to reach target */
           section_center (&fromx, &fromy, fromr, fromc);
           section_center (&tox, &toy, tor, fromc);
-          rectfill (map.map, fromx - size, fromy, tox + size, toy, 255);
+          rectfill (map.map, fromx - size, fromy, tox + size, toy, al_map_rgb(255, 255, 255));
 
           /* across some num of sections */
           section_center (&fromx, &fromy, tor, fromc);
           section_center (&tox, &toy, tor, toc);
-          rectfill (map.map, fromx, fromy - size, tox, toy + size, 255);
+          rectfill (map.map, fromx, fromy - size, tox, toy + size, al_map_rgb(255, 255, 255));
         }
       /* across then up/down */
       else
@@ -52,12 +52,12 @@ draw_pipe (int fromr, int fromc, int tor, int toc, int flip)
           /* across some num of sections */
           section_center (&fromx, &fromy, fromr, fromc);
           section_center (&tox, &toy, fromr, toc);
-          rectfill (map.map, fromx, fromy - size, tox, toy + size, 255);
+          rectfill (map.map, fromx, fromy - size, tox, toy + size, al_map_rgb(255, 255, 255));
 
           /* go up/down to reach target */
           section_center (&fromx, &fromy, fromr, toc);
           section_center (&tox, &toy, tor, toc);
-          rectfill (map.map, fromx - size, fromy, tox + size, toy, 255);
+          rectfill (map.map, fromx - size, fromy, tox + size, toy, al_map_rgb(255, 255, 255));
         }
     }
   else if (fromc > toc)
@@ -68,12 +68,12 @@ draw_pipe (int fromr, int fromc, int tor, int toc, int flip)
           /* across some num of sections */
           section_center (&fromx, &fromy, fromr, fromc);
           section_center (&tox, &toy, fromr, toc);
-          rectfill (map.map, fromx, fromy - size, tox, toy + size, 255);
+          rectfill (map.map, fromx, fromy - size, tox, toy + size, al_map_rgb(255, 255, 255));
 
           /* go up/down to reach target */
           section_center (&fromx, &fromy, fromr, toc);
           section_center (&tox, &toy, tor, toc);
-          rectfill (map.map, fromx - size, fromy, tox + size, toy, 255);
+          rectfill (map.map, fromx - size, fromy, tox + size, toy, al_map_rgb(255, 255, 255));
         }
       /* up/down then across */
       else
@@ -81,12 +81,12 @@ draw_pipe (int fromr, int fromc, int tor, int toc, int flip)
           /* go up/down to reach target */
           section_center (&fromx, &fromy, fromr, fromc);
           section_center (&tox, &toy, tor, fromc);
-          rectfill (map.map, fromx - size, fromy, tox + size, toy, 255);
+          rectfill (map.map, fromx - size, fromy, tox + size, toy, al_map_rgb(255, 255, 255));
 
           /* across some num of sections */
           section_center (&fromx, &fromy, tor, fromc);
           section_center (&tox, &toy, tor, toc);
-          rectfill (map.map, fromx, fromy - size, tox, toy + size, 255);
+          rectfill (map.map, fromx, fromy - size, tox, toy + size, al_map_rgb(255, 255, 255));
         }
     }
   else
@@ -94,7 +94,7 @@ draw_pipe (int fromr, int fromc, int tor, int toc, int flip)
       /* go up/down to reach target */
       section_center (&fromx, &fromy, fromr, fromc);
       section_center (&tox, &toy, tor, toc);
-      rectfill (map.map, fromx - size, fromy, tox + size, toy, 255);
+      rectfill (map.map, fromx - size, fromy, tox + size, toy, al_map_rgb(255, 255, 255));
     }
 
   return;
@@ -403,7 +403,7 @@ circuit ()
             }
 
           section_center (&centerx, &centery, r, c);
-          circlefill (map.map, centerx, centery, radius, 255);
+          circlefill (map.map, centerx, centery, radius, al_map_rgb(255, 255, 255));
 
           grid[r][c] = 1;
           count[r]++;
@@ -421,7 +421,7 @@ circuit ()
 
   /* redraw outline */
   /* TODO: once in a while if cuts off the edge.. */
-  rect (map.map, 0, 0, map.width - 1, map.height - 1, 0);
+  rect (map.map, 0, 0, map.width - 1, map.height - 1, al_map_rgb(0, 0, 0));
 
   return;
 }

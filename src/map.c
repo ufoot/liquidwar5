@@ -72,15 +72,24 @@
 /*==================================================================*/
 
 #define LIGHT_OR_DARK_TRESHOLD 315
-#define CONSIDERED_AS_DARK 0
-#define CONSIDERED_AS_LIGHT 2
-#define PLAYABLE_AREA 1
+// Color constants converted to ALLEGRO_COLOR - these are now created inline where needed
+#define CONSIDERED_AS_DARK_RGB 0x000000   /* Black RGB */
+#define CONSIDERED_AS_LIGHT_RGB 0xFFFFFF  /* White RGB */
+#define PLAYABLE_AREA_RGB 0x010101        /* Very dark gray RGB for playable */
 #define MINI_SIDE_SIZE 4
 #define MINI_PLAYABLE_AREA 1024
 
 /*==================================================================*/
 /* fonctions                                                        */
 /*==================================================================*/
+
+/*------------------------------------------------------------------*/
+/* Helper function to compare ALLEGRO_COLOR values */
+static int
+colors_equal(ALLEGRO_COLOR c1, ALLEGRO_COLOR c2)
+{
+  return (c1.r == c2.r && c1.g == c2.g && c1.b == c2.b && c1.a == c2.a);
+}
 
 /*------------------------------------------------------------------*/
 static int
@@ -104,39 +113,56 @@ calc_zoom_factor (int w, int h, int min_w, int min_h)
 
 /*------------------------------------------------------------------*/
 static void
-sort_light_and_dark (BITMAP * bmp, PALETTE pal)
+sort_light_and_dark (ALLEGRO_BITMAP * bmp)
 {
-  char table[256];
-  int i, x, y;
+  int x, y;
+  ALLEGRO_COLOR pixel_color;
+  float r, g, b, a;
+  int brightness;
+  ALLEGRO_COLOR light_color, dark_color;
 
-  for (i = 0; i < 256; ++i)
-    {
-      if (6 * pal[i].r + 3 * pal[i].g + pal[i].b > LIGHT_OR_DARK_TRESHOLD)
-        table[i] = CONSIDERED_AS_LIGHT;
-      else
-        table[i] = CONSIDERED_AS_DARK;
-    }
+  /* Create actual RGB colors from constants */
+  light_color = al_map_rgb((CONSIDERED_AS_LIGHT_RGB >> 16) & 0xFF,
+                          (CONSIDERED_AS_LIGHT_RGB >> 8) & 0xFF,
+                          CONSIDERED_AS_LIGHT_RGB & 0xFF);
+  dark_color = al_map_rgb((CONSIDERED_AS_DARK_RGB >> 16) & 0xFF,
+                         (CONSIDERED_AS_DARK_RGB >> 8) & 0xFF,
+                         CONSIDERED_AS_DARK_RGB & 0xFF);
 
-  for (y = 0; y < bmp->h; ++y)
-    for (x = 0; x < bmp->w; ++x)
-      putpixel (bmp, x, y, table[getpixel (bmp, x, y)]);
+  /* Set target bitmap once for efficiency */
+  al_set_target_bitmap (bmp);
+
+  for (y = 0; y < al_get_bitmap_height (bmp); ++y)
+    for (x = 0; x < al_get_bitmap_width (bmp); ++x)
+      {
+        pixel_color = al_get_pixel (bmp, x, y);
+        al_unmap_rgba_f (pixel_color, &r, &g, &b, &a);
+
+        /* Apply weighted brightness formula with 0-255 scaling */
+        brightness = (int)(6 * (r * 255) + 3 * (g * 255) + (b * 255));
+
+        if (brightness > LIGHT_OR_DARK_TRESHOLD)
+          al_put_pixel (x, y, light_color);
+        else
+          al_put_pixel (x, y, dark_color);
+      }
 }
 
 /*------------------------------------------------------------------*/
-static BITMAP *
-extract_significant_part (BITMAP * src)
+static ALLEGRO_BITMAP *
+extract_significant_part (ALLEGRO_BITMAP * src)
 {
-  int min_x = src->w;
-  int min_y = src->h;
+  int min_x = al_get_bitmap_width (src);
+  int min_y = al_get_bitmap_height (src);
   int max_x = -1;
   int max_y = -1;
   int dst_x, dst_y, dst_w, dst_h;
   int x, y;
-  BITMAP *result;
+  ALLEGRO_BITMAP *result;
 
-  for (y = 0; y < src->h; ++y)
-    for (x = 0; x < src->w; ++x)
-      if (getpixel (src, x, y) == CONSIDERED_AS_DARK)
+  for (y = 0; y < al_get_bitmap_height (src); ++y)
+    for (x = 0; x < al_get_bitmap_width (src); ++x)
+      if (is_color_dark(getpixel (src, x, y)))
         {
           if (min_x > x)
             min_x = x;
@@ -156,7 +182,7 @@ extract_significant_part (BITMAP * src)
     result = NULL;
   else
     {
-      result = my_create_bitmap (dst_w, dst_h);
+      result = my_create_memory_bitmap (dst_w, dst_h);
       if (result)
         blit (src, result, dst_x, dst_y, 0, 0, dst_w, dst_h);
     }
@@ -166,45 +192,46 @@ extract_significant_part (BITMAP * src)
 
 /*-----------------------------------------------------------------*/
 static int
-spread_color_down (BITMAP * bmp, int color1, int color2)
+spread_color_down (ALLEGRO_BITMAP * bmp, ALLEGRO_COLOR color1, ALLEGRO_COLOR color2)
 {
   int x, y, x1, y1, x2, y2, found = 0;
 
-  for (y = 0; y < bmp->h; ++y)
-    for (x = 0; x < bmp->w; ++x)
-      if (getpixel (bmp, x, y) == color2)
+  al_set_target_bitmap (bmp);
+  for (y = 0; y < al_get_bitmap_height (bmp); ++y)
+    for (x = 0; x < al_get_bitmap_width (bmp); ++x)
+      if (colors_equal(getpixel (bmp, x, y), color2))
         {
           x1 = x - 1;
           if (x1 < 0)
             x1 = 0;
           x2 = x + 1;
-          if (x2 > bmp->w - 1)
-            x2 = bmp->w - 1;
+          if (x2 > al_get_bitmap_width (bmp) - 1)
+            x2 = al_get_bitmap_width (bmp) - 1;
           y1 = y - 1;
           if (y1 < 0)
             y1 = 0;
           y2 = y + 1;
-          if (y2 > bmp->h - 1)
-            y2 = bmp->h - 1;
+          if (y2 > al_get_bitmap_height (bmp) - 1)
+            y2 = al_get_bitmap_height (bmp) - 1;
 
-          if (getpixel (bmp, x2, y) == color1)
+          if (colors_equal(getpixel (bmp, x2, y), color1))
             {
-              putpixel (bmp, x2, y, color2);
+              putpixel_fast (x2, y, color2);
               found++;
             }
-          if (getpixel (bmp, x2, y2) == color1)
+          if (colors_equal(getpixel (bmp, x2, y2), color1))
             {
-              putpixel (bmp, x2, y2, color2);
+              putpixel_fast (x2, y2, color2);
               found++;
             }
-          if (getpixel (bmp, x, y2) == color1)
+          if (colors_equal(getpixel (bmp, x, y2), color1))
             {
-              putpixel (bmp, x, y2, color2);
+              putpixel_fast (x, y2, color2);
               found++;
             }
-          if (getpixel (bmp, x1, y2) == color1)
+          if (colors_equal(getpixel (bmp, x1, y2), color1))
             {
-              putpixel (bmp, x1, y2, color2);
+              putpixel_fast (x1, y2, color2);
               found++;
             }
         }
@@ -214,45 +241,46 @@ spread_color_down (BITMAP * bmp, int color1, int color2)
 
 /*-----------------------------------------------------------------*/
 static int
-spread_color_up (BITMAP * bmp, int color1, int color2)
+spread_color_up (ALLEGRO_BITMAP * bmp, ALLEGRO_COLOR color1, ALLEGRO_COLOR color2)
 {
   int x, y, x1, y1, x2, y2, found = 0;
 
-  for (y = bmp->h - 1; y >= 0; --y)
-    for (x = bmp->w - 1; x >= 0; --x)
-      if (getpixel (bmp, x, y) == color2)
+  al_set_target_bitmap (bmp);
+  for (y = al_get_bitmap_height (bmp) - 1; y >= 0; --y)
+    for (x = al_get_bitmap_width (bmp) - 1; x >= 0; --x)
+      if (colors_equal(getpixel (bmp, x, y), color2))
         {
           x1 = x - 1;
           if (x1 < 0)
             x1 = 0;
           x2 = x + 1;
-          if (x2 > bmp->w - 1)
-            x2 = bmp->w - 1;
+          if (x2 > al_get_bitmap_width (bmp) - 1)
+            x2 = al_get_bitmap_width (bmp) - 1;
           y1 = y - 1;
           if (y1 < 0)
             y1 = 0;
           y2 = y + 1;
-          if (y2 > bmp->h - 1)
-            y2 = bmp->h - 1;
+          if (y2 > al_get_bitmap_height (bmp) - 1)
+            y2 = al_get_bitmap_height (bmp) - 1;
 
-          if (getpixel (bmp, x1, y) == color1)
+          if (colors_equal(getpixel (bmp, x1, y), color1))
             {
-              putpixel (bmp, x1, y, color2);
+              putpixel_fast (x1, y, color2);
               found++;
             }
-          if (getpixel (bmp, x1, y1) == color1)
+          if (colors_equal(getpixel (bmp, x1, y1), color1))
             {
-              putpixel (bmp, x1, y1, color2);
+              putpixel_fast (x1, y1, color2);
               found++;
             }
-          if (getpixel (bmp, x, y1) == color1)
+          if (colors_equal(getpixel (bmp, x, y1), color1))
             {
-              putpixel (bmp, x, y1, color2);
+              putpixel_fast (x, y1, color2);
               found++;
             }
-          if (getpixel (bmp, x2, y1) == color1)
+          if (colors_equal(getpixel (bmp, x2, y1), color1))
             {
-              putpixel (bmp, x2, y1, color2);
+              putpixel_fast (x2, y1, color2);
               found++;
             }
         }
@@ -263,25 +291,37 @@ spread_color_up (BITMAP * bmp, int color1, int color2)
 
 /*-----------------------------------------------------------------*/
 static int
-check_if_playable (BITMAP * bmp)
+check_if_playable (ALLEGRO_BITMAP * bmp)
 {
   int x = 0, y = 0, x0, y0;
   int unplayable = 0;
   int playable_place = 0;
+  ALLEGRO_COLOR light_color, dark_color, playable_color;
+
+  /* Create ALLEGRO_COLOR from RGB constants */
+  light_color = al_map_rgb((CONSIDERED_AS_LIGHT_RGB >> 16) & 0xFF,
+                          (CONSIDERED_AS_LIGHT_RGB >> 8) & 0xFF,
+                          CONSIDERED_AS_LIGHT_RGB & 0xFF);
+  dark_color = al_map_rgb((CONSIDERED_AS_DARK_RGB >> 16) & 0xFF,
+                         (CONSIDERED_AS_DARK_RGB >> 8) & 0xFF,
+                         CONSIDERED_AS_DARK_RGB & 0xFF);
+  playable_color = al_map_rgb((PLAYABLE_AREA_RGB >> 16) & 0xFF,
+                             (PLAYABLE_AREA_RGB >> 8) & 0xFF,
+                             PLAYABLE_AREA_RGB & 0xFF);
 
   /*
    * Now we draw the "outside" of the map. This is usefull
    * to avoid bugs (core dumps) if the map is not correctly drawn.
    */
-  hline (bmp, 0, 0, bmp->w - 1, CONSIDERED_AS_DARK);
-  hline (bmp, 0, bmp->h - 1, bmp->w - 1, CONSIDERED_AS_DARK);
-  vline (bmp, 0, 0, bmp->h - 1, CONSIDERED_AS_DARK);
-  vline (bmp, bmp->w - 1, 0, bmp->h - 1, CONSIDERED_AS_DARK);
+  hline (bmp, 0, 0, al_get_bitmap_width (bmp) - 1, dark_color);
+  hline (bmp, 0, al_get_bitmap_height (bmp) - 1, al_get_bitmap_width (bmp) - 1, dark_color);
+  vline (bmp, 0, 0, al_get_bitmap_height (bmp) - 1, dark_color);
+  vline (bmp, al_get_bitmap_width (bmp) - 1, 0, al_get_bitmap_height (bmp) - 1, dark_color);
 
   x0 = y0 = -1;
-  for (y = 0; y < bmp->h && y0 < 0; ++y)
-    for (x = 0; x < bmp->w && x0 < 0; ++x)
-      if (getpixel (bmp, x, y) == CONSIDERED_AS_LIGHT)
+  for (y = 0; y < al_get_bitmap_height (bmp) && y0 < 0; ++y)
+    for (x = 0; x < al_get_bitmap_width (bmp) && x0 < 0; ++x)
+      if (is_color_light(getpixel (bmp, x, y)))
         {
           x0 = x;
           y0 = y;
@@ -289,19 +329,23 @@ check_if_playable (BITMAP * bmp)
 
   if (x0 > 0 && y0 > 0)
     {
-      putpixel (bmp, x, y, PLAYABLE_AREA);
-      while (spread_color_down (bmp, CONSIDERED_AS_LIGHT,
-                                PLAYABLE_AREA)
-             + spread_color_up (bmp, CONSIDERED_AS_LIGHT, PLAYABLE_AREA));
+      putpixel (bmp, x, y, playable_color);
+      while (spread_color_down (bmp, light_color, playable_color)
+             + spread_color_up (bmp, light_color, playable_color));
     }
-  else
+  else {
+    log_print_str("L");
     unplayable |= 1;
+  }
 
-  for (y = 0; y < bmp->h; ++y)
-    for (x = 0; x < bmp->w; ++x)
-      if (getpixel (bmp, x, y) == PLAYABLE_AREA)
+  for (y = 0; y < al_get_bitmap_height (bmp); ++y)
+    for (x = 0; x < al_get_bitmap_width (bmp); ++x)
+      if (is_color_light(getpixel (bmp, x, y)))
         ++playable_place;
 
+  if (playable_place < MINI_PLAYABLE_AREA) {
+    log_print_str("S");
+  }
   unplayable |= (playable_place < MINI_PLAYABLE_AREA);
 
   return (!unplayable);
@@ -309,58 +353,67 @@ check_if_playable (BITMAP * bmp)
 
 /*-----------------------------------------------------------------*/
 static void
-fill_with_fg_and_bg (BITMAP * bmp, int fg, int bg)
+fill_with_fg_and_bg (ALLEGRO_BITMAP * bmp, ALLEGRO_COLOR fg, ALLEGRO_COLOR bg)
 {
   int x, y;
 
   /*
    * We set up the real fg and bg color instead of the
    * CONSIDERED_AS_... constants.
+   * Light pixels become bg (playable area), dark pixels become fg (walls).
    */
-  for (y = 0; y < bmp->h; ++y)
+  al_set_target_bitmap (bmp);
+  for (y = 0; y < al_get_bitmap_height (bmp); ++y)
     {
-      for (x = 0; x < bmp->w; ++x)
+      for (x = 0; x < al_get_bitmap_width (bmp); ++x)
         {
-          putpixel (bmp, x, y,
-                    getpixel (bmp, x, y) == PLAYABLE_AREA ? bg : fg);
+          putpixel_fast (x, y,
+                    is_color_light(getpixel (bmp, x, y)) ? bg : fg);
         }
     }
 }
 
 /*-----------------------------------------------------------------*/
 static void
-convert_to_buffer (BITMAP * bmp, char *buffer, int *size, int *bg_size)
+convert_to_buffer (ALLEGRO_BITMAP * bmp, char *buffer, int *size,
+                   int *bg_size)
 {
-  int pos_src, l, wh;
-  char *data;
+  int x, y, l, w, h;
+  int is_light;
 
-  wh = bmp->h * bmp->w;
-  data = bmp->dat;
-  pos_src = 0;
+  w = al_get_bitmap_width (bmp);
+  h = al_get_bitmap_height (bmp);
   (*size) = 0;
   (*bg_size) = 0;
 
-  while (pos_src < wh)
+  for (y = 0; y < h; ++y)
     {
-      l = 0;
-      if (data[pos_src] != PLAYABLE_AREA)
+      for (x = 0; x < w; )
         {
-          while (pos_src < wh && (data[pos_src] != PLAYABLE_AREA) && l < 127)
+          l = 0;
+          is_light = is_color_light(getpixel(bmp, x, y));
+
+          if (is_light)
             {
-              l++;
-              pos_src++;
+              // Count consecutive light (playable) pixels
+              while (x < w && is_color_light(getpixel(bmp, x, y)) && l < 127)
+                {
+                  l++;
+                  x++;
+                }
+              buffer[(*size)++] = -l;
+              (*bg_size) += l;
             }
-          buffer[(*size)++] = l;
-        }
-      else
-        {
-          while (pos_src < wh && (data[pos_src] == PLAYABLE_AREA) && l < 127)
+          else
             {
-              l++;
-              pos_src++;
+              // Count consecutive dark (wall) pixels
+              while (x < w && is_color_dark(getpixel(bmp, x, y)) && l < 127)
+                {
+                  l++;
+                  x++;
+                }
+              buffer[(*size)++] = l;
             }
-          buffer[(*size)++] = -l;
-          (*bg_size) += l;
         }
     }
   buffer[(*size)++] = 0;
@@ -368,34 +421,49 @@ convert_to_buffer (BITMAP * bmp, char *buffer, int *size, int *bg_size)
 
 /*------------------------------------------------------------------*/
 void *
-lw_map_archive_raw_bmp (BITMAP * bmp, PALETTE pal, const char *filename)
+lw_map_archive_raw_bmp (ALLEGRO_BITMAP * bmp, const char *filename)
 {
   int w = 0, h = 0, size = 0, bg_size = 0;
-  BITMAP *sub_bmp;
+  ALLEGRO_BITMAP *sub_bmp;
   char *temp = NULL;
   char *result = NULL;
   static int index = 1;
   char readable_name_buffer[LW_MAP_READABLE_NAME_SIZE + 1];
   char system_name_buffer[LW_MAP_SYSTEM_NAME_SIZE + 1];
 
-  if (bmp)
-    {
-      sort_light_and_dark (bmp, pal);
-      sub_bmp = extract_significant_part (bmp);
-      if (sub_bmp)
-        {
-          w = sub_bmp->w;
-          h = sub_bmp->h;
-          if (check_if_playable (sub_bmp))
-            {
-              temp = malloc_in_big_data_bottom (w * h + 1);
-              if (temp)
-                convert_to_buffer (sub_bmp, temp, &size, &bg_size);
-            }
-          destroy_bitmap (sub_bmp);
-        }
-      destroy_bitmap (bmp);
-    }
+  if (!bmp) {
+    log_print_str("B");
+    return NULL;
+  }
+
+  sort_light_and_dark (bmp);
+  sub_bmp = extract_significant_part (bmp);
+  if (!sub_bmp) {
+    log_print_str("E");
+    al_destroy_bitmap (bmp);
+    return NULL;
+  }
+
+  w = al_get_bitmap_width (sub_bmp);
+  h = al_get_bitmap_height (sub_bmp);
+  if (!check_if_playable (sub_bmp)) {
+    log_print_str("P");
+    al_destroy_bitmap (sub_bmp);
+    al_destroy_bitmap (bmp);
+    return NULL;
+  }
+
+  temp = malloc_in_big_data_bottom (w * h + 1);
+  if (!temp) {
+    log_print_str("M");
+    al_destroy_bitmap (sub_bmp);
+    al_destroy_bitmap (bmp);
+    return NULL;
+  }
+
+  convert_to_buffer (sub_bmp, temp, &size, &bg_size);
+  al_destroy_bitmap (sub_bmp);
+  al_destroy_bitmap (bmp);
 
   if (temp)
     {
@@ -453,14 +521,13 @@ lw_map_archive_raw_bmp (BITMAP * bmp, PALETTE pal, const char *filename)
 void *
 lw_map_archive_raw (const char *filename)
 {
-  BITMAP *bmp;
-  PALETTE pal;
+  ALLEGRO_BITMAP *bmp;
   void *result = NULL;
 
-  bmp = load_bitmap (filename, pal);
+  bmp = al_load_bitmap_flags(filename, ALLEGRO_MEMORY_BITMAP);
   if (bmp)
     {
-      result = lw_map_archive_raw_bmp (bmp, pal, filename);
+      result = lw_map_archive_raw_bmp (bmp, filename);
     }
 
   return result;
@@ -498,26 +565,32 @@ lw_map_get_safe (int num, int network, int random)
 }
 
 /*------------------------------------------------------------------*/
-BITMAP *
+ALLEGRO_BITMAP *
 lw_map_create_bicolor (int num, int fg, int bg,
                        int network, int random, int min_w, int min_h,
                        int *zoom_factor)
 {
-  int pos_dst, pos_src, i, j, l, color;
+  int pos_dst, pos_src, i, j, l;
+  ALLEGRO_COLOR color;
   short w, h;
-  signed char *data_dst, *data_src;
-  BITMAP *result = NULL;
-  BITMAP *temp;
+  signed char *data_src;
+  ALLEGRO_BITMAP *result = NULL;
+  ALLEGRO_BITMAP *temp;
   void *raw_map;
   int size, surface;
   int x, y;
+  ALLEGRO_COLOR fg_color, bg_color;
 
   raw_map = lw_map_get_safe (num, network, random);
+
+  /* Convert int colors to ALLEGRO_COLOR - fg/bg are palette indices or RGB values */
+  fg_color = al_map_rgb((fg >> 16) & 0xFF, (fg >> 8) & 0xFF, fg & 0xFF);
+  bg_color = al_map_rgb((bg >> 16) & 0xFF, (bg >> 8) & 0xFF, bg & 0xFF);
 
   data_src = raw_map;
   data_src += 8 + LW_MAP_SYSTEM_NAME_SIZE + LW_MAP_READABLE_NAME_SIZE;
 
-  /* 
+  /*
    * We read the header (size + geometry)
    */
   lw_serial_get_map_header (raw_map, &size, &w, &h);
@@ -526,22 +599,37 @@ lw_map_create_bicolor (int num, int fg, int bg,
   *zoom_factor = calc_zoom_factor (w, h, min_w, min_h);
 
   pos_src = pos_dst = 0;
-  temp = my_create_bitmap (w, h);
+  temp = my_create_memory_bitmap (w, h);
 
   if (temp)
     {
-      data_dst = temp->dat;
+      ALLEGRO_COLOR dark_color, light_color, pixel_color;
+      int px, py;
+
+      dark_color = al_map_rgb((CONSIDERED_AS_DARK_RGB >> 16) & 0xFF,
+                             (CONSIDERED_AS_DARK_RGB >> 8) & 0xFF,
+                             CONSIDERED_AS_DARK_RGB & 0xFF);
+      light_color = al_map_rgb((CONSIDERED_AS_LIGHT_RGB >> 16) & 0xFF,
+                              (CONSIDERED_AS_LIGHT_RGB >> 8) & 0xFF,
+                              CONSIDERED_AS_LIGHT_RGB & 0xFF);
+
+      al_set_target_bitmap(temp);
       while (pos_src < size && (l = data_src[pos_src++]) != 0)
         {
           if (l > 0)
-            color = CONSIDERED_AS_DARK;
+            pixel_color = dark_color;
           else
             {
               l = -l;
-              color = CONSIDERED_AS_LIGHT;
+              pixel_color = light_color;
             }
           for (i = 0; i < l && pos_dst < surface; ++i)
-            data_dst[pos_dst++] = color;
+            {
+              px = pos_dst % w;
+              py = pos_dst / w;
+              putpixel_fast(px, py, pixel_color);
+              pos_dst++;
+            }
         }
 
       /*
@@ -550,9 +638,9 @@ lw_map_create_bicolor (int num, int fg, int bg,
        */
       if (check_if_playable (temp))
         {
-          fill_with_fg_and_bg (temp, fg, bg);
+          fill_with_fg_and_bg (temp, fg_color, bg_color);
 
-          result = my_create_bitmap (w * (*zoom_factor), h * (*zoom_factor));
+          result = my_create_memory_bitmap (w * (*zoom_factor), h * (*zoom_factor));
 
           if (result)
             {
@@ -560,6 +648,7 @@ lw_map_create_bicolor (int num, int fg, int bg,
                * Not we magnify the map if needed, so that very small
                * maps are interesting to play on fast fancy computers
                */
+              al_set_target_bitmap (result);
               for (y = 0; y < h; ++y)
                 for (x = 0; x < w; ++x)
                   {
@@ -567,8 +656,7 @@ lw_map_create_bicolor (int num, int fg, int bg,
                     for (i = 0; i < *zoom_factor; ++i)
                       for (j = 0; j < *zoom_factor; ++j)
                         {
-                          putpixel (result,
-                                    x * *zoom_factor + j,
+                          putpixel_fast (x * *zoom_factor + j,
                                     y * *zoom_factor + i, color);
                         }
                   }
@@ -579,19 +667,20 @@ lw_map_create_bicolor (int num, int fg, int bg,
           log_println_str ("Error: unplayable map!");
         }
 
-      destroy_bitmap (temp);
+      al_destroy_bitmap (temp);
     }
 
   return result;
 }
 
 /*------------------------------------------------------------------*/
-BITMAP *
+ALLEGRO_BITMAP *
 lw_map_create_textured (int num, int fg, int bg,
                         int network, int random, int min_w, int min_h)
 {
-  int x, y, w, h, color;
-  BITMAP *result = NULL, *bg_tex, *fg_tex;
+  int x, y, w, h;
+  ALLEGRO_COLOR color;
+  ALLEGRO_BITMAP *result = NULL, *bg_tex, *fg_tex;
   int fg_w, fg_h;
   int bg_w, bg_h;
   int zoom_factor, zoom_factor_fg, zoom_factor_bg;
@@ -601,31 +690,32 @@ lw_map_create_textured (int num, int fg, int bg,
 
   if (bg_tex && fg_tex)
     {
-      bg_w = bg_tex->w;
-      bg_h = bg_tex->h;
-      fg_w = fg_tex->w;
-      fg_h = fg_tex->h;
+      bg_w = al_get_bitmap_width (bg_tex);
+      bg_h = al_get_bitmap_height (bg_tex);
+      fg_w = al_get_bitmap_width (fg_tex);
+      fg_h = al_get_bitmap_height (fg_tex);
 
       result =
         lw_map_create_bicolor (num, 1, 0, network, random,
                                min_w, min_h, &zoom_factor);
       if (result)
         {
-          w = result->w;
-          h = result->h;
+          w = al_get_bitmap_width (result);
+          h = al_get_bitmap_height (result);
           zoom_factor_fg = zoom_factor_bg = zoom_factor;
-          if (w != zoom_factor * fg_tex->w || h != zoom_factor * fg_tex->h)
+          if (w != zoom_factor * al_get_bitmap_width (fg_tex) || h != zoom_factor * al_get_bitmap_height (fg_tex))
             {
               zoom_factor_fg = 1;
             }
-          if (w != zoom_factor * bg_tex->w || h != zoom_factor * bg_tex->h)
+          if (w != zoom_factor * al_get_bitmap_width (bg_tex) || h != zoom_factor * al_get_bitmap_height (bg_tex))
             {
               zoom_factor_bg = 1;
             }
+          al_set_target_bitmap (result);
           for (y = 0; y < h; ++y)
             for (x = 0; x < w; ++x)
               {
-                if (getpixel (result, x, y))
+                if (is_color_light(getpixel (result, x, y)))
                   {
                     color =
                       getpixel (fg_tex, (x / zoom_factor_fg) % fg_w,
@@ -637,16 +727,16 @@ lw_map_create_textured (int num, int fg, int bg,
                       getpixel (bg_tex, (x / zoom_factor_bg) % bg_w,
                                 (y / zoom_factor_bg) % bg_h);
                   }
-                putpixel (result, x, y, color);
+                putpixel_fast (x, y, color);
               }
         }
     }
 
   if (bg_tex)
-    destroy_bitmap (bg_tex);
+    al_destroy_bitmap (bg_tex);
 
   if (fg_tex)
-    destroy_bitmap (fg_tex);
+    al_destroy_bitmap (fg_tex);
 
   return result;
 }

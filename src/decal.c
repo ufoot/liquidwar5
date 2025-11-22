@@ -65,7 +65,7 @@
 
 int PLAYING_TEAMS = 0;
 int ACTIVE_FIGHTERS[NB_TEAMS];
-int COLOR_FIRST_ENTRY[NB_TEAMS];
+// COLOR_FIRST_ENTRY removed - colors are now computed dynamically with lw_team_color()
 
 /*==================================================================*/
 /* fonctions                                                        */
@@ -109,7 +109,7 @@ eliminate_team (int team)
       for (j = team; j < PLAYING_TEAMS; ++j)
         {
           ACTIVE_FIGHTERS[j] = ACTIVE_FIGHTERS[j + 1];
-          COLOR_FIRST_ENTRY[j] = COLOR_FIRST_ENTRY[j + 1];
+          // COLOR_FIRST_ENTRY removed - colors are computed dynamically
 
           for (i = 0; i < CURRENT_MESH_SIZE; ++i)
             {

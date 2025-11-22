@@ -50,6 +50,22 @@
 #ifndef LIQUID_WAR_INCLUDE_THRDGEN
 #define LIQUID_WAR_INCLUDE_THRDGEN
 
+/*==================================================================*/
+/* types                                                            */
+/*==================================================================*/
+
+typedef struct
+{
+  void *data;
+}
+LW_THREAD_HANDLE, *LW_THREAD_HANDLE_PTR;
+
+/*==================================================================*/
+/* functions                                                        */
+/*==================================================================*/
+
 int lw_thread_start (void (*func) (void *), void *args);
+int lw_thread_create (LW_THREAD_HANDLE * handle, void (*func) (void *), void *args);
+int lw_thread_join (LW_THREAD_HANDLE * handle);
 
 #endif

@@ -41,7 +41,7 @@ void rand_poly_cut()
                if( rand()%3 != 0 )
                     continue;
 
-               offset(&xoffset, &yoffset, r, 0);
+               offset(&xoffset, &yoffset, r, al_map_rgb(0, 0, 0));
 
                cutsize = rand()%(section_height/2-map.max_pad)+1;
                cuty = section_height/2 + yoffset;

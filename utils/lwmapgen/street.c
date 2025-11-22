@@ -59,7 +59,7 @@ street ()
       /* draw main row */
       section_center (&startx, &starty, r, 0);
       section_center (&endx, &endy, r, map.num_col - 1);
-      rectfill (map.map, startx, starty - size, endx, endy + size, 255);
+      rectfill (map.map, startx, starty - size, endx, endy + size, al_map_rgb(255, 255, 255));
 
 
       /* do the branches */
@@ -76,7 +76,7 @@ street ()
               tor = rand () % r;
               section_center (&endx, &endy, tor, c);
               rectfill (map.map, startx - size, starty, endx + size, endy,
-                        255);
+                        al_map_rgb(255, 255, 255));
             }
 
           /* draw down */
@@ -87,7 +87,7 @@ street ()
               /* tor = rand()%(map.num_row-r-1)+r+1; */
               section_center (&endx, &endy, tor, c);
               rectfill (map.map, startx - size, starty, endx + size, endy,
-                        255);
+                        al_map_rgb(255, 255, 255));
             }
         }
     }
@@ -101,7 +101,7 @@ street ()
       /* draw main col */
       section_center (&startx, &starty, 0, c);
       section_center (&endx, &endy, map.num_row - 1, c);
-      rectfill (map.map, startx - size, starty, endx + size, endy, 255);
+      rectfill (map.map, startx - size, starty, endx + size, endy, al_map_rgb(255, 255, 255));
 
 
       /* do the branches */
@@ -118,7 +118,7 @@ street ()
               toc = rand () % c;
               section_center (&endx, &endy, r, toc);
               rectfill (map.map, startx, starty - size, endx, endy + size,
-                        255);
+                        al_map_rgb(255, 255, 255));
             }
 
           /* draw right */
@@ -128,7 +128,7 @@ street ()
               /* toc = rand()%(map.num_col-c-1)+c+1; */
               section_center (&endx, &endy, r, toc);
               rectfill (map.map, startx - size, starty - size, endx,
-                        endy + size, 255);
+                        endy + size, al_map_rgb(255, 255, 255));
             }
         }
     }

@@ -50,7 +50,7 @@ boxes ()
               else
                 endy = map.sec_height * (r + 1) - pad;
 
-              rectfill (map.map, startx, starty, endx, endy, 0);
+              rectfill (map.map, startx, starty, endx, endy, al_map_rgb(0, 0, 0));
             }
         }
     }

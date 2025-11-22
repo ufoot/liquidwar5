@@ -55,7 +55,8 @@
 /* includes                                                         */
 /*==================================================================*/
 
-#include <allegro.h>
+#include <allegro5/allegro.h>
+
 
 /*==================================================================*/
 /* constants                                                        */
@@ -69,14 +70,12 @@
 /*==================================================================*/
 
 void *lw_map_archive_raw (const char *filename);
-void *lw_map_archive_raw_bmp (BITMAP * bmp, PALETTE pal,
-                              const char *filename);
-BITMAP *lw_map_create_bicolor (int num, int fg, int bg,
-                               int network, int random, int min_w, int min_h,
-                               int *zoom_factor);
-BITMAP *lw_map_create_textured (int num, int fg, int bg,
-                                int network, int random, int min_w,
-                                int min_h);
+void *lw_map_archive_raw_bmp (ALLEGRO_BITMAP * bmp, const char *filename);
+ALLEGRO_BITMAP *lw_map_create_bicolor (int num, int fg, int bg,
+                                       int network, int random, int min_w,
+                                       int min_h, int *zoom_factor);
+ALLEGRO_BITMAP *lw_map_create_textured (int num, int fg, int bg, int network,
+                                        int random, int min_w, int min_h);
 char *lw_map_get_system_name (int num, int network, int random);
 char *lw_map_get_readable_name (int num, int network, int random);
 void lw_map_get_res (int num, int *w, int *h,

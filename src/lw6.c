@@ -83,7 +83,7 @@ lw6_advertise_menu (int fade_in)
 
   if (fade_in)
     {
-      my_fade_in ();
+      // my_fade_in (); // No longer needed in true color mode
     }
 
   d[2].proc = NULL;

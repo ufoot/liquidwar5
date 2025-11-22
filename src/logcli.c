@@ -53,7 +53,7 @@
 /*==================================================================*/
 
 /*
- * Note: we must *not* include allegro.h here, or everything's
+ * Note: we must *not* include allegro5/allegro.h here, or everything's
  * wrecked with the use of windows.h...
  */
 #ifdef WIN32
@@ -237,9 +237,6 @@ log_println_int (int i)
 void
 log_flush ()
 {
-#ifdef GP2X
-  usleep (100);
-#endif
 #ifndef WIN32
   fflush (stdout);
 #endif

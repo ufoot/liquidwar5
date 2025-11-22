@@ -53,6 +53,7 @@
 
 #include <stdlib.h>
 #include <pthread.h>
+#include <stdlib.h>
 
 #include "thrdgen.h"
 
@@ -74,61 +75,136 @@
 
 /*------------------------------------------------------------------*/
 /*
- * Wrapper structure to pass function and args together
+ * Internal structure to pass both function and args to pthread wrapper
  */
-typedef struct
-{
-  void (*func) (void *);
+typedef struct {
+  void (*func)(void *);
   void *args;
 } lw_thread_wrapper_data;
 
+/*------------------------------------------------------------------*/
 /*
- * Wrapper function to adapt void-returning functions to pthread's signature
+ * Wrapper function that matches pthread signature and calls the original function
  */
 static void *
-lw_thread_wrapper (void *arg)
+lw_thread_wrapper (void *data)
 {
-  lw_thread_wrapper_data *data = (lw_thread_wrapper_data *) arg;
-  void (*func) (void *) = data->func;
-  void *args = data->args;
+  lw_thread_wrapper_data *wrapper_data = (lw_thread_wrapper_data *) data;
 
-  free (data);
-  func (args);
+  // Call the original function
+  wrapper_data->func (wrapper_data->args);
+
+  // Clean up the wrapper data
+  free (wrapper_data);
+
   return NULL;
 }
 
+/*------------------------------------------------------------------*/
 /*
- * Starts a new thread using the given callback
+ * Creates a joinable thread and returns a handle
+ */
+int
+lw_thread_create (LW_THREAD_HANDLE * handle, void (*func) (void *), void *args)
+{
+  pthread_t *thread;
+  int result = 0;
+  lw_thread_wrapper_data *wrapper_data;
+
+  // Allocate thread handle
+  thread = malloc (sizeof (pthread_t));
+  if (thread == NULL)
+    {
+      return 0;
+    }
+
+  // Allocate wrapper data structure
+  wrapper_data = malloc (sizeof (lw_thread_wrapper_data));
+  if (wrapper_data == NULL)
+    {
+      free (thread);
+      return 0;
+    }
+
+  wrapper_data->func = func;
+  wrapper_data->args = args;
+
+  // Create joinable thread (default behavior when attr is NULL)
+  if (pthread_create (thread, NULL, lw_thread_wrapper, wrapper_data) == 0)
+    {
+      handle->data = thread;
+      result = 1;
+    }
+  else
+    {
+      // Thread creation failed, clean up
+      free (wrapper_data);
+      free (thread);
+    }
+
+  return result;
+}
+
+/*------------------------------------------------------------------*/
+/*
+ * Waits for a thread to complete
+ */
+int
+lw_thread_join (LW_THREAD_HANDLE * handle)
+{
+  pthread_t *thread;
+  int result = 0;
+
+  if (handle && handle->data)
+    {
+      thread = (pthread_t *) handle->data;
+      if (pthread_join (*thread, NULL) == 0)
+        {
+          result = 1;
+        }
+      free (thread);
+      handle->data = NULL;
+    }
+
+  return result;
+}
+
+/*------------------------------------------------------------------*/
+/*
+ * Starts a new thread using the given callback (detached)
  */
 int
 lw_thread_start (void (*func) (void *), void *args)
 {
   pthread_t thread;
   int result = 0;
-  lw_thread_wrapper_data *data;
+  lw_thread_wrapper_data *wrapper_data;
 
-  data = (lw_thread_wrapper_data *) malloc (sizeof (lw_thread_wrapper_data));
-  if (data != NULL)
+  // Allocate wrapper data structure
+  wrapper_data = malloc (sizeof (lw_thread_wrapper_data));
+  if (wrapper_data == NULL)
     {
-      data->func = func;
-      data->args = args;
+      return 0;
+    }
 
-      if (pthread_create (&thread, NULL, lw_thread_wrapper, data) == 0)
+  wrapper_data->func = func;
+  wrapper_data->args = args;
+
+  if (pthread_create (&thread, NULL, lw_thread_wrapper, wrapper_data) == 0)
+    {
+      if (pthread_detach (thread) == 0)
         {
-          if (pthread_detach (thread) == 0)
-            {
-              result = 1;
-            }
-          else
-            {
-              /* Detach failed, but thread is running - data will be freed by wrapper */
-            }
+          result = 1;
         }
       else
         {
-          /* Thread creation failed, free the wrapper data */
-          free (data);
+          /* Detach failed, but thread is running - data will be freed by wrapper */
         }
+    }
+  else
+    {
+      // Thread creation failed, clean up wrapper data
+      free (wrapper_data);
     }
 
   return result;

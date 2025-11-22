@@ -52,11 +52,8 @@
 /* includes                                                         */
 /*==================================================================*/
 
-#include <allegro.h>
-#ifdef DOS
-#include <dos.h>
-#endif
-
+#define ALLEGRO_NO_MAIN
+#include "backport.h"
 #include "bigdata.h"
 #include "config.h"
 #include "disk.h"
@@ -71,36 +68,10 @@
 #include "basicopt.h"
 
 /*==================================================================*/
-/* construct pour reduire la place d'allegro                        */
-/*==================================================================*/
-#ifdef DOS
-
-BEGIN_GFX_DRIVER_LIST
-  GFX_DRIVER_VGA
-  GFX_DRIVER_MODEX
-  GFX_DRIVER_VBEAF
-  GFX_DRIVER_VESA2L
-  GFX_DRIVER_VESA2B
-  GFX_DRIVER_VESA1
-  END_GFX_DRIVER_LIST
-  BEGIN_COLOR_DEPTH_LIST
-  COLOR_DEPTH_8
-  COLOR_DEPTH_15
-  COLOR_DEPTH_16
-  COLOR_DEPTH_24
-  COLOR_DEPTH_32
-  END_COLOR_DEPTH_LIST
-  BEGIN_DIGI_DRIVER_LIST
-  DIGI_DRIVER_SB
-  DIGI_DRIVER_SOUNDSCAPE
-  DIGI_DRIVER_AUDIODRIVE
-  END_DIGI_DRIVER_LIST BEGIN_MIDI_DRIVER_LIST END_MIDI_DRIVER_LIST
-#endif
-/*==================================================================*/
 /* functions                                                        */
 /*==================================================================*/
 /*------------------------------------------------------------------*/
-  int
+int
 main (int argc, char **argv)
 {
   int init_success = 0;
@@ -122,13 +93,6 @@ main (int argc, char **argv)
           log_println ();
           load_custom_success = load_custom ();
           log_println ();
-
-#ifdef DOS
-          if (STARTUP_STOP)
-            readkey ();
-          else
-            delay (500);
-#endif
         }
 
       if (!init_success)
@@ -162,10 +126,3 @@ main (int argc, char **argv)
 
   return 0;
 }
-
-#ifdef WIN32
-END_OF_MAIN ()
-#endif
-#ifdef UNIX
-  END_OF_MAIN ();
-#endif

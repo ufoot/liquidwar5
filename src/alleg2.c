@@ -70,7 +70,7 @@ typedef char *(*my_getfuncptr) (int, int *);
 /*==================================================================*/
 extern void _draw_scrollable_frame (DIALOG * d,
                                     int listsize, int offset, int height,
-                                    int fg_color, int bg);
+                                    ALLEGRO_COLOR fg_color, ALLEGRO_COLOR bg);
 extern int isspace (int c);
 
 static void my_handle_scrollable_scroll_click (DIALOG * d, int listsize,
@@ -78,7 +78,6 @@ static void my_handle_scrollable_scroll_click (DIALOG * d, int listsize,
 static void my_handle_scrollable_scroll (DIALOG * d, int listsize, int *index,
                                          int *offset);
 static void my_handle_listbox_click (DIALOG * d);
-
 
 /*==================================================================*/
 /* fonctions                                                        */
@@ -92,9 +91,9 @@ static void my_handle_listbox_click (DIALOG * d);
  *  Draws a dotted rectangle, for showing an object has the input focus.
  */
 static void
-my_dotted_rect (int x1, int y1, int x2, int y2, int fg, int bg)
+my_dotted_rect (int x1, int y1, int x2, int y2, ALLEGRO_COLOR fg, ALLEGRO_COLOR bg)
 {
-  BITMAP *gui_bmp = gui_get_screen ();
+  ALLEGRO_BITMAP *gui_bmp = gui_get_screen ();
   int x = ((x1 + y1) & 1) ? 1 : 0;
   int c;
 
@@ -117,10 +116,9 @@ my_dotted_rect (int x1, int y1, int x2, int y2, int fg, int bg)
 static void
 my_draw_textbox (char *thetext, int *listsize, int draw, int offset,
                  int wword, int tabsize, int x, int y, int w, int h,
-                 int disabled, int fore, int deselect, int disable)
+                 int disabled, ALLEGRO_COLOR fore, ALLEGRO_COLOR deselect, ALLEGRO_COLOR disable)
 {
-  BITMAP *gui_bmp = gui_get_screen ();
-  int fg = fore;
+  ALLEGRO_BITMAP *gui_bmp = gui_get_screen ();
   int y1 = y + 4;
   int x1;
   int len;
@@ -156,17 +154,10 @@ my_draw_textbox (char *thetext, int *listsize, int draw, int offset,
       rectfill (gui_bmp, x + 2, y + 2, x + w - 3, y1 - 1, deselect);
     }
 
-  /* choose the text color */
-  if (disabled)
-    fg = disable;
-
-  if (fg)
-    {
-      /*
-       * Not elegant, but test above here just to get
-       * rid of compiler warning about fg not being used.
-       */
-    }
+  /* Suppress unused parameter warnings */
+  (void)disabled;
+  (void)fore;
+  (void)disable;
 
   /* loop over the entire string */
   while (1)
@@ -280,7 +271,7 @@ my_draw_textbox (char *thetext, int *listsize, int draw, int offset,
                     {
                       usetc (s + usetc (s, ' '), 0);
                       //textout_ex(gui_bmp, font, s, x1, y1, fg, deselect);
-                      textout_ex (gui_bmp, font, s, x1, y1, -1, deselect);      // ufoot
+                      textout_ex (gui_bmp, font, s, x1, y1, NO_COLOR, deselect);      // ufoot
                       x1 += text_length (font, s);
                     }
                   break;
@@ -291,7 +282,7 @@ my_draw_textbox (char *thetext, int *listsize, int draw, int offset,
                     {
                       usetc (s + usetc (s, ugetc (printed)), 0);
                       //textout_ex(gui_bmp, font, s, x1, y1, fg, deselect);
-                      textout_ex (gui_bmp, font, s, x1, y1, -1, deselect);      // ufoot
+                      textout_ex (gui_bmp, font, s, x1, y1, NO_COLOR, deselect);      // ufoot
                       x1 += text_length (font, s);
                     }
                 }
@@ -343,8 +334,8 @@ my_textbox_proc (int msg, DIALOG * d, int c)
   int height, bar, ret = D_O_K;
   int start, top, bottom, l;
   int used, delta;
-  int fg_color;
-  ASSERT (d);
+  ALLEGRO_COLOR fg_color;
+  ALLEGRO_ASSERT (d);
 
   fg_color = (d->flags & D_DISABLED) ? gui_mg_color : d->fg;
   /* calculate the actual height */
@@ -358,7 +349,7 @@ my_textbox_proc (int msg, DIALOG * d, int c)
       my_draw_textbox (d->dp, &d->d1, 0,        /* DONT DRAW anything */
                        d->d2, !(d->flags & D_SELECTED), 8,
                        d->x, d->y, d->w, d->h,
-                       (d->flags & D_DISABLED), 0, 0, 0);
+                       (d->flags & D_DISABLED), NO_COLOR, NO_COLOR, NO_COLOR);
       break;
 
     case MSG_DRAW:
@@ -366,7 +357,7 @@ my_textbox_proc (int msg, DIALOG * d, int c)
       my_draw_textbox (d->dp, &d->d1, 0,        /* DONT DRAW anything */
                        d->d2, !(d->flags & D_SELECTED), 8,
                        d->x, d->y, d->w, d->h,
-                       (d->flags & D_DISABLED), 0, 0, 0);
+                       (d->flags & D_DISABLED), NO_COLOR, NO_COLOR, NO_COLOR);
 
       if (d->d1 > height && d->d1 > 1)  // ufoot
         {
@@ -440,17 +431,17 @@ my_textbox_proc (int msg, DIALOG * d, int c)
           else
             bottom--;
 
-          if ((c >> 8) == KEY_UP)
+          if ((c >> 8) == ALLEGRO_KEY_UP)
             d->d2--;
-          else if ((c >> 8) == KEY_DOWN)
+          else if ((c >> 8) == ALLEGRO_KEY_DOWN)
             d->d2++;
-          else if ((c >> 8) == KEY_HOME)
+          else if ((c >> 8) == ALLEGRO_KEY_HOME)
             d->d2 = 0;
-          else if ((c >> 8) == KEY_END)
+          else if ((c >> 8) == ALLEGRO_KEY_END)
             d->d2 = d->d1 - l;
-          else if ((c >> 8) == KEY_PGUP)
+          else if ((c >> 8) == ALLEGRO_KEY_PGUP)
             d->d2 -= (bottom - top) ? bottom - top : 1;
-          else if ((c >> 8) == KEY_PGDN)
+          else if ((c >> 8) == ALLEGRO_KEY_PGDN)
             d->d2 += (bottom - top) ? bottom - top : 1;
           else
             used = D_O_K;
@@ -502,19 +493,20 @@ my_textbox_proc (int msg, DIALOG * d, int c)
 
 /* d_button_proc:
  *  A button object (the dp field points to the text string). This object
- *  can be selected by clicking on it with the mouse or by pressing its 
- *  keyboard shortcut. If the D_EXIT flag is set, selecting it will close 
+ *  can be selected by clicking on it with the mouse or by pressing its
+ *  keyboard shortcut. If the D_EXIT flag is set, selecting it will close
  *  the dialog, otherwise it will toggle on and off.
  */
 int
 my_button_proc (int msg, DIALOG * d, int c)
 {
-  BITMAP *gui_bmp;
-  int state1, state2;
-  int black;
+  ALLEGRO_BITMAP *gui_bmp;
+  ALLEGRO_COLOR state1, state2;
+  ALLEGRO_COLOR black;
   int swap;
+  int click_state1, click_state2;  // Boolean states for MSG_CLICK
   int g;
-  ASSERT (d);
+  ALLEGRO_ASSERT (d);
 
   LW_MACRO_NOP (c);             // ufoot
 
@@ -541,8 +533,8 @@ my_button_proc (int msg, DIALOG * d, int c)
                 d->y + d->h - 3 + g, state2);
       rect (gui_bmp, d->x + g, d->y + g, d->x + d->w - 2 + g,
             d->y + d->h - 2 + g, state1);
-      //gui_textout_ex(gui_bmp, d->dp, d->x+d->w/2+g, d->y+d->h/2-text_height(font)/2+g, state1, -1, TRUE);
-      gui_textout_ex (gui_bmp, d->dp, d->x + d->w / 2 + g, d->y + d->h / 2 - text_height (font) / 2 + g, -1, -1, TRUE); // ufoot
+      //gui_textout_ex(gui_bmp, d->dp, d->x+d->w/2+g, d->y+d->h/2-text_height(font)/2+g, state1, NO_COLOR, TRUE);
+      gui_textout_ex (gui_bmp, d->dp, d->x + d->w / 2 + g, d->y + d->h / 2 - text_height (font) / 2 + g, NO_COLOR, NO_COLOR, TRUE); // ufoot
 
       if (d->flags & D_SELECTED)
         {
@@ -551,7 +543,7 @@ my_button_proc (int msg, DIALOG * d, int c)
         }
       else
         {
-          black = makecol (0, 0, 0);
+          black = al_map_rgb(0, 0, 0);  // [FIXME:ufoot] sounds a bit hardcoded, double-check this
           vline (gui_bmp, d->x + d->w - 1, d->y + 1, d->y + d->h - 2, black);
           hline (gui_bmp, d->x + 1, d->y + d->h - 1, d->x + d->w - 1, black);
         }
@@ -578,26 +570,26 @@ my_button_proc (int msg, DIALOG * d, int c)
 
     case MSG_CLICK:
       /* what state was the button originally in? */
-      state1 = d->flags & D_SELECTED;
+      click_state1 = d->flags & D_SELECTED;
       if (d->flags & D_EXIT)
         swap = FALSE;
       else
-        swap = state1;
+        swap = click_state1;
 
       /* track the mouse until it is released */
       while (gui_mouse_b ())
         {
-          state2 = ((gui_mouse_x () >= d->x) && (gui_mouse_y () >= d->y) &&
+          click_state2 = ((gui_mouse_x () >= d->x) && (gui_mouse_y () >= d->y) &&
                     (gui_mouse_x () < d->x + d->w)
                     && (gui_mouse_y () < d->y + d->h));
           if (swap)
-            state2 = !state2;
+            click_state2 = !click_state2;
 
           /* redraw? */
-          if (((state1) && (!state2)) || ((state2) && (!state1)))
+          if (((click_state1) && (!click_state2)) || ((click_state2) && (!click_state1)))
             {
               d->flags ^= D_SELECTED;
-              state1 = d->flags & D_SELECTED;
+              click_state1 = d->flags & D_SELECTED;
               object_message (d, MSG_DRAW, 0);
             }
 
@@ -626,17 +618,17 @@ my_text_proc (int msg, DIALOG * d, int c)
 {
   LW_MACRO_NOP (c);             // ufoot
 
-  ASSERT (d);
+  ALLEGRO_ASSERT (d);
   if (msg == MSG_DRAW)
     {
       //int fg = (d->flags & D_DISABLED) ? gui_mg_color : d->fg; // ufoot
-      FONT *oldfont = font;
+      ALLEGRO_FONT *oldfont = font;
 
       if (d->dp2)
         font = d->dp2;
 
       //gui_textout_ex(gui_get_screen(), d->dp, d->x, d->y, fg, d->bg, FALSE);
-      gui_textout_ex (gui_get_screen (), d->dp, d->x, d->y, -1, d->bg, FALSE);  // ufoot
+      gui_textout_ex (gui_get_screen (), d->dp, d->x, d->y, NO_COLOR, d->bg, FALSE);  // ufoot
 
       font = oldfont;
     }
@@ -653,17 +645,17 @@ my_ctext_proc (int msg, DIALOG * d, int c)
 {
   LW_MACRO_NOP (c);             // ufoot
 
-  ASSERT (d);
+  ALLEGRO_ASSERT (d);
   if (msg == MSG_DRAW)
     {
       // int fg = (d->flags & D_DISABLED) ? gui_mg_color : d->fg; // ufoot
-      FONT *oldfont = font;
+      ALLEGRO_FONT *oldfont = font;
 
       if (d->dp2)
         font = d->dp2;
 
       //gui_textout_ex(gui_get_screen(), d->dp, d->x + d->w/2, d->y, fg, d->bg, TRUE);
-      gui_textout_ex (gui_get_screen (), d->dp, d->x + d->w / 2, d->y, -1, d->bg, TRUE);        // ufoot
+      gui_textout_ex (gui_get_screen (), d->dp, d->x + d->w / 2, d->y, NO_COLOR, d->bg, TRUE);        // ufoot
 
       font = oldfont;
     }
@@ -676,8 +668,8 @@ my_ctext_proc (int msg, DIALOG * d, int c)
  *  A slider control object. This object returns a value in d2, in the
  *  range from 0 to d1. It will display as a vertical slider if h is
  *  greater than or equal to w; otherwise, it will display as a horizontal
- *  slider. dp can contain an optional bitmap to use for the slider handle; 
- *  dp2 can contain an optional callback function, which is called each 
+ *  slider. dp can contain an optional bitmap to use for the slider handle;
+ *  dp2 can contain an optional callback function, which is called each
  *  time d2 changes. The callback function should have the following
  *  prototype:
  *
@@ -688,10 +680,10 @@ my_ctext_proc (int msg, DIALOG * d, int c)
 int
 my_slider_proc (int msg, DIALOG * d, int c)
 {
-  BITMAP *gui_bmp = gui_get_screen ();
-  BITMAP *slhan = NULL;
+  ALLEGRO_BITMAP *gui_bmp = gui_get_screen ();
+  ALLEGRO_BITMAP *slhan = NULL;
   int oldpos, newpos;
-  int sfg;                      /* slider foreground color */
+  ALLEGRO_COLOR sfg;            /* slider foreground color */
   int vert = TRUE;              /* flag: is slider vertical? */
   int hh = 7;                   /* handle height (width for horizontal sliders) */
   int hmar;                     /* handle margin */
@@ -705,10 +697,10 @@ my_slider_proc (int msg, DIALOG * d, int c)
   int pgupkey, pgdnkey;
   int homekey, endkey;
   int delta;
-  fixed slratio, slmax, slpos;
+  al_fixed slratio, slmax, slpos;
   int (*proc) (void *cbpointer, int d2value);
   int oldval;
-  ASSERT (d);
+  ALLEGRO_ASSERT (d);
 
   /* check for slider direction */
   if (d->h < d->w)
@@ -717,19 +709,19 @@ my_slider_proc (int msg, DIALOG * d, int c)
   /* set up the metrics for the control */
   if (d->dp != NULL)
     {
-      slhan = (BITMAP *) d->dp;
+      slhan = (ALLEGRO_BITMAP *) d->dp;
       if (vert)
-        hh = slhan->h;
+        hh = al_get_bitmap_height (slhan);
       else
-        hh = slhan->w;
+        hh = al_get_bitmap_width (slhan);
     }
 
   hmar = hh / 2;
   irange = (vert) ? d->h : d->w;
-  slmax = itofix (irange - hh);
+  slmax = al_itofix (irange - hh);
   slratio = slmax / (d->d1);
   slpos = slratio * d->d2;
-  slp = fixtoi (slpos);
+  slp = al_fixtoi (slpos);
 
   switch (msg)
     {
@@ -766,13 +758,13 @@ my_slider_proc (int msg, DIALOG * d, int c)
         {
           if (vert)
             {
-              slx = d->x + (d->w / 2) - (slhan->w / 2);
+              slx = d->x + (d->w / 2) - (al_get_bitmap_width (slhan) / 2);
               sly = d->y + (d->h - 1) - (hh + slp);
             }
           else
             {
               slx = d->x + slp;
-              sly = d->y + (d->h / 2) - (slhan->h / 2);
+              sly = d->y + (d->h / 2) - (al_get_bitmap_height (slhan) / 2);
             }
           draw_sprite (gui_bmp, slhan, slx, sly);
         }
@@ -826,21 +818,21 @@ my_slider_proc (int msg, DIALOG * d, int c)
 
       if (vert)
         {
-          upkey = KEY_UP;
-          downkey = KEY_DOWN;
-          pgupkey = KEY_PGUP;
-          pgdnkey = KEY_PGDN;
-          homekey = KEY_END;
-          endkey = KEY_HOME;
+          upkey = ALLEGRO_KEY_UP;
+          downkey = ALLEGRO_KEY_DOWN;
+          pgupkey = ALLEGRO_KEY_PGUP;
+          pgdnkey = ALLEGRO_KEY_PGDN;
+          homekey = ALLEGRO_KEY_END;
+          endkey = ALLEGRO_KEY_HOME;
         }
       else
         {
-          upkey = KEY_RIGHT;
-          downkey = KEY_LEFT;
-          pgupkey = KEY_PGDN;
-          pgdnkey = KEY_PGUP;
-          homekey = KEY_HOME;
-          endkey = KEY_END;
+          upkey = ALLEGRO_KEY_RIGHT;
+          downkey = ALLEGRO_KEY_LEFT;
+          pgupkey = ALLEGRO_KEY_PGDN;
+          pgdnkey = ALLEGRO_KEY_PGUP;
+          homekey = ALLEGRO_KEY_HOME;
+          endkey = ALLEGRO_KEY_END;
         }
 
       if (c == upkey)
@@ -867,7 +859,7 @@ my_slider_proc (int msg, DIALOG * d, int c)
             {
               d->d2 = d->d2 + delta;
               slpos = slratio * d->d2;
-              slp = fixtoi (slpos);
+              slp = al_fixtoi (slpos);
               if ((slp != oldpos) || (d->d2 <= 0) || (d->d2 >= d->d1))
                 break;
             }
@@ -926,9 +918,9 @@ my_slider_proc (int msg, DIALOG * d, int c)
             mp = 0;
           if (mp > irange - hh)
             mp = irange - hh;
-          slpos = itofix (mp);
-          slmax = fixdiv (slpos, slratio);
-          newpos = fixtoi (slmax);
+          slpos = al_itofix (mp);
+          slmax = al_fixdiv (slpos, slratio);
+          newpos = al_fixtoi (slmax);
           if (newpos != oldval)
             {
               d->d2 = newpos;
@@ -957,20 +949,18 @@ my_slider_proc (int msg, DIALOG * d, int c)
  *  An editable text object (the dp field points to the string). When it
  *  has the input focus (obtained by clicking on it with the mouse), text
  *  can be typed into this object. The d1 field specifies the maximum
- *  number of characters that it will accept, and d2 is the text cursor 
+ *  number of characters that it will accept, and d2 is the text cursor
  *  position within the string.
  */
 int
 my_edit_proc (int msg, DIALOG * d, int c)
 {
   static int ignore_next_uchar = FALSE;
-  BITMAP *gui_bmp;
-  int last_was_space, new_pos, i, k;
+  ALLEGRO_BITMAP *gui_bmp;
   int f, l, p, w, x, b, scroll;
-  int fg = 0;
   char buf[16];
-  char *s, *t;
-  ASSERT (d);
+  char *s;
+  ALLEGRO_ASSERT (d);
 
   gui_bmp = gui_get_screen ();
 
@@ -1018,7 +1008,6 @@ my_edit_proc (int msg, DIALOG * d, int c)
       break;
 
     case MSG_DRAW:
-      fg = (d->flags & D_DISABLED) ? gui_mg_color : d->fg;
       x = 0;
 
       if (scroll)
@@ -1038,7 +1027,7 @@ my_edit_proc (int msg, DIALOG * d, int c)
             break;
           f = ((p == d->d2) && (d->flags & D_GOTFOCUS));
           //textout_ex(gui_bmp, font, buf, d->x+x, d->y, (f) ? d->bg : fg, (f) ? fg : d->bg);
-          textout_ex (gui_bmp, font, buf, d->x + x, d->y, -1, (f) ? d->fg : d->bg);     // ufoot
+          textout_ex (gui_bmp, font, buf, d->x + x, d->y, NO_COLOR, (f) ? d->fg : d->bg);     // ufoot
           x += w;
         }
       if (x < d->w)
@@ -1076,62 +1065,34 @@ my_edit_proc (int msg, DIALOG * d, int c)
     case MSG_CHAR:
       ignore_next_uchar = FALSE;
 
-      if ((c >> 8) == KEY_LEFT)
+      if ((c >> 8) == ALLEGRO_KEY_LEFT)
         {
           if (d->d2 > 0)
             {
-              if (key_shifts & KB_CTRL_FLAG)
-                {
-                  last_was_space = TRUE;
-                  new_pos = 0;
-                  t = s;
-                  for (i = 0; i < d->d2; i++)
-                    {
-                      k = ugetx (&t);
-                      if (uisspace (k))
-                        last_was_space = TRUE;
-                      else if (last_was_space)
-                        {
-                          last_was_space = FALSE;
-                          new_pos = i;
-                        }
-                    }
-                  d->d2 = new_pos;
-                }
-              else
-                d->d2--;
+              d->d2--;
             }
         }
-      else if ((c >> 8) == KEY_RIGHT)
+      else if ((c >> 8) == ALLEGRO_KEY_RIGHT)
         {
           if (d->d2 < l)
             {
-              if (key_shifts & KB_CTRL_FLAG)
-                {
-                  t = s + uoffset (s, d->d2);
-                  for (k = ugetx (&t); uisspace (k); k = ugetx (&t))
-                    d->d2++;
-                  for (; k && !uisspace (k); k = ugetx (&t))
-                    d->d2++;
-                }
-              else
-                d->d2++;
+              d->d2++;
             }
         }
-      else if ((c >> 8) == KEY_HOME)
+      else if ((c >> 8) == ALLEGRO_KEY_HOME)
         {
           d->d2 = 0;
         }
-      else if ((c >> 8) == KEY_END)
+      else if ((c >> 8) == ALLEGRO_KEY_END)
         {
           d->d2 = l;
         }
-      else if ((c >> 8) == KEY_DEL)
+      else if ((c >> 8) == ALLEGRO_KEY_DELETE)
         {
           if (d->d2 < l)
             uremove (s, d->d2);
         }
-      else if ((c >> 8) == KEY_BACKSPACE)
+      else if ((c >> 8) == ALLEGRO_KEY_BACKSPACE)
         {
           if (d->d2 > 0)
             {
@@ -1139,7 +1100,7 @@ my_edit_proc (int msg, DIALOG * d, int c)
               uremove (s, d->d2);
             }
         }
-      else if ((c >> 8) == KEY_ENTER)
+      else if ((c >> 8) == ALLEGRO_KEY_ENTER)
         {
           if (d->flags & D_EXIT)
             {
@@ -1149,7 +1110,7 @@ my_edit_proc (int msg, DIALOG * d, int c)
           else
             return D_O_K;
         }
-      else if ((c >> 8) == KEY_TAB)
+      else if ((c >> 8) == ALLEGRO_KEY_TAB)
         {
           ignore_next_uchar = TRUE;
           return D_O_K;
@@ -1168,7 +1129,7 @@ my_edit_proc (int msg, DIALOG * d, int c)
         {
           if (l < d->d1)
             {
-              uinsert (s, d->d2, c);
+              uinsert (s, d->d2, c, d->d1);
               d->d2++;
 
               object_message (d, MSG_DRAW, 0);
@@ -1176,14 +1137,6 @@ my_edit_proc (int msg, DIALOG * d, int c)
           return D_USED_CHAR;
         }
       break;
-    }
-
-  if (fg)
-    {
-      /*
-       * Not elegant, but test above here just to get
-       * rid of compiler warning about fg not being used.
-       */
     }
 
   return D_O_K;
@@ -1315,7 +1268,7 @@ my_handle_listbox_click (DIALOG * d)
 {
   char *sel = d->dp2;
   int listsize, height;
-  int i, j;
+  int i;
 
   (*(my_getfuncptr) d->dp) (-1, &listsize);
   if (!listsize)
@@ -1345,18 +1298,7 @@ my_handle_listbox_click (DIALOG * d)
     {
       if (sel)
         {
-          if (key_shifts & (KB_SHIFT_FLAG | KB_CTRL_FLAG))
-            {
-              if ((key_shifts & KB_SHIFT_FLAG) || (d->flags & D_INTERNAL))
-                {
-                  for (j = MIN (i, d->d1); j <= MAX (i, d->d1); j++)
-                    sel[j] = TRUE;
-                }
-              else
-                sel[i] = !sel[i];
-            }
-          else
-            sel[i] = TRUE;
+          sel[i] = TRUE;
         }
 
       d->d1 = i;
@@ -1375,10 +1317,7 @@ my_handle_listbox_click (DIALOG * d)
         {
           if (sel)
             {
-              if ((key_shifts & KB_CTRL_FLAG))
-                sel[i] = !sel[i];
-              else
-                sel[i] = TRUE;
+              sel[i] = TRUE;
 
               d->flags |= D_DIRTY;
             }
@@ -1394,10 +1333,9 @@ my_handle_listbox_click (DIALOG * d)
 static void
 my_draw_listbox (DIALOG * d)
 {
-  BITMAP *gui_bmp = gui_get_screen ();
+  ALLEGRO_BITMAP *gui_bmp = gui_get_screen ();
   int height, listsize, i, len, bar, x, y, w;
-  int fg_color, bg;
-  int fg;
+  ALLEGRO_COLOR fg_color, bg;
   char *sel = d->dp2;
   char s[1024];
 
@@ -1416,32 +1354,28 @@ my_draw_listbox (DIALOG * d)
             {
               if ((sel[d->d2 + i]) && (d->d2 + i == d->d1))
                 {
-                  fg = d->bg;
                   bg = fg_color;
                 }
               else if (sel[d->d2 + i])
                 {
-                  fg = d->bg;
                   bg = gui_mg_color;
                 }
               else
                 {
-                  fg = fg_color;
                   bg = d->bg;
                 }
             }
           else if (d->d2 + i == d->d1)
             {
-              fg = d->bg;
               bg = fg_color;
             }
           else
             {
-              fg = fg_color;
               bg = d->bg;
             }
-          ustrzcpy (s, sizeof (s),
-                    (*(my_getfuncptr) d->dp) (i + d->d2, NULL));
+          LW_MACRO_STRNCPY (s,
+                            (*(my_getfuncptr) d->dp) (i + d->d2, NULL),
+                            sizeof (s));
           x = d->x + 2;
           y = d->y + 2 + i * text_height (font);
           rectfill (gui_bmp, x, y, x + 7, y + text_height (font) - 1, bg);
@@ -1450,10 +1384,10 @@ my_draw_listbox (DIALOG * d)
           while (text_length (font, s) >= MAX (d->w - 1 - (bar ? 22 : 10), 1))
             {
               len--;
-              usetat (s, len, 0);
+              usetat (s, len, 0, sizeof (s));
             }
           //textout_ex(gui_bmp, font, s, x, y, fg, bg);
-          textout_ex (gui_bmp, font, s, x, y, -1, bg);  // ufoot
+          textout_ex (gui_bmp, font, s, x, y, NO_COLOR, bg);  // ufoot
           x += text_length (font, s);
           if (x <= d->x + w)
             rectfill (gui_bmp, x, y, d->x + w, y + text_height (font) - 1,
@@ -1475,14 +1409,6 @@ my_draw_listbox (DIALOG * d)
 
   /* draw frame, maybe with scrollbar */
   _draw_scrollable_frame (d, listsize, d->d2, height, fg_color, d->bg);
-
-  if (fg)
-    {
-      /*
-       * Not elegant, but test above here just to get
-       * rid of compiler warning about fg not being used.
-       */
-    }
 }
 
 
@@ -1495,18 +1421,18 @@ my_draw_listbox (DIALOG * d)
  *  index is  negative, it should return null and list_size should be set
  *  to the number of items in the list. The list box object will allow the
  *  user to scroll through the list and to select items list by clicking
- *  on them, and if it has the input focus also by using the arrow keys. If 
- *  the D_EXIT flag is set, double clicking on a list item will cause it to 
- *  close the dialog. The index of the selected item is held in the d1 
+ *  on them, and if it has the input focus also by using the arrow keys. If
+ *  the D_EXIT flag is set, double clicking on a list item will cause it to
+ *  close the dialog. The index of the selected item is held in the d1
  *  field, and d2 is used to store how far it has scrolled through the list.
  */
 int
 my_list_proc (int msg, DIALOG * d, int c)
 {
-  int listsize, i, bottom, height, bar, orig;
+  int listsize, i, bottom, height, bar;
   char *sel = d->dp2;
   int redraw = FALSE;
-  ASSERT (d);
+  ALLEGRO_ASSERT (d);
 
   switch (msg)
     {
@@ -1526,7 +1452,7 @@ my_list_proc (int msg, DIALOG * d, int c)
       bar = (listsize > height);
       if ((!bar) || (gui_mouse_x () < d->x + d->w - 13))
         {
-          if ((sel) && (!(key_shifts & KB_CTRL_FLAG)))
+          if (sel)
             {
               for (i = 0; i < listsize; i++)
                 {
@@ -1611,24 +1537,22 @@ my_list_proc (int msg, DIALOG * d, int c)
           if (bottom >= listsize - 1)
             bottom = listsize - 1;
 
-          orig = d->d1;
-
-          if (c == KEY_UP)
+          if (c == ALLEGRO_KEY_UP)
             d->d1--;
-          else if (c == KEY_DOWN)
+          else if (c == ALLEGRO_KEY_DOWN)
             d->d1++;
-          else if (c == KEY_HOME)
+          else if (c == ALLEGRO_KEY_HOME)
             d->d1 = 0;
-          else if (c == KEY_END)
+          else if (c == ALLEGRO_KEY_END)
             d->d1 = listsize - 1;
-          else if (c == KEY_PGUP)
+          else if (c == ALLEGRO_KEY_PGUP)
             {
               if (d->d1 > d->d2)
                 d->d1 = d->d2;
               else
                 d->d1 -= (bottom - d->d2) ? bottom - d->d2 : 1;
             }
-          else if (c == KEY_PGDN)
+          else if (c == ALLEGRO_KEY_PGDN)
             {
               if (d->d1 < bottom)
                 d->d1 = bottom;
@@ -1637,25 +1561,6 @@ my_list_proc (int msg, DIALOG * d, int c)
             }
           else
             return D_O_K;
-
-          if (sel)
-            {
-              if (!(key_shifts & (KB_SHIFT_FLAG | KB_CTRL_FLAG)))
-                {
-                  for (i = 0; i < listsize; i++)
-                    sel[i] = FALSE;
-                }
-              else if (key_shifts & KB_SHIFT_FLAG)
-                {
-                  for (i = MIN (orig, d->d1); i <= MAX (orig, d->d1); i++)
-                    {
-                      if (key_shifts & KB_CTRL_FLAG)
-                        sel[i] = (i != d->d1);
-                      else
-                        sel[i] = TRUE;
-                    }
-                }
-            }
 
           /* if we changed something, better redraw... */
           my_handle_scrollable_scroll (d, listsize, &d->d1, &d->d2);
@@ -1669,12 +1574,38 @@ my_list_proc (int msg, DIALOG * d, int c)
 }
 
 /*------------------------------------------------------------------*/
-BITMAP *
+ALLEGRO_BITMAP *
 my_create_bitmap (int w, int h)
 {
-  BITMAP *bmp;
+  /*
+   * Default to memory bitmaps for backward compatibility and performance.
+   * Most bitmaps in the codebase are used for pixel-by-pixel operations
+   * which are much faster with memory bitmaps.
+   */
+  return my_create_memory_bitmap (w, h);
+}
 
-  bmp = create_bitmap (w, h);
+/*------------------------------------------------------------------*/
+ALLEGRO_BITMAP *
+my_create_memory_bitmap (int w, int h)
+{
+  ALLEGRO_BITMAP *bmp;
+  al_set_new_bitmap_flags (ALLEGRO_MEMORY_BITMAP);
+  bmp = al_create_bitmap (w, h);
+  al_set_new_bitmap_flags (ALLEGRO_VIDEO_BITMAP);
+  if (bmp == NULL)
+    my_exit (EXIT_CODE_MEM_TROUBLE);
+
+  return bmp;
+}
+
+/*------------------------------------------------------------------*/
+ALLEGRO_BITMAP *
+my_create_video_bitmap (int w, int h)
+{
+  ALLEGRO_BITMAP *bmp;
+  al_set_new_bitmap_flags (ALLEGRO_VIDEO_BITMAP);
+  bmp = al_create_bitmap (w, h);
   if (bmp == NULL)
     my_exit (EXIT_CODE_MEM_TROUBLE);
 

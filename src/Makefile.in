@@ -4,18 +4,17 @@ exec_prefix =     @exec_prefix@
 datarootdir =     @datarootdir@
 datadir =         @datadir@
 
-DATADIR =         $(datadir)/games/liquidwar
+DATADIR =         $(datadir)/games/liquidwar5
 GAMEDIR =         $(exec_prefix)/games
 
 HOST_OPT =        @HOST_OPT@
 STATIC =          @STATIC@
 SNPRINTF =        @SNPRINTF@
 ALCFLAGS =        @ALCFLAGS@
-ASM =             @ASM@
 DEBUG =           @DEBUG@
 EFENCE =          @EFENCE@
 PTHREAD =         @PTHREAD@
-GP2X =            @GP2X@
+ALLIBS =	      @ALLIBS@
 
 ifeq ($(HOST_OPT),yes)
 	HOST =          @host@
@@ -34,25 +33,17 @@ endif
 
 
 ifeq ($(DEBUG),yes)
-	DEBUG_FLAGS =   -g3
+	DEBUG_FLAGS =   -g3 -O0
 	DEBUG_OPTIONS = -DDEBUG
-	ALLEGRO_LIBRARY = debug
 else
 	DEBUG_FLAGS =   -O2 -fomit-frame-pointer
 	DEBUG_OPTIONS =
-	ALLEGRO_LIBRARY = release
 endif
 
 ifeq ($(EFENCE),yes)
 	EFENCE_LIBRARY = -lefence
 else
 	EFENCE_LIBRARY =
-endif
-
-ifeq ($(GP2X),yes)
-	GP2X_OPTIONS = -DGP2X
-else
-	GP2X_OPTIONS =
 endif
 
 ifeq ($(SNPRINTF),yes)
@@ -65,13 +56,6 @@ else
 	SNPRINTF_MODE = "using Mark Martinec's implementation"
 endif
 
-ifeq ($(ASM),yes)
-	ASM_NAMES = glouglou monster spread
-	ASM_OPTIONS = -DASM
-else
-	ASM_NAMES =
-	ASM_OPTIONS =
-endif
 
 OBJ_NAMES = \
 	about \
@@ -79,9 +63,11 @@ OBJ_NAMES = \
 	alleg2 \
 	area \
 	army \
-	asm \
 	autoplay \
 	back \
+	backport \
+	backportgui \
+	backportguiproc \
 	basicopt \
 	bigdata \
 	capture \
@@ -143,7 +129,6 @@ OBJ_NAMES = \
 	netplay \
 	network \
 	options \
-	palette \
 	parser \
 	path \
 	ping \
@@ -174,7 +159,6 @@ OBJ_NAMES = \
 	wwwcli \
 	x11icon \
 	$(SNPRINTF_NAMES) \
-	$(ASM_NAMES)
 
 OBJ_NAMES_SRV = \
 	basicopt \
@@ -203,6 +187,8 @@ OBJ_NAMES_SRV = \
 	$(SNPRINTF_NAMES)
 
 OBJ_NAMES_MAPGEN = \
+	backport \
+	mapgen_stubs \
 	../utils/lwmapgen/big_quad \
 	../utils/lwmapgen/boxes \
 	../utils/lwmapgen/bubbles \
@@ -227,41 +213,44 @@ OBJ_FILES = $(addsuffix .o, $(OBJ_NAMES))
 OBJ_FILES_SRV = $(addsuffix .o, $(OBJ_NAMES_SRV))
 OBJ_FILES_MAPGEN = $(addsuffix .o, $(OBJ_NAMES_MAPGEN))
 
-EXE_FILES = liquidwar liquidwar-server liquidwar-mapgen
+EXE_FILES = liquidwar5 liquidwar5-server liquidwar5-mapgen
 
 ifeq ($(STATIC),yes)
     LINK_OPTIONS = --static
-    EXTERN_LIBS = `allegro-config --static $(ALLEGRO_LIBRARY)` $(EFENCE_LIBRARY)
+    EXTERN_LIBS = -lm $(ALLIBS) $(EFENCE_LIBRARY)
 else
     LINK_OPTIONS =
-    EXTERN_LIBS = `allegro-config --libs $(ALLEGRO_LIBRARY)` $(EFENCE_LIBRARY)
+    EXTERN_LIBS = -lm $(ALLIBS) $(EFENCE_LIBRARY)
 endif
 
 CONFIG_OPTIONS = \
-	-DCONFIG_UNIX_CFG=\".liquidwarrc\" \
-	-DCONFIG_UNIX_DAT=\"$(DATADIR)/liquidwar.dat\" \
-	-DCONFIG_UNIX_MAP=\"$(DATADIR)/map/\" \
-	-DCONFIG_UNIX_TEX=\"$(DATADIR)/texture/\" \
-	-DCONFIG_UNIX_MID=\"$(DATADIR)/music/\" \
-	-DCONFIG_UNIX_SRV=\"$(GAMEDIR)/liquidwar-server\" \
-	-DCONFIG_UNIX_GEN=\"$(GAMEDIR)/liquidwar-mapgen\"
+	-DCONFIG_UNIX_CFG=\".liquidwar5rc\" \
+	-DCONFIG_UNIX_DAT=\"$(DATADIR)/data\" \
+	-DCONFIG_UNIX_MAP=\"$(DATADIR)/data/map/\" \
+	-DCONFIG_UNIX_TEX=\"$(DATADIR)/data/texture/\" \
+	-DCONFIG_UNIX_MID=\"$(DATADIR)/data/music/\" \
+	-DCONFIG_UNIX_SRV=\"$(GAMEDIR)/liquidwar5-server\" \
+	-DCONFIG_UNIX_GEN=\"$(GAMEDIR)/liquidwar5-mapgen\"
 
-CMD_CC = $(CC) $(CFLAGS) $(ALCFLAGS) -c $(DEBUG_FLAGS) -Wall -W -Werror $(HOST_CPU_CC) $(CONFIG_OPTIONS) $(DEBUG_OPTIONS) $(SPRINTF_OPTIONS) $(ASM_OPTIONS) $(GP2X_OPTIONS) -DUNIX -D_THREAD_SAFE
-CMD_AS = $(AS) $(ASFLAGS) --32
+CMD_CC = $(CC) $(CFLAGS) $(ALCFLAGS) -c $(DEBUG_FLAGS) -Wall -W -Werror $(HOST_CPU_CC) $(CONFIG_OPTIONS) $(DEBUG_OPTIONS) $(SPRINTF_OPTIONS) -DUNIX -D_THREAD_SAFE
 
 all: $(EXE_FILES)
 
-liquidwar: $(OBJ_FILES)
-	@echo "Linking $@ (host=$(HOST), debug=$(DEBUG), static=$(STATIC), asm=$(ASM))"
-	@$(CC) $(LDFLAGS) $(LINK_OPTIONS) -o $@ $(OBJ_FILES) $(PTHREAD) $(EXTERN_LIBS)
-
-liquidwar-server: $(OBJ_FILES_SRV)
+liquidwar5: $(OBJ_FILES)
 	@echo "Linking $@ (host=$(HOST), debug=$(DEBUG), static=$(STATIC))"
-	@$(CC) $(LDFLAGS) $(LINK_OPTIONS) -o $@ $(OBJ_FILES_SRV) $(PTHREAD)
+	@$(CC) $(LDFLAGS) $(DEBUG_FLAGS) $(LINK_OPTIONS) -o $@ $(OBJ_FILES) $(PTHREAD) $(EXTERN_LIBS)
+	@if [ "$(DEBUG)" = "yes" ] && [ "$$(uname -s)" = "Darwin" ]; then \
+		echo "Generating dSYM for debugging..."; \
+		dsymutil $@; \
+	fi
 
-liquidwar-mapgen: $(OBJ_FILES_MAPGEN)
+liquidwar5-server: $(OBJ_FILES_SRV)
 	@echo "Linking $@ (host=$(HOST), debug=$(DEBUG), static=$(STATIC))"
-	@$(CC) $(LDFLAGS) $(LINK_OPTIONS) -o $@ $(OBJ_FILES_MAPGEN) -lm $(PTHREAD) $(EXTERN_LIBS)
+	@$(CC) $(LDFLAGS) $(DEBUG_FLAGS) $(LINK_OPTIONS) -o $@ $(OBJ_FILES_SRV) $(PTHREAD)
+
+liquidwar5-mapgen: $(OBJ_FILES_MAPGEN)
+	@echo "Linking $@ (host=$(HOST), debug=$(DEBUG), static=$(STATIC))"
+	@$(CC) $(LDFLAGS) $(DEBUG_FLAGS) $(LINK_OPTIONS) -o $@ $(OBJ_FILES_MAPGEN) -lm $(PTHREAD) $(EXTERN_LIBS)
 
 dep:
 	@find . \
@@ -280,21 +269,31 @@ distclean:
 	@rm -f Makefile Makefile.dep
 
 %.o: %.c
-	@echo "Compiling $< (cpu=$(HOST_CPU), debug=$(DEBUG), asm=$(ASM))"
+	@echo "Compiling $< (cpu=$(HOST_CPU), debug=$(DEBUG))"
 	@$(CMD_CC) $< -o $@
 
-%.o: %.s
-	@echo "Assembling" $<
-	@$(CMD_AS) $< -o $@
 
-config: print_config print_cmd_cc print_cmd_as print_cmd_ld
+config: print_config print_cmd_cc print_cmd_ld
 	@true
 
-check:
-	@echo No unit tests, blame the lazy developper.
+test_backport_pixel: test_backport_pixel.o $(OBJ_FILES)
+	@echo "Building pixel test"
+	@$(CC) $(LDFLAGS) $(LINK_OPTIONS) -o $@ $^ $(PTHREAD) $(EXTERN_LIBS)
+
+test_path: test_path.o $(OBJ_FILES)
+	@echo "Building path test"
+	@$(CC) $(LDFLAGS) $(LINK_OPTIONS) -o $@ $^ $(PTHREAD) $(EXTERN_LIBS)
+
+check: test_backport_pixel test_path
+	@echo "Running unit tests..."
+	@./test_backport_pixel
+	@./test_path
 
 indent:
 	@find . -name "*.[c|h]" -a ! -path "*32*" -exec indent -nut {} \;
+	@find . -name "*.[c|h]" -a ! -path "*32*" -exec indent -nut {} \;
+
+lint:
 	@find . -name "*.[c|h]" -a ! -path "*32*" -exec splint {} \;
 
 print_config:
@@ -302,19 +301,15 @@ print_config:
 	@echo "Host        :" $(HOST)
 	@echo "Debug       :" $(DEBUG)
 	@echo "Static link :" $(STATIC)
-	@echo "Assembly    :" $(ASM)
-	@echo "Snprintf    :" $(SNPRINTF_MODE)
+		@echo "Snprintf    :" $(SNPRINTF_MODE)
 
 print_cmd_cc:
 	@echo "The command line to compile .c files in this directory is:"
 	@echo $(CMD_CC)
 
-print_cmd_as:
-	@echo "The command line to compile .s files in this directory is:"
-	@echo $(CMD_AS)
 
 print_cmd_ld:
 	@echo "The command line to link .o files in this directory is:"
-	@echo $(CC) $(LDFLAGS) $(LINK_OPTIONS) $(PTHREAD) $(EXTERN_LIBS)
+	@echo $(CC) $(LDFLAGS) $(DEBUG_FLAGS) $(LINK_OPTIONS) $(PTHREAD) $(EXTERN_LIBS)
 
 include Makefile.dep

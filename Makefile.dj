@@ -19,9 +19,9 @@
 # Contact author      : ufoot@ufoot.org
 #
 # This Makefile is used to compile the MS DOS 32-bit executable binary.
-# 
+#
 # It requires a working DJGPP http://www.delorie.com/djgpp/ install to work.
-# 
+#
 # Typical DJGPP requirements are:
 # v2/copying.dj
 # v2/djdev203.zip
@@ -154,9 +154,6 @@ volume \
 watchdog \
 wave \
 wwwcli \
-glouglou \
-monster \
-spread \
 vbeafex
 
 OBJ_NAMES_MAPGEN=\
@@ -179,7 +176,7 @@ OBJ_NAMES_MAPGEN=\
 ../utils/lwmapgen/rand_poly_cut \
 ../utils/lwmapgen/street \
 ../utils/lwmapgen/worms
- 
+
 OBJ_FILES=$(addprefix $(OBJ_PATH),$(addsuffix $(OBJ_EXT),$(OBJ_NAMES)))
 OBJ_FILES_MAPGEN=$(addprefix $(OBJ_PATH),$(addsuffix $(OBJ_EXT),$(OBJ_NAMES_MAPGEN)))
 
@@ -218,4 +215,3 @@ lwdosmap.exe: $(OBJ_FILES_MAPGEN)
 	@echo "=== End of lwdosmap.rsp ==="
 	$(CC) -o $@ @lwdosmap.rsp
 	@rm -f lwdosmap.rsp
-

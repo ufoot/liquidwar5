@@ -20,7 +20,7 @@
 
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT()
+AC_INIT
 
 AC_PROG_CC
 
@@ -30,22 +30,27 @@ dnl Now we check if we need to use ou own snprintf function
 AC_CHECK_FUNC(snprintf,[SNPRINTF=yes],[SNPRINTF=no])
 AC_SUBST(SNPRINTF)
 
+dnl Checking for allegro-5.
+echo -n "checking for Allegro 5... "
 
-dnl Checking for allegro-config, the very-needed Allegro file
+PKG_PROG_PKG_CONFIG([0.25])
 
-AC_CHECK_PROG(ALLEGRO_CONFIG,allegro-config,yes,no)
+PKG_CHECK_MODULES([ALLEGRO5],
+   [allegro-5,allegro_primitives-5,allegro_audio-5,allegro_font-5,allegro_image-5,allegro_color-5,allegro_acodec-5],
+   [ALLEGRO5_VERSION=5],
+   [PKG_CHECK_MODULES([ALLEGRO50],
+      [allegro-5.0,allegro_primitives-5.0,allegro_audio-5.0,allegro_font-5.0,allegro_image-5.0,allegro_color-5.0,allegro_acodec-5.0],
+      [ALLEGRO5_VERSION=5.0]
+    )]
+)
 
-if test $ALLEGRO_CONFIG != "yes"; then
-   AC_MSG_ERROR(Unable to find allegro-config - this tool is normally installed by Allegro and must be placed in a directory which is in your PATH. Allegro is a game programming library required by Liquid War. It is available on http://www.talula.demon.co.uk/allegro/. You need to install the complete Allegro developpement package to build Liquid War.)
-fi;
+echo "using allegro-$ALLEGRO5_VERSION"
 
-dnl Various checks for Allegro
+ALCFLAGS=$(pkg-config --cflags allegro-$ALLEGRO5_VERSION allegro_primitives-$ALLEGRO5_VERSION allegro_audio-$ALLEGRO5_VERSION allegro_font-$ALLEGRO5_VERSION allegro_image-$ALLEGRO5_VERSION allegro_color-$ALLEGRO5_VERSION allegro_acodec-$ALLEGRO5_VERSION)
+ALLIBS=$(pkg-config --libs allegro-$ALLEGRO5_VERSION allegro_primitives-$ALLEGRO5_VERSION allegro_audio-$ALLEGRO5_VERSION allegro_font-$ALLEGRO5_VERSION allegro_image-$ALLEGRO5_VERSION allegro_color-$ALLEGRO5_VERSION allegro_acodec-$ALLEGRO5_VERSION allegro_main-$ALLEGRO5_VERSION)
+ALVERSION=$(pkg-config --modversion allegro-$ALLEGRO5_VERSION)
 
-echo -n "checking for Allegro... "
-ALCFLAGS=`allegro-config --cflags 2>/dev/null`
-ALLIBS=`allegro-config --libs 2>/dev/null`
-ALVERSION=`allegro-config --version 2>/dev/null`
-ALDVERSION=`echo ALVERSION | awk 'BEGIN { FS = "."; } { printf "%d",($1 * 1000 + $2) * 1000 + $3;}'`
+ALDVERSION=$(echo ALVERSION | awk 'BEGIN { FS = "."; } { printf "%d",($1 * 1000 + $2) * 1000 + $3;}')
 
 AC_SUBST(ALCFLAGS)
 AC_SUBST(ALLIBS)
@@ -60,29 +65,11 @@ fi
 dnl
 dnl version check
 dnl
-if test $ALDVERSION -gt 4002000 ; then
-   AC_MSG_ERROR(An old version of Allegro ($ALVERSION) has been detected - please upgrade to 4.2.0 or better.)
+if test $ALDVERSION -gt 5000000 ; then
+   AC_MSG_ERROR(An old version of Allegro ($ALVERSION) has been detected - please upgrade to 5.0.0 or better.)
 else
    echo "found $ALVERSION".
 fi
-
-dnl disabled this. assume allegro-config doesn't lie and all files are
-dnl available
-#AC_CHECK_HEADER(allegro.h,,[AC_MSG_ERROR(Missing some include file. Please reinstall Allegro.)])
-
-dnl disabled this. assume allegro-config doesn't lie and all files are
-dnl available
-#AC_CHECK_LIB(alleg,main,,[AC_MSG_ERROR(Compilation probe failed. Please check your Allegro installation.)])
-
-dnl very often, dat (the datafile compiler) is not installed,
-dnl and we _really_ need it...
-AC_CHECK_PROG(ALLEGRO_DAT,dat,yes,no)
-
-if test $ALLEGRO_DAT != "yes"; then
-   AC_MSG_ERROR(Couldn't find the allegro datafile compiler - please install the complete Allegro package with all its developper tools. The end-user package is not enough to compile Liquid War.)
-fi;
-
-
 
 dnl Uncomment this if you want to shock your users
 #cat <<EOF
@@ -117,11 +104,6 @@ AC_SUBST(PTHREAD)
 
 
 
-dnl now checking if the GNU assembler is available
-AC_CHECK_PROG(GNU_AS,as,yes,no)
-
-
-
 dnl Various checks which will enable/disable some of the doc targets
 AC_CHECK_PROG(PYTHON,python,yes,no)
 AC_CHECK_PROG(GZIP,gzip,yes,no)
@@ -145,33 +127,6 @@ OSX="no"
 if echo "$host_os" | grep "arwin"; then
   OSX="yes"
 fi
-
-ASM_POSSIBLE="\"$GNU_AS\" = \"yes\" -a \"$I386\" = \"yes\" -a \"OSX\" = \"no\""
-
-dnl Assembly
-AC_MSG_CHECKING(for assembly)
-AC_ARG_ENABLE(asm,[  --disable-asm           Disable assembly code],
-[
-  if test "$enableval" != "no" -a $ASM_POSSIBLE ; then
-    ASM=yes
-    AC_MSG_RESULT([enabled])
-  else
-    ASM=no
-    AC_MSG_RESULT([disabled])
-  fi
-],
-[
-  if test $ASM_POSSIBLE ; then
-    ASM=yes
-    AC_MSG_RESULT([enabled])
-  else
-    ASM=no
-    AC_MSG_RESULT([disabled])
-  fi
-])
-AC_SUBST(ASM)
-
-
 
 dnl Now we do a bunch of checks to see what kind of documentation
 dnl formats we should generate. This is quite boring but can be
@@ -508,10 +463,10 @@ AC_SUBST(SRPMS_DIR)
 
 
 dnl Current version
-VERSION="5.6.7"
+VERSION="5.7.0"
 VERSION_REL="1"
-VERSION_COMPACT="567"
-VERSION_WIN32="5, 6, 7, 1"
+VERSION_COMPACT="570"
+VERSION_WIN32="5, 7, 0, 1"
 AC_SUBST(VERSION)
 AC_SUBST(VERSION_REL)
 AC_SUBST(VERSION_COMPACT)
@@ -520,7 +475,7 @@ AC_SUBST(VERSION_WIN32)
 
 
 dnl Create the files for good
-AC_OUTPUT( \
+AC_CONFIG_FILES([\
 	   Makefile \
 	   src/Makefile \
 	   src/Makefile.dep \
@@ -528,29 +483,22 @@ AC_OUTPUT( \
 	   src/lwwin.rc \
 	   utils/Makefile \
 	   data/Makefile \
-	   data/back/Makefile \
-	   data/font/Makefile \
-	   data/map/Makefile \
-	   data/sfx/Makefile \
-	   data/texture/Makefile \
-	   data/maptex/Makefile \
-	   data/water/Makefile \
-	   data/music/Makefile \
 	   doc/Makefile \
 	   doc/html/index.html \
-	   doc/tex/liquidwar.tex \
+	   doc/tex/liquidwar5.tex \
 	   doc/man/begin.man \
 	   doc/texi/begin.texi \
-	   misc/liquidward \
+	   misc/liquidwar5d \
 	   misc/macosx_info.plist \
-	   misc/liquidwar.nsi \
+	   misc/liquidwar5.nsi \
 	   misc/docker/Dockerfile-build \
 	   misc/docker/Dockerfile-server \
 	   misc/docker/Dockerfile-metaserver \
-	   liquidwar.spec)
+	   liquidwar5.spec])
+AC_OUTPUT
 
-dnl Change the liquidward attribute
-chmod 755 misc/liquidward
+dnl Change the liquidwar5d attribute
+chmod 755 misc/liquidwar5d
 
 
 

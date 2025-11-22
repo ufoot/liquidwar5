@@ -54,6 +54,7 @@
 
 #include <string.h>
 
+#include "backport.h"
 #include "back.h"
 #include "base.h"
 #include "config.h"
@@ -72,6 +73,7 @@
 #include "controls.h"
 #include "lang.h"
 #include "gfxmode.h"
+#include "mouse.h"
 
 /*==================================================================*/
 /* variables globales                                               */
@@ -119,14 +121,14 @@ options (void)
           gfxmode_change = 0;
           display_back_image ();
           dp = my_init_dialog (d, choix);
-          my_fade_in ();
+          // my_fade_in (); // No longer needed in true color mode
         }
       else
         {
           dp = my_init_dialog (d, choix);
         }
 
-      show_mouse (screen);
+      lw_mouse_show ();
       while (my_update_dialog (dp))
         ;
       choix = shutdown_dialog (dp);

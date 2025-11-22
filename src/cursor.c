@@ -55,11 +55,11 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include "backport.h"
 #include "army.h"
 #include "grad.h"
 #include "cursor.h"
 #include "mesh.h"
-#include "palette.h"
 
 /*==================================================================*/
 /* variables globales                                               */

@@ -53,7 +53,7 @@
 /*==================================================================*/
 
 #include <string.h>
-#include <allegro.h>
+#include <allegro5/allegro.h>
 
 #include "back.h"
 #include "config.h"
@@ -62,7 +62,6 @@
 #include "error.h"
 #include "game.h"
 #include "gfxmode.h"
-#include "palette.h"
 #include "maptex.h"
 #include "play.h"
 #include "score.h"
@@ -154,7 +153,7 @@ play_sequence_ex (void)
    * we set up the Allegro palette and LW's palette parameters so that
    * an optimized number of colors is used for each team's fighters
    */
-  set_playing_teams_palette ();
+  // set_playing_teams_palette (); // No longer needed in true color mode
 
   /*
    * if there's only one team selected we stop right away and quit
@@ -180,7 +179,7 @@ play_sequence_ex (void)
           /*
            * fade out cause we're going to switch video modes
            */
-          my_fade_out ();
+          // my_fade_out (); // No longer needed in true color mode
 
           /*
            * we change the resolution, but only if the game resolution is
@@ -203,7 +202,7 @@ play_sequence_ex (void)
               /*
                * fiat lux
                */
-              my_fade_in ();
+              // my_fade_in (); // No longer needed in true color mode
 
               /*
                * start playing some music
@@ -239,7 +238,7 @@ play_sequence_ex (void)
           /*
            * fade out before video mode switching
            */
-          my_fade_out ();
+          // my_fade_out (); // No longer needed in true color mode
           /*
            * again, we change the video mode only if it is really required
            */

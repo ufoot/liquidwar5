@@ -55,6 +55,7 @@
 #include <string.h>
 
 #include "advanced.h"
+#include "backport.h"
 #include "config.h"
 #include "dialog.h"
 #include "disk.h"
@@ -69,14 +70,6 @@
 /*==================================================================*/
 
 /*------------------------------------------------------------------*/
-static char *
-get_asm_algorithm_str (void)
-{
-  if (CONFIG_ASM_ALGORITHM)
-    return (lw_lang_string (LW_LANG_STRING_ADVANCED_ASSEMBLY));
-  else
-    return (lw_lang_string (LW_LANG_STRING_ADVANCED_STANDARDC));
-}
 
 /*------------------------------------------------------------------*/
 static char *
@@ -119,23 +112,23 @@ int
 advanced_options (void)
 {
   int *temp;
-  DIALOG d[21];
+  DIALOG d[19];
   int i, retour = 0, choix = 4;
   static int y_pos[8] = { 0, 1, 2, 3, 4, 5, 6, 7 };
 
   memset (d, 0, sizeof (d));
 
-  for (i = 0; i < 8; ++i)
+  for (i = 0; i < 7; ++i)
     {
       standard_button (d + i + 4, 0, y_pos[i], 2, 8);
       d[i + 4].proc = my_textbox_proc;
     }
-  for (i = 0; i < 8; ++i)
+  for (i = 0; i < 7; ++i)
     {
-      standard_button (d + i + 12, 1, y_pos[i], 2, 8);
-      d[i + 12].proc = my_slider_proc;
+      standard_button (d + i + 11, 1, y_pos[i], 2, 8);
+      d[i + 11].proc = my_slider_proc;
     }
-  d[17].proc = d[18].proc = d[19].proc = my_button_proc;
+  d[16].proc = d[17].proc = my_button_proc;
 
   quick_buttons (d);
   d[4].dp = lw_lang_string (LW_LANG_STRING_ADVANCED_ATTACK);
@@ -145,18 +138,16 @@ advanced_options (void)
   d[8].dp = lw_lang_string (LW_LANG_STRING_ADVANCED_CPUSTRENGTH);
   d[9].dp = lw_lang_string (LW_LANG_STRING_ADVANCED_CPUVSHUMAN);
   d[10].dp = lw_lang_string (LW_LANG_STRING_ADVANCED_ALLOWNETWORKBOTS);
-  d[11].dp = lw_lang_string (LW_LANG_STRING_ADVANCED_ASMALGORITHM);
-  d[12].d1 = d[13].d1 = d[14].d1 = d[15].d1 = 16;
-  d[16].d1 = 4;
-  d[12].dp3 = &CONFIG_FIGHTER_ATTACK;
-  d[13].dp3 = &CONFIG_FIGHTER_DEFENSE;
-  d[14].dp3 = &CONFIG_FIGHTER_NEW_HEALTH;
-  d[15].dp3 = &CONFIG_NUMBER_INFLUENCE;
-  d[16].dp3 = &CONFIG_CPU_ADVANTAGE;
-  d[17].dp = get_cpu_vs_human_str ();
-  d[18].dp = get_allow_network_bots_str ();
-  d[19].dp = get_asm_algorithm_str ();
-  for (i = 12; i < 17; ++i)
+  d[11].d1 = d[12].d1 = d[13].d1 = d[14].d1 = 16;
+  d[15].d1 = 4;
+  d[11].dp3 = &CONFIG_FIGHTER_ATTACK;
+  d[12].dp3 = &CONFIG_FIGHTER_DEFENSE;
+  d[13].dp3 = &CONFIG_FIGHTER_NEW_HEALTH;
+  d[14].dp3 = &CONFIG_NUMBER_INFLUENCE;
+  d[15].dp3 = &CONFIG_CPU_ADVANTAGE;
+  d[16].dp = get_cpu_vs_human_str ();
+  d[17].dp = get_allow_network_bots_str ();
+  for (i = 11; i < 16; ++i)
     {
       d[i].dp = NULL;
       d[i].dp2 = slider_int;
@@ -164,15 +155,8 @@ advanced_options (void)
       d[i].d2 = *temp;
     }
 
-#ifndef ASM
-  /*
-   * If no assembly code has been compiled, we disable the button
-   */
-  d[10].flags = D_HIDDEN;
-  d[18].flags = D_HIDDEN;
-#endif
 
-  d[20].proc = 0;
+  d[18].proc = 0;
 
   while (retour == 0)
     {
@@ -193,25 +177,18 @@ advanced_options (void)
         case MENU_QUICK_PLAY:
           retour = MENU_PLAY;
           break;
-        case 17:
+        case 16:
           CONFIG_CPU_VS_HUMAN = (CONFIG_CPU_VS_HUMAN + 1) % 3;
-          d[17].dp = get_cpu_vs_human_str ();
+          d[16].dp = get_cpu_vs_human_str ();
+          scare_mouse ();
+          my_button_proc (MSG_DRAW, d + 16, 0);
+          unscare_mouse ();
+          break;
+        case 17:
+          CONFIG_ALLOW_NETWORK_BOTS = CONFIG_ALLOW_NETWORK_BOTS ? 0 : 1;
+          d[17].dp = get_allow_network_bots_str ();
           scare_mouse ();
           my_button_proc (MSG_DRAW, d + 17, 0);
-          unscare_mouse ();
-          break;
-        case 18:
-          CONFIG_ALLOW_NETWORK_BOTS = CONFIG_ALLOW_NETWORK_BOTS ? 0 : 1;
-          d[18].dp = get_allow_network_bots_str ();
-          scare_mouse ();
-          my_button_proc (MSG_DRAW, d + 18, 0);
-          unscare_mouse ();
-          break;
-        case 19:
-          CONFIG_ASM_ALGORITHM = CONFIG_ASM_ALGORITHM ? 0 : 1;
-          d[19].dp = get_asm_algorithm_str ();
-          scare_mouse ();
-          my_button_proc (MSG_DRAW, d + 19, 0);
           unscare_mouse ();
           break;
         }

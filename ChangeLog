@@ -1,6 +1,16 @@
 2025-11-10  Christian Mauduit (ufoot@ufoot.org)
 
-	* Bump version to 5.6.7 to avoid confusion.
+	* Update copyright notice (year 2025).
+
+2020-01-05  Christian Mauduit (ufoot@ufoot.org)
+
+	* Update copyright notice (year 2020).
+
+2018-12-24  Christian Mauduit (ufoot@ufoot.org)
+
+	* Bump version to 5.7.0.
+
+	* Backporting Allegro 4 functions for Allegro 5 (squashed many commits)
 
 2025-11-09  Christian Mauduit (ufoot@ufoot.org)
 
@@ -340,7 +350,7 @@
 
 2004-08-22  Christian Mauduit (ufoot@ufoot.org)
 
-	* Added more strategy tips suggested by Jan Samohýl.
+	* Added more strategy tips suggested by Jan Samohï¿½l.
 
 
 2004-08-19  Christian Mauduit (ufoot@ufoot.org)

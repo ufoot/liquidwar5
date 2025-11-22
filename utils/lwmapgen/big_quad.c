@@ -36,7 +36,7 @@ big_quad ()
   vert[6] = rand_num (map.sec_width + 1, map.width - map.sec_width - 1);
   vert[7] = rand_num (map.height - map.sec_height, map.height - 3);
 
-  polygon (map.map, 4, vert, 0);
+  polygon (map.map, 4, vert, al_map_rgb(0, 0, 0));
 
   return;
 }

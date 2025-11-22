@@ -42,7 +42,7 @@ cut ()
       vert[6] = endx - size;
       vert[7] = map.height - 1;
 
-      polygon (map.map, 4, vert, 255);
+      polygon (map.map, 4, vert, al_map_rgb(255, 255, 255));
     }
 
   /* horizontial */
@@ -66,7 +66,7 @@ cut ()
       vert[6] = map.width - 2;
       vert[7] = endy + size;
 
-      polygon (map.map, 4, vert, 255);
+      polygon (map.map, 4, vert, al_map_rgb(255, 255, 255));
     }
 
   return;

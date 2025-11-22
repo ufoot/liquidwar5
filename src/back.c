@@ -52,11 +52,10 @@
 /* includes                                                         */
 /*==================================================================*/
 
-#include <allegro.h>
+#include <allegro5/allegro.h>
 
 #include "back.h"
 #include "disk.h"
-#include "palette.h"
 #include "viewport.h"
 #include "dialog.h"
 
@@ -70,10 +69,11 @@
 
 /*------------------------------------------------------------------*/
 void
-display_a_back_image (BITMAP * bmp)
+display_a_back_image (ALLEGRO_BITMAP * bmp)
 {
   scare_mouse ();
-  stretch_blit (bmp, screen, 0, 0, bmp->w, bmp->h,
+  stretch_blit (bmp, screen, 0, 0,
+                al_get_bitmap_width (bmp), al_get_bitmap_height (bmp),
                 0, PAGE_FLIP_H, SCREEN_W, SCREEN_H);
   unscare_mouse ();
 }

@@ -208,7 +208,7 @@ lw_connect_menu (int sock)
       dp = my_init_dialog (d, choix);
       while (my_update_dialog (dp) && !data->finished)
         {
-          show_mouse (screen);
+          lw_mouse_show ();
           if (!data->thread_running && !data->finished)
             {
               if (!first_getinfo)
@@ -311,7 +311,7 @@ lw_connect_menu (int sock)
   while (data->thread_running)
     {
       /*
-       * Here, we wait until the thread is over, it shouldn't be very 
+       * Here, we wait until the thread is over, it shouldn't be very
        * long since we just wait for the server's answer
        */
       rest (100);
@@ -405,7 +405,7 @@ update_connect_menu (DIALOG * d,
   d[7].proc (MSG_DRAW, d + 7, 0);
   unscare_mouse ();
 
-  show_mouse (screen);
+  lw_mouse_show ();
 
   /*
    * If there are more teams connected than last times, we're likely
@@ -414,8 +414,8 @@ update_connect_menu (DIALOG * d,
   if (connected_teams > 0 && connected_teams > *connected_teams_prev)
     {
       /*
-       * We check if this is not the first time 
-       * (*connected_teams_prev==-1) and in this case we play 
+       * We check if this is not the first time
+       * (*connected_teams_prev==-1) and in this case we play
        * nothing
        */
       if ((*connected_teams_prev) >= 0)

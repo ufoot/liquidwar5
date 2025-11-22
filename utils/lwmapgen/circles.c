@@ -28,7 +28,7 @@ circles ()
         {
           rand_point_section_offset (&centerx, &centery, r, c, 0);
           radius = rand () % size + 1;
-          circlefill (map.map, centerx, centery, radius, 0);
+          circlefill (map.map, centerx, centery, radius, al_map_rgb(0, 0, 0));
         }
     }
 

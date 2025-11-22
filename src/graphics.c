@@ -63,6 +63,7 @@
 #include "graphics.h"
 #include "help.h"
 #include "menu.h"
+#include "mouse.h"
 #include "sound.h"
 #include "wave.h"
 #include "lang.h"
@@ -163,7 +164,7 @@ slider_menu_res (void *dp3, int d2)
   changed = dp3;
   *changed = 1;
 
-  my_set_palette ();
+  // my_set_palette (); // No longer needed in true color mode
 
   return 0;
 }
@@ -177,7 +178,7 @@ slider_brightness (void *dp3, int d2)
 
   play_click ();
   CONFIG_BRIGHTNESS = d2;
-  my_set_palette ();
+  // my_set_palette (); // No longer needed in true color mode
 
   return 0;
 }
@@ -251,16 +252,7 @@ graphic_options (void)
 
       d[11].proc = my_button_proc;
       d[11].dp = get_fullscreen_str ();
-#ifdef DOS
-      /*
-       * Under DOS, fullscreen or windowed makes no sense, so we simply
-       * remove the button to avoid confusion.
-       */
-      d[4].flags |= D_HIDDEN;
-      d[11].flags = D_EXIT | D_HIDDEN;
-#else
       d[11].flags = D_EXIT;
-#endif
 
       d[16].proc = my_button_proc;
       d[16].dp = get_page_flip_str ();
@@ -279,12 +271,12 @@ graphic_options (void)
           fullscreen_changed = 0;
           display_back_image ();
           dp = my_init_dialog (d, choix);
-          my_fade_in ();
+          // my_fade_in (); // No longer needed in true color mode
         }
       else
         dp = my_init_dialog (d, choix);
 
-      show_mouse (screen);
+      lw_mouse_show ();
       while ((menu_res_changed == 0) &&
              (game_res_changed == 0) && my_update_dialog (dp))
         ;
@@ -295,7 +287,7 @@ graphic_options (void)
         {
           if (d[13].d2 != CONFIG_GFX_MENU)
             {
-              my_fade_out ();
+              // my_fade_out (); // No longer needed in true color mode
               if (set_resolution (d[13].d2, 0, CONFIG_FULLSCREEN, NULL))
                 CONFIG_GFX_MENU = 0;
               else
@@ -339,7 +331,7 @@ graphic_options (void)
                   my_button_proc (MSG_DRAW, d + 11, 0);
                   unscare_mouse ();
                   fullscreen_changed = 1;
-                  my_fade_out ();
+                  // my_fade_out (); // No longer needed in true color mode
                   set_resolution (d[13].d2, 0, CONFIG_FULLSCREEN, NULL);
                   break;
                 case 16:

@@ -56,6 +56,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "backport.h"
 #include "army.h"
 #include "back.h"
 #include "base.h"
@@ -204,17 +205,18 @@ init_tombola ()
 
 /*------------------------------------------------------------------*/
 static int
-draw_score_bitmap (BITMAP * bitmap, int cursor, int ellipse_h, int fill_level)
+draw_score_bitmap (ALLEGRO_BITMAP * bitmap, int cursor, int ellipse_h,
+                   int fill_level)
 {
   int w, h;
-  int color1 = 0, color2 = 0;
+  ALLEGRO_COLOR color1, color2;
   int y_rect1, y_rect2, x_mid;
   int to_be_filled, to_be_drawn;
 
-  w = bitmap->w;
+  w = al_get_bitmap_width(bitmap);
   if (!(w & 1))
     w -= 1;
-  h = bitmap->h;
+  h = al_get_bitmap_height(bitmap);
   y_rect1 = ellipse_h / 2;
   y_rect2 = h - y_rect1 - 1;
   x_mid = w / 2;
@@ -222,8 +224,9 @@ draw_score_bitmap (BITMAP * bitmap, int cursor, int ellipse_h, int fill_level)
     fill_level = 0;
   else
     {
-      color1 = CURRENT_CURSOR[cursor].color_entry + COLORS_PER_TEAM / 2;
-      color2 = CURRENT_CURSOR[cursor].color_entry + COLORS_PER_TEAM - 1;
+      int team = CURRENT_CURSOR[cursor].team;
+      color1 = lw_team_color(team, 128);  // Mid intensity
+      color2 = lw_team_color(team, 255);  // Full intensity
     }
   if (fill_level < 0)
     fill_level = 0;
@@ -239,7 +242,7 @@ draw_score_bitmap (BITMAP * bitmap, int cursor, int ellipse_h, int fill_level)
       fill_level /= 1000;
       fill_level += 2 * y_rect1;
 
-      rectfill (bitmap, 0, 0, w, h, 0);
+      rectfill (bitmap, 0, 0, w, h, al_map_rgb(0, 0, 0));
 
       if (to_be_filled)
         ellipsefill (bitmap, x_mid, y_rect2, x_mid, ellipse_h / 2, color1);
@@ -277,7 +280,7 @@ display_scores (void)
   int ellipse_h;
   int i;
   int cursor[3];
-  BITMAP *eprouvette[3];
+  ALLEGRO_BITMAP *eprouvette[3];
   int time_delay[3] = { 500, 2500, 1500 };
   int fill_level;
   int done[3];
@@ -333,7 +336,7 @@ display_scores (void)
       done[i] = 0;
       write_score (cursor[i], buf[i], 0);
       buf_old[i][0] = '\0';
-      eprouvette[i] = my_create_bitmap (w, h[i]);
+      eprouvette[i] = my_create_memory_bitmap (w, h[i]);
     }
 
   d[MENU_QUICK_QUIT].flags = D_HIDDEN;
@@ -344,7 +347,7 @@ display_scores (void)
   my_update_dialog (dp);
   shutdown_dialog (dp);
 
-  my_fade_in ();
+  // my_fade_in (); // No longer needed in true color mode
 
   play_win ();
   first_ticker = get_ticker ();
@@ -440,7 +443,7 @@ display_scores (void)
     }
 
   for (i = 0; i < 3; ++i)
-    destroy_bitmap (eprouvette[i]);
+    al_destroy_bitmap (eprouvette[i]);
   if (retour > 0)
     retour--;
 

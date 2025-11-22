@@ -52,6 +52,7 @@
 /* includes                                                         */
 /*==================================================================*/
 
+#include "backport.h"
 #include "bigdata.h"
 #include "config.h"
 #include "map.h"
@@ -87,8 +88,8 @@ MESH *CURRENT_MESH = NULL;
 int CURRENT_MESH_SIZE = 0;
 int CURRENT_AREA_W = 0;
 int CURRENT_AREA_H = 0;
-BITMAP *CURRENT_AREA_DISP = NULL;
-BITMAP *CURRENT_AREA_BACK = NULL;
+ALLEGRO_BITMAP *CURRENT_AREA_DISP = NULL;
+ALLEGRO_BITMAP *CURRENT_AREA_BACK = NULL;
 
 /*==================================================================*/
 /* fonctions                                                        */
@@ -100,13 +101,13 @@ BITMAP *CURRENT_AREA_BACK = NULL;
 
 /*------------------------------------------------------------------*/
 static MESHER *
-create_first_mesher (BITMAP * map)
+create_first_mesher (ALLEGRO_BITMAP * map)
 {
   MESHER *result;
   int x, y, h, w, size, i, j;
 
-  w = map->w;
-  h = map->h;
+  w = al_get_bitmap_width (map);
+  h = al_get_bitmap_height (map);
   size = h * w;
   result = malloc_in_big_data_top (size * sizeof (MESHER));
   if (result != NULL)
@@ -121,7 +122,7 @@ create_first_mesher (BITMAP * map)
 
       for (y = 0; y < h; ++y)
         for (x = 0; x < w; ++x)
-          result[y * w + x].used = (getpixel (map, x, y) == MESH_FG) ? 0 : 1;
+          result[y * w + x].used = is_color_light(getpixel (map, x, y)) ? 0 : 1;
 
       for (y = 1; y < h - 1; ++y)
         for (x = 1; x < w - 1; ++x)
@@ -163,14 +164,14 @@ create_first_mesher (BITMAP * map)
 
 /*------------------------------------------------------------------*/
 static int
-group_mesher (MESHER * mesher, BITMAP * map, int step)
+group_mesher (MESHER * mesher, ALLEGRO_BITMAP * map, int step)
 {
   int found = 0;
   int x, y, w, h, i, j, k;
   MESHER *ne, *se, *sw, *nw, *test;
 
-  w = map->w;
-  h = map->h;
+  w = al_get_bitmap_width (map);
+  h = al_get_bitmap_height (map);
 
   for (y = 0; y < h - step; y += step * 2)
     for (x = 0; x < w - step; x += step * 2)
@@ -236,14 +237,15 @@ group_mesher (MESHER * mesher, BITMAP * map, int step)
 
 /*------------------------------------------------------------------*/
 static MESH *
-mesher_to_mesh (MESHER * mesher, BITMAP * map, int *size, int *w, int *h)
+mesher_to_mesh (MESHER * mesher, ALLEGRO_BITMAP * map, int *size, int *w,
+                int *h)
 {
   MESH *result;
   MESHER *temp;
   int mesher_size, i, j, k;
 
-  (*w) = map->w;
-  (*h) = map->h;
+  (*w) = al_get_bitmap_width (map);
+  (*h) = al_get_bitmap_height (map);
   mesher_size = (*h) * (*w);
 
   *size = 0;
@@ -344,7 +346,7 @@ int
 create_mesh (void)
 {
   int retour = 0, i;
-  BITMAP *map;
+  ALLEGRO_BITMAP *map;
   MESHER *mesher;
   int zoom_factor = 1;
 
@@ -374,7 +376,7 @@ create_mesh (void)
                                          &CURRENT_AREA_W, &CURRENT_AREA_H);
           free_last_big_data_top ();
         }
-      destroy_bitmap (map);
+      al_destroy_bitmap (map);
     }
   if (CURRENT_MESH == NULL)
     retour = -1;                /* pas assez de memoire */
@@ -387,10 +389,10 @@ create_mesh (void)
 /*------------------------------------------------------------------*/
 
 /*------------------------------------------------------------------*/
-BITMAP *
+ALLEGRO_BITMAP *
 create_mesh_bitmap (int mode)
 {
-  BITMAP *result;
+  ALLEGRO_BITMAP *result;
   int i, j, color;
 
   result = lw_maptex_create_map
@@ -421,12 +423,18 @@ create_mesh_bitmap (int mode)
               color = i;
             }
 
-          rectfill (result, CURRENT_MESH[i].x,
-                    CURRENT_MESH[i].y,
-                    CURRENT_MESH[i].x +
-                    CURRENT_MESH[i].side.size - 1,
-                    CURRENT_MESH[i].y +
-                    CURRENT_MESH[i].side.size - 1, 96 + color % 32);
+          // Create a color based on mesh index for visualization
+          // Map the old palette index (96 + color % 32) to a grayscale or color
+          {
+            int intensity = 96 + (color % 32) * 5; // Scale to 0-255 range
+            ALLEGRO_COLOR mesh_color = al_map_rgb(intensity, intensity, intensity);
+            rectfill (result, CURRENT_MESH[i].x,
+                      CURRENT_MESH[i].y,
+                      CURRENT_MESH[i].x +
+                      CURRENT_MESH[i].side.size - 1,
+                      CURRENT_MESH[i].y +
+                      CURRENT_MESH[i].side.size - 1, mesh_color);
+          }
         }
     }
 

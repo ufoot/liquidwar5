@@ -51,8 +51,7 @@
 /* includes                                                         */
 /*==================================================================*/
 
-#include <allegro.h>
-
+#include "backport.h"
 #include "ping.h"
 #include "thrdgen.h"
 #include "ticker.h"
