@@ -117,7 +117,7 @@ main_menu (int fade_in)
 
   if (fade_in)
     {
-      my_fade_in ();
+      // my_fade_in (); // No longer needed in true color mode
     }
 
   while (retour != MENU_EXIT)

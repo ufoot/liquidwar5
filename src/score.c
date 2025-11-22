@@ -209,7 +209,7 @@ draw_score_bitmap (ALLEGRO_BITMAP * bitmap, int cursor, int ellipse_h,
                    int fill_level)
 {
   int w, h;
-  int color1 = 0, color2 = 0;
+  ALLEGRO_COLOR color1, color2;
   int y_rect1, y_rect2, x_mid;
   int to_be_filled, to_be_drawn;
 
@@ -224,8 +224,9 @@ draw_score_bitmap (ALLEGRO_BITMAP * bitmap, int cursor, int ellipse_h,
     fill_level = 0;
   else
     {
-      color1 = CURRENT_CURSOR[cursor].color_entry + COLORS_PER_TEAM / 2;
-      color2 = CURRENT_CURSOR[cursor].color_entry + COLORS_PER_TEAM - 1;
+      int team = CURRENT_CURSOR[cursor].team;
+      color1 = lw_team_color(team, 128);  // Mid intensity
+      color2 = lw_team_color(team, 255);  // Full intensity
     }
   if (fill_level < 0)
     fill_level = 0;
@@ -241,7 +242,7 @@ draw_score_bitmap (ALLEGRO_BITMAP * bitmap, int cursor, int ellipse_h,
       fill_level /= 1000;
       fill_level += 2 * y_rect1;
 
-      rectfill (bitmap, 0, 0, w, h, 0);
+      rectfill (bitmap, 0, 0, w, h, al_map_rgb(0, 0, 0));
 
       if (to_be_filled)
         ellipsefill (bitmap, x_mid, y_rect2, x_mid, ellipse_h / 2, color1);
@@ -346,7 +347,7 @@ display_scores (void)
   my_update_dialog (dp);
   shutdown_dialog (dp);
 
-  my_fade_in ();
+  // my_fade_in (); // No longer needed in true color mode
 
   play_win ();
   first_ticker = get_ticker ();

@@ -51,7 +51,7 @@ void rand_poly_diag_cut()
                for( r = start; r < map.num_row; r += 2 )
                {
 		   
-                    offset(&xoffset, &yoffset, r, 0);
+                    offset(&xoffset, &yoffset, r, al_map_rgb(0, 0, 0));
 
                     cutsize = rand()%(section_height/2-map.max_pad)+1;
 

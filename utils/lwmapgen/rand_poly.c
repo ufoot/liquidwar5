@@ -62,7 +62,7 @@ rand_poly ()
 
 
   /* draw poly */
-  polygon (map.map, num_vert, vert, map.color);
+  polygon (map.map, num_vert, vert, map.color == 0 ? al_map_rgb(0, 0, 0) : al_map_rgb(255, 255, 255));
 
   delete_array (vert);
 

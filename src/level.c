@@ -66,7 +66,6 @@
 #include "map.h"
 #include "maptex.h"
 #include "menu.h"
-#include "palette.h"
 #include "sound.h"
 #include "texture.h"
 #include "macro.h"
@@ -104,7 +103,11 @@ palette_128 (DIALOG * d, int x, int y, int w, int h)
       d[k].h = h2;
       d[k].fg = MENU_FG;
       d[k].flags = D_EXIT;
-      d[k].bg = k + 128;
+      // Map k (0-127) to a team color with intensity
+      // Divide into 6 teams with gradients for each
+      int team = k / (128 / 6);
+      int intensity = (k % (128 / 6)) * 255 / (128 / 6);
+      d[k].bg = lw_team_color(team, intensity);
     }
   k = 0;
   for (i = 0; i < 12; ++i)
@@ -179,7 +182,7 @@ display_chosen_level (void)
                             LW_RANDOM_ON, CONFIG_USE_DEFAULT_TEXTURE);
   lw_maptex_set_bg_palette (CONFIG_LEVEL_MAP, CONFIG_LEVEL_BG, 0,
                             LW_RANDOM_ON, CONFIG_USE_DEFAULT_TEXTURE);
-  my_set_palette ();
+  // my_set_palette (); // No longer needed in true color mode
   pour_voir = lw_maptex_create_map
     (CONFIG_LEVEL_MAP, CONFIG_LEVEL_FG, CONFIG_LEVEL_BG, 0, LW_RANDOM_ON,
      MIN_MAP_RES_W[CONFIG_MIN_MAP_RES], MIN_MAP_RES_H[CONFIG_MIN_MAP_RES],
@@ -606,7 +609,7 @@ choose_map (void)
   buf1[0] = 0;
   buf2[0] = 0;
   display_back_image ();
-  set_palette_for_choose_color ();
+  // set_palette_for_choose_color (); // No longer needed in true color mode
   quick_buttons (d);
   retrieve_choose_level_xy (&x1, &x2, &x3, &x4, &x5, &x6, &x7, &x8,
                             &y1, &y2, &y3, &y4, &y5, &y6, &y7, &y8);

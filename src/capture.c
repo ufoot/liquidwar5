@@ -56,11 +56,11 @@
 
 #include <allegro5/allegro.h>
 
+#include "backport.h"
 #include "capture.h"
 #include "viewport.h"
 #include "log.h"
 #include "init.h"
-#include "palette.h"
 #include "config.h"
 #include "ticker.h"
 #include "macro.h"

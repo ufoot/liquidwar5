@@ -283,7 +283,11 @@ update_team_box (DIALOG * d, int number)
     }
   else
     {
-      d[0].bg = 128 + (CONFIG_TEAM_COLOR[number]) * 10;
+      // Map team color (0-5) with some brightness offset
+      int color_idx = CONFIG_TEAM_COLOR[number];
+      int team = color_idx / 2;  // Map 12 colors to 6 teams
+      int intensity = (color_idx % 2) ? 200 : 128;  // Alternate between mid and bright
+      d[0].bg = lw_team_color(team, intensity);
     }
 }
 
@@ -344,7 +348,11 @@ team_param (DIALOG * d, int x, int y, int number)
       d[i].x = x + (i - 2) * w1;
       d[i].y = y + 2 * h;
       d[i].w = w1 - 2;
-      d[i].bg = 128 + (i - 2) * 10;
+      // Create 12 color buttons (2 shades × 6 teams)
+      int color_idx = i - 2;
+      int team = color_idx / 2;  // Map 12 colors to 6 teams
+      int intensity = (color_idx % 2) ? 200 : 128;  // Alternate between mid and bright
+      d[i].bg = lw_team_color(team, intensity);
     }
 
   for (i = 16; i < 20; ++i)
@@ -413,8 +421,8 @@ choose_teams (void)
 
   d[124].proc = NULL;
 
-  set_palette_for_choose_color ();
-  my_set_palette ();
+  // set_palette_for_choose_color (); // No longer needed in true color mode
+  // my_set_palette (); // No longer needed in true color mode
   display_back_image ();
 
   while (retour == 0)

@@ -121,7 +121,7 @@ options (void)
           gfxmode_change = 0;
           display_back_image ();
           dp = my_init_dialog (d, choix);
-          my_fade_in ();
+          // my_fade_in (); // No longer needed in true color mode
         }
       else
         {

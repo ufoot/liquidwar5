@@ -122,7 +122,7 @@ create_first_mesher (ALLEGRO_BITMAP * map)
 
       for (y = 0; y < h; ++y)
         for (x = 0; x < w; ++x)
-          result[y * w + x].used = (getpixel (map, x, y) == MESH_FG) ? 0 : 1;
+          result[y * w + x].used = is_color_light(getpixel (map, x, y)) ? 0 : 1;
 
       for (y = 1; y < h - 1; ++y)
         for (x = 1; x < w - 1; ++x)
@@ -423,12 +423,18 @@ create_mesh_bitmap (int mode)
               color = i;
             }
 
-          rectfill (result, CURRENT_MESH[i].x,
-                    CURRENT_MESH[i].y,
-                    CURRENT_MESH[i].x +
-                    CURRENT_MESH[i].side.size - 1,
-                    CURRENT_MESH[i].y +
-                    CURRENT_MESH[i].side.size - 1, 96 + color % 32);
+          // Create a color based on mesh index for visualization
+          // Map the old palette index (96 + color % 32) to a grayscale or color
+          {
+            int intensity = 96 + (color % 32) * 5; // Scale to 0-255 range
+            ALLEGRO_COLOR mesh_color = al_map_rgb(intensity, intensity, intensity);
+            rectfill (result, CURRENT_MESH[i].x,
+                      CURRENT_MESH[i].y,
+                      CURRENT_MESH[i].x +
+                      CURRENT_MESH[i].side.size - 1,
+                      CURRENT_MESH[i].y +
+                      CURRENT_MESH[i].side.size - 1, mesh_color);
+          }
         }
     }
 

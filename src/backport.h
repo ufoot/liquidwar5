@@ -113,6 +113,24 @@
 #define LOCK_VARIABLE(x)
 #define LOCK_FUNCTION(x)
 
+// Special color value for "no color" or transparent (was -1 in Allegro 4)
+#define NO_COLOR (al_map_rgba(0, 0, 0, 0))
+
+// Color selection constants (from old palette.h)
+#define CHOOSE_COLOR_NUMBER 128
+#define CHOOSE_COLOR_WHITE 120
+#define CHOOSE_COLOR_BLACK 127
+
+// Palette-related variables (from old palette.h/c)
+extern int COLORS_PER_TEAM;
+
+// Team color computation (replaces palette-based color system)
+ALLEGRO_COLOR lw_team_color(int team, int intensity);
+
+// Color classification helpers (sum of RGB >= 3*128 is light, < 3*128 is dark)
+int is_color_light(ALLEGRO_COLOR c);
+int is_color_dark(ALLEGRO_COLOR c);
+
 /*==================================================================*/
 /* types                                                            */
 /*==================================================================*/
@@ -200,9 +218,9 @@ extern char empty_string[];
 extern volatile char key[];
 
 // GUI color variables for Allegro 4 compatibility
-extern int gui_bg_color;
-extern int gui_fg_color;
-extern int gui_mg_color;
+extern ALLEGRO_COLOR gui_bg_color;
+extern ALLEGRO_COLOR gui_fg_color;
+extern ALLEGRO_COLOR gui_mg_color;
 
 /*==================================================================*/
 /* fonctions globales                                               */
@@ -217,24 +235,24 @@ void show_mouse (ALLEGRO_BITMAP *bmp);
 int poll_mouse (void);
 int mouse_needs_poll (void);
 
-void clear_to_color (ALLEGRO_BITMAP * bitmap, int color);
-void putpixel (ALLEGRO_BITMAP * bitmap, int x, int y, int color);
-void putpixel_fast (int x, int y, int color);
-int getpixel (ALLEGRO_BITMAP * bitmap, int x, int y);
+void clear_to_color (ALLEGRO_BITMAP * bitmap, ALLEGRO_COLOR color);
+void putpixel (ALLEGRO_BITMAP * bitmap, int x, int y, ALLEGRO_COLOR color);
+void putpixel_fast (int x, int y, ALLEGRO_COLOR color);
+ALLEGRO_COLOR getpixel (ALLEGRO_BITMAP * bitmap, int x, int y);
 void rect (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2,
-           int color);
+           ALLEGRO_COLOR color);
 void rectfill (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2,
-               int color);
+               ALLEGRO_COLOR color);
 void rectfill_dotted (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2,
-                      int fg, int bg);
-void vline (ALLEGRO_BITMAP * bitmap, int x, int y1, int y2, int color);
-void hline (ALLEGRO_BITMAP * bitmap, int x1, int y, int x2, int color);
+                      ALLEGRO_COLOR fg, ALLEGRO_COLOR bg);
+void vline (ALLEGRO_BITMAP * bitmap, int x, int y1, int y2, ALLEGRO_COLOR color);
+void hline (ALLEGRO_BITMAP * bitmap, int x1, int y, int x2, ALLEGRO_COLOR color);
 void line (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2,
-           int color);
-void ellipse (ALLEGRO_BITMAP * bitmap, int x, int y, int rx, int ry, int color);
-void ellipsefill (ALLEGRO_BITMAP * bitmap, int x, int y, int rx, int ry, int color);
-void circlefill (ALLEGRO_BITMAP * bitmap, int x, int y, int radius, int color);
-void polygon (ALLEGRO_BITMAP * bitmap, int vertices, const int *points, int color);
+           ALLEGRO_COLOR color);
+void ellipse (ALLEGRO_BITMAP * bitmap, int x, int y, int rx, int ry, ALLEGRO_COLOR color);
+void ellipsefill (ALLEGRO_BITMAP * bitmap, int x, int y, int rx, int ry, ALLEGRO_COLOR color);
+void circlefill (ALLEGRO_BITMAP * bitmap, int x, int y, int radius, ALLEGRO_COLOR color);
+void polygon (ALLEGRO_BITMAP * bitmap, int vertices, const int *points, ALLEGRO_COLOR color);
 
 int usetc (char *s, int c);
 int ugetc (const char *s);
@@ -257,7 +275,7 @@ char *uconvert_ascii (const char *s, char buf[], int size);
 int text_length (const ALLEGRO_FONT * f, const char *s);
 int text_height (const ALLEGRO_FONT * f);
 void textout_ex (ALLEGRO_BITMAP * bmp, const ALLEGRO_FONT * f, const char *s,
-                 int x, int y, int color, int bg);
+                 int x, int y, ALLEGRO_COLOR color, ALLEGRO_COLOR bg);
 
 void set_volume (int digi_volume, int midi_volume);
 int play_midi (ALLEGRO_SAMPLE *midi, int loop);
@@ -292,8 +310,8 @@ void stretch_blit (ALLEGRO_BITMAP * source, ALLEGRO_BITMAP * dest,
                    int source_x, int source_y, int source_width,
                    int source_height, int dest_x, int dest_y, int dest_width,
                    int dest_height);
-ALLEGRO_BITMAP *load_bitmap (const char *filename, PALETTE pal);
-int save_bitmap (const char *filename, ALLEGRO_BITMAP *bmp, PALETTE pal);
+ALLEGRO_BITMAP *load_bitmap (const char *filename);
+int save_bitmap (const char *filename, ALLEGRO_BITMAP *bmp);
 ALLEGRO_BITMAP *my_create_bitmap (int w, int h);
 ALLEGRO_BITMAP *my_create_memory_bitmap (int w, int h);
 ALLEGRO_BITMAP *my_create_video_bitmap (int w, int h);

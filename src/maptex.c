@@ -53,10 +53,10 @@
 
 #include <string.h>
 
+#include "backport.h"
 #include "maptex.h"
 #include "map.h"
 #include "texture.h"
-#include "palette.h"
 #include "disk.h"
 
 /*==================================================================*/
@@ -185,9 +185,8 @@ lw_maptex_set_fg_palette (int num,
 {
   int found;
 
-  set_fg_texture_palette (calc_real_texture_number
-                          (num, fg, network, random, use_default_texture,
-                           &found));
+  // set_fg_texture_palette - No longer needed in true color mode
+  calc_real_texture_number(num, fg, network, random, use_default_texture, &found);
 }
 
 /*-----------------------------------------------------------------*/
@@ -198,7 +197,6 @@ lw_maptex_set_bg_palette (int num,
 {
   int found;
 
-  set_bg_texture_palette (calc_real_texture_number
-                          (num, bg, network, random, use_default_texture,
-                           &found));
+  // set_bg_texture_palette - No longer needed in true color mode
+  calc_real_texture_number(num, bg, network, random, use_default_texture, &found);
 }

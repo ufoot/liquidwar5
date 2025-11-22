@@ -54,10 +54,11 @@
 
 #include "alleg2.h"
 #include "area.h"
+#include "backport.h"
 #include "decal.h"
+#include "dialog.h"
 #include "grad.h"
 #include "mesh.h"
-#include "palette.h"
 #include "startup.h"
 #include "lwtime.h"
 #include "config.h"
@@ -93,7 +94,9 @@ create_gradient_bitmap (int team)
               {
                 color = (temp->info[team].state.grad
                          + AREA_START_GRADIENT) % COLORS_PER_TEAM;
-                putpixel_fast (x, y, color + COLOR_FIRST_ENTRY[team]);
+                // Convert gradient value (0-COLORS_PER_TEAM) to intensity (0-255)
+                int intensity = (color * 255) / COLORS_PER_TEAM;
+                putpixel_fast (x, y, lw_team_color(team, intensity));
               }
             else
               putpixel_fast (x, y, MENU_BG);
@@ -119,9 +122,15 @@ create_dir_bitmap (int team)
     for (x = 0; x < CURRENT_AREA_W; ++x)
       {
         if ((temp = CURRENT_AREA[i++].mesh) != NULL)
-          putpixel_fast (x, y, 134
-                    + (temp->info[team].state.dir / 4) * 42
-                    + (temp->info[team].state.dir % 4) * 10);
+          {
+            // Old palette code: 134 + (dir/4)*42 + (dir%4)*10
+            // This was generating different colors based on direction
+            // For now, map direction to an intensity value
+            int dir_value = (temp->info[team].state.dir / 4) * 42
+                          + (temp->info[team].state.dir % 4) * 10;
+            int intensity = (dir_value * 255) / 134; // Scale to 0-255
+            putpixel_fast (x, y, lw_team_color(team, intensity));
+          }
       }
 
   return result;

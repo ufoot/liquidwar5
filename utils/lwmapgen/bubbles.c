@@ -58,8 +58,8 @@ bubbles ()
                *centery *= (centery / bubblesy);
                */
 
-              circlefill (map.map, centerx, centery, outradius, 255);
-              circlefill (map.map, centerx, centery, inradius, 0);
+              circlefill (map.map, centerx, centery, outradius, al_map_rgb(255, 255, 255));
+              circlefill (map.map, centerx, centery, inradius, al_map_rgb(0, 0, 0));
             }
         }                       /* for(c..) */
     }                           /* for(r..) */

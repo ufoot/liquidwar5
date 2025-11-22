@@ -57,7 +57,6 @@
 #include "bigdata.h"
 #include "texture.h"
 #include "disk.h"
-#include "palette.h"
 #include "startup.h"
 #include "log.h"
 #include "serial.h"
@@ -79,287 +78,29 @@
 /* gestion des bitmaps des textures                                 */
 /*------------------------------------------------------------------*/
 
-/*-----------------------------------------------------------------*/
-static int
-find_color (PALETTE pal, RGB rgb)
-{
-  int i, found = -1;
-
-  for (i = 0; i < 256 && found < 0; ++i)
-    if (pal[i].r == rgb.r && pal[i].g == rgb.g && pal[i].b == rgb.b)
-      found = i;
-
-  return found;
-}
-
-/*-----------------------------------------------------------------*/
-static int
-exist_color (PALETTE pal, RGB rgb)
-{
-  return (find_color (pal, rgb) >= 0);
-}
-
-/*-----------------------------------------------------------------*/
-static int
-recalculate_number_of_colors (int max_number, ALLEGRO_BITMAP * bmp,
-                              PALETTE pal)
-{
-  int i, x, y, n = 1;
-  RGB color;
-  PALETTE pal2;
-
-  color = pal[getpixel (bmp, 0, 0)];
-
-  for (i = 0; i < 256; ++i)
-    pal2[i] = color;
-
-  for (y = 0; y < al_get_bitmap_height(bmp) && n < max_number; ++y)
-    for (x = 0; x < al_get_bitmap_width(bmp) && n < max_number; ++x)
-      {
-        color = pal[getpixel (bmp, x, y)];
-        if (!exist_color (pal2, color))
-          pal2[n++] = color;
-      }
-  return n;
-}
-
-/*-----------------------------------------------------------------*/
-static void
-create_new_palette (PALETTE dst,
-                    PALETTE src,
-                    ALLEGRO_BITMAP * bmp, int first_color,
-                    int number_of_colors)
-{
-  int i, x, y, index;
-  int nb_retries = 0;
-  RGB color;
-
-  x = random () % al_get_bitmap_width(bmp);
-  y = random () % al_get_bitmap_height(bmp);
-  color = src[getpixel (bmp, x, y)];
-
-  for (i = 0; i < 256; ++i)
-    dst[i] = color;
-
-  for (i = 1; i < number_of_colors;)
-    {
-      x = random () % al_get_bitmap_width(bmp);
-      y = random () % al_get_bitmap_height(bmp);
-      index = getpixel (bmp, x, y);
-      color = src[index];
-      if ((!exist_color (dst, color)) ||
-          (nb_retries > LW_TEXTURE_RANDOM_MAX_RETRIES))
-        {
-          dst[first_color + (i++)] = color;
-          nb_retries = 0;
-        }
-      else
-        {
-          nb_retries++;
-        }
-    }
-}
-
-/*-----------------------------------------------------------------*/
-static void
-correct_palette (PALETTE pal, int first_color, int number_of_colors)
-{
-  int i;
-
-  for (i = 0; i < first_color; ++i)
-    {
-      pal[i].r = 0;
-      pal[i].g = 0;
-      pal[i].b = 0;
-    }
-  for (i = first_color + number_of_colors; i < 256; ++i)
-    {
-      pal[i].r = 63;
-      pal[i].g = 63;
-      pal[i].b = 63;
-    }
-}
-
-/*-----------------------------------------------------------------*/
-static void
-create_converted_bitmap (ALLEGRO_BITMAP * bmp,
-                         PALETTE dst,
-                         PALETTE src, int first_color, int number_of_colors)
-{
-  char corres[256];
-  int i, x, y, index;
-
-  for (i = 0; i < 256; ++i)
-    corres[i] = bestfit_color (dst, src[i].r, src[i].g, src[i].b);
-  al_set_target_bitmap (bmp);
-  for (y = 0; y < al_get_bitmap_height(bmp); ++y)
-    for (x = 0; x < al_get_bitmap_width(bmp); ++x)
-      {
-        index = corres[getpixel (bmp, x, y)];
-        index = (index < first_color ||
-                 index >= first_color + number_of_colors) ?
-          first_color : index;
-        putpixel_fast (x, y, index);
-      }
-}
-
-/*------------------------------------------------------------------*/
-static void
-red8col (ALLEGRO_BITMAP * bmp, PALETTE pal, int first_color,
-         int number_of_colors)
-{
-  PALETTE pal2;
-  int i;
-
-  for (i = 0; i < 256; ++i)
-    pal2[i] = pal[i];
-
-  number_of_colors = recalculate_number_of_colors
-    (number_of_colors, bmp, pal);
-  create_new_palette (pal, pal2, bmp, first_color, number_of_colors);
-  create_converted_bitmap (bmp, pal, pal2, first_color, number_of_colors);
-  correct_palette (pal, first_color, number_of_colors);
-}
-
-/*------------------------------------------------------------------*/
-static void
-texture_8to5 (ALLEGRO_BITMAP * bmp, PALETTE pal, void *result,
-              int first_color, int number_of_colors, char *filename)
-{
-  char *buffer;
-  int pos = 0, pos8 = 0, x, y, i;
-  char octet[5], toadd;
-  int coul;
-  char system_name_buffer[LW_TEXTURE_SYSTEM_NAME_SIZE + 1];
-
-  lw_serial_set_texture_header (result, (short) al_get_bitmap_width(bmp), (short) al_get_bitmap_height(bmp));
-
-  buffer = ((char *) result) + 2 * sizeof (short);
-
-  /*
-   * We store the system name
-   */
-  memset (system_name_buffer, 0, sizeof (system_name_buffer));
-  LW_MACRO_STRCPY (system_name_buffer, lw_path_get_system_name (filename));
-  memcpy (buffer, system_name_buffer, LW_TEXTURE_SYSTEM_NAME_SIZE);
-  buffer += LW_TEXTURE_SYSTEM_NAME_SIZE;
-
-  for (i = 0; i < number_of_colors; ++i)
-    {
-      buffer[pos++] = pal[first_color + i].r;
-      buffer[pos++] = pal[first_color + i].g;
-      buffer[pos++] = pal[first_color + i].b;
-    }
-
-  for (i = 0; i < 5; ++i)
-    octet[i] = 0;
-
-  for (y = 0; y < al_get_bitmap_height(bmp); ++y)
-    for (x = 0; x < al_get_bitmap_width(bmp); ++x)
-      {
-        coul = getpixel (bmp, x, y) - first_color;
-        toadd = 1 << pos8;
-        octet[0] |= (coul & 1) ? toadd : 0;
-        octet[1] |= (coul & 2) ? toadd : 0;
-        octet[2] |= (coul & 4) ? toadd : 0;
-        octet[3] |= (coul & 8) ? toadd : 0;
-        octet[4] |= (coul & 16) ? toadd : 0;
-
-        if (pos8 == 7 || (y == al_get_bitmap_height(bmp) - 1 && x == al_get_bitmap_width(bmp) - 1))
-          {
-            for (i = 0; i < 5; ++i)
-              {
-                buffer[pos++] = octet[i];
-                octet[i] = 0;
-              }
-            pos8 = 0;
-          }
-        else
-          pos8++;
-      }
-}
+/* Palette-based texture functions removed - not needed for Allegro 5 RGB mode */
 
 /*------------------------------------------------------------------*/
 void *
 lw_texture_archive_raw (const char *filename)
 {
-  int i, w, h, size = 0;
+  /* Simplified for Allegro 5 - just store the bitmap pointer directly
+   * No palette quantization or 5-bit packing needed with RGB bitmaps */
   ALLEGRO_BITMAP *bmp;
-  PALETTE pal;
-  char *result = NULL, *temp = NULL;
-  char *f = (char *) filename;
 
-  bmp = load_bitmap (filename, pal);
-  if (bmp)
-    {
-      w = al_get_bitmap_width(bmp);
-      h = al_get_bitmap_height(bmp);
-      if (w > 0 && h > 0)
-        {
-          temp = malloc (size =
-                         2 * sizeof (short)
-                         + LW_TEXTURE_SYSTEM_NAME_SIZE
-                         + 3 * TEXTURE_COLOR_NUMBER + ((w * h + 7) / 8) * 5);
-          if (temp)
-            {
-              red8col (bmp, pal, 0, TEXTURE_COLOR_NUMBER);
-              texture_8to5 (bmp, pal, temp, 0, TEXTURE_COLOR_NUMBER, f);
-            }
-        }
-      al_destroy_bitmap (bmp);
-    }
-  if (temp)
-    {
-      result = malloc (size);
-      if (result)
-        {
-          for (i = 0; i < size; ++i)
-            {
-              result[i] = temp[i];
-            }
-        }
-      free (temp);
-    }
+  bmp = al_load_bitmap_flags(filename, ALLEGRO_MEMORY_BITMAP);
 
-  return result;
+  /* Return the bitmap as-is - callers will use it as an ALLEGRO_BITMAP* */
+  return (void *)bmp;
 }
 
 /*------------------------------------------------------------------*/
 static ALLEGRO_BITMAP *
-create_raw_texture (void *ptr, int first)
+create_raw_texture (void *ptr)
 {
-  int x, y, pos8 = 0, color;
-  char totest, *data;
-  ALLEGRO_BITMAP *result;
-  short w, h;
-
-  data = ptr;
-  lw_serial_get_texture_header (data, &w, &h);
-  data += 2 * sizeof (short) + LW_TEXTURE_SYSTEM_NAME_SIZE + 3 * 32;
-
-  result = my_create_memory_bitmap (w, h);
-  if (result)
-    {
-      al_set_target_bitmap (result);
-      for (y = 0; y < h; ++y)
-        for (x = 0; x < w; ++x)
-          {
-            totest = 1 << pos8;
-            color = first + ((data[0] & totest) ? 1 : 0)
-              + ((data[1] & totest) ? 2 : 0)
-              + ((data[2] & totest) ? 4 : 0)
-              + ((data[3] & totest) ? 8 : 0) + ((data[4] & totest) ? 16 : 0);
-            putpixel_fast (x, y, color);
-            if (pos8 == 7)
-              {
-                data += 5;
-                pos8 = 0;
-              }
-            else
-              pos8++;
-          }
-    }
-  return result;
+  /* Simplified for Allegro 5 - ptr is already an ALLEGRO_BITMAP*
+   * Just return it directly */
+  return (ALLEGRO_BITMAP *)ptr;
 }
 
 /*------------------------------------------------------------------*/
@@ -389,18 +130,18 @@ get_raw_texture (int num)
 
 /*------------------------------------------------------------------*/
 static ALLEGRO_BITMAP *
-create_mono_texture (int first)
+create_mono_texture (ALLEGRO_COLOR color)
 {
   ALLEGRO_BITMAP *result;
 
   result = my_create_memory_bitmap (1, 1);
-  putpixel (result, 0, 0, first);
+  putpixel (result, 0, 0, color);
   return result;
 }
 
 /*------------------------------------------------------------------*/
 static ALLEGRO_BITMAP *
-create_texture (int num, int first)
+create_texture (int num, ALLEGRO_COLOR default_color)
 {
   ALLEGRO_BITMAP *result;
   void *texture;
@@ -409,11 +150,11 @@ create_texture (int num, int first)
 
   if (texture)
     {
-      result = create_raw_texture (texture, first);
+      result = create_raw_texture (texture);
     }
   else
     {
-      result = create_mono_texture (first);
+      result = create_mono_texture (default_color);
     }
 
   return result;
@@ -423,14 +164,16 @@ create_texture (int num, int first)
 ALLEGRO_BITMAP *
 lw_texture_create_bg (int num)
 {
-  return create_texture (num, BG_TEXTURE_FIRST_COLOR);
+  // In true color mode, use a default gray for background textures
+  return create_texture (num, al_map_rgb(64, 64, 64));
 }
 
 /*------------------------------------------------------------------*/
 ALLEGRO_BITMAP *
 lw_texture_create_fg (int num)
 {
-  return create_texture (num, FG_TEXTURE_FIRST_COLOR);
+  // In true color mode, use a default white for foreground textures
+  return create_texture (num, al_map_rgb(192, 192, 192));
 }
 
 /*------------------------------------------------------------------*/

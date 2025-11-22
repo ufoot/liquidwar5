@@ -54,12 +54,12 @@
 
 #include <allegro5/allegro.h>
 
+#include "backport.h"
 #include "area.h"
 #include "base.h"
 #include "config.h"
 #include "cursor.h"
 #include "decal.h"
-#include "palette.h"
 #include "viewport.h"
 #include "pion.h"
 #include "lwtime.h"
@@ -132,10 +132,10 @@ static CURSOR_POINT CURSOR_LAYOUT[CURSOR_POINT_NUMBER] =
 {-1, -4, 31, CL_MIDDLE}, {-1, -5, 31, CL_OUTSIDE}
 };
 
-static char CURSOR_GRAPHIC_MEMORY[NB_TEAMS][CURSOR_POINT_NUMBER];
+static ALLEGRO_COLOR CURSOR_GRAPHIC_MEMORY[NB_TEAMS][CURSOR_POINT_NUMBER];
 
-static char CURSOR_COLOR_MAP[CURSOR_COLOR_NUMBER];
-static char CURSOR_COLOR_BACK[CURSOR_COLOR_NUMBER];
+static int CURSOR_COLOR_MAP[CURSOR_COLOR_NUMBER];  // Intensity values (0-255)
+static ALLEGRO_COLOR CURSOR_COLOR_BACK[CURSOR_COLOR_NUMBER];
 
 /*==================================================================*/
 /* fonctions                                                        */
@@ -145,18 +145,15 @@ static char CURSOR_COLOR_BACK[CURSOR_COLOR_NUMBER];
 void
 init_disp_cursor (void)
 {
-  int i, x, y, color_back;
+  int i, x, y;
+  ALLEGRO_COLOR color_back;
 
+  // In true color mode, just pick random colors from the background texture
   for (i = 0; i < CURSOR_COLOR_NUMBER; ++i)
     {
-      color_back = 0;
-      while (color_back < FG_TEXTURE_FIRST_COLOR
-             || color_back >= FG_TEXTURE_FIRST_COLOR + 32)
-        {
-          x = random () % CURRENT_AREA_W;
-          y = random () % CURRENT_AREA_H;
-          color_back = getpixel (CURRENT_AREA_BACK, x, y);
-        }
+      x = random () % CURRENT_AREA_W;
+      y = random () % CURRENT_AREA_H;
+      color_back = getpixel (CURRENT_AREA_BACK, x, y);
       CURSOR_COLOR_BACK[i] = color_back;
     }
 }
@@ -165,11 +162,11 @@ init_disp_cursor (void)
 static void
 disp_cursor (int number)
 {
-  int i, x, y, x0, y0, color_offset;
+  int i, x, y, x0, y0, team;
 
   x0 = CURRENT_CURSOR[number].x;
   y0 = CURRENT_CURSOR[number].y;
-  color_offset = COLOR_FIRST_ENTRY[CURRENT_CURSOR[number].team];
+  team = CURRENT_CURSOR[number].team;
 
 
   for (i = 0; i < CURSOR_POINT_NUMBER; ++i)
@@ -183,7 +180,7 @@ disp_cursor (int number)
         case CL_INSIDE:
         case CL_MIDDLE:
           putpixel (CURRENT_AREA_DISP, x, y,
-                    CURSOR_COLOR_MAP[CURSOR_LAYOUT[i].color] + color_offset);
+                    lw_team_color(team, CURSOR_COLOR_MAP[CURSOR_LAYOUT[i].color]));
           break;
         case CL_MIDDLE2:
           putpixel (CURRENT_AREA_DISP, x, y,
@@ -216,26 +213,26 @@ disp_all_cursors (void)
 {
   int i, degrad_size, fp, ip;
 
+  // In true color mode, intensity ranges from 0 to 255
   degrad_size = CURSOR_COLOR_NUMBER / (2 * CURSOR_LIGHTS);
-  ip = ((GLOBAL_TICKER * COLORS_PER_TEAM) / CURSOR_CYCLE)
-    % (COLORS_PER_TEAM * 2);
+  ip = ((GLOBAL_TICKER * 256) / CURSOR_CYCLE) % (256 * 2);
   fp = 0;
 
   for (i = 0; i < CURSOR_COLOR_NUMBER; ++i)
     {
-      if (ip < COLORS_PER_TEAM)
+      if (ip < 256)
         CURSOR_COLOR_MAP[i] = ip;
       else
-        CURSOR_COLOR_MAP[i] = 2 * COLORS_PER_TEAM - 1 - ip;
+        CURSOR_COLOR_MAP[i] = 2 * 256 - 1 - ip;
 
-      fp += COLORS_PER_TEAM;
+      fp += 256;
       while (fp >= degrad_size)
         {
           fp -= degrad_size;
           ip++;
         }
-      while (ip >= 2 * COLORS_PER_TEAM)
-        ip -= 2 * COLORS_PER_TEAM;
+      while (ip >= 2 * 256)
+        ip -= 2 * 256;
     }
 
   for (i = 0; i < NB_TEAMS; ++i)

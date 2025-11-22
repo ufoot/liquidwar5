@@ -61,7 +61,6 @@
 #include <limits.h>
 
 #include "backport.h"
-#include "palette.h"
 #include "macro.h"
 #include "mutxgen.h"
 #include "thrdgen.h"
@@ -90,8 +89,6 @@ typedef struct
 /*==================================================================*/
 
 static int _allegro_errno = 0;
-static unsigned char *_rgb_to_palette_map = NULL;  // 24-bit RGB to palette index map
-static int _rgb_map_initialized = 0;
 static int _dummy = 0;          // stupid dummy to get rid of unused param warning
 static _backport_timer_data _backport_timers[_NB_TIMERS];
 static LW_MUTEX_DATA _backport_timer_mutex = { NULL };
@@ -109,10 +106,16 @@ volatile int mouse_y = 0;
 volatile int mouse_z = 0;
 volatile int mouse_b = 0;
 
+// Palette-related variables (from old palette.c)
+// In true color mode, we effectively have 256 intensity levels per team
+// This is a placeholder - real fix is to compute colors with al_map_rgb() directly
+int COLORS_PER_TEAM = 256;
+
 // GUI color variables for Allegro 4 compatibility
-int gui_bg_color = 0;
-int gui_fg_color = 15;
-int gui_mg_color = 8;
+// Converted from palette indices to ALLEGRO_COLOR
+ALLEGRO_COLOR gui_bg_color = {0, 0, 0, 1};  // Black
+ALLEGRO_COLOR gui_fg_color = {1, 1, 1, 1};  // White
+ALLEGRO_COLOR gui_mg_color = {0.5, 0.5, 0.5, 1};  // Gray
 int *allegro_errno = &_allegro_errno;
 volatile JOYSTICK_INFO joy[MAX_JOYSTICKS];
 int num_joysticks = 0;
@@ -232,158 +235,42 @@ show_mouse (ALLEGRO_BITMAP *bmp)
 
 /*------------------------------------------------------------------*/
 void
-clear_to_color (ALLEGRO_BITMAP * bitmap, int color)
+clear_to_color (ALLEGRO_BITMAP * bitmap, ALLEGRO_COLOR color)
 {
   // https://liballeg.org/stabledocs/en/alleg013.html#clear_to_color
   al_set_target_bitmap (bitmap);
-  if (color < 0 || color >= PALETTE_SIZE)
-    {
-      return;
-    }
-  ALLEGRO_COLOR al_color;
-  al_color = rgb_to_allegro_color(GLOBAL_PALETTE[color]);
-  al_clear_to_color (al_color);
+  al_clear_to_color (color);
 }
 
 /*------------------------------------------------------------------*/
 void
-putpixel (ALLEGRO_BITMAP * bitmap, int x, int y, int color)
+putpixel (ALLEGRO_BITMAP * bitmap, int x, int y, ALLEGRO_COLOR color)
 {
   // https://liballeg.org/stabledocs/en/alleg013.html#putpixel
-  if (color < 0 || color >= PALETTE_SIZE)
-    {
-      return;
-    }
-
-  RGB rgb = GLOBAL_PALETTE[color];
-  ALLEGRO_COLOR al_color = al_map_rgb(rgb.r, rgb.g, rgb.b);
-
   al_set_target_bitmap (bitmap);
-  al_put_pixel (x, y, al_color);
+  al_put_pixel (x, y, color);
 }
 
 /*------------------------------------------------------------------*/
 void
-putpixel_fast (int x, int y, int color)
+putpixel_fast (int x, int y, ALLEGRO_COLOR color)
 {
   // Optimized version that assumes target bitmap is already set
   // Use al_set_target_bitmap() before calling this in a loop
-  if (color < 0 || color >= PALETTE_SIZE)
-    {
-      return;
-    }
-
-  RGB rgb = GLOBAL_PALETTE[color];
-  ALLEGRO_COLOR al_color = al_map_rgb(rgb.r, rgb.g, rgb.b);
-
-  al_put_pixel (x, y, al_color);
+  al_put_pixel (x, y, color);
 }
 
 /*------------------------------------------------------------------*/
-static void
-_init_rgb_to_palette_map (void)
-{
-  // Initialize the 24-bit RGB to palette index lookup table
-  if (_rgb_map_initialized)
-    {
-      return;
-    }
-
-  // Allocate 16MB for 24-bit RGB space (2^24 = 16,777,216 bytes)
-  _rgb_to_palette_map = malloc(16777216);
-  if (_rgb_to_palette_map == NULL)
-    {
-      return;  // Fall back to slow lookup if allocation fails
-    }
-
-  // Initialize all entries to 255 (invalid palette index)
-  memset(_rgb_to_palette_map, 255, 16777216);
-
-  // Fill the map with palette colors
-  for (int i = 0; i < PALETTE_SIZE; i++)
-    {
-      float r, g, b, a;
-      al_unmap_rgba_f (rgb_to_allegro_color(GLOBAL_PALETTE[i]), &r, &g, &b, &a);
-
-      // Convert to 8-bit RGB
-      unsigned char r8 = (unsigned char)(r * 255.0f);
-      unsigned char g8 = (unsigned char)(g * 255.0f);
-      unsigned char b8 = (unsigned char)(b * 255.0f);
-
-      // Calculate 24-bit RGB index
-      int rgb_index = (r8 << 16) | (g8 << 8) | b8;
-      _rgb_to_palette_map[rgb_index] = (unsigned char)i;
-    }
-
-  _rgb_map_initialized = 1;
-}
-
-/*------------------------------------------------------------------*/
-int
+ALLEGRO_COLOR
 getpixel (ALLEGRO_BITMAP * bitmap, int x, int y)
 {
   // https://liballeg.org/stabledocs/en/alleg013.html#getpixel
-  /*
-   * Fast palette lookup using 24-bit RGB to palette index map.
-   * al_get_pixel takes bitmap as parameter, no need to set target.
-   */
-  ALLEGRO_COLOR pixel_color;
-
-  pixel_color = al_get_pixel (bitmap, x, y);
-
-  // Convert to RGB
-  float r, g, b, a;
-  al_unmap_rgba_f (pixel_color, &r, &g, &b, &a);
-  unsigned char r8 = (unsigned char)(r * 255.0f);
-  unsigned char g8 = (unsigned char)(g * 255.0f);
-  unsigned char b8 = (unsigned char)(b * 255.0f);
-
-  // Initialize lookup table if needed
-  if (!_rgb_map_initialized)
-    {
-      _init_rgb_to_palette_map();
-    }
-
-  // Fast lookup if map is available
-  if (_rgb_to_palette_map != NULL)
-    {
-      int rgb_index = (r8 << 16) | (g8 << 8) | b8;
-      unsigned char palette_index = _rgb_to_palette_map[rgb_index];
-
-      if (palette_index != 255)  // Found exact match
-        {
-          return (int)palette_index;
-        }
-    }
-
-  // Fallback: find closest palette color by distance
-  int best_match = 0;
-  float best_distance = 9999999.0f;
-
-  for (int i = 0; i < PALETTE_SIZE; i++)
-    {
-      float pr, pg, pb, pa;
-      al_unmap_rgba_f (rgb_to_allegro_color(GLOBAL_PALETTE[i]), &pr, &pg, &pb, &pa);
-
-      // Calculate distance (simple RGB distance)
-      float dr = r - pr;
-      float dg = g - pg;
-      float db = b - pb;
-      float distance = dr * dr + dg * dg + db * db;
-
-      if (distance < best_distance)
-        {
-          best_distance = distance;
-          best_match = i;
-        }
-    }
-
-  return best_match;
+  return al_get_pixel (bitmap, x, y);
 }
 
 /*------------------------------------------------------------------*/
 void
-rect (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2, int color)
+rect (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2, ALLEGRO_COLOR color)
 {
   // https://liballeg.org/stabledocs/en/alleg013.html#rect
   if (x2 < x1 || y2 < y1)
@@ -391,38 +278,30 @@ rect (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2, int color)
       return;
     }
   al_set_target_bitmap (bitmap);
-  if (color < 0 || color >= PALETTE_SIZE)
-    {
-      return;
-    }
-  ALLEGRO_COLOR al_color;
-  al_color = rgb_to_allegro_color(GLOBAL_PALETTE[color]);
-  al_draw_filled_rectangle (x1, y1, x2, y1 + 1, al_color);
-  al_draw_filled_rectangle (x2, y1, x2 + 1, y2, al_color);
-  al_draw_filled_rectangle (x1 + 1, y2, x2 + 1, y2 + 1, al_color);
-  al_draw_filled_rectangle (x1, y1 + 1, x1 + 1, y2 + 1, al_color);
+  
+
+  al_draw_filled_rectangle (x1, y1, x2, y1 + 1, color);
+  al_draw_filled_rectangle (x2, y1, x2 + 1, y2, color);
+  al_draw_filled_rectangle (x1 + 1, y2, x2 + 1, y2 + 1, color);
+  al_draw_filled_rectangle (x1, y1 + 1, x1 + 1, y2 + 1, color);
 }
 
 /*------------------------------------------------------------------*/
 void
-rectfill (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2, int color)
+rectfill (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2, ALLEGRO_COLOR color)
 {
   // https://liballeg.org/stabledocs/en/alleg013.html#rectfill
   al_set_target_bitmap (bitmap);
-  if (color < 0 || color >= PALETTE_SIZE)
-    {
-      return;
-    }
-  ALLEGRO_COLOR al_color;
-  al_color = rgb_to_allegro_color(GLOBAL_PALETTE[color]);
+  
+
   // +1 on second coord because floating point vs integer
-  al_draw_filled_rectangle (x1, y1, x2 + 1, y2 + 1, al_color);
+  al_draw_filled_rectangle (x1, y1, x2 + 1, y2 + 1, color);
 }
 
 /*------------------------------------------------------------------*/
 void
 rectfill_dotted (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2,
-                 int fg, int bg)
+                 ALLEGRO_COLOR fg, ALLEGRO_COLOR bg)
 {
   /*
    * This is not a genuine Allegro function, but used to backport the behavior
@@ -440,21 +319,7 @@ rectfill_dotted (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2,
    * Rather than implemeting generic pattern handling, this is quicker to implement.
    * and suits our limited need.
    */
-  if (fg < 0 || fg >= PALETTE_SIZE)
-    {
-      return;
-    }
-  ALLEGRO_COLOR al_fg;
-  al_fg = rgb_to_allegro_color(GLOBAL_PALETTE[fg]);
-
-  if (bg < 0 || bg >= PALETTE_SIZE)
-    {
-      return;
-    }
-  ALLEGRO_COLOR al_bg;
-  al_bg = rgb_to_allegro_color(GLOBAL_PALETTE[bg]);
-
-  ALLEGRO_COLOR al_color = al_bg;
+  ALLEGRO_COLOR color = bg;
   int x = 0;
   int y = 0;
 
@@ -463,15 +328,15 @@ rectfill_dotted (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2,
     {
       for (x = x1; x <= x2; x++)
         {
-          al_color = ((x + y) % 2) != 0 ? al_fg : al_bg;
-          al_put_pixel (x, y, al_color);
+          color = ((x + y) % 2) != 0 ? fg : bg;
+          al_put_pixel (x, y, color);
         }
     }
 }
 
 /*------------------------------------------------------------------*/
 void
-vline (ALLEGRO_BITMAP * bitmap, int x, int y1, int y2, int color)
+vline (ALLEGRO_BITMAP * bitmap, int x, int y1, int y2, ALLEGRO_COLOR color)
 {
   // https://liballeg.org/stabledocs/en/alleg013.html#vline
   if (y2 < y1)
@@ -481,18 +346,14 @@ vline (ALLEGRO_BITMAP * bitmap, int x, int y1, int y2, int color)
       y1 = y;
     }
   al_set_target_bitmap (bitmap);
-  if (color < 0 || color >= PALETTE_SIZE)
-    {
-      return;
-    }
-  ALLEGRO_COLOR al_color;
-  al_color = rgb_to_allegro_color(GLOBAL_PALETTE[color]);
-  al_draw_filled_rectangle (x, y1, x + 1, y2 + 1, al_color);
+  
+
+  al_draw_filled_rectangle (x, y1, x + 1, y2 + 1, color);
 }
 
 /*------------------------------------------------------------------*/
 void
-hline (ALLEGRO_BITMAP * bitmap, int x1, int y, int x2, int color)
+hline (ALLEGRO_BITMAP * bitmap, int x1, int y, int x2, ALLEGRO_COLOR color)
 {
   // https://liballeg.org/stabledocs/en/alleg013.html#hline
   if (x2 < x1)
@@ -502,17 +363,13 @@ hline (ALLEGRO_BITMAP * bitmap, int x1, int y, int x2, int color)
       x1 = x;
     }
   al_set_target_bitmap (bitmap);
-  if (color < 0 || color >= PALETTE_SIZE)
-    {
-      return;
-    }
-  ALLEGRO_COLOR al_color;
-  al_color = rgb_to_allegro_color(GLOBAL_PALETTE[color]);
-  al_draw_filled_rectangle (x1, y, x2 + 1, y + 1, al_color);
+  
+
+  al_draw_filled_rectangle (x1, y, x2 + 1, y + 1, color);
 }
 
 void
-line (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2, int color)
+line (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2, ALLEGRO_COLOR color)
 {
   // https://liballeg.org/stabledocs/en/alleg013.html#line
   if (x1 == x2)
@@ -527,12 +384,8 @@ line (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2, int color)
     }
 
   al_set_target_bitmap (bitmap);
-  if (color < 0 || color >= PALETTE_SIZE)
-    {
-      return;
-    }
-  ALLEGRO_COLOR al_color;
-  al_color = rgb_to_allegro_color(GLOBAL_PALETTE[color]);
+  
+
 
   /* ugliest line drawing ever, but we don't care, this is never called */
   int w = x2 - x1;
@@ -543,7 +396,7 @@ line (ALLEGRO_BITMAP * bitmap, int x1, int y1, int x2, int y2, int color)
     {
       int x = ((i * x2) + ((d - i) * x1)) / d;
       int y = ((i * y2) + ((d - i) * y1)) / d;
-      al_put_pixel (x, y, al_color);
+      al_put_pixel (x, y, color);
     }
 }
 
@@ -936,7 +789,7 @@ text_height (const ALLEGRO_FONT * f)
 /*------------------------------------------------------------------*/
 void
 textout_ex (ALLEGRO_BITMAP * bmp, const ALLEGRO_FONT * f, const char *s,
-            int x, int y, int color, int bg)
+            int x, int y, ALLEGRO_COLOR color, ALLEGRO_COLOR bg)
 {
   // https://liballeg.org/stabledocs/en/alleg018.html#textout_ex
   int w = 0;
@@ -947,14 +800,7 @@ textout_ex (ALLEGRO_BITMAP * bmp, const ALLEGRO_FONT * f, const char *s,
   rectfill (bmp, x, y, x + w - 1, y + h - 1, bg);
 
   al_set_target_bitmap (bmp);
-  if (color < 0 || color >= PALETTE_SIZE)
-    {
-      return;
-    }
-  ALLEGRO_COLOR al_color;
-  al_color = rgb_to_allegro_color(GLOBAL_PALETTE[color]);
-
-  al_draw_text (f, al_color, x, y, 0, s);
+  al_draw_text (f, color, x, y, 0, s);
 }
 
 /*------------------------------------------------------------------*/
@@ -1135,11 +981,10 @@ stretch_blit (ALLEGRO_BITMAP * source, ALLEGRO_BITMAP * dest,
 
 /*------------------------------------------------------------------*/
 ALLEGRO_BITMAP *
-load_bitmap (const char *filename, PALETTE pal)
+load_bitmap (const char *filename)
 {
   // https://liballeg.org/stabledocs/en/alleg014.html#load_bitmap
   ALLEGRO_BITMAP *bmp;
-  (void) pal; // Ignore palette parameter since Allegro 5 handles palettes differently
 
   // Try using flags to optimize loading performance
   bmp = al_load_bitmap_flags(filename, ALLEGRO_MEMORY_BITMAP);
@@ -1599,14 +1444,9 @@ int set_gfx_mode(int card, int w, int h, int v_w, int v_h) {
 
 /*------------------------------------------------------------------*/
 void set_palette(void *palette) {
-  // Update the global palette with the provided palette
-  // The palette parameter is expected to be PALETTE (RGB array)
-  if (palette) {
-    PALETTE *pal = (PALETTE *)palette;
-    for (int i = 0; i < PALETTE_SIZE; i++) {
-      GLOBAL_PALETTE[i] = (*pal)[i];
-    }
-  }
+  // In Allegro 5 without palette mode, this is a no-op
+  // Colors are handled as direct RGB values (0xRRGGBB format)
+  (void)palette; // Stub for compatibility
 }
 
 /*------------------------------------------------------------------*/
@@ -1905,54 +1745,41 @@ void delete_file(const char *filename) {
 }
 
 /*------------------------------------------------------------------*/
-void ellipse (ALLEGRO_BITMAP * bitmap, int x, int y, int rx, int ry, int color) {
+void ellipse (ALLEGRO_BITMAP * bitmap, int x, int y, int rx, int ry, ALLEGRO_COLOR color) {
   // Draw ellipse outline - Allegro 4 compatibility
-  if (color < 0 || color >= PALETTE_SIZE) {
-    return;
-  }
-  ALLEGRO_COLOR al_color = rgb_to_allegro_color(GLOBAL_PALETTE[color]);
 
   ALLEGRO_BITMAP *old_target = al_get_target_bitmap();
   al_set_target_bitmap(bitmap);
-  al_draw_ellipse(x, y, rx, ry, al_color, 1.0);
+  al_draw_ellipse(x, y, rx, ry, color, 1.0);
   al_set_target_bitmap(old_target);
 }
 
 /*------------------------------------------------------------------*/
-void ellipsefill (ALLEGRO_BITMAP * bitmap, int x, int y, int rx, int ry, int color) {
+void ellipsefill (ALLEGRO_BITMAP * bitmap, int x, int y, int rx, int ry, ALLEGRO_COLOR color) {
   // Draw filled ellipse - Allegro 4 compatibility
-  if (color < 0 || color >= PALETTE_SIZE) {
-    return;
-  }
-  ALLEGRO_COLOR al_color = rgb_to_allegro_color(GLOBAL_PALETTE[color]);
 
   ALLEGRO_BITMAP *old_target = al_get_target_bitmap();
   al_set_target_bitmap(bitmap);
-  al_draw_filled_ellipse(x, y, rx, ry, al_color);
+  al_draw_filled_ellipse(x, y, rx, ry, color);
   al_set_target_bitmap(old_target);
 }
 
 /*------------------------------------------------------------------*/
-void circlefill (ALLEGRO_BITMAP * bitmap, int x, int y, int radius, int color) {
+void circlefill (ALLEGRO_BITMAP * bitmap, int x, int y, int radius, ALLEGRO_COLOR color) {
   // Draw filled circle - Allegro 4 compatibility
-  if (color < 0 || color >= PALETTE_SIZE) {
-    return;
-  }
-  ALLEGRO_COLOR al_color = rgb_to_allegro_color(GLOBAL_PALETTE[color]);
 
   ALLEGRO_BITMAP *old_target = al_get_target_bitmap();
   al_set_target_bitmap(bitmap);
-  al_draw_filled_circle(x, y, radius, al_color);
+  al_draw_filled_circle(x, y, radius, color);
   al_set_target_bitmap(old_target);
 }
 
 /*------------------------------------------------------------------*/
-void polygon (ALLEGRO_BITMAP * bitmap, int vertices, const int *points, int color) {
+void polygon (ALLEGRO_BITMAP * bitmap, int vertices, const int *points, ALLEGRO_COLOR color) {
   // Draw polygon - Allegro 4 compatibility
-  if (color < 0 || color >= PALETTE_SIZE || vertices < 3) {
+  if (vertices < 3) {
     return;
   }
-  ALLEGRO_COLOR al_color = rgb_to_allegro_color(GLOBAL_PALETTE[color]);
 
   // Convert int array to float array for Allegro 5
   float *float_points = malloc(vertices * 2 * sizeof(float));
@@ -1964,7 +1791,7 @@ void polygon (ALLEGRO_BITMAP * bitmap, int vertices, const int *points, int colo
 
   ALLEGRO_BITMAP *old_target = al_get_target_bitmap();
   al_set_target_bitmap(bitmap);
-  al_draw_polygon(float_points, vertices, ALLEGRO_LINE_JOIN_NONE, al_color, 1.0, 0);
+  al_draw_polygon(float_points, vertices, ALLEGRO_LINE_JOIN_NONE, color, 1.0, 0);
   al_set_target_bitmap(old_target);
 
   free(float_points);
@@ -2018,10 +1845,8 @@ int bestfit_color(PALETTE pal, int r, int g, int b) {
 
 
 /*------------------------------------------------------------------*/
-int save_bitmap(const char *filename, ALLEGRO_BITMAP *bmp, PALETTE pal) {
+int save_bitmap(const char *filename, ALLEGRO_BITMAP *bmp) {
   // Allegro 4 compatibility function - saves a bitmap to file
-  // In Allegro 5, we use al_save_bitmap and ignore the palette parameter
-  (void)pal; // Palette ignored in Allegro 5
   return al_save_bitmap(filename, bmp) ? 0 : -1; // Allegro 4 returns 0 on success
 }
 
@@ -2048,4 +1873,81 @@ void scroll_screen(int x, int y) {
   (void)y;
   // Note: This function was used for hardware scrolling in Allegro 4
   // Modern systems handle this through different mechanisms
+}
+
+/*------------------------------------------------------------------*/
+/* lw_team_color:
+ *  Computes the color for a team at a given intensity.
+ *  Team colors (0-5):
+ *    0 = red     (0,0,0) to (255,0,0)
+ *    1 = green   (0,0,0) to (0,255,0)
+ *    2 = blue    (0,0,0) to (0,0,255)
+ *    3 = yellow  (0,0,0) to (255,255,0)
+ *    4 = cyan    (0,0,0) to (0,255,255)
+ *    5 = magenta (0,0,0) to (255,0,255)
+ *  Intensity: 0 (black) to 255 (full bright color)
+ */
+ALLEGRO_COLOR
+lw_team_color(int team, int intensity)
+{
+  int r = 0, g = 0, b = 0;
+
+  // Clamp intensity to 0-255 range
+  if (intensity < 0) intensity = 0;
+  if (intensity > 255) intensity = 255;
+
+  // Clamp team to 0-5 range
+  team = team % 6;
+  if (team < 0) team = 0;
+
+  switch (team) {
+    case 0: // Red
+      r = intensity;
+      break;
+    case 1: // Green
+      g = intensity;
+      break;
+    case 2: // Blue
+      b = intensity;
+      break;
+    case 3: // Yellow
+      r = intensity;
+      g = intensity;
+      break;
+    case 4: // Cyan
+      g = intensity;
+      b = intensity;
+      break;
+    case 5: // Magenta
+      r = intensity;
+      b = intensity;
+      break;
+  }
+
+  return al_map_rgb(r, g, b);
+}
+
+/*------------------------------------------------------------------*/
+/* is_color_light:
+ *  Checks if a color is "light" (sum of RGB >= 3*128).
+ *  Used to classify pixels as playable area vs walls in maps.
+ */
+int
+is_color_light(ALLEGRO_COLOR c)
+{
+  int r = (int)(c.r * 255.0f);
+  int g = (int)(c.g * 255.0f);
+  int b = (int)(c.b * 255.0f);
+  return (r + g + b) >= (3 * 128);
+}
+
+/*------------------------------------------------------------------*/
+/* is_color_dark:
+ *  Checks if a color is "dark" (sum of RGB < 3*128).
+ *  Opposite of is_color_light.
+ */
+int
+is_color_dark(ALLEGRO_COLOR c)
+{
+  return !is_color_light(c);
 }

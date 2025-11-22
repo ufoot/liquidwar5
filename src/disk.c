@@ -283,6 +283,7 @@ typedef struct {
   char *filename;
   off_t size;
   int index;
+  ALLEGRO_BITMAP *bmp;  /* Pre-loaded bitmap (loaded on main thread) */
 } map_file_info;
 
 /*------------------------------------------------------------------*/
@@ -294,7 +295,7 @@ typedef struct {
 } worker_job;
 
 /*------------------------------------------------------------------*/
-/* Worker thread function to load multiple maps */
+/* Worker thread function to process pre-loaded map bitmaps */
 static void
 map_load_worker(void *arg)
 {
@@ -303,12 +304,17 @@ map_load_worker(void *arg)
   if (job && job->files) {
     for (int i = 0; i < job->file_count; i++) {
       map_file_info *file = job->files[i];
-      if (file && file->filename) {
+      if (file && file->bmp) {
         log_print_str(".");
-        void *map = lw_map_archive_raw(file->filename);
+        /* Process the pre-loaded bitmap (CPU-intensive, thread-safe) */
+        void *map = lw_map_archive_raw_bmp(file->bmp, file->filename);
         if (map != NULL) {
           RAW_MAP[file->index] = map;
+          log_print_str("+");
+        } else {
+          log_print_str("-");
         }
+        /* Note: bmp is consumed by lw_map_archive_raw_bmp, don't free it here */
       }
     }
     free(job->files);
@@ -332,7 +338,7 @@ compare_map_size(const void *a, const void *b)
 
 /*------------------------------------------------------------------*/
 /* Simple integer square root for worker count calculation */
-static int
+static int __attribute__((unused))
 isqrt(int n)
 {
   int x = n;
@@ -364,7 +370,13 @@ read_map_dat ()
   }
 
   /* First pass: collect all filenames and their sizes */
-  map_file_info files[RAW_MAP_MAX_NUMBER];
+  /* Allocate on heap to avoid stack overflow (each entry contains a 768-byte PALETTE) */
+  map_file_info *files = calloc(RAW_MAP_MAX_NUMBER, sizeof(map_file_info));
+  if (!files) {
+    al_close_directory(dir);
+    al_destroy_fs_entry(dir);
+    return false;
+  }
   int file_count = 0;
 
   ALLEGRO_FS_ENTRY *entry;
@@ -388,22 +400,39 @@ read_map_dat ()
   al_destroy_fs_entry(dir);
 
   if (file_count == 0) {
+    free(files);
     return false;
   }
 
   /* Sort files by size (largest first) for better load balancing */
   qsort(files, file_count, sizeof(map_file_info), compare_map_size);
 
+  /*
+   * Load all bitmaps on the main thread (Allegro 5's al_load_bitmap is not thread-safe).
+   * Worker threads will process these pre-loaded bitmaps in parallel.
+   * This separates the I/O (main thread) from CPU-intensive processing (worker threads).
+   */
+  for (int i = 0; i < file_count; i++) {
+    log_print_str(".");
+    files[i].bmp = al_load_bitmap_flags(files[i].filename, ALLEGRO_MEMORY_BITMAP);
+    /* If bitmap fails to load, bmp will be NULL and worker will skip it */
+  }
+
   /* Calculate optimal worker count: sqrt(file_count), min 1, max file_count */
-  int worker_count = isqrt(file_count);
+  /* TEMPORARY: Force single-threaded to test if threading is causing the Metal error */
+  int worker_count = 1;
+  /* int worker_count = isqrt(file_count);
   if (worker_count < 1) worker_count = 1;
-  if (worker_count > file_count) worker_count = file_count;
+  if (worker_count > file_count) worker_count = file_count; */
 
   /* Allocate worker job structures */
   worker_job *jobs = calloc(worker_count, sizeof(worker_job));
   if (!jobs) {
-    /* Cleanup filenames */
+    /* Cleanup filenames and bitmaps */
     for (int i = 0; i < file_count; i++) {
+      if (files[i].bmp) {
+        al_destroy_bitmap(files[i].bmp);
+      }
       free(files[i].filename);
     }
     return false;
@@ -419,6 +448,9 @@ read_map_dat ()
       }
       free(jobs);
       for (int j = 0; j < file_count; j++) {
+        if (files[j].bmp) {
+          al_destroy_bitmap(files[j].bmp);
+        }
         free(files[j].filename);
       }
       return false;
@@ -454,6 +486,9 @@ read_map_dat ()
     }
     free(jobs);
     for (int i = 0; i < file_count; i++) {
+      if (files[i].bmp) {
+        al_destroy_bitmap(files[i].bmp);
+      }
       free(files[i].filename);
     }
     return false;
@@ -491,6 +526,16 @@ read_map_dat ()
       RAW_MAP_NUMBER++;
     }
   }
+
+  log_print_str(" [");
+  log_print_int(RAW_MAP_NUMBER);
+  log_print_str("/");
+  log_print_int(file_count);
+  log_print_str("]");
+  log_flush();
+
+  /* Free the files array */
+  free(files);
 
   return RAW_MAP_NUMBER > 0;
 }

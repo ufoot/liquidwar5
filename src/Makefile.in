@@ -129,7 +129,6 @@ OBJ_NAMES = \
 	netplay \
 	network \
 	options \
-	palette \
 	parser \
 	path \
 	ping \

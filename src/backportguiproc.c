@@ -47,7 +47,7 @@ static int _dummy_c = 0;
  */
 int
 gui_textout_ex (ALLEGRO_BITMAP * bmp, AL_CONST char *s, int x, int y,
-                int color, int bg, int centre)
+                ALLEGRO_COLOR color, ALLEGRO_COLOR bg, int centre)
 {
   char tmp[1024];
   int hline_pos = -1;
@@ -117,7 +117,7 @@ int
 gui_strlen (AL_CONST char *s)
 {
   ALLEGRO_ASSERT (s);
-  return gui_textout_ex (NULL, s, 0, 0, 0, 0, 0);
+  return gui_textout_ex (NULL, s, 0, 0, NO_COLOR, NO_COLOR, 0);
 }
 
 
@@ -126,7 +126,7 @@ gui_strlen (AL_CONST char *s)
  *  Draws a dotted rectangle, for showing an object has the input focus.
  */
 static void
-dotted_rect (int x1, int y1, int x2, int y2, int fg, int bg)
+dotted_rect (int x1, int y1, int x2, int y2, ALLEGRO_COLOR fg, ALLEGRO_COLOR bg)
 {
   ALLEGRO_BITMAP *gui_bmp = gui_get_screen ();
   int x = ((x1 + y1) & 1) ? 1 : 0;
@@ -214,7 +214,7 @@ d_box_proc (int msg, DIALOG * d, int c)
   ALLEGRO_ASSERT (d);
   if (msg == MSG_DRAW)
     {
-      int fg = (d->flags & D_DISABLED) ? gui_mg_color : d->fg;
+      ALLEGRO_COLOR fg = (d->flags & D_DISABLED) ? gui_mg_color : d->fg;
       ALLEGRO_BITMAP *gui_bmp = gui_get_screen ();
 
       rectfill (gui_bmp, d->x + 1, d->y + 1, d->x + d->w - 2, d->y + d->h - 2,
@@ -238,8 +238,8 @@ d_shadow_box_proc (int msg, DIALOG * d, int c)
   ALLEGRO_ASSERT (d);
   if (msg == MSG_DRAW)
     {
-      int fg = (d->flags & D_DISABLED) ? gui_mg_color : d->fg;
-      int black = 0;            // [FIXME:ufoot] sounds a bit hardcoded, double-check this
+      ALLEGRO_COLOR fg = (d->flags & D_DISABLED) ? gui_mg_color : d->fg;
+      ALLEGRO_COLOR black = al_map_rgb(0, 0, 0);  // [FIXME:ufoot] sounds a bit hardcoded, double-check this
       ALLEGRO_BITMAP *gui_bmp = gui_get_screen ();
 
       rectfill (gui_bmp, d->x + 1, d->y + 1, d->x + d->w - 3, d->y + d->h - 3,
@@ -285,7 +285,7 @@ d_text_proc (int msg, DIALOG * d, int c)
   ALLEGRO_ASSERT (d);
   if (msg == MSG_DRAW)
     {
-      int fg = (d->flags & D_DISABLED) ? gui_mg_color : d->fg;
+      ALLEGRO_COLOR fg = (d->flags & D_DISABLED) ? gui_mg_color : d->fg;
       ALLEGRO_FONT *oldfont = font;
 
       if (d->dp2)
@@ -313,7 +313,7 @@ d_ctext_proc (int msg, DIALOG * d, int c)
   ALLEGRO_ASSERT (d);
   if (msg == MSG_DRAW)
     {
-      int fg = (d->flags & D_DISABLED) ? gui_mg_color : d->fg;
+      ALLEGRO_COLOR fg = (d->flags & D_DISABLED) ? gui_mg_color : d->fg;
       ALLEGRO_FONT *oldfont = font;
 
       if (d->dp2)
@@ -342,7 +342,7 @@ d_rtext_proc (int msg, DIALOG * d, int c)
   ALLEGRO_ASSERT (d);
   if (msg == MSG_DRAW)
     {
-      int fg = (d->flags & D_DISABLED) ? gui_mg_color : d->fg;
+      ALLEGRO_COLOR fg = (d->flags & D_DISABLED) ? gui_mg_color : d->fg;
       ALLEGRO_FONT *oldfont = font;
 
       if (d->dp2)
@@ -372,10 +372,11 @@ int
 d_button_proc (int msg, DIALOG * d, int c)
 {
   ALLEGRO_BITMAP *gui_bmp;
-  int state1, state2;
-  int black;
+  ALLEGRO_COLOR state1, state2;
+  ALLEGRO_COLOR black;
   int swap;
   int g;
+  int click_state1, click_state2;  // Boolean states for MSG_CLICK
   ALLEGRO_ASSERT (d);
 
   gui_bmp = gui_get_screen ();
@@ -403,7 +404,7 @@ d_button_proc (int msg, DIALOG * d, int c)
             d->y + d->h - 2 + g, state1);
       gui_textout_ex (gui_bmp, d->dp, d->x + d->w / 2 + g,
                       d->y + d->h / 2 - text_height (font) / 2 + g, state1,
-                      -1, TRUE);
+                      NO_COLOR, TRUE);
 
       if (d->flags & D_SELECTED)
         {
@@ -412,7 +413,7 @@ d_button_proc (int msg, DIALOG * d, int c)
         }
       else
         {
-          black = 0;            // [FIXME:ufoot] sounds a bit hardcoded, double-check this
+          black = al_map_rgb(0, 0, 0);  // [FIXME:ufoot] sounds a bit hardcoded, double-check this
           vline (gui_bmp, d->x + d->w - 1, d->y + 1, d->y + d->h - 2, black);
           hline (gui_bmp, d->x + 1, d->y + d->h - 1, d->x + d->w - 1, black);
         }
@@ -439,26 +440,26 @@ d_button_proc (int msg, DIALOG * d, int c)
 
     case MSG_CLICK:
       /* what state was the button originally in? */
-      state1 = d->flags & D_SELECTED;
+      click_state1 = d->flags & D_SELECTED;
       if (d->flags & D_EXIT)
         swap = FALSE;
       else
-        swap = state1;
+        swap = click_state1;
 
       /* track the mouse until it is released */
       while (gui_mouse_b ())
         {
-          state2 = ((gui_mouse_x () >= d->x) && (gui_mouse_y () >= d->y) &&
+          click_state2 = ((gui_mouse_x () >= d->x) && (gui_mouse_y () >= d->y) &&
                     (gui_mouse_x () < d->x + d->w)
                     && (gui_mouse_y () < d->y + d->h));
           if (swap)
-            state2 = !state2;
+            click_state2 = !click_state2;
 
           /* redraw? */
-          if (((state1) && (!state2)) || ((state2) && (!state1)))
+          if (((click_state1) && (!click_state2)) || ((click_state2) && (!click_state1)))
             {
               d->flags ^= D_SELECTED;
-              state1 = d->flags & D_SELECTED;
+              click_state1 = d->flags & D_SELECTED;
               object_message (d, MSG_DRAW, 0);
             }
 
@@ -491,13 +492,17 @@ d_check_proc (int msg, DIALOG * d, int c)
 {
   ALLEGRO_BITMAP *gui_bmp = gui_get_screen ();
   int x, y, h;
-  int fg, bg;
+  ALLEGRO_COLOR fg, bg;
   ALLEGRO_ASSERT (d);
 
   if (msg == MSG_DRAW)
     {
       fg = (d->flags & D_DISABLED) ? gui_mg_color : d->fg;
-      bg = (d->bg < 0) ? gui_bg_color : d->bg;
+      // Check if bg is NO_COLOR (transparent) by comparing components
+      if (d->bg.r == 0 && d->bg.g == 0 && d->bg.b == 0 && d->bg.a == 0)
+        bg = gui_bg_color;
+      else
+        bg = d->bg;
 
       h = text_height (font);
 
@@ -508,12 +513,12 @@ d_check_proc (int msg, DIALOG * d, int c)
       y = d->y + ((d->h - (h - gui_font_baseline)) / 2);
       x =
         d->x +
-        ((d->d1) ? 0 : gui_textout_ex (gui_bmp, d->dp, d->x, y, fg, -1,
+        ((d->d1) ? 0 : gui_textout_ex (gui_bmp, d->dp, d->x, y, fg, NO_COLOR,
                                        FALSE) + h / 2);
 
       rect (gui_bmp, x, y, x + h - 1, y + h - 1, fg);
       if (d->d1)
-        gui_textout_ex (gui_bmp, d->dp, x + h + h / 2, y, fg, -1, FALSE);
+        gui_textout_ex (gui_bmp, d->dp, x + h + h / 2, y, fg, NO_COLOR, FALSE);
       if (d->flags & D_SELECTED)
         {
           line (gui_bmp, x, y, x + h - 1, y + h - 1, fg);
@@ -671,7 +676,8 @@ d_edit_proc (int msg, DIALOG * d, int c)
 {
   static int ignore_next_uchar = FALSE;
   ALLEGRO_BITMAP *gui_bmp;
-  int f, l, p, w, x, fg, b, scroll;
+  int f, l, p, w, x, b, scroll;
+  ALLEGRO_COLOR fg;
   char buf[16];
   char *s;
   ALLEGRO_ASSERT (d);
@@ -1047,7 +1053,7 @@ _handle_listbox_click (DIALOG * d)
  */
 void
 _draw_scrollable_frame (DIALOG * d, int listsize, int offset, int height,
-                        int fg_color, int bg)
+                        ALLEGRO_COLOR fg_color, ALLEGRO_COLOR bg)
 {
   ALLEGRO_BITMAP *gui_bmp = gui_get_screen ();
   int i, len;
@@ -1122,7 +1128,7 @@ _draw_listbox (DIALOG * d)
 {
   ALLEGRO_BITMAP *gui_bmp = gui_get_screen ();
   int height, listsize, i, len, bar, x, y, w;
-  int fg_color, fg, bg;
+  ALLEGRO_COLOR fg_color, fg, bg;
   char *sel = d->dp2;
   char s[1024];
 
@@ -1458,10 +1464,10 @@ d_text_list_proc (int msg, DIALOG * d, int c)
 void
 _draw_textbox (char *thetext, int *listsize, int draw, int offset,
                int wword, int tabsize, int x, int y, int w, int h,
-               int disabled, int fore, int deselect, int disable)
+               int disabled, ALLEGRO_COLOR fore, ALLEGRO_COLOR deselect, ALLEGRO_COLOR disable)
 {
   ALLEGRO_BITMAP *gui_bmp = gui_get_screen ();
-  int fg = fore;
+  ALLEGRO_COLOR fg = fore;
   int y1 = y + 4;
   int x1;
   int len;
@@ -1675,7 +1681,7 @@ d_textbox_proc (int msg, DIALOG * d, int c)
   int height, bar, ret = D_O_K;
   int start, top, bottom, l;
   int used, delta;
-  int fg_color;
+  ALLEGRO_COLOR fg_color;
   ALLEGRO_ASSERT (d);
 
   fg_color = (d->flags & D_DISABLED) ? gui_mg_color : d->fg;
@@ -1690,7 +1696,7 @@ d_textbox_proc (int msg, DIALOG * d, int c)
       _draw_textbox (d->dp, &d->d1, 0,  /* DONT DRAW anything */
                      d->d2, !(d->flags & D_SELECTED), 8,
                      d->x, d->y, d->w, d->h,
-                     (d->flags & D_DISABLED), 0, 0, 0);
+                     (d->flags & D_DISABLED), NO_COLOR, NO_COLOR, NO_COLOR);
       break;
 
     case MSG_DRAW:
@@ -1698,7 +1704,7 @@ d_textbox_proc (int msg, DIALOG * d, int c)
       _draw_textbox (d->dp, &d->d1, 0,  /* DONT DRAW anything */
                      d->d2, !(d->flags & D_SELECTED), 8,
                      d->x, d->y, d->w, d->h,
-                     (d->flags & D_DISABLED), 0, 0, 0);
+                     (d->flags & D_DISABLED), NO_COLOR, NO_COLOR, NO_COLOR);
 
       if (d->d1 > height)
         {
@@ -1836,7 +1842,7 @@ d_slider_proc (int msg, DIALOG * d, int c)
   ALLEGRO_BITMAP *gui_bmp = gui_get_screen ();
   ALLEGRO_BITMAP *slhan = NULL;
   int oldpos, newpos;
-  int sfg;                      /* slider foreground color */
+  ALLEGRO_COLOR sfg;            /* slider foreground color */
   int vert = TRUE;              /* flag: is slider vertical? */
   int hh = 7;                   /* handle height (width for horizontal sliders) */
   int hmar;                     /* handle margin */

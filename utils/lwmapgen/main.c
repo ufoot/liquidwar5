@@ -48,7 +48,7 @@ main (int argc, char **argv)
   map_generator (filename, size, grid_size, func_id);
 
   printf ("map-- %s\n", map.filename);
-  save_bitmap (map.filename, map.map, pal);
+  save_bitmap (map.filename, map.map); // Palette parameter removed in Allegro 5
   printf ("map-- %s\n", map.filename);
 
   return EXIT_SUCCESS;

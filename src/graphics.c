@@ -164,7 +164,7 @@ slider_menu_res (void *dp3, int d2)
   changed = dp3;
   *changed = 1;
 
-  my_set_palette ();
+  // my_set_palette (); // No longer needed in true color mode
 
   return 0;
 }
@@ -178,7 +178,7 @@ slider_brightness (void *dp3, int d2)
 
   play_click ();
   CONFIG_BRIGHTNESS = d2;
-  my_set_palette ();
+  // my_set_palette (); // No longer needed in true color mode
 
   return 0;
 }
@@ -271,7 +271,7 @@ graphic_options (void)
           fullscreen_changed = 0;
           display_back_image ();
           dp = my_init_dialog (d, choix);
-          my_fade_in ();
+          // my_fade_in (); // No longer needed in true color mode
         }
       else
         dp = my_init_dialog (d, choix);
@@ -287,7 +287,7 @@ graphic_options (void)
         {
           if (d[13].d2 != CONFIG_GFX_MENU)
             {
-              my_fade_out ();
+              // my_fade_out (); // No longer needed in true color mode
               if (set_resolution (d[13].d2, 0, CONFIG_FULLSCREEN, NULL))
                 CONFIG_GFX_MENU = 0;
               else
@@ -331,7 +331,7 @@ graphic_options (void)
                   my_button_proc (MSG_DRAW, d + 11, 0);
                   unscare_mouse ();
                   fullscreen_changed = 1;
-                  my_fade_out ();
+                  // my_fade_out (); // No longer needed in true color mode
                   set_resolution (d[13].d2, 0, CONFIG_FULLSCREEN, NULL);
                   break;
                 case 16:

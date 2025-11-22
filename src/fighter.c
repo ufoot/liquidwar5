@@ -63,7 +63,6 @@
 #include "grad.h"
 #include "mesh.h"
 #include "fighter.h"
-#include "palette.h"
 #include "startup.h"
 #include "lwtime.h"
 
@@ -137,9 +136,9 @@ erase_fighter (FIGHTER * f)
 static void
 disp_fighter (FIGHTER * f)
 {
+  int intensity = (f->health * 255) / MAX_FIGHTER_HEALTH;
   putpixel (CURRENT_AREA_DISP, f->x, f->y,
-            COLOR_FIRST_ENTRY[(int) (f->team)]
-            + (f->health * COLORS_PER_TEAM) / MAX_FIGHTER_HEALTH);
+            lw_team_color((int)(f->team), intensity));
 }
 
 /*------------------------------------------------------------------*/

@@ -43,7 +43,7 @@ rand_box ()
             bheight -= (starty + bheight) - (map.sec_height - 1);
 
           rectfill (map.map, startx + xoffset, starty + yoffset,
-                    startx + bwidth + xoffset, starty + bheight + yoffset, 0);
+                    startx + bwidth + xoffset, starty + bheight + yoffset, al_map_rgb(0, 0, 0));
         }
     }
 

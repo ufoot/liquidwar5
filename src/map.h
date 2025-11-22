@@ -57,7 +57,6 @@
 
 #include <allegro5/allegro.h>
 
-#include "palette.h"
 
 /*==================================================================*/
 /* constants                                                        */
@@ -71,8 +70,7 @@
 /*==================================================================*/
 
 void *lw_map_archive_raw (const char *filename);
-void *lw_map_archive_raw_bmp (ALLEGRO_BITMAP * bmp, PALETTE pal,
-                              const char *filename);
+void *lw_map_archive_raw_bmp (ALLEGRO_BITMAP * bmp, const char *filename);
 ALLEGRO_BITMAP *lw_map_create_bicolor (int num, int fg, int bg,
                                        int network, int random, int min_w,
                                        int min_h, int *zoom_factor);

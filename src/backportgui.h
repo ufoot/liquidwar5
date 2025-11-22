@@ -33,7 +33,7 @@ extern "C"
   {
     DIALOG_PROC proc;
     int x, y, w, h;             /* position and size of the object */
-    int fg, bg;                 /* foreground and background colors */
+    ALLEGRO_COLOR fg, bg;       /* foreground and background colors */
     int key;                    /* keyboard shortcut (ASCII code) */
     int flags;                  /* flags about the object state */
     int d1, d2;                 /* any data the object might require */
@@ -182,9 +182,9 @@ extern "C"
 
     AL_VAR (int, gui_mouse_focus);
 
-    AL_VAR (int, gui_fg_color);
-    AL_VAR (int, gui_mg_color);
-    AL_VAR (int, gui_bg_color);
+    AL_VAR (ALLEGRO_COLOR, gui_fg_color);
+    AL_VAR (ALLEGRO_COLOR, gui_mg_color);
+    AL_VAR (ALLEGRO_COLOR, gui_bg_color);
 
     AL_VAR (int, gui_font_baseline);
 
@@ -197,11 +197,11 @@ extern "C"
     AL_FUNC (ALLEGRO_BITMAP *, gui_get_screen, (void));
     AL_FUNC (int, gui_textout_ex,
              (struct ALLEGRO_BITMAP * bmp, AL_CONST char *s, int x, int y,
-              int color, int bg, int centre));
+              ALLEGRO_COLOR color, ALLEGRO_COLOR bg, int centre));
     AL_FUNC (int, gui_strlen, (AL_CONST char *s));
     AL_FUNC (void, position_dialog, (DIALOG * dialog, int x, int y));
     AL_FUNC (void, centre_dialog, (DIALOG * dialog));
-    AL_FUNC (void, set_dialog_color, (DIALOG * dialog, int fg, int bg));
+    AL_FUNC (void, set_dialog_color, (DIALOG * dialog, ALLEGRO_COLOR fg, ALLEGRO_COLOR bg));
     AL_FUNC (int, find_dialog_focus, (DIALOG * dialog));
     AL_FUNC (int, offer_focus,
              (DIALOG * dialog, int obj, int *focus_obj, int force));

@@ -57,7 +57,6 @@
 
 #include "test_simple.h"
 #include "backport.h"
-#include "palette.h"
 
 /*==================================================================*/
 /* functions                                                        */

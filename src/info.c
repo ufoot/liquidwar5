@@ -56,12 +56,12 @@
 
 #include "backport.h"
 #include "alleg2.h"
+#include "dialog.h"
 #include "army.h"
 #include "back.h"
 #include "config.h"
 #include "info.h"
 #include "decal.h"
-#include "palette.h"
 #include "maptex.h"
 #include "texture.h"
 #include "lwtime.h"
@@ -236,7 +236,7 @@ display_time (int x, int y, int w, int h)
   buffer[4] = '0' + sec % 10;
   buffer[5] = 0;
 
-  textout_ex (INFO_BAR, font, buffer, x + 1, y + 1, -1, -1);
+  textout_ex (INFO_BAR, font, buffer, x + 1, y + 1, NO_COLOR, NO_COLOR);
 }
 
 /*------------------------------------------------------------------*/
@@ -263,7 +263,7 @@ display_horizontal_info (int w, int h, int epaisseur)
                 barre_y,
                 barre_x + barre_w - 1,
                 barre_y + INFO_BAR_POS_H - 1,
-                COLOR_FIRST_ENTRY[i] + COLORS_PER_TEAM - 1);
+                lw_team_color(i, 255));  // Full brightness for team color
     }
 }
 
@@ -291,7 +291,7 @@ display_vertical_info (int w, int h, int epaisseur)
                 barre_y,
                 barre_x + INFO_BAR_POS_W - 1,
                 barre_y + barre_h - 1,
-                COLOR_FIRST_ENTRY[i] + COLORS_PER_TEAM - 1);
+                lw_team_color(i, 255));  // Full brightness for team color
     }
 }
 

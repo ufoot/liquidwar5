@@ -60,7 +60,6 @@
 #include "backport.h"
 #include "backportgui.h"
 #include "alleg2.h"
-#include "palette.h"
 
 /*==================================================================*/
 /* variables globales                                               */
@@ -80,6 +79,15 @@
 
 #define MENU_VIRTUAL_W 320
 #define MENU_VIRTUAL_H 240
+
+// Menu colors - converted from palette indices to ALLEGRO_COLOR
+// MENU_BG was palette index 16 (dark gray), MENU_FG was index 17 (light gray)
+#define MENU_BG (al_map_rgb(64, 64, 64))
+#define MENU_FG (al_map_rgb(192, 192, 192))
+
+// Special color value for "no color" or transparent (was -1 in Allegro 4)
+// Use black with 0 alpha for now
+#define NO_COLOR (al_map_rgba(0, 0, 0, 0))
 
 #define MENU_H_STANDARD 15
 #define MENU_H_QUICK 15

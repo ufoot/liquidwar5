@@ -55,12 +55,12 @@
 #include <allegro5/allegro.h>
 #include <string.h>
 
+#include "backport.h"
 #include "config.h"
 #include "disk.h"
 #include "joystick.h"
 #include "keyboard.h"
 #include "mouse.h"
-#include "palette.h"
 #include "startup.h"
 #include "server.h"
 #include "lang.h"

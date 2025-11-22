@@ -281,7 +281,7 @@ centre_dialog (DIALOG * dialog)
  *  Sets the foreground and background colors of all the objects in a dialog.
  */
 void
-set_dialog_color (DIALOG * dialog, int fg, int bg)
+set_dialog_color (DIALOG * dialog, ALLEGRO_COLOR fg, ALLEGRO_COLOR bg)
 {
   int c;
   ALLEGRO_ASSERT (dialog);
@@ -1567,7 +1567,7 @@ get_menu_pos (MENU_PLAYER * m, int c, int *x, int *y, int *w)
 static void
 draw_menu_item (MENU_PLAYER * m, int c)
 {
-  int fg, bg;
+  ALLEGRO_COLOR fg, bg;
   int x, y, w;
   char *buf, *tok1, *tok2;
   int my;
@@ -2491,15 +2491,15 @@ d_menu_proc (int msg, DIALOG * d, int c)
 
 static DIALOG alert_dialog[] = {
   /* (dialog proc)        (x)   (y)   (w)   (h)   (fg)  (bg)  (key) (flags)  (d1)  (d2)  (dp)  (dp2) (dp3) */
-  {_gui_shadow_box_proc, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL},
-  {_gui_ctext_proc, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL},
-  {_gui_ctext_proc, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL},
-  {_gui_ctext_proc, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL},
-  {_gui_button_proc, 0, 0, 0, 0, 0, 0, 0, D_EXIT, 0, 0, NULL, NULL, NULL},
-  {_gui_button_proc, 0, 0, 0, 0, 0, 0, 0, D_EXIT, 0, 0, NULL, NULL, NULL},
-  {_gui_button_proc, 0, 0, 0, 0, 0, 0, 0, D_EXIT, 0, 0, NULL, NULL, NULL},
-  {d_yield_proc, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL},
-  {NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL}
+  {_gui_shadow_box_proc, 0, 0, 0, 0, {0, 0, 0, 0}, {0, 0, 0, 0}, 0, 0, 0, 0, NULL, NULL, NULL},
+  {_gui_ctext_proc, 0, 0, 0, 0, {0, 0, 0, 0}, {0, 0, 0, 0}, 0, 0, 0, 0, NULL, NULL, NULL},
+  {_gui_ctext_proc, 0, 0, 0, 0, {0, 0, 0, 0}, {0, 0, 0, 0}, 0, 0, 0, 0, NULL, NULL, NULL},
+  {_gui_ctext_proc, 0, 0, 0, 0, {0, 0, 0, 0}, {0, 0, 0, 0}, 0, 0, 0, 0, NULL, NULL, NULL},
+  {_gui_button_proc, 0, 0, 0, 0, {0, 0, 0, 0}, {0, 0, 0, 0}, 0, D_EXIT, 0, 0, NULL, NULL, NULL},
+  {_gui_button_proc, 0, 0, 0, 0, {0, 0, 0, 0}, {0, 0, 0, 0}, 0, D_EXIT, 0, 0, NULL, NULL, NULL},
+  {_gui_button_proc, 0, 0, 0, 0, {0, 0, 0, 0}, {0, 0, 0, 0}, 0, D_EXIT, 0, 0, NULL, NULL, NULL},
+  {d_yield_proc, 0, 0, 0, 0, {0, 0, 0, 0}, {0, 0, 0, 0}, 0, 0, 0, 0, NULL, NULL, NULL},
+  {NULL, 0, 0, 0, 0, {0, 0, 0, 0}, {0, 0, 0, 0}, 0, 0, 0, 0, NULL, NULL, NULL}
 };
 
 
@@ -2623,7 +2623,7 @@ alert3 (AL_CONST char *s1, AL_CONST char *s2, AL_CONST char *s3,
   set_dialog_color (alert_dialog, gui_fg_color, gui_bg_color);
   for (c = 0; alert_dialog[c].proc; c++)
     if (alert_dialog[c].proc == _gui_ctext_proc)
-      alert_dialog[c].bg = -1;
+      alert_dialog[c].bg = NO_COLOR;
 
   clear_keybuf ();
 

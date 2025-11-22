@@ -48,9 +48,9 @@ map_t map;
 void
 clear_map ()
 {
-  clear_to_color (map.map, 255);
+  clear_to_color (map.map, al_map_rgb(255, 255, 255));
   /* draw outline */
-  rect (map.map, 0, 0, map.width - 1, map.height - 1, 0);
+  rect (map.map, 0, 0, map.width - 1, map.height - 1, al_map_rgb(0, 0, 0));
 }
 
 /*****************************************************************************/
@@ -58,7 +58,7 @@ clear_map ()
 void
 clear_invert_map ()
 {
-  clear_to_color (map.map, 0);
+  clear_to_color (map.map, al_map_rgb(0, 0, 0));
 }
 
 /*****************************************************************************/

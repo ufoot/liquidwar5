@@ -116,7 +116,7 @@ display_message (void)
   for (i = 0; i < MESSAGE_NB; ++i)
     textout_ex (NEXT_SCREEN, font, MESSAGE[i],
                 al_get_bitmap_width (NEXT_SCREEN) - text_length (font, MESSAGE[i]),
-                al_get_bitmap_height (NEXT_SCREEN) - (MESSAGE_NB - i) * h, -1, -1);
+                al_get_bitmap_height (NEXT_SCREEN) - (MESSAGE_NB - i) * h, NO_COLOR, NO_COLOR);
 }
 
 /*------------------------------------------------------------------*/
